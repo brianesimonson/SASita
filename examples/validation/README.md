@@ -30,10 +30,16 @@ The third matched row retains the second left observation. Missing values reset 
 2. Open **03-sas-comparison.sas**, change its first `app_path` setting to your unzipped **results/** folder, and run it **in SAS only**.
 3. Read the PROC COMPARE reports: exact random bits, systematic arithmetic, exact integer summary, exact merge results, then random arithmetic recomputed from the same saved inputs. The last step also exports `sas_numeric_results.csv`; send that CSV and the comparison report back for investigation.
 
-The floating-point comparison uses relative tolerance **1e-12**. A pass means differences are within that tolerance, not bit-for-bit equality. Integer summaries and merge values use exact comparison. SASita does not implement PROC IMPORT, PROC COMPARE, or PROC EXPORT; the third helper intentionally requires SAS. Actual SAS execution remains pending.
+The floating-point comparison uses relative tolerance **1e-12**. A pass means differences are within that tolerance, not bit-for-bit equality. Integer summaries and merge values use exact comparison. The helper reads CSVs with explicit numeric informats, DSD quote handling, CRLF record handling, and 16-character HEX columns; it avoids automatic import type guessing. It checks that SAS reference datasets exist and imported row counts are complete. SASita does not implement these INFILE/INPUT statements, PROC COMPARE, or PROC EXPORT; the third helper intentionally requires SAS. Actual SAS execution remains pending.
 
 ## Rebuild and verify
 
 From the repository root, run `node scripts/build-validation-pack.mjs`, then `python3 scripts/package-validation.py`. The first command runs both programs through the actual interpreter and checks every row against independent integer identities, inverse checks, missing-value rules, and deterministic merge expectations. It reproduces seeded inputs and checks raw CSV round-trips. The second packages these outputs, programs, this guide, and the standalone HTML.
 
 `npm run test:browser -- --validation` additionally runs both full-sized programs in the modular and standalone browser builds, checks the actual worker timeout, and verifies full browser CSV exports against engine results. This establishes app consistency; SAS-reference validation requires the SAS run above.
+
+## First uploaded SAS report: import blocked comparisons
+
+The uploaded `03-sas-comparison-results.html` reports 5 conflicting types in numeric_inputs, 37 in numeric_results, and all 5 in numeric_summary. Numeric values were imported as character columns. The summary explicitly states that data-value comparisons were not performed. The later equal-values message follows 31 conflicting types and is not evidence of complete arithmetic equivalence. Merge comparison sections are absent. No MT32, systematic arithmetic, or merge pass/fail can be established from that report.
+
+The corrected helper replaces PROC IMPORT with explicit numeric/text CSV input and prerequisite/row-count checks. Rerun all three programs in order; the old helper replaced NUMERIC_INPUTS with the incorrectly typed imported dataset. Send both SAS Results and Log if another section is missing or an error appears. The corrected helper has not yet executed in SAS.

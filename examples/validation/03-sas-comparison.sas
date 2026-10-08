@@ -1,21 +1,90 @@
-/* SAS ONLY: PROC IMPORT / PROC COMPARE / PROC EXPORT are not in SASita.
+/* SAS ONLY: INFILE/INPUT statements, PROC COMPARE and PROC EXPORT require SAS.
    First run 01-calculations.sas and 02-merge.sas in SAS.
    Unzip validation-pack.zip and change this path to its results folder. */
 %let app_path = C:/SASita-validation/results;
 
-%macro load_app(name);
-  proc import datafile="&app_path./&name..csv"
-    out=app_&name dbms=csv replace;
-    guessingrows=max;
-    getnames=yes;
-  run;
+/* Stop before comparisons if either original SAS test has not been run.
+   Run all three programs in order in the same SAS Studio session. */
+%macro require_reference(name);
+  %if not %sysfunc(exist(&name)) %then %do;
+    %put ERROR: Missing &name.. Run 01-calculations.sas and 02-merge.sas first.;
+    %abort cancel;
+  %end;
 %mend;
-%load_app(numeric_inputs);
-%load_app(numeric_results);
-%load_app(numeric_summary);
-%load_app(merge_results);
-%load_app(merge_summary);
-%load_app(shared_results);
+%require_reference(numeric_inputs);
+%require_reference(numeric_results);
+%require_reference(numeric_summary);
+%require_reference(merge_results);
+%require_reference(merge_summary);
+%require_reference(shared_results);
+
+/* Explicit CSV schema: no PROC IMPORT type guessing.
+   DSD removes CSV quotes, preserves empty fields as missing, and TERMSTR
+   matches the CRLF records shipped in the pack (including on Linux SAS). */
+%macro load_app(name, fields, chars=, expected=);
+  %local handle rows close_rc bad_input;
+  %let bad_input=0;
+  %if not %sysfunc(fileexist(&app_path./&name..csv)) %then %do;
+    %put ERROR: Cannot find &app_path./&name..csv. Check app_path.;
+    %abort cancel;
+  %end;
+  data app_&name;
+    %if %length(&chars) %then %do;
+      length &chars $16;
+    %end;
+    infile "&app_path./&name..csv" dsd dlm=',' firstobs=2
+      termstr=crlf lrecl=32767 truncover;
+    input &fields;
+    if _error_ then call symputx('bad_input',1,'l');
+  run;
+  %if &bad_input %then %do;
+    %put ERROR: Invalid CSV values in &name.. Check the SAS log before comparing.;
+    %abort cancel;
+  %end;
+  %let handle=%sysfunc(open(app_&name,i));
+  %if &handle = 0 %then %do;
+    %put ERROR: Unable to open imported app_&name.. Check the SAS log.;
+    %abort cancel;
+  %end;
+  %let rows=%sysfunc(attrn(&handle,NOBS));
+  %let close_rc=%sysfunc(close(&handle));
+  %if &rows ne &expected %then %do;
+    %put ERROR: app_&name has &rows rows; expected &expected.. Check the CSV.;
+    %abort cancel;
+  %end;
+%mend;
+%load_app(numeric_inputs,
+    id :best32. random_x :best32. random_y :best32. systematic_x :best32.
+    systematic_y :best32. random_x_hex :$16. random_y_hex :$16.,
+    chars=random_x_hex random_y_hex, expected=20000);
+%load_app(numeric_results,
+    id :best32. random_x :best32. random_y :best32. systematic_x :best32.
+    systematic_y :best32. random_x_hex :$16. random_y_hex :$16. r_add :best32.
+    r_subtract :best32. r_multiply :best32. r_divide :best32. r_square :best32.
+    r_cube :best32. r_sqrt :best32. r_cuberoot :best32. r_sum :best32.
+    r_mean :best32. r_min :best32. r_max :best32. r_combined :best32.
+    s_add :best32. s_subtract :best32. s_multiply :best32. s_divide :best32.
+    s_square :best32. s_cube :best32. s_sqrt :best32. s_cuberoot :best32.
+    s_sum :best32. s_mean :best32. s_min :best32. s_max :best32.
+    s_combined :best32. sometimes_missing :best32. missing_add :best32. missing_sum :best32.
+    missing_mean :best32. missing_min :best32. missing_max :best32.,
+    chars=random_x_hex random_y_hex, expected=20000);
+%load_app(numeric_summary,
+    count :best32. total_x :best32. total_y :best32. total_product :best32.
+    total_missing :best32.,
+    chars=, expected=1);
+%load_app(merge_results,
+    id :best32. left_index :best32. left_value :best32. shared :best32.
+    right_index :best32. right_value :best32. merge_row :best32. has_left :best32.
+    has_right :best32. first_id :best32. last_id :best32. combined :best32.,
+    chars=, expected=40000);
+%load_app(merge_summary,
+    row_count :best32. group_count :best32. left_only :best32. matched :best32.
+    right_only :best32.,
+    chars=, expected=1);
+%load_app(shared_results,
+    id :best32. left_index :best32. shared :best32. shared_row :best32.,
+    chars=, expected=6);
 
 /* Exact 64-bit uniform draw comparison; expect possible failures here.
    This is separate from all arithmetic tests. */

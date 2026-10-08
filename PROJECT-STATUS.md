@@ -1,5 +1,11 @@
 # SASita project status
 
+## SAS comparison import repair
+
+Branch `fix/sas-comparison-imports` responds to the user's uploaded SAS HTML report. Numeric CSV values were imported as text (5/37/5 type conflicts for inputs/results/summary), so the report does not establish RAND or arithmetic compatibility. The final equal-values message follows 31 type conflicts, and merge reports are absent. No SAS pass is claimed.
+
+The SAS-only helper now uses explicit BEST32 numeric fields, $16 HEX fields, DSD quoting, and CRLF input records, replacing PROC IMPORT guessing. It checks reference-dataset presence, file presence, and imported row counts before comparisons. The downloadable pack is refreshed; CSVs and application code are unchanged. Full SAS execution of the repaired helper remains pending.
+
 ## Calculation and merge comparison pack
 
 Branch `test/numeric-merge-comparison` builds on the formats/RAND feature branch and adds `examples/validation/validation-pack.zip`: the standalone HTML, two portable SAS/app programs, six app-generated result CSVs with checksums, a guide, and a SAS-only PROC COMPARE helper. Main and v1.0 are preserved.

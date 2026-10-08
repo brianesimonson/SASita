@@ -6,6 +6,7 @@ import {createHash} from 'node:crypto';
 import {run,csv,parseCSV} from '../dist/engine.mjs';
 const folder=resolve(process.argv[2]||'/tmp/sasita-validation-results');
 await mkdir(folder,{recursive:true});
+const helper=await readFile('examples/validation/03-sas-comparison.sas','utf8');
 const files=[];
 for(const program of ['01-calculations.sas','02-merge.sas']) {
   const code=await readFile(`examples/validation/${program}`,'utf8');
@@ -59,7 +60,14 @@ for(const program of ['01-calculations.sas','02-merge.sas']) {
   }
   const names=program.startsWith('01')?['numeric_inputs','numeric_results','numeric_summary']:['merge_results','merge_summary','shared_results'];
   for(const name of names) {
-    const ds=result.datasets[name],data=csv(ds)+'\r\n';
+    const definition=helper.match(new RegExp(`%load_app\\(${name},([\\s\\S]*?)\\);`));
+    assert.ok(definition,`SAS helper needs an explicit schema for ${name}`);
+    const fields=[...definition[1].matchAll(/(\w+)\s*:\s*(\$16\.|best32\.)/gi)];
+    const ds=result.datasets[name];
+    assert.deepEqual(fields.map(f=>f[1]),ds.columns,`${name}: SAS input order matches CSV header`);
+    for(const [,column,informat] of fields)assert.equal(informat.startsWith('$'),ds.types[column]==='char',`${name}.${column}: SAS input type`);
+    assert.ok(definition[1].includes(`expected=${ds.rows.length}`),`${name}: SAS row-count guard`);
+    const data=csv(ds)+'\r\n';
     assert.deepEqual(parseCSV(data).rows.map(r=>({...r})),ds.rows.map(r=>({...r})),'raw CSV round-trip');
     await writeFile(`${folder}/${name}.csv`,data);
     files.push({file:`${name}.csv`,rows:ds.rows.length,columns:ds.columns.length,sha256:createHash('sha256').update(data).digest('hex')});
