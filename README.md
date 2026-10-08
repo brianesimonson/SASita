@@ -8,6 +8,10 @@ Browser-local SAS-style analysis prototype. Use the hosted Site, or download `di
 
 Choose an example and Run program (Ctrl+Enter). Import CSV datasets into the WORK library and export results as raw CSV. Dataset and variable names are case-insensitive. Data, programs, and macro definitions exist only in tab memory. Macro definitions/variables reset on each Run. Export results before closing. Failed programs do not commit partial dataset changes.
 
+## Function and format references
+
+The app’s **Supported syntax** dialog now lists every implemented function and format family with examples. See [current functions and formats](docs/current-functions-formats.md) and [expansion planning](docs/function-format-expansion.md). Official SAS catalog research is pending documentation access; the proposed additions are not a complete verified SAS list.
+
 ## New in version 2
 
 - Match MERGE with BY, multiple inputs, IN= indicators, unmatched observations, repeated keys, and shared-variable precedence. Repeated groups are paired, not multiplied. Exhausted inputs retain their values within a BY group; each new BY group resets input variables. Shared variables are overwritten only by inputs actually read, in MERGE order. IN= variables are excluded from output; copy them to a new variable to preserve them. Input KEEP=, DROP=, and RENAME=(old=new) accept explicit variable names.

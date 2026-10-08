@@ -28,3 +28,9 @@ These tests are regression evidence, not certification against SAS. Opening file
 ## Working agreement
 
 Use Git commits and version tags for recoverable milestones. Update this file when capabilities or validation change. Keep application data local. No deployment or hosted-site changes are included in baseline setup.
+
+## Function and format reference branch
+
+Branch `docs/function-format-catalog` adds a categorized in-app inventory of all 32 current DATA step functions and six format families, including callable examples and implementation limits. All 32 function examples and six format examples were exercised against the current runtime; npm test and npm run test:browser pass. No engine or macro semantics changed. The offline HTML was rebuilt.
+
+See docs/current-functions-formats.md for the inventory and docs/function-format-expansion.md for proposed batches. Official SAS catalog retrieval remains blocked by egress policy (403 Forbidden). SAS documentation domains were saved in a configuration draft but access is not established. The exhaustive SAS-wide inventory is pending; proposed additions are not documentation-verified or approved implementation scope. Main and v1.0 are preserved.
