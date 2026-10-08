@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {run,parseCSV,csv,display} from './dist/engine.mjs';
+const input={claims:parseCSV('id,group,paid,allowed\n1,A,100,80\n2,A,200,150\n3,B,300,250\n4,B,,0')};
+let r=run('data flags;set claims;if paid > 150;excess=paid-allowed;keep id excess;run;',input);assert.deepEqual(r.datasets.flags.rows,[{id:2,excess:50},{id:3,excess:50}]);
+r=run('data totals;set claims;by group;if first.group then total=0;total+paid;if last.group then output;keep group total;run;',input);assert.deepEqual(r.datasets.totals.rows,[{group:'A',total:300},{group:'B',total:300}]);
+r=run('data out;retain t 10;set claims;t+paid;run;',input);assert.deepEqual(r.datasets.out.rows.map(x=>x.t),[110,310,610,610]);
+r=run('data out;do i=1 to 3; x=i**2;output;end;run;');assert.deepEqual(r.datasets.out.rows.map(x=>x.x),[1,4,9]);
+r=run("data out;length flag $ 5;set claims;if missing(paid) then flag='blank';else if paid>100 then do;flag='large';end;else flag='small';d='01JAN2026'd;format d date9. paid dollar12.2;run;",input);assert.deepEqual(r.datasets.out.rows.map(x=>x.flag),['small','large','large','blank']);assert.equal(display(r.datasets.out.rows[0].d,'date9'),'01JAN2026');assert.equal(display(100,r.datasets.out.formats.paid),'$100.00');
+r=run('data a b;set claims;if id in (1,2) then output a;else output b;run;',input);assert.equal(r.datasets.a.rows.length,2);assert.equal(r.datasets.b.rows.length,2);
+r=run('data out;set claims;x=paid+1;y=sum(paid,1);run;',input);assert.equal(r.datasets.out.rows[3].x,null);assert.equal(r.datasets.out.rows[3].y,1);
+assert.throws(()=>run('data out;merge claims;run;',input),/requires BY/);assert.throws(()=>run('data out;set claims; x=unknownfn(paid);run;',input),/Unsupported function/);assert.throws(()=>run('data out;do i=1 to 4000001;end;run;'),/limit/);
+assert.throws(()=>run('data out;set claims;by paid;run;',input),/sorted/);
+assert.equal(parseCSV(csv(input.claims)).rows.length,4);assert.equal(parseCSV('a,b\n"hello, there","quoted ""value"""').rows[0].b,'quoted "value"');
+console.log('12 scenario checks passed: filtering, grouping, retain, loops, branching, formatting, outputs, missing values, failure paths, execution limits, sorting, CSV.');

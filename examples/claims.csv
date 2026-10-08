@@ -1,0 +1,11 @@
+claim_id,provider,paid_amount,allowed_amount,service_date
+C001,Alpha Medical,1200,900,24380
+C002,Alpha Medical,750,750,24381
+C003,Alpha Medical,2400,1500,24382
+C004,Beacon Care,1800,1700,24383
+C005,Beacon Care,300,300,24384
+C006,Beacon Care,,0,24385
+C007,Cedar Health,4500,3200,24386
+C008,Cedar Health,1100,800,24387
+C009,Cedar Health,600,600,24388
+C010,Cedar Health,2100,1450,24389

@@ -1,0 +1,28 @@
+{
+  "baseline_commit": "c86cb40a1a44c89e222ba31d11ab237300803efe",
+  "files": {
+    ".gitignore": "d1c694c64e60634565c9f4a3a20c712619ef64d3bf61a21be40c02af4462477c",
+    "AGENTS.md": "32003d765e809472ccf417d97ca090579b9fa1424cdb77ee5d56435284928776",
+    "CODEX-FIRST-TASK.md": "35133b94dd29ac6aae1437290ccff7e2015a4623b4dd9ad76e245a53de5026f7",
+    "HANDOFF.md": "cca5e6fc5b505f03baef8347dfa1c79c7b72b01de76365a59b6a8464a063efff",
+    "README.md": "966551e9842015e170996f290ccf699692e4b5ace259f42cc7a2f71e08b693a6",
+    "START-HERE.md": "112095a8e989d1212196a618c39b7fd0491470451cb97984b3aaed2ec214e59f",
+    "build-offline.py": "0397f0ea063a9708f6b0bb43301170a118cbce5fc87d2bfea56e1e48e7d19893",
+    "dist/app.mjs": "7f5f239e7e434f0c4820bb77878acd4d80caa2fb7df492b90cc3b61f2648fe13",
+    "dist/data-step-lab.html": "55818321895ec365f261ab607f25212f9f7a4546881cf6d1f581d836659dfd8a",
+    "dist/engine.mjs": "5c4c02c6038fd8768266302069a1e2f14fa684449b302d791a96a20a0444bcb2",
+    "dist/index.html": "531c085780090eaf9784d95fd2996ca044e6deb587d6c4ba945817c72d97053f",
+    "dist/macros.mjs": "d092e694be2b6c5e922cfbd18d3fb7436a7745191dab62d426e99567cccc7adf",
+    "dist/style.css": "9d9e63137ce31b4fbff8c1f98400623576fbb11e249acbc12cac7a6a68885081",
+    "dist/worker.mjs": "d4de9e4d1f1c392bbb7a80588addea9092beb6509927e65ce5efc9a84ad24145",
+    "examples/claims.csv": "ea9b3687472709f8b48d8039eb0c100359f8c9411a1a3e4d9bc416862594dfec",
+    "examples/providers.csv": "6727fd6cd90be2115157b804ae52e126a9bc8d47c713246815535591cdec100a",
+    "examples/sort-merge-macro.sas": "43562b400bf3afd67593dc5017dce8084bdb72824d14d12d6b48d12faa85a241",
+    "package.json": "298b21af488d115333fe29a85564bf0d51723a31b644e62c60b32266495d6e7a",
+    "source-history.bundle": "35e79e772c631a5b6b94e1cd87f029186ebd9a0e58e294364862ce2dad95588b",
+    "test-engine.mjs": "33c8b15baf678a21e41f2fc0d28f5adcbf3c40a1a1916d93ee507f4dc461c600",
+    "test-offline.mjs": "17c4edfe1cb4a83c15733d289fc320e1101c1f13417cefc5dfe478dacef96588",
+    "test-ui-examples.mjs": "a012fbfc9e50e631aeb020d9e8270892222af138db066cd4434d03530a12bc8f",
+    "test-upgrades.mjs": "e87c24ad37fbfb39f12617d2ed8c07a122842d66266059b58318cba9aeeb6794"
+  }
+}

@@ -1,0 +1,12 @@
+import fs from 'node:fs';import vm from 'node:vm';import assert from 'node:assert/strict';import {run,parseCSV}from './dist/engine.mjs';
+let s=fs.readFileSync('dist/app.mjs','utf8');let examples=vm.runInNewContext('('+s.match(/const examples=(\{[\s\S]*?\});/)[1]+')');let sample=vm.runInNewContext(s.match(/const sample=([^;]+);/)[1]);let claims=parseCSV(sample),providers=parseCSV('provider,specialty\nCedar Health,Rehabilitation\nAlpha Medical,Internal medicine\nBeacon Care,Home health\nDelta Clinic,Cardiology');
+assert.equal(run(examples.flags,{claims,providers}).datasets.flagged.rows.length,6);
+assert.deepEqual(run(examples.groups,{claims,providers}).datasets.provider_totals.rows.map(x=>x.total_paid),[4350,2100,8300]);
+assert.equal(run(examples.loop,{claims,providers}).datasets.squares.rows.length,12);
+assert.equal(run(examples.split,{claims,providers}).datasets.missing_payment.rows.length,1);
+assert.equal(run(examples.merge,{claims,providers}).datasets.enriched.rows.length,10);
+assert.ok(run(examples.merge,{claims,providers}).datasets.enriched.rows.every(x=>x.matched_provider===1));
+assert.equal(run(examples.macro,{claims,providers}).datasets.macro_flagged.rows.length,6);
+assert.deepEqual(run(examples.macroloop,{claims,providers}).written,['above_1000','above_2000','above_3000']);
+let html=fs.readFileSync('dist/index.html','utf8');for(let id of s.matchAll(/\$\('([^']+)'\)/g))assert.ok(html.includes(`id="${id[1]}"`),'Missing DOM element '+id[1]);
+console.log('All seven UI examples and DOM element references checked.');

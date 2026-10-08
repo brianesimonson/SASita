@@ -1,0 +1,25 @@
+name: Baseline checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm run build
+      - run: git diff --exit-code -- dist/data-step-lab.html
+      - run: npm test
+      - uses: browser-actions/setup-chrome@v1
+        id: chrome
+      - run: npm run test:browser -- --file
+        env:
+          CHROME_BIN: ${{ steps.chrome.outputs.chrome-path }}
