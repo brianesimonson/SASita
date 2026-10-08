@@ -4,17 +4,13 @@
 
 The current inventory is complete for this app: see current-functions-formats.md and the app's Supported syntax dialog. No new language functions or format behavior have been added in this branch.
 
-For the broader comparison, use the Base SAS DATA step function/CALL routine and format reference catalogs, starting with SAS 9.4. Separate functions from CALL routines, formats from informats, and Base SAS from DS2, macro, licensed-product, host-specific, and user-defined extensions. An exhaustive catalog must identify its SAS release and source; there is no single timeless list covering every SAS product.
+The official catalog is now available in [catalogs/README.md](catalogs/README.md), based on the user's uploaded PDFs: **SAS Functions and CALL Routines: Reference** (September 14, 2026, 2020.1–2026.09) and **SAS Formats and Informats: Reference** (April 8, 2026, 2020.1–2026.04). These are the actual supplied editions, replacing the earlier plan to query SAS 9.4 web manuals.
 
-On 2026-10-08, requests to SAS documentation were blocked by the cloud egress proxy with `Tunnel connection failed: 403 Forbidden`. Domain additions for support.sas.com and documentation.sas.com were saved in the environment configuration draft. Saving a draft does not apply network access. The official catalog has not been retrieved or counted, and the lists below are proposed candidates from general SAS knowledge, not a claimed documentation-verified or exhaustive inventory.
+The complete dictionary indexes contain 655 function topics, 65 CALL routine topics, 289 format topics, and 109 informat topics. Every indexed title and page was cross-checked against chapter contents. Counts are of documented topics, not distinct function names: some callables have several distribution or operation topics. Product-specific and user-defined extensions outside these manuals are not covered.
 
-Official reference entry points to query after access is enabled:
+Website requests were previously blocked by egress policy. SAS documentation domain additions were saved in the configuration draft, but the PDFs remove that dependency for this inventory. Live website access remains unverified and is no longer a prerequisite to selecting the next implementation group.
 
-- SAS Functions and CALL Routines reference: https://support.sas.com/documentation/cdl/en/lefunctionsref/63354/HTML/default/titlepage.htm
-- SAS Formats and Informats reference: https://support.sas.com/documentation/cdl/en/lrfor/62949/HTML/default/titlepage.htm
-- Current SAS documentation: https://documentation.sas.com/
-
-After access is restored, save a release-specific comparison table with name, kind, category, official URL, current support, implementation constraints, and suggested priority. Keep counts distinct for functions, CALL routines, formats, and informats. Do not infer full compatibility from matching names.
+Proposed names below were matched to entries in the supplied manuals, with page references in the catalogs. This establishes that the features are documented, not that their complete semantics have been audited or implemented. Selection remains the user's decision. Functions, CALL routines, formats, and informats are kept separate.
 
 ## Proposed batches to discuss
 
@@ -29,7 +25,7 @@ These batches are suggestions, not an approved implementation scope. Adding many
 
 ## Before implementation
 
-1. Finish the official catalog and select functions/formats with the user.
+1. Select functions/formats with the user from the completed official catalog.
 2. Choose representative SAS programs and expected outputs, marking fixtures unverified against SAS where appropriate.
 3. Fix or explicitly preserve the existing semantic limits (rounding, missing values, type validation, string lengths, format widths) before building more features on top of them.
 4. Implement in separate branches, regenerate the standalone HTML, run regression and browser checks, and save version checkpoints when requested. Leave main and v1.0 untouched until the user explicitly authorizes a merge.

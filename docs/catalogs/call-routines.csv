@@ -1,0 +1,66 @@
+name,family,category,current_support,proposed_batch,selection,pdf_file,pdf_page,printed_page,topic
+CALL ALLCOMB,ALLCOMB,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,268,258,CALL ALLCOMB Routine
+CALL ALLCOMBI,ALLCOMBI,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,272,262,CALL ALLCOMBI Routine
+CALL ALLPERM,ALLPERM,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,275,265,CALL ALLPERM Routine
+CALL CATS,CATS,Character,Not implemented,,Unselected,lefunctionsref.pdf,279,269,CALL CATS Routine
+CALL CATT,CATT,Character,Not implemented,,Unselected,lefunctionsref.pdf,281,271,CALL CATT Routine
+CALL CATX,CATX,Character,Not implemented,,Unselected,lefunctionsref.pdf,283,273,CALL CATX Routine
+CALL COMPCOST,COMPCOST,Character,Not implemented,,Unselected,lefunctionsref.pdf,286,276,CALL COMPCOST Routine
+CALL EXECUTE,EXECUTE,Macro,Not implemented,,Unselected,lefunctionsref.pdf,289,279,CALL EXECUTE Routine
+CALL GRAYCODE,GRAYCODE,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,290,280,CALL GRAYCODE Routine
+CALL IS8601_CONVERT,IS8601_CONVERT,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,294,284,CALL IS8601_CONVERT Routine
+CALL LABEL,LABEL,Variable Control CAS,Not implemented,,Unselected,lefunctionsref.pdf,307,297,CALL LABEL Routine
+CALL LDAPS_ADD,LDAPS_ADD,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,308,298,CALL LDAPS_ADD Routine
+CALL LDAPS_ATTRNAME,LDAPS_ATTRNAME,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,310,300,CALL LDAPS_ATTRNAME Routine
+CALL LDAPS_ATTRVALUE,LDAPS_ATTRVALUE,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,312,302,CALL LDAPS_ATTRVALUE Routine
+CALL LDAPS_CLOSE,LDAPS_CLOSE,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,313,303,CALL LDAPS_CLOSE Routine
+CALL LDAPS_DELETE,LDAPS_DELETE,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,314,304,CALL LDAPS_DELETE Routine
+CALL LDAPS_ENTRY,LDAPS_ENTRY,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,315,305,CALL LDAPS_ENTRY Routine
+CALL LDAPS_FREE,LDAPS_FREE,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,317,307,CALL LDAPS_FREE Routine
+CALL LDAPS_MODIFY,LDAPS_MODIFY,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,317,307,CALL LDAPS_MODIFY Routine
+CALL LDAPS_OPEN,LDAPS_OPEN,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,320,310,CALL LDAPS_OPEN Routine
+CALL LDAPS_SEARCH,LDAPS_SEARCH,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,322,312,CALL LDAPS_SEARCH Routine
+CALL LDAPS_SEARCH_PAGE,LDAPS_SEARCH_PAGE,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,326,316,CALL LDAPS_SEARCH_PAGE Routine
+CALL LDAPS_SETOPTIONS,LDAPS_SETOPTIONS,Not specified in entry; consult reference page,Not implemented,,Unselected,lefunctionsref.pdf,328,318,CALL LDAPS_SETOPTIONS Routine
+CALL LEXCOMB,LEXCOMB,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,331,321,CALL LEXCOMB Routine
+CALL LEXCOMBI,LEXCOMBI,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,334,324,CALL LEXCOMBI Routine
+CALL LEXPERK,LEXPERK,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,337,327,CALL LEXPERK Routine
+CALL LEXPERM,LEXPERM,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,342,332,CALL LEXPERM Routine
+CALL MISSING,MISSING,Character CAS Missing Values,Not implemented,,Unselected,lefunctionsref.pdf,347,337,CALL MISSING Routine
+CALL MODULE,MODULE,External Routines,Not implemented,,Unselected,lefunctionsref.pdf,349,339,CALL MODULE Routine
+CALL POKELONG,POKELONG,Special,Not implemented,,Unselected,lefunctionsref.pdf,354,344,CALL POKELONG Routine
+CALL PRXCHANGE,PRXCHANGE,Character String Matching,Not implemented,,Unselected,lefunctionsref.pdf,355,345,CALL PRXCHANGE Routine
+CALL PRXDEBUG,PRXDEBUG,Character String Matching,Not implemented,,Unselected,lefunctionsref.pdf,358,348,CALL PRXDEBUG Routine
+CALL PRXFREE,PRXFREE,Character String Matching CAS,Not implemented,,Unselected,lefunctionsref.pdf,360,350,CALL PRXFREE Routine
+CALL PRXNEXT,PRXNEXT,Character String Matching,Not implemented,,Unselected,lefunctionsref.pdf,362,352,CALL PRXNEXT Routine
+CALL PRXPOSN,PRXPOSN,Character String Matching CAS,Not implemented,,Unselected,lefunctionsref.pdf,364,354,CALL PRXPOSN Routine
+CALL PRXSUBSTR,PRXSUBSTR,Character String Matching,Not implemented,,Unselected,lefunctionsref.pdf,367,357,CALL PRXSUBSTR Routine
+CALL RANBIN,RANBIN,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,370,360,CALL RANBIN Routine
+CALL RANCAU,RANCAU,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,373,363,CALL RANCAU Routine
+CALL RANCOMB,RANCOMB,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,376,366,CALL RANCOMB Routine
+CALL RANDPERM,RANDPERM,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,379,369,CALL RANDPERM Routine
+CALL RANEXP,RANEXP,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,380,370,CALL RANEXP Routine
+CALL RANGAM,RANGAM,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,382,372,CALL RANGAM Routine
+CALL RANNOR,RANNOR,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,385,375,CALL RANNOR Routine
+CALL RANPERK,RANPERK,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,388,378,CALL RANPERK Routine
+CALL RANPERM,RANPERM,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,390,380,CALL RANPERM Routine
+CALL RANPOI,RANPOI,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,392,382,CALL RANPOI Routine
+CALL RANTBL,RANTBL,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,395,385,CALL RANTBL Routine
+CALL RANTRI,RANTRI,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,398,388,CALL RANTRI Routine
+CALL RANUNI,RANUNI,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,400,390,CALL RANUNI Routine
+CALL SCAN,SCAN,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,402,392,CALL SCAN Routine
+CALL SET,SET,Variable Control,Not implemented,,Unselected,lefunctionsref.pdf,413,403,CALL SET Routine
+CALL SOFTMAX,SOFTMAX,Mathematical,Not implemented,,Unselected,lefunctionsref.pdf,415,405,CALL SOFTMAX Routine
+CALL SORT,SORT,CAS,Not implemented,,Unselected,lefunctionsref.pdf,416,406,CALL SORT Routine
+CALL SORTC,SORTC,Sort CAS,Not implemented,,Unselected,lefunctionsref.pdf,417,407,CALL SORTC Routine
+CALL SORTN,SORTN,Sort CAS,Not implemented,,Unselected,lefunctionsref.pdf,419,409,CALL SORTN Routine
+CALL STDIZE,STDIZE,Mathematical,Not implemented,,Unselected,lefunctionsref.pdf,420,410,CALL STDIZE Routine
+CALL STREAM,STREAM,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,424,414,CALL STREAM Routine
+CALL STREAMINIT,STREAMINIT,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,427,417,CALL STREAMINIT Routine
+CALL STREAMREWIND,STREAMREWIND,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,433,423,CALL STREAMREWIND Routine
+CALL SYMPUT,SYMPUT,Macro Type: DATA step call routine,Not implemented,,Unselected,lefunctionsref.pdf,437,427,CALL SYMPUT Routine
+CALL SYMPUTX,SYMPUTX,Macro,Not implemented,,Unselected,lefunctionsref.pdf,442,432,CALL SYMPUTX Routine
+CALL SYSTEM,SYSTEM,Special,Not implemented,,Unselected,lefunctionsref.pdf,444,434,CALL SYSTEM Routine
+CALL TANH,TANH,Mathematical,Not implemented,,Unselected,lefunctionsref.pdf,446,436,CALL TANH Routine
+CALL VNAME,VNAME,Variable Control CAS,Not implemented,,Unselected,lefunctionsref.pdf,447,437,CALL VNAME Routine
+CALL VNEXT,VNEXT,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,449,439,CALL VNEXT Routine

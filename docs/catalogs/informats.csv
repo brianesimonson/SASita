@@ -1,0 +1,110 @@
+name,family,category,current_support,proposed_batch,selection,pdf_file,pdf_page,printed_page,topic
+$ASCIIw.,$ASCII,CAS Character,Not implemented,,Unselected,leforinforref.pdf,625,615,$ASCIIw. Informat
+$BASE64Xw.,$BASE64X,CAS Character,Not implemented,,Unselected,leforinforref.pdf,626,616,$BASE64Xw. Informat
+$BINARYw.,$BINARY,CAS Character,Not implemented,,Unselected,leforinforref.pdf,628,618,$BINARYw. Informat
+$CBw.,$CB,CAS Column Binary,Not implemented,,Unselected,leforinforref.pdf,629,619,$CBw. Informat
+$CHARw.,$CHAR,CAS Character,Not implemented,,Unselected,leforinforref.pdf,631,621,$CHARw. Informat
+$CHARZBw.,$CHARZB,CAS Character,Not implemented,,Unselected,leforinforref.pdf,632,622,$CHARZBw. Informat
+$EBCDICw.,$EBCDIC,CAS Character,Not implemented,,Unselected,leforinforref.pdf,634,624,$EBCDICw. Informat
+$HEXw.,$HEX,CAS Character,Not implemented,,Unselected,leforinforref.pdf,635,625,$HEXw. Informat
+$N8601Bw.d,$N8601B,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,636,626,$N8601Bw.d Informat
+$N8601Ew.d,$N8601E,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,639,629,$N8601Ew.d Informat
+$OCTALw.,$OCTAL,CAS Character,Not implemented,,Unselected,leforinforref.pdf,642,632,$OCTALw. Informat
+$PHEXw.,$PHEX,CAS Character,Not implemented,,Unselected,leforinforref.pdf,643,633,$PHEXw. Informat
+$QUOTEw.,$QUOTE,CAS Character,Not implemented,,Unselected,leforinforref.pdf,644,634,$QUOTEw. Informat
+$UPCASEw.,$UPCASE,CAS Character,Not implemented,,Unselected,leforinforref.pdf,647,637,$UPCASEw. Informat
+$UUIDw.,$UUID,CAS Character,Not implemented,,Unselected,leforinforref.pdf,648,638,$UUIDw. Informat
+$VARYINGw.,$VARYING,CAS Character,Not implemented,,Unselected,leforinforref.pdf,649,639,$VARYINGw. Informat
+$w.,$,CAS Character,Not implemented,,Unselected,leforinforref.pdf,651,641,$w. Informat
+ANYDTDTEw.,ANYDTDTE,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,652,642,ANYDTDTEw. Informat
+ANYDTDTMw.,ANYDTDTM,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,655,645,ANYDTDTMw. Informat
+ANYDTTMEw.,ANYDTTME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,658,648,ANYDTTMEw. Informat
+B8601CIw.d,B8601CI,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,661,651,B8601CIw.d Informat
+B8601DAw.,B8601DA,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,663,653,B8601DAw. Informat
+B8601DJw.d,B8601DJ,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,665,655,B8601DJw.d Informat
+B8601DNw.,B8601DN,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,667,657,B8601DNw. Informat
+B8601DTw.d,B8601DT,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,668,658,B8601DTw.d Informat
+B8601DXw.,B8601DX,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,670,660,B8601DXw. Informat
+B8601DZw.d,B8601DZ,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,671,661,B8601DZw.d Informat
+B8601LXw.,B8601LX,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,673,663,B8601LXw. Informat
+B8601TMw.d,B8601TM,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,673,663,B8601TMw.d Informat
+B8601TXw.,B8601TX,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,675,665,B8601TXw. Informat
+B8601TZw.d,B8601TZ,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,675,665,B8601TZw.d Informat
+BINARYw.d,BINARY,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,678,668,BINARYw.d Informat
+BITSw.d,BITS,Numeric,Not implemented,,Unselected,leforinforref.pdf,679,669,BITSw.d Informat
+BZw.d,BZ,Numeric,Not implemented,,Unselected,leforinforref.pdf,680,670,BZw.d Informat
+CBw.d,CB,CAS Column Binary,Not implemented,,Unselected,leforinforref.pdf,682,672,CBw.d Informat
+COMMAw.d,COMMA,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,683,673,COMMAw.d Informat
+COMMAXw.d,COMMAX,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,685,675,COMMAXw.d Informat
+DATEw.,DATE,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,686,676,DATEw. Informat
+DATETIMEw.,DATETIME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,688,678,DATETIMEw. Informat
+DDMMYYw.,DDMMYY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,690,680,DDMMYYw. Informat
+E8601DAw.,E8601DA,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,692,682,E8601DAw. Informat
+E8601DNw.,E8601DN,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,694,684,E8601DNw. Informat
+E8601DTw.d,E8601DT,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,695,685,E8601DTw.d Informat
+E8601DXw.,E8601DX,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,697,687,E8601DXw. Informat
+E8601DZw.d,E8601DZ,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,697,687,E8601DZw.d Informat
+E8601LXw.,E8601LX,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,700,690,E8601LXw. Informat
+E8601LZw.d,E8601LZ,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,700,690,E8601LZw.d Informat
+E8601TMw.d,E8601TM,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,702,692,E8601TMw.d Informat
+E8601TXw.,E8601TX,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,704,694,E8601TXw. Informat
+E8601TZw.d,E8601TZ,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,704,694,E8601TZw.d Informat
+FLOATw.d,FLOAT,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,706,696,FLOATw.d Informat
+HEXw.,HEX,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,708,698,HEXw. Informat
+HHMMSSw.,HHMMSS,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,709,699,HHMMSSw. Informat
+IBw.d,IB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,711,701,IBw.d Informat
+IBRw.d,IBR,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,713,703,IBRw.d Informat
+IEEEw.d,IEEE,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,716,706,IEEEw.d Informat
+JULIANw.,JULIAN,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,717,707,JULIANw. Informat
+MDYAMPMw.d,MDYAMPM,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,719,709,MDYAMPMw.d Informat
+MMDDYYw.,MMDDYY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,721,711,MMDDYYw. Informat
+MONYYw.,MONYY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,723,713,MONYYw. Informat
+MSECw.,MSEC,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,725,715,MSECw. Informat
+NUMXw.d,NUMX,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,726,716,NUMXw.d Informat
+OCTALw.d,OCTAL,Numeric,Not implemented,,Unselected,leforinforref.pdf,728,718,OCTALw.d Informat
+PDw.d,PD,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,729,719,PDw.d Informat
+PDJULGw.,PDJULG,Date and Time,Not implemented,,Unselected,leforinforref.pdf,731,721,PDJULGw. Informat
+PDJULIw.,PDJULI,Date and Time,Not implemented,,Unselected,leforinforref.pdf,732,722,PDJULIw. Informat
+PDTIMEw.,PDTIME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,734,724,PDTIMEw. Informat
+PERCENTw.d,PERCENT,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,736,726,PERCENTw.d Informat
+PIBw.d,PIB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,737,727,PIBw.d Informat
+PIBRw.d,PIBR,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,739,729,PIBRw.d Informat
+PKw.d,PK,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,741,731,PKw.d Informat
+PUNCH.d,PUNCH.d,CAS Column Binary,Not implemented,,Unselected,leforinforref.pdf,743,733,PUNCH.d Informat
+RBw.d,RB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,744,734,RBw.d Informat
+RMFDURw.,RMFDUR,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,747,737,RMFDURw. Informat
+RMFSTAMPw.,RMFSTAMP,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,749,739,RMFSTAMPw. Informat
+ROWw.d,ROW,Column Binary,Not implemented,,Unselected,leforinforref.pdf,751,741,ROWw.d Informat
+S370FFw.d,S370FF,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,753,743,S370FFw.d Informat
+S370FIBw.d,S370FIB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,754,744,S370FIBw.d Informat
+S370FIBUw.d,S370FIBU,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,756,746,S370FIBUw.d Informat
+S370FPDw.d,S370FPD,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,758,748,S370FPDw.d Informat
+S370FPDUw.d,S370FPDU,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,760,750,S370FPDUw.d Informat
+S370FPIBw.d,S370FPIB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,762,752,S370FPIBw.d Informat
+S370FRBw.d,S370FRB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,764,754,S370FRBw.d Informat
+S370FZDw.d,S370FZD,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,765,755,S370FZDw.d Informat
+S370FZDBw.d,S370FZDB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,767,757,S370FZDBw.d Informat
+S370FZDLw.d,S370FZDL,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,768,758,S370FZDLw.d Informat
+S370FZDSw.d,S370FZDS,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,770,760,S370FZDSw.d Informat
+S370FZDTw.d,S370FZDT,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,771,761,S370FZDTw.d Informat
+S370FZDUw.d,S370FZDU,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,773,763,S370FZDUw.d Informat
+SHRSTAMPw.,SHRSTAMP,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,774,764,SHRSTAMPw. Informat
+SMFSTAMPw.,SMFSTAMP,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,776,766,SMFSTAMPw. Informat
+STIMERw.,STIMER,Date and Time,Not implemented,,Unselected,leforinforref.pdf,778,768,STIMERw. Informat
+TIMEw.,TIME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,780,770,TIMEw. Informat
+TODSTAMPw.,TODSTAMP,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,782,772,TODSTAMPw. Informat
+TRAILSGNw.,TRAILSGN,Numeric,Not implemented,,Unselected,leforinforref.pdf,783,773,TRAILSGNw. Informat
+TUw.,TU,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,784,774,TUw. Informat
+VAXRBw.d,VAXRB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,785,775,VAXRBw.d Informat
+VMSZNw.d,VMSZN,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,786,776,VMSZNw.d Informat
+w.d,w.d,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,788,778,w.d Informat
+WEEKUw.,WEEKU,Date and Time,Not implemented,,Unselected,leforinforref.pdf,789,779,WEEKUw. Informat
+WEEKVw.,WEEKV,Date and Time,Not implemented,,Unselected,leforinforref.pdf,792,782,WEEKVw. Informat
+WEEKWw.,WEEKW,Date and Time,Not implemented,,Unselected,leforinforref.pdf,794,784,WEEKWw. Informat
+YMDDTTMw.d,YMDDTTM,Date and Time,Not implemented,,Unselected,leforinforref.pdf,797,787,YMDDTTMw.d Informat
+YYMMDDw.,YYMMDD,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,799,789,YYMMDDw. Informat
+YYMMNw.,YYMMN,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,801,791,YYMMNw. Informat
+YYQw.,YYQ,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,803,793,YYQw. Informat
+ZDw.d,ZD,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,805,795,ZDw.d Informat
+ZDBw.d,ZDB,Numeric,Not implemented,,Unselected,leforinforref.pdf,807,797,ZDBw.d Informat
+ZDVw.d,ZDV,Numeric,Not implemented,,Unselected,leforinforref.pdf,808,798,ZDVw.d Informat

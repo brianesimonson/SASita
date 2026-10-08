@@ -10,7 +10,7 @@ Choose an example and Run program (Ctrl+Enter). Import CSV datasets into the WOR
 
 ## Function and format references
 
-The app’s **Supported syntax** dialog now lists every implemented function and format family with examples. See [current functions and formats](docs/current-functions-formats.md) and [expansion planning](docs/function-format-expansion.md). Official SAS catalog research is pending documentation access; the proposed additions are not a complete verified SAS list.
+The app’s **Supported syntax** dialog now lists every implemented function and format family with examples. See [current functions and formats](docs/current-functions-formats.md) and [expansion planning](docs/function-format-expansion.md). The [official reference catalogs](docs/catalogs/README.md) now index all dictionary topics in the uploaded SAS manuals, with current-support comparisons and proposed batches. No additional language features have been implemented yet.
 
 ## New in version 2
 

@@ -1,0 +1,22 @@
+{
+  "functions": {
+    "filename": "lefunctionsref.pdf",
+    "sha256": "fe5bafb2880ebcb7360d4d3b1e15ca6693f413c9870be23df552834d4e194faa",
+    "pdf_pages": 1732,
+    "dictionary_topics": 720,
+    "extraction": "All level-4 entries beneath Dictionary bookmarks; independently checked against chapter contents. PDF page is 1-based; printed dictionary page is PDF page minus 10.",
+    "title": "SAS Functions and CALL Routines: Reference",
+    "version_range": "2020.1\u20132026.09",
+    "publication_date": "2026-09-14"
+  },
+  "formats": {
+    "filename": "leforinforref.pdf",
+    "sha256": "352a510d917f5b8076882697d85108fb5746e4a7a52490f736dab65252c30e62",
+    "pdf_pages": 810,
+    "dictionary_topics": 398,
+    "extraction": "All level-4 entries beneath Dictionary bookmarks; independently checked against chapter contents. PDF page is 1-based; printed dictionary page is PDF page minus 10.",
+    "title": "SAS Formats and Informats: Reference",
+    "version_range": "2020.1\u20132026.04",
+    "publication_date": "2026-04-08"
+  }
+}

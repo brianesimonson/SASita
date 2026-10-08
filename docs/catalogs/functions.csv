@@ -1,0 +1,656 @@
+name,family,category,current_support,proposed_batch,selection,pdf_file,pdf_page,printed_page,topic
+ABS,ABS,Mathematical CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,190,180,ABS Function
+ADDRLONG,ADDRLONG,Binary Results Special Client Only,Not implemented,,Unselected,lefunctionsref.pdf,191,181,ADDRLONG Function
+AIRY,AIRY,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,192,182,AIRY Function
+ALLCOMB,ALLCOMB,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,193,183,ALLCOMB Function
+ALLPERM,ALLPERM,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,196,186,ALLPERM Function
+ANYALNUM,ANYALNUM,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,199,189,ANYALNUM Function
+ANYALPHA,ANYALPHA,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,201,191,ANYALPHA Function
+ANYCNTRL,ANYCNTRL,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,204,194,ANYCNTRL Function
+ANYDIGIT,ANYDIGIT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,206,196,ANYDIGIT Function
+ANYFIRST,ANYFIRST,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,208,198,ANYFIRST Function
+ANYGRAPH,ANYGRAPH,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,210,200,ANYGRAPH Function
+ANYLOWER,ANYLOWER,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,212,202,ANYLOWER Function
+ANYNAME,ANYNAME,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,215,205,ANYNAME Function
+ANYPRINT,ANYPRINT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,217,207,ANYPRINT Function
+ANYPUNCT,ANYPUNCT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,220,210,ANYPUNCT Function
+ANYSPACE,ANYSPACE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,222,212,ANYSPACE Function
+ANYUPPER,ANYUPPER,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,225,215,ANYUPPER Function
+ANYXDIGIT,ANYXDIGIT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,227,217,ANYXDIGIT Function
+ARCOS,ARCOS,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,229,219,ARCOS Function
+ARCOSH,ARCOSH,Hyperbolic CAS,Not implemented,,Unselected,lefunctionsref.pdf,230,220,ARCOSH Function
+ARSIN,ARSIN,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,231,221,ARSIN Function
+ARSINH,ARSINH,Hyperbolic CAS,Not implemented,,Unselected,lefunctionsref.pdf,232,222,ARSINH Function
+ARTANH,ARTANH,Hyperbolic CAS,Not implemented,,Unselected,lefunctionsref.pdf,233,223,ARTANH Function
+ATAN,ATAN,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,234,224,ATAN Function
+ATAN2,ATAN2,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,236,226,ATAN2 Function
+ATTRC,ATTRC,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,237,227,ATTRC Function
+ATTRN,ATTRN,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,240,230,ATTRN Function
+BAND,BAND,Bitwise Logical Operations CAS,Not implemented,,Unselected,lefunctionsref.pdf,245,235,BAND Function
+BETA,BETA,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,247,237,BETA Function
+BETAINV,BETAINV,Quantile CAS,Not implemented,,Unselected,lefunctionsref.pdf,248,238,BETAINV Function
+BHAMMING_32,BHAMMING_32,Bitwise Logical Operations CAS,Not implemented,,Unselected,lefunctionsref.pdf,249,239,BHAMMING_32 Function
+BHAMMING_HEX,BHAMMING_HEX,Bitwise Operations CAS,Not implemented,,Unselected,lefunctionsref.pdf,250,240,BHAMMING_HEX Function
+BLACKCLPRC,BLACKCLPRC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,252,242,BLACKCLPRC Function
+BLACKPTPRC,BLACKPTPRC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,254,244,BLACKPTPRC Function
+BLKSHCLPRC,BLKSHCLPRC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,256,246,BLKSHCLPRC Function
+BLKSHPTPRC,BLKSHPTPRC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,259,249,BLKSHPTPRC Function
+BLSHIFT,BLSHIFT,Bitwise Logical Operations CAS,Not implemented,,Unselected,lefunctionsref.pdf,261,251,BLSHIFT Function
+BNOT,BNOT,Bitwise Logical Operations CAS,Not implemented,,Unselected,lefunctionsref.pdf,262,252,BNOT Function
+BOR,BOR,Bitwise Logical Operations CAS,Not implemented,,Unselected,lefunctionsref.pdf,263,253,BOR Function
+BRSHIFT,BRSHIFT,Bitwise Logical Operations CAS,Not implemented,,Unselected,lefunctionsref.pdf,264,254,BRSHIFT Function
+BXOR,BXOR,Bitwise Logical Operations CAS,Not implemented,,Unselected,lefunctionsref.pdf,266,256,BXOR Function
+BYTE,BYTE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,267,257,BYTE Function
+CAT,CAT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,451,441,CAT Function
+CATQ,CATQ,CAS Character,Not implemented,,Unselected,lefunctionsref.pdf,454,444,CATQ Function
+CATS,CATS,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,459,449,CATS Function
+CATT,CATT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,461,451,CATT Function
+CATX,CATX,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,464,454,CATX Function
+CDF,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,468,458,CDF Function
+CDF Bernoulli Distribution,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,470,460,CDF Bernoulli Distribution Function
+CDF Beta Distribution,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,471,461,CDF Beta Distribution Function
+CDF Binomial Distribution,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,473,463,CDF Binomial Distribution Function
+CDF Cauchy Distribution,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,475,465,CDF Cauchy Distribution Function
+CDF Chi Square Distribution,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,476,466,CDF Chi Square Distribution Function
+CDF Conway-Maxwell-Poisson Distribution,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,478,468,CDF Conway-Maxwell-Poisson Distribution Function
+CDF Exponential Distribution,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,479,469,CDF Exponential Distribution Function
+CDF F Distribution,CDF,CAS Probability,Not implemented,,Unselected,lefunctionsref.pdf,481,471,CDF F Distribution Function
+CDF Gamma Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,483,473,CDF Gamma Distribution Function
+CDF Generalized Poisson Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,485,475,CDF Generalized Poisson Distribution Function
+CDF Geometric Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,486,476,CDF Geometric Distribution Function
+CDF Hypergeometric Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,487,477,CDF Hypergeometric Distribution Function
+CDF Laplace Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,489,479,CDF Laplace Distribution Function
+CDF Logistic Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,491,481,CDF Logistic Distribution Function
+CDF Lognormal Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,492,482,CDF Lognormal Distribution Function
+CDF Negative Binomial Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,494,484,CDF Negative Binomial Distribution Function
+CDF Normal Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,495,485,CDF Normal Distribution Function
+CDF Normal Mixture Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,497,487,CDF Normal Mixture Distribution Function
+CDF Pareto Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,498,488,CDF Pareto Distribution Function
+CDF Poisson Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,500,490,CDF Poisson Distribution Function
+CDF T Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,501,491,CDF T Distribution Function
+CDF Tweedie Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,503,493,CDF Tweedie Distribution Function
+CDF Uniform Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,505,495,CDF Uniform Distribution Function
+CDF Wald Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,507,497,CDF Wald Distribution Function
+CDF Weibull Distribution,CDF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,508,498,CDF Weibull Distribution Function
+CEIL,CEIL,Rounding and Truncation CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,510,500,CEIL Function
+CEILZ,CEILZ,Rounding and Truncation CAS,Not implemented,,Unselected,lefunctionsref.pdf,512,502,CEILZ Function
+CEXIST,CEXIST,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,513,503,CEXIST Function
+CHAR,CHAR,Character,Not implemented,,Unselected,lefunctionsref.pdf,515,505,CHAR Function
+CHOOSEC,CHOOSEC,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,516,506,CHOOSEC Function
+CHOOSEN,CHOOSEN,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,518,508,CHOOSEN Function
+CINV,CINV,Quantile,Not implemented,,Unselected,lefunctionsref.pdf,519,509,CINV Function
+CLIBEXIST,CLIBEXIST,CAS,Not implemented,,Unselected,lefunctionsref.pdf,521,511,CLIBEXIST Function
+CLOSE,CLOSE,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,522,512,CLOSE Function
+CMISS,CMISS,CAS Descriptive Statistics Missing Values,Not implemented,1,Unselected,lefunctionsref.pdf,523,513,CMISS Function
+CNONCT,CNONCT,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,524,514,CNONCT Function
+COALESCE,COALESCE,Mathematical Missing Values CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,526,516,COALESCE Function
+COALESCEC,COALESCEC,Character Missing Values CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,528,518,COALESCEC Function
+COLLATE,COLLATE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,529,519,COLLATE Function
+COMB,COMB,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,533,523,COMB Function
+COMPARE,COMPARE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,534,524,COMPARE Function
+COMPBL,COMPBL,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,538,528,COMPBL Function
+COMPFUZZ,COMPFUZZ,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,540,530,COMPFUZZ Function
+COMPFUZZ_MISS,COMPFUZZ_MISS,Mathematical CAS See: “COMPFUZZ Function”,Not implemented,,Unselected,lefunctionsref.pdf,542,532,COMPFUZZ_MISS Function
+COMPGED,COMPGED,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,544,534,COMPGED Function
+COMPLEV,COMPLEV,CAS Character,Not implemented,,Unselected,lefunctionsref.pdf,551,541,COMPLEV Function
+COMPOUND,COMPOUND,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,554,544,COMPOUND Function
+COMPRESS,COMPRESS,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,555,545,COMPRESS Function
+COMPSRV_OVAL,COMPSRV_OVAL,CAS Compute Server,Not implemented,,Unselected,lefunctionsref.pdf,560,550,COMPSRV_OVAL Function
+COMPSRV_SESSION,COMPSRV_SESSION,Character,Not implemented,,Unselected,lefunctionsref.pdf,562,552,COMPSRV_SESSION Function
+COMPSRV_UNQUOTE2,COMPSRV_UNQUOTE2,CAS Compute Server,Not implemented,,Unselected,lefunctionsref.pdf,563,553,COMPSRV_UNQUOTE2 Function
+CONSTANT,CONSTANT,CAS Mathematical,Not implemented,,Unselected,lefunctionsref.pdf,565,555,CONSTANT Function
+CONVX,CONVX,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,571,561,CONVX Function
+CONVXP,CONVXP,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,572,562,CONVXP Function
+COS,COS,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,574,564,COS Function
+COSH,COSH,Hyperbolic CAS,Not implemented,,Unselected,lefunctionsref.pdf,575,565,COSH Function
+COT,COT,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,576,566,COT Function
+COUNT,COUNT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,577,567,COUNT Function
+COUNTC,COUNTC,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,580,570,COUNTC Function
+COUNTW,COUNTW,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,584,574,COUNTW Function
+CSC,CSC,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,588,578,CSC Function
+CSS,CSS,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,590,580,CSS Function
+CUMIPMT,CUMIPMT,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,591,581,CUMIPMT Function
+CUMPRINC,CUMPRINC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,592,582,CUMPRINC Function
+CUROBS,CUROBS,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,594,584,CUROBS Function
+CV,CV,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,595,585,CV Function
+DACCDB,DACCDB,Financial,Not implemented,,Unselected,lefunctionsref.pdf,596,586,DACCDB Function
+DACCDBSL,DACCDBSL,Financial,Not implemented,,Unselected,lefunctionsref.pdf,597,587,DACCDBSL Function
+DACCSL,DACCSL,Financial,Not implemented,,Unselected,lefunctionsref.pdf,598,588,DACCSL Function
+DACCSYD,DACCSYD,Financial,Not implemented,,Unselected,lefunctionsref.pdf,600,590,DACCSYD Function
+DACCTAB,DACCTAB,Financial,Not implemented,,Unselected,lefunctionsref.pdf,601,591,DACCTAB Function
+DAIRY,DAIRY,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,602,592,DAIRY Function
+DATDIF,DATDIF,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,603,593,DATDIF Function
+DATE,DATE,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,606,596,DATE Function
+DATEJUL,DATEJUL,"Date and Time CAS See: “About SAS Date, Time, and Datetime Values” in SAS Formats and Informats: Reference",Not implemented,,Unselected,lefunctionsref.pdf,608,598,DATEJUL Function
+DATEPART,DATEPART,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,609,599,DATEPART Function
+DATETIME,DATETIME,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,610,600,DATETIME Function
+DAY,DAY,Date and Time CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,611,601,DAY Function
+DCLOSE,DCLOSE,External Files,Not implemented,,Unselected,lefunctionsref.pdf,612,602,DCLOSE Function
+DCREATE,DCREATE,External Files,Not implemented,,Unselected,lefunctionsref.pdf,614,604,DCREATE Function
+DEPDB,DEPDB,Financial,Not implemented,,Unselected,lefunctionsref.pdf,615,605,DEPDB Function
+DEPDBSL,DEPDBSL,Financial,Not implemented,,Unselected,lefunctionsref.pdf,617,607,DEPDBSL Function
+DEPSL,DEPSL,Financial,Not implemented,,Unselected,lefunctionsref.pdf,618,608,DEPSL Function
+DEPSYD,DEPSYD,Financial,Not implemented,,Unselected,lefunctionsref.pdf,620,610,DEPSYD Function
+DEPTAB,DEPTAB,Financial,Not implemented,,Unselected,lefunctionsref.pdf,621,611,DEPTAB Function
+DEQUOTE,DEQUOTE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,622,612,DEQUOTE Function
+DEVIANCE,DEVIANCE,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,625,615,DEVIANCE Function
+DHMS,DHMS,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,631,621,DHMS Function
+DIF,DIF,Special,Not implemented,,Unselected,lefunctionsref.pdf,633,623,DIF Function
+DIGAMMA,DIGAMMA,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,635,625,DIGAMMA Function
+DIM,DIM,Array CAS,Not implemented,,Unselected,lefunctionsref.pdf,636,626,DIM Function
+DINFO,DINFO,External Files,Not implemented,,Unselected,lefunctionsref.pdf,640,630,DINFO Function
+DIVIDE,DIVIDE,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,642,632,DIVIDE Function
+DLGCDIR,DLGCDIR,External Files,Not implemented,,Unselected,lefunctionsref.pdf,644,634,DLGCDIR Function
+DNUM,DNUM,External Files,Not implemented,,Unselected,lefunctionsref.pdf,646,636,DNUM Function
+DOPEN,DOPEN,External Files,Not implemented,,Unselected,lefunctionsref.pdf,648,638,DOPEN Function
+DOPTNAME,DOPTNAME,External Files,Not implemented,,Unselected,lefunctionsref.pdf,649,639,DOPTNAME Function
+DOPTNUM,DOPTNUM,External Files,Not implemented,,Unselected,lefunctionsref.pdf,652,642,DOPTNUM Function
+DOSUBL,DOSUBL,Macro,Not implemented,,Unselected,lefunctionsref.pdf,653,643,DOSUBL Function
+DREAD,DREAD,External Files,Not implemented,,Unselected,lefunctionsref.pdf,661,651,DREAD Function
+DROPNOTE,DROPNOTE,SAS File I/O External Files,Not implemented,,Unselected,lefunctionsref.pdf,662,652,DROPNOTE Function
+DSNAME,DSNAME,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,664,654,DSNAME Function
+DUR,DUR,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,665,655,DUR Function
+DURP,DURP,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,666,656,DURP Function
+EFFRATE,EFFRATE,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,668,658,EFFRATE Function
+ENVLEN,ENVLEN,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,670,660,ENVLEN Function
+ERF,ERF,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,671,661,ERF Function
+ERFC,ERFC,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,672,662,ERFC Function
+EUCLID,EUCLID,Descriptive Statistics,Not implemented,,Unselected,lefunctionsref.pdf,673,663,EUCLID Function
+EXIST,EXIST,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,674,664,EXIST Function
+EXP,EXP,Mathematical CAS,Not implemented,3,Unselected,lefunctionsref.pdf,677,667,EXP Function
+EXPM1,EXPM1,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,678,668,EXPM1 Function
+FACT,FACT,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,680,670,FACT Function
+FAPPEND,FAPPEND,External Files,Not implemented,,Unselected,lefunctionsref.pdf,681,671,FAPPEND Function
+FCLOSE,FCLOSE,External Files,Not implemented,,Unselected,lefunctionsref.pdf,683,673,FCLOSE Function
+FCOL,FCOL,External Files,Not implemented,,Unselected,lefunctionsref.pdf,685,675,FCOL Function
+FCOPY,FCOPY,External Files SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,687,677,FCOPY Function
+FDELETE,FDELETE,External Files,Not implemented,,Unselected,lefunctionsref.pdf,691,681,FDELETE Function
+FETCH,FETCH,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,693,683,FETCH Function
+FETCHOBS,FETCHOBS,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,695,685,FETCHOBS Function
+FEXIST,FEXIST,External Files,Not implemented,,Unselected,lefunctionsref.pdf,697,687,FEXIST Function
+FGET,FGET,External Files,Not implemented,,Unselected,lefunctionsref.pdf,699,689,FGET Function
+FILEEXIST,FILEEXIST,External Files,Not implemented,,Unselected,lefunctionsref.pdf,701,691,FILEEXIST Function
+FILENAME,FILENAME,External Files,Not implemented,,Unselected,lefunctionsref.pdf,703,693,FILENAME Function
+FILEREF,FILEREF,External Files,Not implemented,,Unselected,lefunctionsref.pdf,709,699,FILEREF Function
+FINANCE,FINANCE,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,712,702,FINANCE Function
+FINANCE ACCRINT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,717,707,FINANCE ACCRINT Function
+FINANCE ACCRINTM,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,718,708,FINANCE ACCRINTM Function
+FINANCE AMORDEGRC,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,719,709,FINANCE AMORDEGRC Function
+FINANCE AMORLINC,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,720,710,FINANCE AMORLINC Function
+FINANCE COUPDAYBS,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,721,711,FINANCE COUPDAYBS Function
+FINANCE COUPDAYS,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,722,712,FINANCE COUPDAYS Function
+FINANCE COUPDAYSNC,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,723,713,FINANCE COUPDAYSNC Function
+FINANCE COUPNCD,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,724,714,FINANCE COUPNCD Function
+FINANCE COUPNUM,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,725,715,FINANCE COUPNUM Function
+FINANCE COUPPCD,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,726,716,FINANCE COUPPCD Function
+FINANCE CUMIPMT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,727,717,FINANCE CUMIPMT Function
+FINANCE CUMPRINC,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,728,718,FINANCE CUMPRINC Function
+FINANCE DB,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,730,720,FINANCE DB Function
+FINANCE DDB,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,731,721,FINANCE DDB Function
+FINANCE DISC,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,732,722,FINANCE DISC Function
+FINANCE DOLLARDE,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,733,723,FINANCE DOLLARDE Function
+FINANCE DOLLARFR,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,733,723,FINANCE DOLLARFR Function
+FINANCE DURATION,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,734,724,FINANCE DURATION Function
+FINANCE EFFECT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,735,725,FINANCE EFFECT Function
+FINANCE FV,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,736,726,FINANCE FV Function
+FINANCE FVSCHEDULE,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,737,727,FINANCE FVSCHEDULE Function
+FINANCE INTRATE,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,738,728,FINANCE INTRATE Function
+FINANCE IPMT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,739,729,FINANCE IPMT Function
+FINANCE IRR,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,740,730,FINANCE IRR Function
+FINANCE ISPMT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,741,731,FINANCE ISPMT Function
+FINANCE MDURATION,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,742,732,FINANCE MDURATION Function
+FINANCE MIRR,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,743,733,FINANCE MIRR Function
+FINANCE NOMINAL,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,744,734,FINANCE NOMINAL Function
+FINANCE NPER,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,745,735,FINANCE NPER Function
+FINANCE NPV,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,746,736,FINANCE NPV Function
+FINANCE ODDFPRICE,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,747,737,FINANCE ODDFPRICE Function
+FINANCE ODDFYIELD,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,748,738,FINANCE ODDFYIELD Function
+FINANCE ODDLPRICE,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,750,740,FINANCE ODDLPRICE Function
+FINANCE ODDLYIELD,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,751,741,FINANCE ODDLYIELD Function
+FINANCE PMT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,752,742,FINANCE PMT Function
+FINANCE PPMT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,754,744,FINANCE PPMT Function
+FINANCE PRICE,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,755,745,FINANCE PRICE Function
+FINANCE PRICEDISC,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,756,746,FINANCE PRICEDISC Function
+FINANCE PRICEMAT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,757,747,FINANCE PRICEMAT Function
+FINANCE PV,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,758,748,FINANCE PV Function
+FINANCE RATE,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,759,749,FINANCE RATE Function
+FINANCE RECEIVED,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,760,750,FINANCE RECEIVED Function
+FINANCE SLN,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,761,751,FINANCE SLN Function
+FINANCE SYD,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,762,752,FINANCE SYD Function
+FINANCE TBILLEQ,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,763,753,FINANCE TBILLEQ Function
+FINANCE TBILLPRICE,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,764,754,FINANCE TBILLPRICE Function
+FINANCE TBILLYIELD,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,765,755,FINANCE TBILLYIELD Function
+FINANCE VDB,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,766,756,FINANCE VDB Function
+FINANCE XIRR,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,767,757,FINANCE XIRR Function
+FINANCE XNPV,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,768,758,FINANCE XNPV Function
+FINANCE YIELD,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,769,759,FINANCE YIELD Function
+FINANCE YIELDDISC,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,770,760,FINANCE YIELDDISC Function
+FINANCE YIELDMAT,FINANCE,Financial,Not implemented,,Unselected,lefunctionsref.pdf,771,761,FINANCE YIELDMAT Function
+FIND,FIND,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,772,762,FIND Function
+FINDC,FINDC,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,776,766,FINDC Function
+FINDW,FINDW,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,785,775,FINDW Function
+FINFO,FINFO,External Files,Not implemented,,Unselected,lefunctionsref.pdf,792,782,FINFO Function
+FINV,FINV,Quantile,Not implemented,,Unselected,lefunctionsref.pdf,795,785,FINV Function
+FIPNAME,FIPNAME,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,796,786,FIPNAME Function
+FIPNAMEL,FIPNAMEL,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,798,788,FIPNAMEL Function
+FIPSTATE,FIPSTATE,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,800,790,FIPSTATE Function
+FIRST,FIRST,Character,Not implemented,,Unselected,lefunctionsref.pdf,802,792,FIRST Function
+FLOOR,FLOOR,Rounding and Truncation CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,803,793,FLOOR Function
+FLOORZ,FLOORZ,Rounding and Truncation CAS,Not implemented,,Unselected,lefunctionsref.pdf,806,796,FLOORZ Function
+FMTINFO,FMTINFO,Special,Not implemented,,Unselected,lefunctionsref.pdf,808,798,FMTINFO Function
+FNONCT,FNONCT,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,810,800,FNONCT Function
+FNOTE,FNOTE,External Files,Not implemented,,Unselected,lefunctionsref.pdf,812,802,FNOTE Function
+FOPEN,FOPEN,External Files,Not implemented,,Unselected,lefunctionsref.pdf,814,804,FOPEN Function
+FOPTNAME,FOPTNAME,External Files,Not implemented,,Unselected,lefunctionsref.pdf,817,807,FOPTNAME Function
+FOPTNUM,FOPTNUM,External Files,Not implemented,,Unselected,lefunctionsref.pdf,820,810,FOPTNUM Function
+FPOINT,FPOINT,External Files,Not implemented,,Unselected,lefunctionsref.pdf,822,812,FPOINT Function
+FPOS,FPOS,External Files,Not implemented,,Unselected,lefunctionsref.pdf,825,815,FPOS Function
+FPUT,FPUT,External Files,Not implemented,,Unselected,lefunctionsref.pdf,827,817,FPUT Function
+FREAD,FREAD,External Files,Not implemented,,Unselected,lefunctionsref.pdf,829,819,FREAD Function
+FREWIND,FREWIND,External Files,Not implemented,,Unselected,lefunctionsref.pdf,831,821,FREWIND Function
+FRLEN,FRLEN,External Files,Not implemented,,Unselected,lefunctionsref.pdf,833,823,FRLEN Function
+FSEP,FSEP,External Files,Not implemented,,Unselected,lefunctionsref.pdf,835,825,FSEP Function
+FUZZ,FUZZ,Rounding and Truncation CAS,Not implemented,,Unselected,lefunctionsref.pdf,837,827,FUZZ Function
+FWRITE,FWRITE,External Files,Not implemented,,Unselected,lefunctionsref.pdf,838,828,FWRITE Function
+GAMINV,GAMINV,Quantile CAS,Not implemented,,Unselected,lefunctionsref.pdf,841,831,GAMINV Function
+GAMMA,GAMMA,CAS Mathematical,Not implemented,,Unselected,lefunctionsref.pdf,842,832,GAMMA Function
+GARKHCLPRC,GARKHCLPRC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,843,833,GARKHCLPRC Function
+GARKHPTPRC,GARKHPTPRC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,846,836,GARKHPTPRC Function
+GCD,GCD,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,848,838,GCD Function
+GEODIST,GEODIST,Distance CAS,Not implemented,,Unselected,lefunctionsref.pdf,849,839,GEODIST Function
+GEOMEAN,GEOMEAN,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,852,842,GEOMEAN Function
+GEOMEANZ,GEOMEANZ,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,854,844,GEOMEANZ Function
+GETCASURL,GETCASURL,CAS,Not implemented,,Unselected,lefunctionsref.pdf,856,846,GETCASURL Function
+GETLCASLIB,GETLCASLIB,CAS,Not implemented,,Unselected,lefunctionsref.pdf,857,847,GETLCASLIB Function
+GETLSESSREF,GETLSESSREF,CAS,Not implemented,,Unselected,lefunctionsref.pdf,858,848,GETLSESSREF Function
+GETSESSOPT,GETSESSOPT,CAS,Not implemented,,Unselected,lefunctionsref.pdf,858,848,GETSESSOPT Function
+GETLTAG,GETLTAG,CAS,Not implemented,,Unselected,lefunctionsref.pdf,860,850,GETLTAG Function
+GETOPTION,GETOPTION,Special,Not implemented,,Unselected,lefunctionsref.pdf,861,851,GETOPTION Function
+GETVARC,GETVARC,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,865,855,GETVARC Function
+GETVARN,GETVARN,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,867,857,GETVARN Function
+GETVARN_I64,GETVARN_I64,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,869,859,GETVARN_I64 Function
+GIT_BRANCH_CHKOUT,GIT_BRANCH_CHKOUT,Git,Not implemented,,Unselected,lefunctionsref.pdf,870,860,GIT_BRANCH_CHKOUT Function
+GIT_BRANCH_DELETE,GIT_BRANCH_DELETE,Git,Not implemented,,Unselected,lefunctionsref.pdf,872,862,GIT_BRANCH_DELETE Function
+GIT_BRANCH_MERGE,GIT_BRANCH_MERGE,Git,Not implemented,,Unselected,lefunctionsref.pdf,873,863,GIT_BRANCH_MERGE Function
+GIT_BRANCH_NEW,GIT_BRANCH_NEW,Git,Not implemented,,Unselected,lefunctionsref.pdf,875,865,GIT_BRANCH_NEW Function
+GIT_CLONE,GIT_CLONE,Git,Not implemented,,Unselected,lefunctionsref.pdf,877,867,GIT_CLONE Function
+GIT_COMMIT_COUNT,GIT_COMMIT_COUNT,Git,Not implemented,,Unselected,lefunctionsref.pdf,882,872,GIT_COMMIT_COUNT Function
+GIT_COMMIT_FREE,GIT_COMMIT_FREE,Git,Not implemented,,Unselected,lefunctionsref.pdf,883,873,GIT_COMMIT_FREE Function
+GIT_COMMIT,GIT_COMMIT,Git,Not implemented,,Unselected,lefunctionsref.pdf,885,875,GIT_COMMIT Function
+GIT_COMMIT_GET,GIT_COMMIT_GET,Git,Not implemented,,Unselected,lefunctionsref.pdf,887,877,GIT_COMMIT_GET Function
+GIT_COMMIT_LOG,GIT_COMMIT_LOG,Git,Not implemented,,Unselected,lefunctionsref.pdf,889,879,GIT_COMMIT_LOG Function
+GIT_DELETE_REPO,GIT_DELETE_REPO,Git,Not implemented,,Unselected,lefunctionsref.pdf,891,881,GIT_DELETE_REPO Function
+GIT_DIFF_FILE_IDX,GIT_DIFF_FILE_IDX,Git,Not implemented,,Unselected,lefunctionsref.pdf,892,882,GIT_DIFF_FILE_IDX Function
+GIT_DIFF_FREE,GIT_DIFF_FREE,Git,Not implemented,,Unselected,lefunctionsref.pdf,894,884,GIT_DIFF_FREE Function
+GIT_DIFF,GIT_DIFF,Git,Not implemented,,Unselected,lefunctionsref.pdf,896,886,GIT_DIFF Function
+GIT_DIFF_GET,GIT_DIFF_GET,Git,Not implemented,,Unselected,lefunctionsref.pdf,898,888,GIT_DIFF_GET Function
+GIT_DIFF_TO_FILE,GIT_DIFF_TO_FILE,Git,Not implemented,,Unselected,lefunctionsref.pdf,900,890,GIT_DIFF_TO_FILE Function
+GIT_FETCH,GIT_FETCH,Git,Not implemented,,Unselected,lefunctionsref.pdf,902,892,GIT_FETCH Function
+GIT_INDEX_ADD,GIT_INDEX_ADD,Git,Not implemented,,Unselected,lefunctionsref.pdf,905,895,GIT_INDEX_ADD Function
+GIT_INDEX_REMOVE,GIT_INDEX_REMOVE,Git,Not implemented,,Unselected,lefunctionsref.pdf,907,897,GIT_INDEX_REMOVE Function
+GIT_INIT_REPO,GIT_INIT_REPO,Git,Not implemented,,Unselected,lefunctionsref.pdf,909,899,GIT_INIT_REPO Function
+GIT_PULL,GIT_PULL,Git,Not implemented,,Unselected,lefunctionsref.pdf,910,900,GIT_PULL Function
+GIT_PUSH,GIT_PUSH,Git,Not implemented,,Unselected,lefunctionsref.pdf,915,905,GIT_PUSH Function
+GIT_REBASE,GIT_REBASE,Git,Not implemented,,Unselected,lefunctionsref.pdf,919,909,GIT_REBASE Function
+GIT_REBASE_OP,GIT_REBASE_OP,Git,Not implemented,,Unselected,lefunctionsref.pdf,921,911,GIT_REBASE_OP Function
+GIT_REF_FREE,GIT_REF_FREE,Git,Not implemented,,Unselected,lefunctionsref.pdf,923,913,GIT_REF_FREE Function
+GIT_REF_GET,GIT_REF_GET,Git,Not implemented,,Unselected,lefunctionsref.pdf,924,914,GIT_REF_GET Function
+GIT_REF_LIST,GIT_REF_LIST,Git,Not implemented,,Unselected,lefunctionsref.pdf,926,916,GIT_REF_LIST Function
+GIT_RESET_FILE,GIT_RESET_FILE,Git,Not implemented,,Unselected,lefunctionsref.pdf,927,917,GIT_RESET_FILE Function
+GIT_RESET,GIT_RESET,Git,Not implemented,,Unselected,lefunctionsref.pdf,929,919,GIT_RESET Function
+GIT_SET_URL,GIT_SET_URL,Git,Not implemented,,Unselected,lefunctionsref.pdf,930,920,GIT_SET_URL Function
+GIT_STASH_APPLY,GIT_STASH_APPLY,Git,Not implemented,,Unselected,lefunctionsref.pdf,932,922,GIT_STASH_APPLY Function
+GIT_STASH_DROP,GIT_STASH_DROP,Git,Not implemented,,Unselected,lefunctionsref.pdf,933,923,GIT_STASH_DROP Function
+GIT_STASH,GIT_STASH,Git,Not implemented,,Unselected,lefunctionsref.pdf,935,925,GIT_STASH Function
+GIT_STASH_POP,GIT_STASH_POP,Git,Not implemented,,Unselected,lefunctionsref.pdf,937,927,GIT_STASH_POP Function
+GIT_STATUS_FREE,GIT_STATUS_FREE,Git,Not implemented,,Unselected,lefunctionsref.pdf,938,928,GIT_STATUS_FREE Function
+GIT_STATUS,GIT_STATUS,Git,Not implemented,,Unselected,lefunctionsref.pdf,940,930,GIT_STATUS Function
+GIT_STATUS_GET,GIT_STATUS_GET,Git,Not implemented,,Unselected,lefunctionsref.pdf,941,931,GIT_STATUS_GET Function
+GIT_VERSION,GIT_VERSION,Git,Not implemented,,Unselected,lefunctionsref.pdf,944,934,GIT_VERSION Function
+GITFN_CLONE,GITFN_CLONE,Git,Not implemented,,Unselected,lefunctionsref.pdf,945,935,GITFN_CLONE Function
+GITFN_CO_BRANCH,GITFN_CO_BRANCH,Git,Not implemented,,Unselected,lefunctionsref.pdf,948,938,GITFN_CO_BRANCH Function
+GITFN_COMMIT_GET,GITFN_COMMIT_GET,Git,Not implemented,,Unselected,lefunctionsref.pdf,950,940,GITFN_COMMIT_GET Function
+GITFN_COMMITFREE,GITFN_COMMITFREE,Git,Not implemented,,Unselected,lefunctionsref.pdf,952,942,GITFN_COMMITFREE Function
+GITFN_COMMIT_LOG,GITFN_COMMIT_LOG,Git,Not implemented,,Unselected,lefunctionsref.pdf,954,944,GITFN_COMMIT_LOG Function
+GITFN_COMMIT,GITFN_COMMIT,Git,Not implemented,,Unselected,lefunctionsref.pdf,955,945,GITFN_COMMIT Function
+GITFN_DEL_BRANCH,GITFN_DEL_BRANCH,Git,Not implemented,,Unselected,lefunctionsref.pdf,957,947,GITFN_DEL_BRANCH Function
+GITFN_DEL_REPO,GITFN_DEL_REPO,Git,Not implemented,,Unselected,lefunctionsref.pdf,958,948,GITFN_DEL_REPO Function
+GITFN_DIFF_FREE,GITFN_DIFF_FREE,Git,Not implemented,,Unselected,lefunctionsref.pdf,960,950,GITFN_DIFF_FREE Function
+GITFN_DIFF_GET,GITFN_DIFF_GET,Git,Not implemented,,Unselected,lefunctionsref.pdf,962,952,GITFN_DIFF_GET Function
+GITFN_DIFF_IDX_F,GITFN_DIFF_IDX_F,Git,Not implemented,,Unselected,lefunctionsref.pdf,964,954,GITFN_DIFF_IDX_F Function
+GITFN_DIFF,GITFN_DIFF,Git,Not implemented,,Unselected,lefunctionsref.pdf,965,955,GITFN_DIFF Function
+GITFN_IDX_ADD,GITFN_IDX_ADD,Git,Not implemented,,Unselected,lefunctionsref.pdf,967,957,GITFN_IDX_ADD Function
+GITFN_IDX_REMOVE,GITFN_IDX_REMOVE,Git,Not implemented,,Unselected,lefunctionsref.pdf,969,959,GITFN_IDX_REMOVE Function
+GITFN_MRG_BRANCH,GITFN_MRG_BRANCH,Git,Not implemented,,Unselected,lefunctionsref.pdf,970,960,GITFN_MRG_BRANCH Function
+GITFN_NEW_BRANCH,GITFN_NEW_BRANCH,Git,Not implemented,,Unselected,lefunctionsref.pdf,972,962,GITFN_NEW_BRANCH Function
+GITFN_PULL,GITFN_PULL,Git,Not implemented,,Unselected,lefunctionsref.pdf,973,963,GITFN_PULL Function
+GITFN_PUSH,GITFN_PUSH,Git,Not implemented,,Unselected,lefunctionsref.pdf,977,967,GITFN_PUSH Function
+GITFN_RESET_FILE,GITFN_RESET_FILE,Git,Not implemented,,Unselected,lefunctionsref.pdf,979,969,GITFN_RESET_FILE Function
+GITFN_RESET,GITFN_RESET,Git,Not implemented,,Unselected,lefunctionsref.pdf,981,971,GITFN_RESET Function
+GITFN_STATUS,GITFN_STATUS,Git,Not implemented,,Unselected,lefunctionsref.pdf,982,972,GITFN_STATUS Function
+GITFN_STATUS_GET,GITFN_STATUS_GET,Git,Not implemented,,Unselected,lefunctionsref.pdf,984,974,GITFN_STATUS_GET Function
+GITFN_STATUSFREE,GITFN_STATUSFREE,Git,Not implemented,,Unselected,lefunctionsref.pdf,986,976,GITFN_STATUSFREE Function
+GITFN_VERSION,GITFN_VERSION,Git,Not implemented,,Unselected,lefunctionsref.pdf,988,978,GITFN_VERSION Function
+GRAYCODE,GRAYCODE,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,989,979,GRAYCODE Function
+HARMEAN,HARMEAN,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,992,982,HARMEAN Function
+HARMEANZ,HARMEANZ,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,994,984,HARMEANZ Function
+HASH_FAST_HEX,HASH_FAST_HEX,CAS,Not implemented,,Unselected,lefunctionsref.pdf,996,986,HASH_FAST_HEX Function
+HASH_XX_HEX,HASH_XX_HEX,CAS,Not implemented,,Unselected,lefunctionsref.pdf,997,987,HASH_XX_HEX Function
+HASHING,HASHING,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,999,989,HASHING Function
+HASHING_FILE,HASHING_FILE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1000,990,HASHING_FILE Function
+HASHING_HMAC,HASHING_HMAC,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1002,992,HASHING_HMAC Function
+HASHING_HMAC_FILE,HASHING_HMAC_FILE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1004,994,HASHING_HMAC_FILE Function
+HASHING_HMAC_INIT,HASHING_HMAC_INIT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1006,996,HASHING_HMAC_INIT Function
+HASHING_INIT,HASHING_INIT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1007,997,HASHING_INIT Function
+HASHING_PART,HASHING_PART,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1009,999,HASHING_PART Function
+HASHING_TERM,HASHING_TERM,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1010,1000,HASHING_TERM Function
+HBOUND,HBOUND,Array CAS,Not implemented,,Unselected,lefunctionsref.pdf,1012,1002,HBOUND Function
+HMS,HMS,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1015,1005,HMS Function
+HOLIDAY,HOLIDAY,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1016,1006,HOLIDAY Function
+HOLIDAYCK,HOLIDAYCK,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1021,1011,HOLIDAYCK Function
+HOLIDAYCOUNT,HOLIDAYCOUNT,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1024,1014,HOLIDAYCOUNT Function
+HOLIDAYNAME,HOLIDAYNAME,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1026,1016,HOLIDAYNAME Function
+HOLIDAYNX,HOLIDAYNX,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1028,1018,HOLIDAYNX Function
+HOLIDAYNY,HOLIDAYNY,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1032,1022,HOLIDAYNY Function
+HOLIDAYTEST,HOLIDAYTEST,CAS Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1036,1026,HOLIDAYTEST Function
+HOUR,HOUR,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1039,1029,HOUR Function
+HTMLDECODE,HTMLDECODE,Web Tools,Not implemented,,Unselected,lefunctionsref.pdf,1041,1031,HTMLDECODE Function
+HTMLENCODE,HTMLENCODE,Web Tools,Not implemented,,Unselected,lefunctionsref.pdf,1043,1033,HTMLENCODE Function
+IBESSEL,IBESSEL,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1046,1036,IBESSEL Function
+IFC,IFC,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1047,1037,IFC Function
+IFN,IFN,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1049,1039,IFN Function
+INDEX,INDEX,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1053,1043,INDEX Function
+INDEXC,INDEXC,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1055,1045,INDEXC Function
+INDEXW,INDEXW,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1057,1047,INDEXW Function
+INPUT,INPUT,Special CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1062,1052,INPUT Function
+INPUTC,INPUTC,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1065,1055,INPUTC Function
+INPUTN,INPUTN,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1067,1057,INPUTN Function
+INT,INT,Rounding and Truncation CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1069,1059,INT Function
+INTCINDEX,INTCINDEX,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1070,1060,INTCINDEX Function
+INTCK,INTCK,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1074,1064,INTCK Function
+INTCYCLE,INTCYCLE,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1084,1074,INTCYCLE Function
+INTFIT,INTFIT,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1089,1079,INTFIT Function
+INTFMT,INTFMT,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1093,1083,INTFMT Function
+INTGET,INTGET,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1096,1086,INTGET Function
+INTINDEX,INTINDEX,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1099,1089,INTINDEX Function
+INTNEST,INTNEST,Date and Time Returned data type: DOUBLE,Not implemented,,Unselected,lefunctionsref.pdf,1110,1100,INTNEST Function
+INTNX,INTNX,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1113,1103,INTNX Function
+INTRR,INTRR,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1120,1110,INTRR Function
+INTSEAS,INTSEAS,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1122,1112,INTSEAS Function
+INTSHIFT,INTSHIFT,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1126,1116,INTSHIFT Function
+INTTEST,INTTEST,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1128,1118,INTTEST Function
+INTZ,INTZ,Rounding and Truncation CAS,Not implemented,,Unselected,lefunctionsref.pdf,1130,1120,INTZ Function
+IORCMSG,IORCMSG,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1132,1122,IORCMSG Function
+IPMT,IPMT,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1133,1123,IPMT Function
+IQR,IQR,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1135,1125,IQR Function
+IRR,IRR,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1136,1126,IRR Function
+JBESSEL,JBESSEL,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1138,1128,JBESSEL Function
+JSONPP,JSONPP,"Date and Time CAS See: “About SAS Date, Time, and Datetime Values” in SAS Formats and Informats: Reference",Not implemented,,Unselected,lefunctionsref.pdf,1139,1129,JSONPP Function
+JULDATE,JULDATE,"Date and Time CAS See: “About SAS Date, Time, and Datetime Values” in SAS Formats and Informats: Reference",Not implemented,,Unselected,lefunctionsref.pdf,1140,1130,JULDATE Function
+JULDATE7,JULDATE7,"Date and Time CAS See: “About SAS Date, Time, and Datetime Values” in SAS Formats and Informats: Reference",Not implemented,,Unselected,lefunctionsref.pdf,1141,1131,JULDATE7 Function
+KURTOSIS,KURTOSIS,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1142,1132,KURTOSIS Function
+LAG,LAG,Special,Not implemented,,Unselected,lefunctionsref.pdf,1144,1134,LAG Function
+LARGEST,LARGEST,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1152,1142,LARGEST Function
+LBOUND,LBOUND,Array CAS,Not implemented,,Unselected,lefunctionsref.pdf,1154,1144,LBOUND Function
+LCM,LCM,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1157,1147,LCM Function
+LCOMB,LCOMB,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1158,1148,LCOMB Function
+LEFT,LEFT,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1159,1149,LEFT Function
+LENGTH,LENGTH,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1160,1150,LENGTH Function
+LENGTHC,LENGTHC,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,1162,1152,LENGTHC Function
+LENGTHM,LENGTHM,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1164,1154,LENGTHM Function
+LENGTHN,LENGTHN,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1166,1156,LENGTHN Function
+LEXCOMB,LEXCOMB,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,1168,1158,LEXCOMB Function
+LEXCOMBI,LEXCOMBI,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,1171,1161,LEXCOMBI Function
+LEXPERK,LEXPERK,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,1173,1163,LEXPERK Function
+LEXPERM,LEXPERM,Combinatorial,Not implemented,,Unselected,lefunctionsref.pdf,1176,1166,LEXPERM Function
+LFACT,LFACT,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1179,1169,LFACT Function
+LGAMMA,LGAMMA,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1180,1170,LGAMMA Function
+LIBNAME,LIBNAME,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1181,1171,LIBNAME Function
+LIBREF,LIBREF,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1185,1175,LIBREF Function
+LOG,LOG,Mathematical CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1187,1177,LOG Function
+LOG10,LOG10,Mathematical CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1187,1177,LOG10 Function
+LOG1PX,LOG1PX,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1188,1178,LOG1PX Function
+LOG2,LOG2,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1190,1180,LOG2 Function
+LOGBETA,LOGBETA,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1191,1181,LOGBETA Function
+LOGCDF,LOGCDF,Probability CAS See: “CDF Function” on page 458,Not implemented,,Unselected,lefunctionsref.pdf,1192,1182,LOGCDF Function
+LOGISTIC,LOGISTIC,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1194,1184,LOGISTIC Function
+LOGPDF,LOGPDF,Probability CAS,Not implemented,,Unselected,lefunctionsref.pdf,1195,1185,LOGPDF Function
+LOGSDF,LOGSDF,Probability CAS See: “SDF Function” on page 1482,Not implemented,,Unselected,lefunctionsref.pdf,1198,1188,LOGSDF Function
+LOWCASE,LOWCASE,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1200,1190,LOWCASE Function
+LPERM,LPERM,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1201,1191,LPERM Function
+LPNORM,LPNORM,Descriptive Statistics,Not implemented,,Unselected,lefunctionsref.pdf,1202,1192,LPNORM Function
+MAD,MAD,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1204,1194,MAD Function
+MARGRCLPRC,MARGRCLPRC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1205,1195,MARGRCLPRC Function
+MARGRPTPRC,MARGRPTPRC,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1208,1198,MARGRPTPRC Function
+MAX,MAX,Descriptive Statistics CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1211,1201,MAX Function
+MD5,MD5,Binary Results Character,Not implemented,,Unselected,lefunctionsref.pdf,1212,1202,MD5 Function
+MDY,MDY,Date and Time CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1213,1203,MDY Function
+MEAN,MEAN,Descriptive Statistics CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1214,1204,MEAN Function
+MEDIAN,MEDIAN,Descriptive Statistics CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1216,1206,MEDIAN Function
+MIN,MIN,Descriptive Statistics CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1217,1207,MIN Function
+MINUTE,MINUTE,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1218,1208,MINUTE Function
+MISSING,MISSING,Descriptive Statistics Character CAS Missing Values,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1219,1209,MISSING Function
+MOD,MOD,Mathematical CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1221,1211,MOD Function
+MODEXIST,MODEXIST,External Routines,Not implemented,,Unselected,lefunctionsref.pdf,1224,1214,MODEXIST Function
+MODULE,MODULE,External Routines,Not implemented,,Unselected,lefunctionsref.pdf,1226,1216,MODULE Function
+MODULEC,MODULEC,External Routines,Not implemented,,Unselected,lefunctionsref.pdf,1228,1218,MODULEC Function
+MODULEN,MODULEN,External Routines,Not implemented,,Unselected,lefunctionsref.pdf,1229,1219,MODULEN Function
+MODZ,MODZ,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1229,1219,MODZ Function
+MONTH,MONTH,Date and Time CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1232,1222,MONTH Function
+MOPEN,MOPEN,External Files,Not implemented,,Unselected,lefunctionsref.pdf,1233,1223,MOPEN Function
+MORT,MORT,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1237,1227,MORT Function
+MSPLINT,MSPLINT,Mathematical,Not implemented,,Unselected,lefunctionsref.pdf,1239,1229,MSPLINT Function
+MVALID,MVALID,Character,Not implemented,,Unselected,lefunctionsref.pdf,1242,1232,MVALID Function
+N,N,Descriptive Statistics Missing Values CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1245,1235,N Function
+NETPV,NETPV,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1247,1237,NETPV Function
+NLITERAL,NLITERAL,Character,Not implemented,,Unselected,lefunctionsref.pdf,1248,1238,NLITERAL Function
+NMISS,NMISS,Descriptive Statistics Missing Values CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1251,1241,NMISS Function
+NOMRATE,NOMRATE,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1252,1242,NOMRATE Function
+NORMAL,NORMAL,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1254,1244,NORMAL Function
+NOTALNUM,NOTALNUM,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1254,1244,NOTALNUM Function
+NOTALPHA,NOTALPHA,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1257,1247,NOTALPHA Function
+NOTCNTRL,NOTCNTRL,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1259,1249,NOTCNTRL Function
+NOTDIGIT,NOTDIGIT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1261,1251,NOTDIGIT Function
+NOTE,NOTE,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1264,1254,NOTE Function
+NOTFIRST,NOTFIRST,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1267,1257,NOTFIRST Function
+NOTGRAPH,NOTGRAPH,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1269,1259,NOTGRAPH Function
+NOTLOWER,NOTLOWER,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1272,1262,NOTLOWER Function
+NOTNAME,NOTNAME,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1274,1264,NOTNAME Function
+NOTPRINT,NOTPRINT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1276,1266,NOTPRINT Function
+NOTPUNCT,NOTPUNCT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1280,1270,NOTPUNCT Function
+NOTSPACE,NOTSPACE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1282,1272,NOTSPACE Function
+NOTUPPER,NOTUPPER,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1285,1275,NOTUPPER Function
+NOTXDIGIT,NOTXDIGIT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1287,1277,NOTXDIGIT Function
+NPV,NPV,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1289,1279,NPV Function
+NVALID,NVALID,Character,Not implemented,,Unselected,lefunctionsref.pdf,1291,1281,NVALID Function
+NWKDOM,NWKDOM,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1293,1283,NWKDOM Function
+OPEN,OPEN,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1296,1286,OPEN Function
+ORDINAL,ORDINAL,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1300,1290,ORDINAL Function
+PATHNAME,PATHNAME,SAS File I/O External Files,Not implemented,,Unselected,lefunctionsref.pdf,1301,1291,PATHNAME Function
+PCTL,PCTL,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1303,1293,PCTL Function
+PDF,PDF,Probability CAS,Not implemented,,Unselected,lefunctionsref.pdf,1306,1296,PDF Function
+PEEKCLONG,PEEKCLONG,Binary Results Special,Not implemented,,Unselected,lefunctionsref.pdf,1327,1317,PEEKCLONG Function
+PEEKLONG,PEEKLONG,Special,Not implemented,,Unselected,lefunctionsref.pdf,1329,1319,PEEKLONG Function
+PERM,PERM,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1330,1320,PERM Function
+PMT,PMT,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1332,1322,PMT Function
+POINT,POINT,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1334,1324,POINT Function
+POISSON,POISSON,"Probability CAS See: “CDF Function” on page 458 , “PDF Function” on page 1296",Not implemented,,Unselected,lefunctionsref.pdf,1336,1326,POISSON Function
+PPMT,PPMT,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1338,1328,PPMT Function
+PROBBETA,PROBBETA,"Probability CAS See: “CDF Function” on page 458, “PDF Function” on page 1296",Not implemented,,Unselected,lefunctionsref.pdf,1340,1330,PROBBETA Function
+PROBBNML,PROBBNML,"Probability CAS See: “CDF Function” on page 458 , “PDF Function” on page 1296",Not implemented,,Unselected,lefunctionsref.pdf,1341,1331,PROBBNML Function
+PROBBNRM,PROBBNRM,Probability CAS,Not implemented,,Unselected,lefunctionsref.pdf,1343,1333,PROBBNRM Function
+PROBCHI,PROBCHI,"Probability CAS See: “CDF Function” on page 458, “PDF Function” on page 1296",Not implemented,,Unselected,lefunctionsref.pdf,1344,1334,PROBCHI Function
+PROBF,PROBF,"Probability CAS See: “CDF Function” on page 458, “PDF Function” on page 1296",Not implemented,,Unselected,lefunctionsref.pdf,1346,1336,PROBF Function
+PROBGAM,PROBGAM,"Probability CAS See: “CDF Function” on page 458, “PDF Function” on page 1296",Not implemented,,Unselected,lefunctionsref.pdf,1348,1338,PROBGAM Function
+PROBHYPR,PROBHYPR,"Probability CAS See: “CDF Function” on page 458, “PDF Function” on page 1296",Not implemented,,Unselected,lefunctionsref.pdf,1349,1339,PROBHYPR Function
+PROBIT,PROBIT,Quantile CAS,Not implemented,,Unselected,lefunctionsref.pdf,1351,1341,PROBIT Function
+PROBMC,PROBMC,Probability CAS,Not implemented,,Unselected,lefunctionsref.pdf,1352,1342,PROBMC Function
+PROBMED,PROBMED,CAS Probability Returned data type: DOUBLE,Not implemented,,Unselected,lefunctionsref.pdf,1366,1356,PROBMED Function
+PROBNEGB,PROBNEGB,Probability CAS See: “CDF Function” on page 458,Not implemented,,Unselected,lefunctionsref.pdf,1368,1358,PROBNEGB Function
+PROBNORM,PROBNORM,Probability CAS See: “CDF Function” on page 458,Not implemented,,Unselected,lefunctionsref.pdf,1369,1359,PROBNORM Function
+PROBT,PROBT,"Probability CAS See: “CDF Function” on page 458 , “PDF Function” on page 1296",Not implemented,,Unselected,lefunctionsref.pdf,1371,1361,PROBT Function
+PROPCASE,PROPCASE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1372,1362,PROPCASE Function
+PRXCHANGE,PRXCHANGE,Character String Matching CAS,Not implemented,,Unselected,lefunctionsref.pdf,1375,1365,PRXCHANGE Function
+PRXMATCH,PRXMATCH,Character String Matching CAS,Not implemented,,Unselected,lefunctionsref.pdf,1381,1371,PRXMATCH Function
+PRXPAREN,PRXPAREN,Character String Matching,Not implemented,,Unselected,lefunctionsref.pdf,1385,1375,PRXPAREN Function
+PRXPARSE,PRXPARSE,Character String Matching CAS,Not implemented,,Unselected,lefunctionsref.pdf,1387,1377,PRXPARSE Function
+PRXPOSN,PRXPOSN,Character String Matching CAS,Not implemented,,Unselected,lefunctionsref.pdf,1390,1380,PRXPOSN Function
+PTRLONGADD,PTRLONGADD,Binary Results Special,Not implemented,,Unselected,lefunctionsref.pdf,1394,1384,PTRLONGADD Function
+PUT,PUT,Special CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1395,1385,PUT Function
+PUTC,PUTC,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1398,1388,PUTC Function
+PUTN,PUTN,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1401,1391,PUTN Function
+PVP,PVP,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1404,1394,PVP Function
+QTR,QTR,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1405,1395,QTR Function
+QUANTILE,QUANTILE,Quantile CAS See: “CDF Function” on page 458,Not implemented,,Unselected,lefunctionsref.pdf,1406,1396,QUANTILE Function
+QUOTE,QUOTE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1411,1401,QUOTE Function
+RANBIN,RANBIN,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1414,1404,RANBIN Function
+RANCAU,RANCAU,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1416,1406,RANCAU Function
+RAND,RAND,Random Number CAS,Not implemented,,Unselected,lefunctionsref.pdf,1417,1407,RAND Function
+RANDPERM,RANDPERM,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1439,1429,RANDPERM Function
+RANEXP,RANEXP,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1440,1430,RANEXP Function
+RANGAM,RANGAM,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1442,1432,RANGAM Function
+RANGE,RANGE,Descriptive Statistics CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1443,1433,RANGE Function
+RANK,RANK,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1445,1435,RANK Function
+RANNOR,RANNOR,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1446,1436,RANNOR Function
+RANPOI,RANPOI,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1447,1437,RANPOI Function
+RANTBL,RANTBL,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1449,1439,RANTBL Function
+RANTRI,RANTRI,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1451,1441,RANTRI Function
+RANUNI,RANUNI,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1452,1442,RANUNI Function
+RENAME,RENAME,External Files SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1453,1443,RENAME Function
+REPEAT,REPEAT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1456,1446,REPEAT Function
+RESOLVE,RESOLVE,Macro,Not implemented,,Unselected,lefunctionsref.pdf,1457,1447,RESOLVE Function
+REVERSE,REVERSE,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,1458,1448,REVERSE Function
+REWIND,REWIND,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1459,1449,REWIND Function
+RIGHT,RIGHT,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1461,1451,RIGHT Function
+RMS,RMS,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1462,1452,RMS Function
+ROUND,ROUND,Rounding and Truncation CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1463,1453,ROUND Function
+ROUNDE,ROUNDE,Rounding and Truncation CAS,Not implemented,,Unselected,lefunctionsref.pdf,1472,1462,ROUNDE Function
+ROUNDZ,ROUNDZ,Rounding and Truncation CAS,Not implemented,,Unselected,lefunctionsref.pdf,1475,1465,ROUNDZ Function
+SAVING,SAVING,CAS Financial,Not implemented,,Unselected,lefunctionsref.pdf,1478,1468,SAVING Function
+SAVINGS,SAVINGS,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1480,1470,SAVINGS Function
+SCAN,SCAN,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,1482,1472,SCAN Function
+SDF,SDF,Probability CAS See: “CDF Function” on page 458,Not implemented,,Unselected,lefunctionsref.pdf,1492,1482,SDF Function
+SEC,SEC,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,1496,1486,SEC Function
+SECOND,SECOND,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1497,1487,SECOND Function
+SESSBUSY,SESSBUSY,CAS,Not implemented,,Unselected,lefunctionsref.pdf,1499,1489,SESSBUSY Function
+SESSFOUND,SESSFOUND,CAS,Not implemented,,Unselected,lefunctionsref.pdf,1500,1490,SESSFOUND Function
+SHA256,SHA256,Binary Results Character,Not implemented,,Unselected,lefunctionsref.pdf,1501,1491,SHA256 Function
+SHA256HEX,SHA256HEX,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1503,1493,SHA256HEX Function
+SHA256HMACHEX,SHA256HMACHEX,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1505,1495,SHA256HMACHEX Function
+SIGN,SIGN,Mathematical CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1507,1497,SIGN Function
+SIN,SIN,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,1509,1499,SIN Function
+SINH,SINH,Hyperbolic CAS,Not implemented,,Unselected,lefunctionsref.pdf,1510,1500,SINH Function
+SKEWNESS,SKEWNESS,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1511,1501,SKEWNESS Function
+SLEEP,SLEEP,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1512,1502,SLEEP Function
+SMALLEST,SMALLEST,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1514,1504,SMALLEST Function
+SORT,SORT,Character CAS Sort,Not implemented,,Unselected,lefunctionsref.pdf,1515,1505,SORT Function
+SOUNDEX,SOUNDEX,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1517,1507,SOUNDEX Function
+SPEDIS,SPEDIS,Character,Not implemented,,Unselected,lefunctionsref.pdf,1519,1509,SPEDIS Function
+SQRT,SQRT,Mathematical CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1522,1512,SQRT Function
+SQUANTILE,SQUANTILE,Quantile CAS See: “SDF Function” on page 1482,Not implemented,,Unselected,lefunctionsref.pdf,1523,1513,SQUANTILE Function
+STD,STD,Descriptive Statistics CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1527,1517,STD Function
+STDERR,STDERR,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1528,1518,STDERR Function
+STFIPS,STFIPS,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1529,1519,STFIPS Function
+STNAME,STNAME,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1531,1521,STNAME Function
+STNAMEL,STNAMEL,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1533,1523,STNAMEL Function
+STRIP,STRIP,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1535,1525,STRIP Function
+SUBPAD,SUBPAD,Character,Not implemented,,Unselected,lefunctionsref.pdf,1537,1527,SUBPAD Function
+SUBSTR (left of =),SUBSTR,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1539,1529,SUBSTR (left of =) Function
+SUBSTR (right of =),SUBSTR,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1541,1531,SUBSTR (right of =) Function
+SUBSTRN,SUBSTRN,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,1543,1533,SUBSTRN Function
+SUM,SUM,Descriptive Statistics CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1547,1537,SUM Function
+SUMABS,SUMABS,Descriptive Statistics CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1549,1539,SUMABS Function
+SYMEXIST,SYMEXIST,Macro,Not implemented,,Unselected,lefunctionsref.pdf,1550,1540,SYMEXIST Function
+SYMGET,SYMGET,Macro,Not implemented,,Unselected,lefunctionsref.pdf,1551,1541,SYMGET Function
+SYMGLOBL,SYMGLOBL,Macro,Not implemented,,Unselected,lefunctionsref.pdf,1552,1542,SYMGLOBL Function
+SYMLOCAL,SYMLOCAL,Macro,Not implemented,,Unselected,lefunctionsref.pdf,1553,1543,SYMLOCAL Function
+SYSEXIST,SYSEXIST,SAS File I/O Special,Not implemented,,Unselected,lefunctionsref.pdf,1554,1544,SYSEXIST Function
+SYSGET,SYSGET,Special,Not implemented,,Unselected,lefunctionsref.pdf,1555,1545,SYSGET Function
+SYSMSG,SYSMSG,SAS File I/O External Files,Not implemented,,Unselected,lefunctionsref.pdf,1557,1547,SYSMSG Function
+SYSPARM,SYSPARM,Special,Not implemented,,Unselected,lefunctionsref.pdf,1559,1549,SYSPARM Function
+SYSPROCESSID,SYSPROCESSID,Special,Not implemented,,Unselected,lefunctionsref.pdf,1560,1550,SYSPROCESSID Function
+SYSPROCESSNAME,SYSPROCESSNAME,Special,Not implemented,,Unselected,lefunctionsref.pdf,1561,1551,SYSPROCESSNAME Function
+SYSPROD,SYSPROD,Special,Not implemented,,Unselected,lefunctionsref.pdf,1562,1552,SYSPROD Function
+SYSRC,SYSRC,SAS File I/O External Files,Not implemented,,Unselected,lefunctionsref.pdf,1565,1555,SYSRC Function
+SYSTEM,SYSTEM,Special,Not implemented,,Unselected,lefunctionsref.pdf,1566,1556,SYSTEM Function
+TAN,TAN,Trigonometric CAS,Not implemented,,Unselected,lefunctionsref.pdf,1567,1557,TAN Function
+TANH,TANH,Hyperbolic CAS,Not implemented,,Unselected,lefunctionsref.pdf,1568,1558,TANH Function
+TIME,TIME,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1569,1559,TIME Function
+TIMEPART,TIMEPART,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1571,1561,TIMEPART Function
+TIMEVALUE,TIMEVALUE,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1572,1562,TIMEVALUE Function
+TINV,TINV,Quantile CAS,Not implemented,,Unselected,lefunctionsref.pdf,1573,1563,TINV Function
+TNONCT,TNONCT,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1575,1565,TNONCT Function
+TODAY,TODAY,Date and Time CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1576,1566,TODAY Function
+TRANSLATE,TRANSLATE,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,1578,1568,TRANSLATE Function
+TRANSTRN,TRANSTRN,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1581,1571,TRANSTRN Function
+TRANWRD,TRANWRD,Character CAS,Not implemented,1,Unselected,lefunctionsref.pdf,1585,1575,TRANWRD Function
+TRIGAMMA,TRIGAMMA,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1589,1579,TRIGAMMA Function
+TRIM,TRIM,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1590,1580,TRIM Function
+TRIMN,TRIMN,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1592,1582,TRIMN Function
+TRUNC,TRUNC,Rounding and Truncation CAS,Not implemented,,Unselected,lefunctionsref.pdf,1594,1584,TRUNC Function
+TSLVL,TSLVL,Character,Not implemented,,Unselected,lefunctionsref.pdf,1595,1585,TSLVL Function
+TYPEOF,TYPEOF,Character,Not implemented,,Unselected,lefunctionsref.pdf,1597,1587,TYPEOF Function
+TZONEID,TZONEID,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1598,1588,TZONEID Function
+TZONENAME,TZONENAME,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1599,1589,TZONENAME Function
+TZONEOFF,TZONEOFF,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1601,1591,TZONEOFF Function
+TZONES2U,TZONES2U,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1603,1593,TZONES2U Function
+TZONEU2S,TZONEU2S,Date and Time,Not implemented,,Unselected,lefunctionsref.pdf,1604,1594,TZONEU2S Function
+UNIFORM,UNIFORM,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1605,1595,UNIFORM Function
+UPCASE,UPCASE,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1605,1595,UPCASE Function
+URLDECODE,URLDECODE,Web Tools CAS,Not implemented,,Unselected,lefunctionsref.pdf,1607,1597,URLDECODE Function
+URLENCODE,URLENCODE,Web Tools CAS,Not implemented,,Unselected,lefunctionsref.pdf,1609,1599,URLENCODE Function
+USS,USS,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1611,1601,USS Function
+UUIDGEN,UUIDGEN,"Binary Results Special CAS Returned data type: CHAR, VARCHAR",Not implemented,,Unselected,lefunctionsref.pdf,1612,1602,UUIDGEN Function
+VAR,VAR,Descriptive Statistics CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1614,1604,VAR Function
+VARFMT,VARFMT,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1615,1605,VARFMT Function
+VARINFMT,VARINFMT,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1617,1607,VARINFMT Function
+VARLABEL,VARLABEL,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1620,1610,VARLABEL Function
+VARLEN,VARLEN,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1622,1612,VARLEN Function
+VARNAME,VARNAME,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1623,1613,VARNAME Function
+VARNUM,VARNUM,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1624,1614,VARNUM Function
+VARRAY,VARRAY,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1626,1616,VARRAY Function
+VARRAYX,VARRAYX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1628,1618,VARRAYX Function
+VARTYPE,VARTYPE,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1629,1619,VARTYPE Function
+VERIFY,VERIFY,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1633,1623,VERIFY Function
+VFORMAT,VFORMAT,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1634,1624,VFORMAT Function
+VFORMATD,VFORMATD,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1636,1626,VFORMATD Function
+VFORMATDX,VFORMATDX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1638,1628,VFORMATDX Function
+VFORMATN,VFORMATN,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1640,1630,VFORMATN Function
+VFORMATNX,VFORMATNX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1642,1632,VFORMATNX Function
+VFORMATW,VFORMATW,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1644,1634,VFORMATW Function
+VFORMATWX,VFORMATWX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1646,1636,VFORMATWX Function
+VFORMATX,VFORMATX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1648,1638,VFORMATX Function
+VINARRAY,VINARRAY,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1650,1640,VINARRAY Function
+VINARRAYX,VINARRAYX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1652,1642,VINARRAYX Function
+VINFORMAT,VINFORMAT,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1654,1644,VINFORMAT Function
+VINFORMATD,VINFORMATD,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1656,1646,VINFORMATD Function
+VINFORMATDX,VINFORMATDX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1657,1647,VINFORMATDX Function
+VINFORMATN,VINFORMATN,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1659,1649,VINFORMATN Function
+VINFORMATNX,VINFORMATNX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1661,1651,VINFORMATNX Function
+VINFORMATW,VINFORMATW,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1663,1653,VINFORMATW Function
+VINFORMATWX,VINFORMATWX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1665,1655,VINFORMATWX Function
+VINFORMATX,VINFORMATX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1667,1657,VINFORMATX Function
+VLABEL,VLABEL,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1669,1659,VLABEL Function
+VLABELX,VLABELX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1670,1660,VLABELX Function
+VLENGTH,VLENGTH,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1673,1663,VLENGTH Function
+VLENGTHX,VLENGTHX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1674,1664,VLENGTHX Function
+VNAME,VNAME,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1676,1666,VNAME Function
+VNAMEX,VNAMEX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1678,1668,VNAMEX Function
+VTYPE,VTYPE,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1680,1670,VTYPE Function
+VTYPEX,VTYPEX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1682,1672,VTYPEX Function
+VVALUE,VVALUE,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1683,1673,VVALUE Function
+VVALUEX,VVALUEX,Variable Information CAS,Not implemented,,Unselected,lefunctionsref.pdf,1686,1676,VVALUEX Function
+WEEK,WEEK,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1688,1678,WEEK Function
+WEEKDAY,WEEKDAY,Date and Time CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1692,1682,WEEKDAY Function
+WHICHC,WHICHC,Search CAS,Not implemented,,Unselected,lefunctionsref.pdf,1693,1683,WHICHC Function
+WHICHN,WHICHN,Search CAS,Not implemented,,Unselected,lefunctionsref.pdf,1695,1685,WHICHN Function
+YEAR,YEAR,Date and Time CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1696,1686,YEAR Function
+YIELDP,YIELDP,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1697,1687,YIELDP Function
+YRDIF,YRDIF,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1699,1689,YRDIF Function
+YYQ,YYQ,Date and Time CAS,Not implemented,,Unselected,lefunctionsref.pdf,1702,1692,YYQ Function
+ZIPCITY,ZIPCITY,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1703,1693,ZIPCITY Function
+ZIPCITYDISTANCE,ZIPCITYDISTANCE,Distance State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1706,1696,ZIPCITYDISTANCE Function
+ZIPFIPS,ZIPFIPS,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1708,1698,ZIPFIPS Function
+ZIPNAME,ZIPNAME,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1709,1699,ZIPNAME Function
+ZIPNAMEL,ZIPNAMEL,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1711,1701,ZIPNAMEL Function
+ZIPSTATE,ZIPSTATE,State and ZIP code,Not implemented,,Unselected,lefunctionsref.pdf,1714,1704,ZIPSTATE Function
