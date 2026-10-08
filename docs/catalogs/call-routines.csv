@@ -56,7 +56,7 @@ CALL SORTC,SORTC,Sort CAS,Not implemented,,Unselected,lefunctionsref.pdf,417,407
 CALL SORTN,SORTN,Sort CAS,Not implemented,,Unselected,lefunctionsref.pdf,419,409,CALL SORTN Routine
 CALL STDIZE,STDIZE,Mathematical,Not implemented,,Unselected,lefunctionsref.pdf,420,410,CALL STDIZE Routine
 CALL STREAM,STREAM,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,424,414,CALL STREAM Routine
-CALL STREAMINIT,STREAMINIT,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,427,417,CALL STREAMINIT Routine
+CALL STREAMINIT,STREAMINIT,Random Number,Partial: MT32/MT2002 with positive 32-bit seed; first initialization wins,,Unselected,lefunctionsref.pdf,427,417,CALL STREAMINIT Routine
 CALL STREAMREWIND,STREAMREWIND,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,433,423,CALL STREAMREWIND Routine
 CALL SYMPUT,SYMPUT,Macro Type: DATA step call routine,Not implemented,,Unselected,lefunctionsref.pdf,437,427,CALL SYMPUT Routine
 CALL SYMPUTX,SYMPUTX,Macro,Not implemented,,Unselected,lefunctionsref.pdf,442,432,CALL SYMPUTX Routine

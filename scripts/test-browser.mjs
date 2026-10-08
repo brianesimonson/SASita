@@ -57,7 +57,7 @@ try {
     throw new Error('UI condition timed out: '+expression+'; page: '+JSON.stringify(await evaluate("({url:location.href,state:document.readyState,log:document.querySelector('#log')?.textContent,status:document.querySelector('#status')?.textContent})")));
   }
   await send('Page.enable');
-  const expected={flags:['flagged',6],groups:['provider_totals',3],loop:['squares',12],split:['missing_payment',1],merge:['enriched',10],macro:['macro_flagged',6],macroloop:['above_3000',1]};
+  const expected={conversions:['converted',1],formats:['format_gallery',1],random:['random_sample',8],flags:['flagged',6],groups:['provider_totals',3],loop:['squares',12],split:['missing_payment',1],merge:['enriched',10],macro:['macro_flagged',6],macroloop:['above_3000',1]};
   for(const [label,url] of [
     ['modular',`http://127.0.0.1:${server.address().port}/index.html`],
     ['standalone',`http://127.0.0.1:${server.address().port}/data-step-lab.html`],
@@ -74,6 +74,10 @@ try {
       assert.ok(result.log.includes('Completed'),result.log);
     }
     assert.ok((await evaluate("document.querySelector('#expandedview').textContent")).includes('data above_3000'));
+    // Open the reference in the real browser, including new conversion/RAND help.
+    await evaluate("document.querySelector('#help').click()");
+    assert.ok((await evaluate("document.querySelector('#helpdialog').textContent")).includes('CALL STREAMINIT'));
+    await evaluate("document.querySelector('#closehelp').click()");
     await evaluate("document.querySelector('#expandedtab').click()");
     assert.equal(await evaluate("document.querySelector('#expandedview').hidden"),false);
     // Import through the actual file input and form.
@@ -88,7 +92,7 @@ try {
     await waitFor("!document.querySelector('#run').disabled");
     assert.match(await evaluate("document.querySelector('#log').textContent"),/No dataset changes were committed/);
     assert.equal(await evaluate("document.querySelector('#datasets').textContent"),before);
-    console.log(`${label}: seven examples, expanded code, CSV import/export, failed-run rollback passed`);
+    console.log(`${label}: ten examples, expanded code, CSV import/export, failed-run rollback passed`);
   }
   console.log('Browser checks passed in '+await evaluate('navigator.userAgent'));
 } finally {

@@ -8,5 +8,9 @@ assert.equal(run(examples.merge,{claims,providers}).datasets.enriched.rows.lengt
 assert.ok(run(examples.merge,{claims,providers}).datasets.enriched.rows.every(x=>x.matched_provider===1));
 assert.equal(run(examples.macro,{claims,providers}).datasets.macro_flagged.rows.length,6);
 assert.deepEqual(run(examples.macroloop,{claims,providers}).written,['above_1000','above_2000','above_3000']);
+assert.equal(run(examples.conversions).datasets.converted.rows[0].sasdate,11681);
+assert.equal(run(examples.formats).datasets.format_gallery.rows[0].padded_id,'00001350');
+assert.deepEqual(run(examples.random).datasets.random_sample.rows,run(examples.random).datasets.random_sample.rows);
+assert.equal(run(examples.random).datasets.random_sample.rows.length,8);
 let html=fs.readFileSync('dist/index.html','utf8');for(let id of s.matchAll(/\$\('([^']+)'\)/g))assert.ok(html.includes(`id="${id[1]}"`),'Missing DOM element '+id[1]);
-console.log('All seven UI examples and DOM element references checked.');
+console.log('All ten UI examples and DOM element references checked.');

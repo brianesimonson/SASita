@@ -29,3 +29,7 @@ These batches are suggestions, not an approved implementation scope. Adding many
 2. Choose representative SAS programs and expected outputs, marking fixtures unverified against SAS where appropriate.
 3. Fix or explicitly preserve the existing semantic limits (rounding, missing values, type validation, string lengths, format widths) before building more features on top of them.
 4. Implement in separate branches, regenerate the standalone HTML, run regression and browser checks, and save version checkpoints when requested. Leave main and v1.0 untouched until the user explicitly authorizes a merge.
+
+## Implementation update
+
+The user chose common formats, INPUT/PUT, and RAND before broader text cleaning. The feature/formats-conversions-rand branch implements their first bounded subset; see formats-conversions-rand.md and updated catalog current_support fields. Text cleaning remains deferred. Default MTHYBRID and SAS-identical uniform/normal sequences remain outside the verified feature scope.

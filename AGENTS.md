@@ -13,3 +13,5 @@
 - Use the existing checkout in isolated cloud tasks; do not create Git worktrees unless explicitly requested.
 - Record milestones and verified testing gaps in PROJECT-STATUS.md; use small commits and feature branches for subsequent changes.
 - GitHub is configured for brianesimonson/SASita. Push only when authorized by the user; do not reuse historical Site identities.
+
+- Common formats and RAND scope are documented in docs/formats-conversions-rand.md. Preserve the explicit MT32 selection; do not label uniform/normal sequences SAS-identical without real SAS fixtures. Keep new modules included in the offline build.

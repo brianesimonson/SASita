@@ -3,7 +3,7 @@ $ASCIIw.,$ASCII,CAS Character,Not implemented,,Unselected,leforinforref.pdf,625,
 $BASE64Xw.,$BASE64X,CAS Character,Not implemented,,Unselected,leforinforref.pdf,626,616,$BASE64Xw. Informat
 $BINARYw.,$BINARY,CAS Character,Not implemented,,Unselected,leforinforref.pdf,628,618,$BINARYw. Informat
 $CBw.,$CB,CAS Column Binary,Not implemented,,Unselected,leforinforref.pdf,629,619,$CBw. Informat
-$CHARw.,$CHAR,CAS Character,Not implemented,,Unselected,leforinforref.pdf,631,621,$CHARw. Informat
+$CHARw.,$CHAR,CAS Character,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,631,621,$CHARw. Informat
 $CHARZBw.,$CHARZB,CAS Character,Not implemented,,Unselected,leforinforref.pdf,632,622,$CHARZBw. Informat
 $EBCDICw.,$EBCDIC,CAS Character,Not implemented,,Unselected,leforinforref.pdf,634,624,$EBCDICw. Informat
 $HEXw.,$HEX,CAS Character,Not implemented,,Unselected,leforinforref.pdf,635,625,$HEXw. Informat
@@ -12,10 +12,10 @@ $N8601Ew.d,$N8601E,CAS Date and Time ISO 8601,Not implemented,,Unselected,lefori
 $OCTALw.,$OCTAL,CAS Character,Not implemented,,Unselected,leforinforref.pdf,642,632,$OCTALw. Informat
 $PHEXw.,$PHEX,CAS Character,Not implemented,,Unselected,leforinforref.pdf,643,633,$PHEXw. Informat
 $QUOTEw.,$QUOTE,CAS Character,Not implemented,,Unselected,leforinforref.pdf,644,634,$QUOTEw. Informat
-$UPCASEw.,$UPCASE,CAS Character,Not implemented,,Unselected,leforinforref.pdf,647,637,$UPCASEw. Informat
+$UPCASEw.,$UPCASE,CAS Character,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,647,637,$UPCASEw. Informat
 $UUIDw.,$UUID,CAS Character,Not implemented,,Unselected,leforinforref.pdf,648,638,$UUIDw. Informat
 $VARYINGw.,$VARYING,CAS Character,Not implemented,,Unselected,leforinforref.pdf,649,639,$VARYINGw. Informat
-$w.,$,CAS Character,Not implemented,,Unselected,leforinforref.pdf,651,641,$w. Informat
+$w.,$,CAS Character,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,651,641,$w. Informat
 ANYDTDTEw.,ANYDTDTE,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,652,642,ANYDTDTEw. Informat
 ANYDTDTMw.,ANYDTDTM,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,655,645,ANYDTDTMw. Informat
 ANYDTTMEw.,ANYDTTME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,658,648,ANYDTTMEw. Informat
@@ -34,14 +34,14 @@ BINARYw.d,BINARY,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,678,6
 BITSw.d,BITS,Numeric,Not implemented,,Unselected,leforinforref.pdf,679,669,BITSw.d Informat
 BZw.d,BZ,Numeric,Not implemented,,Unselected,leforinforref.pdf,680,670,BZw.d Informat
 CBw.d,CB,CAS Column Binary,Not implemented,,Unselected,leforinforref.pdf,682,672,CBw.d Informat
-COMMAw.d,COMMA,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,683,673,COMMAw.d Informat
+COMMAw.d,COMMA,CAS Numeric,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,683,673,COMMAw.d Informat
 COMMAXw.d,COMMAX,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,685,675,COMMAXw.d Informat
-DATEw.,DATE,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,686,676,DATEw. Informat
-DATETIMEw.,DATETIME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,688,678,DATETIMEw. Informat
-DDMMYYw.,DDMMYY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,690,680,DDMMYYw. Informat
-E8601DAw.,E8601DA,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,692,682,E8601DAw. Informat
+DATEw.,DATE,CAS Date and Time,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,686,676,DATEw. Informat
+DATETIMEw.,DATETIME,CAS Date and Time,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,688,678,DATETIMEw. Informat
+DDMMYYw.,DDMMYY,CAS Date and Time,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,690,680,DDMMYYw. Informat
+E8601DAw.,E8601DA,CAS Date and Time ISO 8601,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,692,682,E8601DAw. Informat
 E8601DNw.,E8601DN,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,694,684,E8601DNw. Informat
-E8601DTw.d,E8601DT,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,695,685,E8601DTw.d Informat
+E8601DTw.d,E8601DT,CAS Date and Time ISO 8601,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,695,685,E8601DTw.d Informat
 E8601DXw.,E8601DX,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,697,687,E8601DXw. Informat
 E8601DZw.d,E8601DZ,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,697,687,E8601DZw.d Informat
 E8601LXw.,E8601LX,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,700,690,E8601LXw. Informat
@@ -57,7 +57,7 @@ IBRw.d,IBR,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,713,703,IBR
 IEEEw.d,IEEE,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,716,706,IEEEw.d Informat
 JULIANw.,JULIAN,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,717,707,JULIANw. Informat
 MDYAMPMw.d,MDYAMPM,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,719,709,MDYAMPMw.d Informat
-MMDDYYw.,MMDDYY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,721,711,MMDDYYw. Informat
+MMDDYYw.,MMDDYY,CAS Date and Time,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,721,711,MMDDYYw. Informat
 MONYYw.,MONYY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,723,713,MONYYw. Informat
 MSECw.,MSEC,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,725,715,MSECw. Informat
 NUMXw.d,NUMX,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,726,716,NUMXw.d Informat
@@ -66,7 +66,7 @@ PDw.d,PD,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,729,719,PDw.d
 PDJULGw.,PDJULG,Date and Time,Not implemented,,Unselected,leforinforref.pdf,731,721,PDJULGw. Informat
 PDJULIw.,PDJULI,Date and Time,Not implemented,,Unselected,leforinforref.pdf,732,722,PDJULIw. Informat
 PDTIMEw.,PDTIME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,734,724,PDTIMEw. Informat
-PERCENTw.d,PERCENT,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,736,726,PERCENTw.d Informat
+PERCENTw.d,PERCENT,CAS Numeric,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,736,726,PERCENTw.d Informat
 PIBw.d,PIB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,737,727,PIBw.d Informat
 PIBRw.d,PIBR,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,739,729,PIBRw.d Informat
 PKw.d,PK,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,741,731,PKw.d Informat
@@ -91,18 +91,18 @@ S370FZDUw.d,S370FZDU,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,7
 SHRSTAMPw.,SHRSTAMP,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,774,764,SHRSTAMPw. Informat
 SMFSTAMPw.,SMFSTAMP,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,776,766,SMFSTAMPw. Informat
 STIMERw.,STIMER,Date and Time,Not implemented,,Unselected,leforinforref.pdf,778,768,STIMERw. Informat
-TIMEw.,TIME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,780,770,TIMEw. Informat
+TIMEw.,TIME,CAS Date and Time,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,780,770,TIMEw. Informat
 TODSTAMPw.,TODSTAMP,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,782,772,TODSTAMPw. Informat
 TRAILSGNw.,TRAILSGN,Numeric,Not implemented,,Unselected,leforinforref.pdf,783,773,TRAILSGNw. Informat
 TUw.,TU,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,784,774,TUw. Informat
 VAXRBw.d,VAXRB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,785,775,VAXRBw.d Informat
 VMSZNw.d,VMSZN,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,786,776,VMSZNw.d Informat
-w.d,w.d,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,788,778,w.d Informat
+w.d,w.d,CAS Numeric,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,788,778,w.d Informat
 WEEKUw.,WEEKU,Date and Time,Not implemented,,Unselected,leforinforref.pdf,789,779,WEEKUw. Informat
 WEEKVw.,WEEKV,Date and Time,Not implemented,,Unselected,leforinforref.pdf,792,782,WEEKVw. Informat
 WEEKWw.,WEEKW,Date and Time,Not implemented,,Unselected,leforinforref.pdf,794,784,WEEKWw. Informat
 YMDDTTMw.d,YMDDTTM,Date and Time,Not implemented,,Unselected,leforinforref.pdf,797,787,YMDDTTMw.d Informat
-YYMMDDw.,YYMMDD,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,799,789,YYMMDDw. Informat
+YYMMDDw.,YYMMDD,CAS Date and Time,Implemented documented INPUT subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,799,789,YYMMDDw. Informat
 YYMMNw.,YYMMN,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,801,791,YYMMNw. Informat
 YYQw.,YYQ,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,803,793,YYQw. Informat
 ZDw.d,ZD,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,805,795,ZDw.d Informat

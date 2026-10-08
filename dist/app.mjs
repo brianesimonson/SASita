@@ -1,6 +1,41 @@
 import {parseCSV,csv,display} from './engine.mjs';
 const $=id=>document.getElementById(id);
 const examples={
+conversions:`/* INPUT reads text; PUT produces a character result. */
+data converted;
+    sale = '2,115,353';
+    sale_number = input(sale, comma9.);
+    chardate = put(122591, z6.);
+    sasdate = input(chardate, mmddyy6.);
+    iso_date = put(sasdate, e8601da10.);
+    padded_id = put(1350, z8.);
+    bad = input('not a number', ?? 12.);
+    format sale_number comma12. sasdate date9.;
+run;`,
+formats:`/* Width changes zeros/date text; the table omits alignment padding. */
+data format_gallery;
+    day = input('03/15/2018', mmddyy10.);
+    amount = input('$1,234.50', comma12.);
+    rate = input('23.48%', percent7.2);
+    clock = input('12:59:56', time8.);
+    iso_date = put(day, e8601da10.);
+    month_label = put(day, monyy7.);
+    padded_id = put(1350, z8.);
+    fixed_text = put(23.45, 6.3);
+    format day date11. amount dollar12.2 rate percent8.2 clock hhmm8.2;
+run;`,
+random:`/* Re-running produces the same results in this app.
+   MT32 integer core is verified; SAS RAND sequences are unverified. */
+data random_sample;
+    call streaminit('MT32', 12345);
+    do id = 1 to 8;
+        uniform = rand('uniform');
+        normal = rand('normal', 10, 2);
+        uniform_hex = put(uniform, hex16.);
+        output;
+    end;
+    format uniform 10.6 normal 10.4;
+run;`,
 flags:`/* Flag claims and calculate excess payment. */\ndata flagged;\n    set claims;\n    if paid_amount > 1000;\n    excess = paid_amount - allowed_amount;\n    length review $ 12;\n    if excess > 500 then review = 'Priority';\n    else review = 'Routine';\n    format paid_amount dollar12.2\n           excess dollar12.2;\n    keep claim_id provider paid_amount excess review;\nrun;`,
 groups:`/* CLAIMS is already sorted by provider. */\ndata provider_totals;\n    set claims;\n    by provider;\n    if first.provider then do;\n        total_paid = 0;\n        claim_count = 0;\n    end;\n    total_paid + paid_amount;\n    claim_count + 1;\n    if last.provider then output;\n    format total_paid dollar12.2;\n    keep provider total_paid claim_count;\nrun;`,
 loop:`/* No SET: create observations from a loop. */\ndata squares;\n    do number = 1 to 12;\n        square = number ** 2;\n        root = sqrt(number);\n        output;\n    end;\nrun;`,

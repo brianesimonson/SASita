@@ -6,7 +6,7 @@ SASita starts from the supplied DATA Step Lab v0.2.0 prototype. The application 
 
 Download `dist/data-step-lab.html` from GitHub and open it in a modern Chrome or Edge browser. Choose an example, click **Load example**, then **Run program**. The app requires no Python, server, account, API key, or internet connection to compute results.
 
-Start with the supplied synthetic data. Try all seven examples, inspect the Log and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs and datasets currently exist only in tab memory: export before closing. Macro definitions reset on each Run.
+Start with the supplied synthetic data. Try all ten examples in the current feature build, inspect the Log and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs and datasets currently exist only in tab memory: export before closing. Macro definitions reset on each Run.
 
 ## Develop in Codex or locally
 
@@ -23,7 +23,7 @@ npm run dev
 
 `npm run dev` serves the modular app on port 8000. Stop it with Ctrl+C. The browser suite requires Chromium on PATH, or `CHROME_BIN` set to a Chrome/Chromium executable. It starts and stops its own local server and browser. It tests both the modular app and the self-contained HTML over HTTP. Use `npm run test:browser -- --file` to additionally open the HTML through file:// when browser policy permits; the current cloud browser blocks file:// navigation. GitHub Actions requests the file:// check as well.
 
-Edit the modules under `dist/`, then regenerate `dist/data-step-lab.html` with `npm run build`. Commit source and generated HTML together. GitHub Actions checks the build, detects a stale generated HTML file, runs the original regression suite, and runs browser tests.
+Edit the modules under `dist/` (including formats.mjs and random.mjs), then regenerate `dist/data-step-lab.html` with `npm run build`. Commit source and generated HTML together. GitHub Actions checks the build, detects a stale generated HTML file, runs the original regression suite, and runs browser tests.
 
 ## Keep progress safe
 

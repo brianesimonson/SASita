@@ -2,7 +2,7 @@ name,family,category,current_support,proposed_batch,selection,pdf_file,pdf_page,
 $ASCIIw.,$ASCII,Character,Not implemented,,Unselected,leforinforref.pdf,114,104,$ASCIIw. Format
 $BASE64Xw.,$BASE64X,CAS Character,Not implemented,,Unselected,leforinforref.pdf,115,105,$BASE64Xw. Format
 $BINARYw.,$BINARY,CAS Character,Not implemented,,Unselected,leforinforref.pdf,117,107,$BINARYw. Format
-$CHARw.,$CHAR,CAS Character,Not implemented,1,Unselected,leforinforref.pdf,118,108,$CHARw. Format
+$CHARw.,$CHAR,CAS Character,Implemented documented subset; see current-functions-formats.md,1,Unselected,leforinforref.pdf,118,108,$CHARw. Format
 $CSTR,$CSTR,CAS Character,Not implemented,,Unselected,leforinforref.pdf,119,109,$CSTR Format
 $EBCDICw.,$EBCDIC,Character,Not implemented,,Unselected,leforinforref.pdf,120,110,$EBCDICw. Format
 $HEXw.,$HEX,CAS Character,Not implemented,,Unselected,leforinforref.pdf,122,112,$HEXw. Format
@@ -19,11 +19,11 @@ $OCTALw.,$OCTAL,CAS Character,Not implemented,,Unselected,leforinforref.pdf,142,
 $QUOTEw.,$QUOTE,CAS Character,Not implemented,,Unselected,leforinforref.pdf,143,133,$QUOTEw. Format
 $REVERJw.,$REVERJ,CAS Character,Not implemented,,Unselected,leforinforref.pdf,145,135,$REVERJw. Format
 $REVERSw.,$REVERS,CAS Character,Not implemented,,Unselected,leforinforref.pdf,146,136,$REVERSw. Format
-$UPCASEw.,$UPCASE,CAS Character,Not implemented,,Unselected,leforinforref.pdf,147,137,$UPCASEw. Format
+$UPCASEw.,$UPCASE,CAS Character,Implemented documented subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,147,137,$UPCASEw. Format
 $UUIDw.,$UUID,CAS Character,Not implemented,,Unselected,leforinforref.pdf,148,138,$UUIDw. Format
 $VARYINGw.,$VARYING,Character,Not implemented,,Unselected,leforinforref.pdf,149,139,$VARYINGw. Format
-$w.,$,Character,Not implemented,1,Unselected,leforinforref.pdf,152,142,$w. Format
-BESTw.,BEST,CAS Numeric,Partial: ordinary number text; width ignored,3,Unselected,leforinforref.pdf,153,143,BESTw. Format
+$w.,$,Character,Implemented documented subset; see current-functions-formats.md,1,Unselected,leforinforref.pdf,152,142,$w. Format
+BESTw.,BEST,CAS Numeric,Partial: number text and width padding; no adaptive SAS precision,3,Unselected,leforinforref.pdf,153,143,BESTw. Format
 BESTDw.p,BESTDw.p,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,156,146,BESTDw.p Format
 BINARYw.,BINARY,Numeric,Not implemented,,Unselected,leforinforref.pdf,158,148,BINARYw. Format
 B8601DAw.,B8601DA,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,159,149,B8601DAw. Format
@@ -36,16 +36,16 @@ B8601LZw.,B8601LZ,Date and Time ISO 8601,Not implemented,,Unselected,leforinforr
 B8601TMw.d,B8601TM,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,172,162,B8601TMw.d Format
 B8601TXw.,B8601TX,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,173,163,B8601TXw. Format
 B8601TZw.,B8601TZ,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,175,165,B8601TZw. Format
-COMMAw.d,COMMA,CAS Numeric,Partial: width ignored; decimal display supported,3,Unselected,leforinforref.pdf,177,167,COMMAw.d Format
+COMMAw.d,COMMA,CAS Numeric,Implemented documented subset; see current-functions-formats.md,3,Unselected,leforinforref.pdf,177,167,COMMAw.d Format
 COMMAXw.d,COMMAX,CAS Numeric,Not implemented,3,Unselected,leforinforref.pdf,179,169,COMMAXw.d Format
 Dw.p,Dw.p,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,181,171,Dw.p Format
-DATEw.,DATE,CAS Date and Time,Partial: DATE9. only,1,Unselected,leforinforref.pdf,183,173,DATEw. Format
+DATEw.,DATE,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,1,Unselected,leforinforref.pdf,183,173,DATEw. Format
 DATEAMPMw.d,DATEAMPM,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,185,175,DATEAMPMw.d Format
-DATETIMEw.d,DATETIME,CAS Date and Time,Not implemented,2,Unselected,leforinforref.pdf,187,177,DATETIMEw.d Format
+DATETIMEw.d,DATETIME,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,2,Unselected,leforinforref.pdf,187,177,DATETIMEw.d Format
 DAYw.,DAY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,190,180,DAYw. Format
-DDMMYYw.,DDMMYY,CAS Date and Time,Not implemented,1,Unselected,leforinforref.pdf,191,181,DDMMYYw. Format
-DDMMYYxw.,DDMMYYx,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,193,183,DDMMYYxw. Format
-DOLLARw.d,DOLLAR,CAS Numeric,Partial: width ignored; decimal display supported,3,Unselected,leforinforref.pdf,195,185,DOLLARw.d Format
+DDMMYYw.,DDMMYY,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,1,Unselected,leforinforref.pdf,191,181,DDMMYYw. Format
+DDMMYYxw.,DDMMYYx,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,193,183,DDMMYYxw. Format
+DOLLARw.d,DOLLAR,CAS Numeric,Implemented documented subset; see current-functions-formats.md,3,Unselected,leforinforref.pdf,195,185,DOLLARw.d Format
 DOLLARXw.d,DOLLARX,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,197,187,DOLLARXw.d Format
 DOWNAMEw.,DOWNAME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,199,189,DOWNAMEw. Format
 DTDATEw.,DTDATE,Date and Time,Not implemented,,Unselected,leforinforref.pdf,200,190,DTDATEw. Format
@@ -54,9 +54,9 @@ DTWKDATXw.,DTWKDATX,CAS Date and Time,Not implemented,,Unselected,leforinforref.
 DTYEARw.,DTYEAR,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,205,195,DTYEARw. Format
 DTYYQCw.,DTYYQC,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,207,197,DTYYQCw. Format
 Ew.,E,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,208,198,Ew. Format
-E8601DAw.,E8601DA,CAS Date and Time ISO 8601,Not implemented,2,Unselected,leforinforref.pdf,209,199,E8601DAw. Format
+E8601DAw.,E8601DA,CAS Date and Time ISO 8601,Implemented documented subset; see current-functions-formats.md,2,Unselected,leforinforref.pdf,209,199,E8601DAw. Format
 E8601DNw.,E8601DN,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,211,201,E8601DNw. Format
-E8601DTw.d,E8601DT,CAS Date and Time ISO 8601,Not implemented,2,Unselected,leforinforref.pdf,212,202,E8601DTw.d Format
+E8601DTw.d,E8601DT,CAS Date and Time ISO 8601,Implemented documented subset; see current-functions-formats.md,2,Unselected,leforinforref.pdf,212,202,E8601DTw.d Format
 E8601DXw.,E8601DX,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,214,204,E8601DXw. Format
 E8601DZw.,E8601DZ,CAS Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,216,206,E8601DZw. Format
 E8601LXw.,E8601LX,Date and Time ISO 8601,Not implemented,,Unselected,leforinforref.pdf,218,208,E8601LXw. Format
@@ -69,8 +69,8 @@ EUROXw.d,EUROX,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,231,221
 Fwd,Fwd,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,234,224,Fwd Format
 FLOATw.d,FLOAT,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,235,225,FLOATw.d Format
 FRACTw.,FRACT,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,237,227,FRACTw. Format
-HEXw.,HEX,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,238,228,HEXw. Format
-HHMMw.d,HHMM,CAS Date and Time,Not implemented,2,Unselected,leforinforref.pdf,240,230,HHMMw.d Format
+HEXw.,HEX,CAS Numeric,Partial: HEX16. IEEE-754 double output only,,Unselected,leforinforref.pdf,238,228,HEXw. Format
+HHMMw.d,HHMM,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,2,Unselected,leforinforref.pdf,240,230,HHMMw.d Format
 HOURw.d,HOUR,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,242,232,HOURw.d Format
 IBw.d,IB,Numeric,Not implemented,,Unselected,leforinforref.pdf,244,234,IBw.d Format
 IBRw.d,IBR,Numeric,Not implemented,,Unselected,leforinforref.pdf,246,236,IBRw.d Format
@@ -78,14 +78,14 @@ IEEEw.d,IEEE,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,248,238,I
 JULDAYw.,JULDAY,Date and Time,Not implemented,,Unselected,leforinforref.pdf,249,239,JULDAYw. Format
 JULIANw.,JULIAN,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,251,241,JULIANw. Format
 MDYAMPMw.d,MDYAMPM,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,253,243,MDYAMPMw.d Format
-MMDDYYw.,MMDDYY,CAS Date and Time,Not implemented,1,Unselected,leforinforref.pdf,255,245,MMDDYYw. Format
-MMDDYYxw.,MMDDYYx,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,257,247,MMDDYYxw. Format
+MMDDYYw.,MMDDYY,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,1,Unselected,leforinforref.pdf,255,245,MMDDYYw. Format
+MMDDYYxw.,MMDDYYx,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,257,247,MMDDYYxw. Format
 MMSSw.d,MMSS,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,260,250,MMSSw.d Format
 MMYYw.,MMYY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,261,251,MMYYw. Format
 MMYYxw.,MMYYx,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,263,253,MMYYxw. Format
 MONNAMEw.,MONNAME,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,265,255,MONNAMEw. Format
 MONTHw.,MONTH,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,267,257,MONTHw. Format
-MONYYw.,MONYY,CAS Date and Time,Not implemented,2,Unselected,leforinforref.pdf,268,258,MONYYw. Format
+MONYYw.,MONYY,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,2,Unselected,leforinforref.pdf,268,258,MONYYw. Format
 NEGPARENw.d,NEGPAREN,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,270,260,NEGPARENw.d Format
 NENGOw.,NENGO,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,272,262,NENGOw. Format
 NLBESTw.,NLBEST,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,273,263,NLBESTw. Format
@@ -233,7 +233,7 @@ ODDSRw.d,ODDSR,Numeric,Not implemented,,Unselected,leforinforref.pdf,475,465,ODD
 PDw.d,PD,Numeric,Not implemented,,Unselected,leforinforref.pdf,477,467,PDw.d Format
 PDJULGw.,PDJULG,Date and Time,Not implemented,,Unselected,leforinforref.pdf,479,469,PDJULGw. Format
 PDJULIw.,PDJULI,Date and Time,Not implemented,,Unselected,leforinforref.pdf,481,471,PDJULIw. Format
-PERCENTw.d,PERCENT,CAS Numeric,Partial: width ignored; decimal display supported,3,Unselected,leforinforref.pdf,483,473,PERCENTw.d Format
+PERCENTw.d,PERCENT,CAS Numeric,Implemented documented subset; see current-functions-formats.md,3,Unselected,leforinforref.pdf,483,473,PERCENTw.d Format
 PERCENTNw.d,PERCENTN,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,485,475,PERCENTNw.d Format
 PIBw.d,PIB,Numeric,Not implemented,,Unselected,leforinforref.pdf,487,477,PIBw.d Format
 PIBRw.d,PIBR,Numeric,Not implemented,,Unselected,leforinforref.pdf,489,479,PIBRw.d Format
@@ -257,12 +257,12 @@ S370FZDTw.d,S370FZDT,Numeric,Not implemented,,Unselected,leforinforref.pdf,518,5
 S370FZDUw.d,S370FZDU,Numeric,Not implemented,,Unselected,leforinforref.pdf,520,510,S370FZDUw.d Format
 SIZEK w.d,SIZEK ,Numeric CAS,Not implemented,,Unselected,leforinforref.pdf,522,512,SIZEK w.d Format
 SSNw.,SSN,Numeric,Not implemented,,Unselected,leforinforref.pdf,523,513,SSNw. Format
-TIMEw.d,TIME,CAS Date and Time,Not implemented,2,Unselected,leforinforref.pdf,524,514,TIMEw.d Format
+TIMEw.d,TIME,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,2,Unselected,leforinforref.pdf,524,514,TIMEw.d Format
 TIMEAMPMw.d,TIMEAMPM,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,528,518,TIMEAMPMw.d Format
 TODw.d,TOD,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,530,520,TODw.d Format
 VAXRBw.d,VAXRB,CAS Numeric,Not implemented,,Unselected,leforinforref.pdf,533,523,VAXRBw.d Format
 VMSZNw.d,VMSZN,Numeric,Not implemented,,Unselected,leforinforref.pdf,534,524,VMSZNw.d Format
-w.d,w.d,CAS Numeric,Not implemented,1,Unselected,leforinforref.pdf,536,526,w.d Format
+w.d,w.d,CAS Numeric,Implemented documented subset; see current-functions-formats.md,1,Unselected,leforinforref.pdf,536,526,w.d Format
 WEEKDATEw.,WEEKDATE,Date and Time,Not implemented,2,Unselected,leforinforref.pdf,538,528,WEEKDATEw. Format
 WEEKDATXw.,WEEKDATX,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,540,530,WEEKDATXw. Format
 WEEKDAYw.,WEEKDAY,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,542,532,WEEKDAYw. Format
@@ -275,8 +275,8 @@ WORDFw.,WORDF,Numeric,Not implemented,,Unselected,leforinforref.pdf,554,544,WORD
 WORDSw.,WORDS,Numeric,Not implemented,,Unselected,leforinforref.pdf,555,545,WORDSw. Format
 YEARw.,YEAR,CAS Date and Time,Not implemented,2,Unselected,leforinforref.pdf,557,547,YEARw. Format
 YYMMw.,YYMM,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,558,548,YYMMw. Format
-YYMMDDw.,YYMMDD,CAS Date and Time,Partial: YYMMDD10. only,1,Unselected,leforinforref.pdf,560,550,YYMMDDw. Format
-YYMMDDxw.,YYMMDDx,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,562,552,YYMMDDxw. Format
+YYMMDDw.,YYMMDD,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,1,Unselected,leforinforref.pdf,560,550,YYMMDDw. Format
+YYMMDDxw.,YYMMDDx,CAS Date and Time,Implemented documented subset; see current-functions-formats.md,,Unselected,leforinforref.pdf,562,552,YYMMDDxw. Format
 YYMMxw.,YYMMx,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,565,555,YYMMxw. Format
 YYMONw.,YYMON,CAS Date and Time Numeric,Not implemented,,Unselected,leforinforref.pdf,567,557,YYMONw. Format
 YYQw.,YYQ,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,568,558,YYQw. Format
@@ -286,5 +286,5 @@ YYQRxw.,YYQRx,CAS Date and Time Numeric,Not implemented,,Unselected,leforinforre
 YYWEEKUw.,YYWEEKU,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,576,566,YYWEEKUw. Format
 YYWEEKVw.,YYWEEKV,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,578,568,YYWEEKVw. Format
 YYWEEKWw.,YYWEEKW,CAS Date and Time,Not implemented,,Unselected,leforinforref.pdf,580,570,YYWEEKWw. Format
-Zw.d,Z,CAS Numeric,Not implemented,1,Unselected,leforinforref.pdf,582,572,Zw.d Format
+Zw.d,Z,CAS Numeric,Implemented documented subset; see current-functions-formats.md,1,Unselected,leforinforref.pdf,582,572,Zw.d Format
 ZDw.d,ZD,Numeric,Not implemented,,Unselected,leforinforref.pdf,584,574,ZDw.d Format

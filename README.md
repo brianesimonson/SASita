@@ -2,11 +2,17 @@
 
 Start with [START-HERE.md](START-HERE.md) for use and development, and [PROJECT-STATUS.md](PROJECT-STATUS.md) for current validation and next steps. The following description comes from the supplied v0.2.0 prototype. Development commands are `npm run build`, `npm test`, `npm run test:browser`, and `npm run dev`; Node 24+ is used for development. There are no npm dependencies to install.
 
-# DATA Step Lab — version 2
+# Original DATA Step Lab v2 scope
 
 Browser-local SAS-style analysis prototype. Use the hosted Site, or download `dist/data-step-lab.html`, double-click it on Windows, and open it in a modern Edge/Chrome browser. The standalone file includes its styling, interpreter, macro processor, and Blob-based worker. No Python installation, server, AI API, external assets, or internet connection is required for computation.
 
 Choose an example and Run program (Ctrl+Enter). Import CSV datasets into the WORK library and export results as raw CSV. Dataset and variable names are case-insensitive. Data, programs, and macro definitions exist only in tab memory. Macro definitions/variables reset on each Run. Export results before closing. Failed programs do not commit partial dataset changes.
+
+## Current development build
+
+The feature/formats-conversions-rand branch adds common formats, INPUT/PUT conversion functions, and seeded RAND for UNIFORM/NORMAL with explicit MT32. Try the new INPUT & PUT, format gallery, and seeded RAND examples. See [feature scope and validation](docs/formats-conversions-rand.md). The standalone HTML still requires no server or installed runtime. Main and v1.0 remain preserved checkpoints.
+
+Width now controls value-changing formatting and PUT padding. Some SAS format semantics remain simplified. The MT32 integer core is verified; SAS uniform/normal bit equivalence remains unverified. The current inventory is 35 DATA step functions and 20 common format families (date separator variants grouped within their parent family).
 
 ## Function and format references
 
@@ -17,14 +23,14 @@ The app’s **Supported syntax** dialog now lists every implemented function and
 - Match MERGE with BY, multiple inputs, IN= indicators, unmatched observations, repeated keys, and shared-variable precedence. Repeated groups are paired, not multiplied. Exhausted inputs retain their values within a BY group; each new BY group resets input variables. Shared variables are overwritten only by inputs actually read, in MERGE order. IN= variables are excluded from output; copy them to a new variable to preserve them. Input KEEP=, DROP=, and RENAME=(old=new) accept explicit variable names.
 - PROC SORT DATA= OUT= with multiple BY keys, per-key DESCENDING, stable equal-key order (EQUALS), and NODUPKEY. Without OUT= the input is replaced. NODUPKEY keeps the first observation for each complete BY key.
 - A bounded macro text generator: %LET, &variables and dot delimiters, %MACRO/%MEND, positional and keyword arguments/defaults, %IF/%THEN/%ELSE, %DO/%END blocks and indexed %TO/%BY loops, %LOCAL/%GLOBAL, %PUT, integer %EVAL, and %UPCASE. Single-quoted strings suppress substitution. Double-quoted strings allow substitution. An Expanded code view shows the generated program.
-- Seven examples, including sort-and-merge, parameterized macros, and macro loops. Two synthetic input datasets are supplied.
+- Ten examples, including sort-and-merge, parameterized macros, and macro loops. Two synthetic input datasets are supplied.
 - A downloadable, self-contained offline HTML app.
 
 ## Remaining subset
 
 DATA, one top-level SET or MERGE per step, assignments, IF/THEN/ELSE, subsetting IF, DO/END, indexed DO/TO/BY, DELETE, STOP, OUTPUT, KEEP/DROP, RETAIN, sum statements, character LENGTH, FIRST./LAST. variables, selected formats, and common functions. See Supported syntax in the app for details.
 
-No positional MERGE without BY, arrays, other PROC procedures, INPUT/INFILE, SAS binary files, informats, output dataset options, variable lists, special missing values, or full SAS numeric/character coercion and fixed character semantics. Flexible character strings are used unless LENGTH is supplied. Character sorting uses Unicode, so host/locale collation can differ from SAS. Dates export as raw days since 1960-01-01. CSV types are inferred.
+No positional MERGE without BY, arrays, other PROC procedures, INPUT/INFILE statements, SAS binary files, unlisted informats, output dataset options, variable lists, special missing values, or full SAS numeric/character coercion and fixed character semantics. Flexible character strings are used unless LENGTH is supplied. Character sorting uses Unicode, so host/locale collation can differ from SAS. Dates export as raw days since 1960-01-01. CSV types are inferred.
 
 Macro scope and conditional expressions cover a practical subset. No quoting functions, indirect && references, %SYSFUNC, CALL SYMPUT, nested macro definitions, dynamic macro names, full SAS rescanning, or advanced/empty-operand expressions. Unknown constructs and unsupported macro features produce errors rather than being ignored. Semantics outside the supported subset can still differ from SAS. This is an independent prototype, not SAS software or a certified compatible runtime.
 

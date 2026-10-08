@@ -1,8 +1,14 @@
-# SASita baseline
+# SASita project status
+
+## Current feature branch
+
+feature/formats-conversions-rand adds common formats, INPUT/PUT, and explicit MT32 RAND (uniform/normal), plus three examples. Main and v1.0 are unchanged. See docs/formats-conversions-rand.md for exact scope, reference pages, checks, and unresolved SAS bit equivalence. The source modules and generated HTML are saved together. No third-party browser dependencies were added.
+
+Validation: npm test and npm run test:browser pass, including all ten examples in modular and standalone builds, reference dialog, CSV import/export, and failed-run rollback. The MT32 integer core matches 60,000 independently generated values. Format/conversion assertions include supplied-manual examples. No actual SAS reference runtime comparison has been performed. The comparison fixture program/checker is prepared for such a run. Windows file:// verification remains outstanding.
 
 ## Purpose
 
-A standalone HTML application for entering a practical SAS-style subset and processing datasets in the browser. Preserve local computation and offline single-file delivery. The source modules and interpreter are the supplied DATA Step Lab v0.2.0 baseline; setup has not expanded language behavior.
+A standalone HTML application for entering a practical SAS-style subset and processing datasets in the browser. Preserve local computation and offline single-file delivery. The source modules and interpreter are the supplied DATA Step Lab v0.2.0 baseline; the baseline setup preserved its language behavior. Subsequent additions are described above.
 
 ## Current capabilities
 

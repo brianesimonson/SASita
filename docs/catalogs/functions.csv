@@ -362,7 +362,7 @@ IFN,IFN,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1049,103
 INDEX,INDEX,Character CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1053,1043,INDEX Function
 INDEXC,INDEXC,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1055,1045,INDEXC Function
 INDEXW,INDEXW,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1057,1047,INDEXW Function
-INPUT,INPUT,Special CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1062,1052,INPUT Function
+INPUT,INPUT,Special CAS,Implemented common-format/informat subset,2,Unselected,lefunctionsref.pdf,1062,1052,INPUT Function
 INPUTC,INPUTC,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1065,1055,INPUTC Function
 INPUTN,INPUTN,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1067,1057,INPUTN Function
 INT,INT,Rounding and Truncation CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1069,1059,INT Function
@@ -496,7 +496,7 @@ PRXPAREN,PRXPAREN,Character String Matching,Not implemented,,Unselected,lefuncti
 PRXPARSE,PRXPARSE,Character String Matching CAS,Not implemented,,Unselected,lefunctionsref.pdf,1387,1377,PRXPARSE Function
 PRXPOSN,PRXPOSN,Character String Matching CAS,Not implemented,,Unselected,lefunctionsref.pdf,1390,1380,PRXPOSN Function
 PTRLONGADD,PTRLONGADD,Binary Results Special,Not implemented,,Unselected,lefunctionsref.pdf,1394,1384,PTRLONGADD Function
-PUT,PUT,Special CAS,Not implemented,2,Unselected,lefunctionsref.pdf,1395,1385,PUT Function
+PUT,PUT,Special CAS,Implemented common-format/informat subset,2,Unselected,lefunctionsref.pdf,1395,1385,PUT Function
 PUTC,PUTC,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1398,1388,PUTC Function
 PUTN,PUTN,Special CAS,Not implemented,,Unselected,lefunctionsref.pdf,1401,1391,PUTN Function
 PVP,PVP,Financial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1404,1394,PVP Function
@@ -505,7 +505,7 @@ QUANTILE,QUANTILE,Quantile CAS See: “CDF Function” on page 458,Not implement
 QUOTE,QUOTE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1411,1401,QUOTE Function
 RANBIN,RANBIN,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1414,1404,RANBIN Function
 RANCAU,RANCAU,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1416,1406,RANCAU Function
-RAND,RAND,Random Number CAS,Not implemented,,Unselected,lefunctionsref.pdf,1417,1407,RAND Function
+RAND,RAND,Random Number CAS,Partial: UNIFORM/NORMAL with explicit MT32; SAS sequence equivalence unverified,,Unselected,lefunctionsref.pdf,1417,1407,RAND Function
 RANDPERM,RANDPERM,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1439,1429,RANDPERM Function
 RANEXP,RANEXP,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1440,1430,RANEXP Function
 RANGAM,RANGAM,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1442,1432,RANGAM Function
