@@ -1,22 +1,145 @@
 /* SAS ONLY: INFILE/INPUT statements, PROC COMPARE and PROC EXPORT require SAS.
-   First run 01-calculations.sas and 02-merge.sas in SAS.
+   Run this program alone: it includes both original reference programs.
    Unzip validation-pack.zip and change this path to its results folder. */
 %let app_path = C:/SASita-validation/results;
 
-/* Stop before comparisons if either original SAS test has not been run.
-   Run all three programs in order in the same SAS Studio session. */
-%macro require_reference(name);
-  %if not %sysfunc(exist(&name)) %then %do;
-    %put ERROR: Missing &name.. Run 01-calculations.sas and 02-merge.sas first.;
-    %abort cancel;
-  %end;
-%mend;
-%require_reference(numeric_inputs);
-%require_reference(numeric_results);
-%require_reference(numeric_summary);
-%require_reference(merge_results);
-%require_reference(merge_summary);
-%require_reference(shared_results);
+/* Always rebuild the original SAS reference datasets before comparison.
+   This makes the helper repeatable even after a previous failed import.
+   The first two standalone programs are embedded unchanged below. */
+/* BEGIN FRESH REFERENCES */
+/* Run this entire program unchanged in SASita or SAS.
+   Explicit MT32 seed; exact SAS RAND equivalence is still unverified.
+   Both random draws are uniform on (0,1); systematic inputs are independent. */
+data numeric_inputs;
+  call streaminit('MT32', 12345);
+  do id = 1 to 20000;
+    random_x = rand('uniform');
+    random_y = rand('uniform');
+    systematic_x = id;
+    systematic_y = id + 20000;
+    random_x_hex = put(random_x, hex16.);
+    random_y_hex = put(random_y, hex16.);
+    output;
+  end;
+run;
+
+/* To isolate arithmetic from RAND, import numeric_inputs.csv into SAS
+   as NUMERIC_INPUTS, then run from this DATA step onward. */
+data numeric_results;
+  set numeric_inputs;
+  r_add = random_x + random_y;
+  r_subtract = random_y - random_x;
+  r_multiply = random_x * random_y;
+  r_divide = random_x / random_y;
+  r_square = random_x ** 2;
+  r_cube = random_x ** 3;
+  r_sqrt = sqrt(random_x);
+  r_cuberoot = random_x ** (1/3);
+  r_sum = sum(random_x, random_y);
+  r_mean = mean(random_x, random_y);
+  r_min = min(random_x, random_y);
+  r_max = max(random_x, random_y);
+  r_combined = sqrt(random_x * random_y) + (random_x + random_y) ** (1/3);
+  s_add = systematic_x + systematic_y;
+  s_subtract = systematic_y - systematic_x;
+  s_multiply = systematic_x * systematic_y;
+  s_divide = systematic_x / systematic_y;
+  s_square = systematic_x ** 2;
+  s_cube = systematic_x ** 3;
+  s_sqrt = sqrt(systematic_x);
+  s_cuberoot = systematic_x ** (1/3);
+  s_sum = sum(systematic_x, systematic_y);
+  s_mean = mean(systematic_x, systematic_y);
+  s_min = min(systematic_x, systematic_y);
+  s_max = max(systematic_x, systematic_y);
+  s_combined = sqrt(systematic_x * systematic_y) + (systematic_x + systematic_y) ** (1/3);
+  /* Missing-value propagation versus SUM/MEAN/MIN/MAX ignoring missing. */
+  sometimes_missing = systematic_x;
+  if mod(id, 10) = 0 then sometimes_missing = .;
+  missing_add = sometimes_missing + systematic_y;
+  missing_sum = sum(sometimes_missing, systematic_y);
+  missing_mean = mean(sometimes_missing, systematic_y);
+  missing_min = min(sometimes_missing, systematic_y);
+  missing_max = max(sometimes_missing, systematic_y);
+run;
+
+/* Running sums, emitted once. Values below remain within exact integer range. */
+data numeric_summary;
+  set numeric_results;
+  count + 1;
+  total_x + systematic_x;
+  total_y + systematic_y;
+  total_product + s_multiply;
+  total_missing + missing(sometimes_missing);
+  if id = 20000 then output;
+  keep count total_x total_y total_product total_missing;
+run;
+
+/* Deterministic many-to-many SAS match-MERGE, not a Cartesian join.
+   Unequal duplicates, unmatched keys, retained values and shared columns. */
+data merge_left;
+  do id = 1 to 10000;
+    do left_index = 1 to 2;
+      left_value = id * 10 + left_index;
+      shared = left_value;
+      output;
+    end;
+  end;
+run;
+data merge_right;
+  do id = 5001 to 15000;
+    do right_index = 1 to 3;
+      right_value = id * 100 + right_index;
+      shared = right_value;
+      output;
+    end;
+  end;
+run;
+proc sort data=merge_left; by id; run;
+proc sort data=merge_right; by id; run;
+data merge_results;
+  merge merge_left(in=in_left) merge_right(in=in_right);
+  by id;
+  merge_row + 1;
+  has_left = in_left;
+  has_right = in_right;
+  first_id = first.id;
+  last_id = last.id;
+  combined = sum(left_value, right_value);
+run;
+data merge_summary;
+  set merge_results;
+  row_count + 1;
+  group_count + first_id;
+  if has_left = 1 and has_right = 0 then left_only + 1;
+  if has_left = 1 and has_right = 1 then matched + 1;
+  if has_left = 0 and has_right = 1 then right_only + 1;
+  if id = 15000 and last_id = 1 then output;
+  keep row_count group_count left_only matched right_only;
+run;
+
+/* Reverse exhaustion: LEFT keeps reading after RIGHT runs out.
+   On the second row SHARED must come from LEFT, not a stale RIGHT value. */
+data shared_left;
+  do id = 1 to 3;
+    do left_index = 1 to 2;
+      shared = id * 10 + left_index;
+      output;
+    end;
+  end;
+run;
+data shared_right;
+  do id = 1 to 3;
+    shared = id * 100;
+    output;
+  end;
+run;
+data shared_results;
+  merge shared_left shared_right;
+  by id;
+  shared_row + 1;
+run;
+/* END FRESH REFERENCES */
 
 /* Explicit CSV schema: no PROC IMPORT type guessing.
    DSD removes CSV quotes, preserves empty fields as missing, and TERMSTR
@@ -118,14 +241,15 @@ proc compare base=shared_results compare=app_shared_results method=exact;
   id shared_row;
 run;
 
+/* BEGIN SAME INPUT CALCULATIONS */
 /* Recompute on the SAME saved app random inputs, regardless of RNG parity.
    Recreate inputs, then include only the computation portion of program 01. */
-data numeric_inputs;
+data same_inputs;
   set app_numeric_inputs;
 run;
 
-data numeric_results;
-  set numeric_inputs;
+data same_results;
+  set same_inputs;
   r_add = random_x + random_y;
   r_subtract = random_y - random_x;
   r_multiply = random_x * random_y;
@@ -163,8 +287,8 @@ data numeric_results;
 run;
 
 /* Running sums, emitted once. Values below remain within exact integer range. */
-data numeric_summary;
-  set numeric_results;
+data same_summary;
+  set same_results;
   count + 1;
   total_x + systematic_x;
   total_y + systematic_y;
@@ -174,8 +298,10 @@ data numeric_summary;
   keep count total_x total_y total_product total_missing;
 run;
 
+/* END SAME INPUT CALCULATIONS */
+
 title 'Random arithmetic on identical CSV inputs: relative tolerance 1e-12';
-proc compare base=numeric_results compare=app_numeric_results
+proc compare base=same_results compare=app_numeric_results
   method=relative criterion=1e-12;
   id id;
   var random_x random_y r_add r_subtract r_multiply r_divide r_square
@@ -186,7 +312,7 @@ title;
 /* Export the recomputed SAS results beside app outputs for further review.
    No formats that round raw values for display should be applied. */
 data sas_numeric_results;
-  set numeric_results;
+  set same_results;
   format _numeric_ best32.;
 run;
 proc export data=sas_numeric_results

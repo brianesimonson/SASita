@@ -10,10 +10,19 @@ const helper=await readFile('examples/validation/03-sas-comparison.sas','utf8');
 const files=[];
 for(const program of ['01-calculations.sas','02-merge.sas']) {
   const code=await readFile(`examples/validation/${program}`,'utf8');
+  assert.ok(helper.includes(code),`${program}: helper embeds fresh reference program unchanged`);
   const result=run(code,{});
   if(program.startsWith('01')) {
     const inputs=result.datasets.numeric_inputs.rows, rows=result.datasets.numeric_results.rows;
     assert.equal(inputs.length,20000);assert.equal(rows.length,20000);
+    const isolated=helper.match(/\/\* BEGIN SAME INPUT CALCULATIONS \*\/([\s\S]*?)\/\* END SAME INPUT CALCULATIONS \*\//);
+    assert.ok(isolated,'isolated calculation section exists');
+    const snapshot=JSON.stringify(result.datasets);
+    const same=run(isolated[1],{...result.datasets,app_numeric_inputs:result.datasets.numeric_inputs});
+    assert.equal(JSON.stringify(result.datasets),snapshot,'original reference objects unchanged');
+    for(const name of ['numeric_inputs','numeric_results','numeric_summary'])assert.deepEqual(same.datasets[name],result.datasets[name],'original reference datasets preserved');
+    assert.deepEqual(same.datasets.same_results,result.datasets.numeric_results,'isolated computations reproduce results');
+
     const repeat=run(code,{});
     assert.deepEqual(repeat.datasets.numeric_inputs,result.datasets.numeric_inputs,'seeded rerun must reproduce inputs');
     for(let i=1;i<=20000;i++) {

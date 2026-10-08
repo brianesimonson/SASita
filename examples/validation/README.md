@@ -26,11 +26,11 @@ The third matched row retains the second left observation. Missing values reset 
 
 ## Compare in SAS
 
-1. Run **01-calculations.sas** and **02-merge.sas** in SAS.
-2. Open **03-sas-comparison.sas**, change its first `app_path` setting to your unzipped **results/** folder, and run it **in SAS only**.
+1. Open **03-sas-comparison.sas** and change its first `app_path` setting to your unzipped **results/** folder.
+2. Run **that one program in SAS**. It rebuilds both original test programs automatically and uses separate dataset names for calculations on imported app inputs. You do not need to rerun programs 01 and 02 separately.
 3. Read the PROC COMPARE reports: exact random bits, systematic arithmetic, exact integer summary, exact merge results, then random arithmetic recomputed from the same saved inputs. The last step also exports `sas_numeric_results.csv`; send that CSV and the comparison report back for investigation.
 
-The floating-point comparison uses relative tolerance **1e-12**. A pass means differences are within that tolerance, not bit-for-bit equality. Integer summaries and merge values use exact comparison. The helper reads CSVs with explicit numeric informats, DSD quote handling, CRLF record handling, and 16-character HEX columns; it avoids automatic import type guessing. It checks that SAS reference datasets exist and imported row counts are complete. SASita does not implement these INFILE/INPUT statements, PROC COMPARE, or PROC EXPORT; the third helper intentionally requires SAS. Actual SAS execution remains pending.
+The floating-point comparison uses relative tolerance **1e-12**. A pass means differences are within that tolerance, not bit-for-bit equality. Integer summaries and merge values use exact comparison. The helper reads CSVs with explicit numeric informats, DSD quote handling, CRLF record handling, and 16-character HEX columns; it avoids automatic import type guessing. It rebuilds fresh SAS reference datasets and checks imported row counts and invalid numeric input. SASita does not implement these INFILE/INPUT statements, PROC COMPARE, or PROC EXPORT; the third helper intentionally requires SAS. The latest helper needs a SAS rerun; confirmed results from the uploaded report are described below.
 
 ## Rebuild and verify
 
@@ -42,4 +42,12 @@ From the repository root, run `node scripts/build-validation-pack.mjs`, then `py
 
 The uploaded `03-sas-comparison-results.html` reports 5 conflicting types in numeric_inputs, 37 in numeric_results, and all 5 in numeric_summary. Numeric values were imported as character columns. The summary explicitly states that data-value comparisons were not performed. The later equal-values message follows 31 conflicting types and is not evidence of complete arithmetic equivalence. Merge comparison sections are absent. No MT32, systematic arithmetic, or merge pass/fail can be established from that report.
 
-The corrected helper replaces PROC IMPORT with explicit numeric/text CSV input and prerequisite/row-count checks. Rerun all three programs in order; the old helper replaced NUMERIC_INPUTS with the incorrectly typed imported dataset. Send both SAS Results and Log if another section is missing or an error appears. The corrected helper has not yet executed in SAS.
+The corrected helper replaces PROC IMPORT with explicit numeric/text CSV input and prerequisite/row-count checks. The old helper replaced NUMERIC_INPUTS with the incorrectly typed imported dataset. The current helper regenerates these references automatically. Send both SAS Results and Log if another section is missing or an error appears. The explicit CSV reader executed in the second uploaded report; stale reference datasets prevented some comparisons.
+
+## Second uploaded SAS report: scoped passes and stale references
+
+The supplied `03-sas-comparison-results (1).html` establishes exact equality for all 40,000 merge observations (12 common variables, including the ID), all five merge-summary values, and all six shared-variable fixture observations. The same-input random arithmetic comparison evaluates all 15 selected numeric variables on 20,000 observations: zero unequal values at relative criterion 1e-12, 5,121 values not exactly equal, maximum criterion value 2.2194e-16. This is a tolerance pass for these expressions and inputs, not universal numeric equivalence.
+
+Freshly imported numeric fields now have the intended numeric types. However, NUMERIC_INPUTS and the original NUMERIC_RESULTS/SUMMARY retain creation timestamps from the previous helper run. There are five type conflicts in the input reference and six in the calculated reference. The summary's total_missing is 0 versus the expected 2,000. These stale references block valid MT32, systematic, and missing-summary conclusions; they do not establish an engine defect.
+
+The current helper embeds unchanged versions of both original programs and executes them on every run before importing app results. Imported-input computations use SAME_INPUTS, SAME_RESULTS, and SAME_SUMMARY, preserving the original NUMERIC_* references. The app-generated CSVs and HTML are unchanged. Local checks enforce that both embedded reference programs match the standalone sources, all CSV schema fields match engine headers/types, and isolated computations preserve the original datasets. Actual execution of this latest helper in SAS is pending.
