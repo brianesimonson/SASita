@@ -1,5 +1,7 @@
 // Exercise the real UI and worker in Chromium without third-party packages.
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {run,csv} from '../dist/engine.mjs';
 import {spawn} from 'node:child_process';
 import {mkdtemp, readFile, rm} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
@@ -80,6 +82,22 @@ try {
     await evaluate("document.querySelector('#closehelp').click()");
     await evaluate("document.querySelector('#expandedtab').click()");
     assert.equal(await evaluate("document.querySelector('#expandedview').hidden"),false);
+    if(process.argv.includes('--validation')) {
+      for(const file of ['01-calculations.sas','02-merge.sas']) {
+        const code=await readFile(`examples/validation/${file}`,'utf8');
+        const reference=run(code,{});
+        await evaluate(`document.querySelector('#code').value=${JSON.stringify(code)};document.querySelector('#run').click()`);
+        await waitFor("!document.querySelector('#run').disabled");
+        assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
+        const names=file.startsWith('01')?['numeric_inputs','numeric_results','numeric_summary']:['merge_results','merge_summary','shared_results'];
+        for(const name of names) {
+          await evaluate(`Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong').textContent===${JSON.stringify(name)}).click()`);
+          const hash=await evaluate(`(async()=>{let blob;const original=URL.createObjectURL,click=HTMLAnchorElement.prototype.click;URL.createObjectURL=value=>{blob=value;return original(value)};HTMLAnchorElement.prototype.click=function(){};try{document.querySelector('#export').click();return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()))).map(x=>x.toString(16).padStart(2,'0')).join('');}finally{URL.createObjectURL=original;HTMLAnchorElement.prototype.click=click;}})()`);
+          assert.equal(hash,createHash('sha256').update(csv(reference.datasets[name])).digest('hex'),`${label} ${name}: full CSV export`);
+        }
+        console.log(`${label}: ${file} completed within app timeout; all result CSVs match engine`);
+      }
+    }
     // Import through the actual file input and form.
     await evaluate(`(()=>{const transfer=new DataTransfer();transfer.items.add(new File(['id,amount\\n1,10\\n2,20'],'browser_input.csv',{type:'text/csv'}));const input=document.querySelector('#file');input.files=transfer.files;input.dispatchEvent(new Event('change'));document.querySelector('#importform').requestSubmit();})()`);
     await waitFor("document.querySelector('#log').textContent.includes('Imported WORK.BROWSER_INPUT')");

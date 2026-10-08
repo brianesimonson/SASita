@@ -1,0 +1,64 @@
+/* Deterministic many-to-many SAS match-MERGE, not a Cartesian join.
+   Unequal duplicates, unmatched keys, retained values and shared columns. */
+data merge_left;
+  do id = 1 to 10000;
+    do left_index = 1 to 2;
+      left_value = id * 10 + left_index;
+      shared = left_value;
+      output;
+    end;
+  end;
+run;
+data merge_right;
+  do id = 5001 to 15000;
+    do right_index = 1 to 3;
+      right_value = id * 100 + right_index;
+      shared = right_value;
+      output;
+    end;
+  end;
+run;
+proc sort data=merge_left; by id; run;
+proc sort data=merge_right; by id; run;
+data merge_results;
+  merge merge_left(in=in_left) merge_right(in=in_right);
+  by id;
+  merge_row + 1;
+  has_left = in_left;
+  has_right = in_right;
+  first_id = first.id;
+  last_id = last.id;
+  combined = sum(left_value, right_value);
+run;
+data merge_summary;
+  set merge_results;
+  row_count + 1;
+  group_count + first_id;
+  if has_left = 1 and has_right = 0 then left_only + 1;
+  if has_left = 1 and has_right = 1 then matched + 1;
+  if has_left = 0 and has_right = 1 then right_only + 1;
+  if id = 15000 and last_id = 1 then output;
+  keep row_count group_count left_only matched right_only;
+run;
+
+/* Reverse exhaustion: LEFT keeps reading after RIGHT runs out.
+   On the second row SHARED must come from LEFT, not a stale RIGHT value. */
+data shared_left;
+  do id = 1 to 3;
+    do left_index = 1 to 2;
+      shared = id * 10 + left_index;
+      output;
+    end;
+  end;
+run;
+data shared_right;
+  do id = 1 to 3;
+    shared = id * 100;
+    output;
+  end;
+run;
+data shared_results;
+  merge shared_left shared_right;
+  by id;
+  shared_row + 1;
+run;
