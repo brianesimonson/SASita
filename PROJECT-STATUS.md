@@ -40,3 +40,7 @@ See docs/current-functions-formats.md for the inventory and docs/function-format
 The catalog branch now includes complete dictionary-topic indexes from the uploaded September 2026 functions/CALL manual and April 2026 formats/informats manual. All 1,118 topic titles and printed pages were matched independently against chapter contents: 655 function topics, 65 CALL routine topics, 289 format topics, and 109 informat topics. All 32 current functions and six supported format families are mapped to their reference entries. SUBSTR assignment form is explicitly unsupported. See docs/catalogs/README.md and its CSVs for source metadata, current support, and proposed priorities.
 
 The earlier network blocker is resolved for catalog research by the uploaded PDFs; live website access remains unverified. No new functions/formats have been implemented, no SAS runtime comparison has been performed, and selections are still pending. Main and v1.0 remain unchanged.
+
+## Next-run priorities
+
+See docs/next-run-scope.md. The user prefers common formats, INPUT/PUT conversions, and seeded RAND (uniform/normal), with broader text cleaning deferred. SUBSTR, LENGTH, and LENGTHN already exist. Width simplification and SAS-exact random sequence requirements are documented for the implementation run. The supplied manual identifies MTHYBRID defaults and seed-dependent initialization; MT19937 alone does not establish SAS bit-for-bit RAND compatibility. No new runtime features were implemented in this planning pass.
