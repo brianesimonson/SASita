@@ -51,3 +51,11 @@ The supplied `03-sas-comparison-results (1).html` establishes exact equality for
 Freshly imported numeric fields now have the intended numeric types. However, NUMERIC_INPUTS and the original NUMERIC_RESULTS/SUMMARY retain creation timestamps from the previous helper run. There are five type conflicts in the input reference and six in the calculated reference. The summary's total_missing is 0 versus the expected 2,000. These stale references block valid MT32, systematic, and missing-summary conclusions; they do not establish an engine defect.
 
 The current helper embeds unchanged versions of both original programs and executes them on every run before importing app results. Imported-input computations use SAME_INPUTS, SAME_RESULTS, and SAME_SUMMARY, preserving the original NUMERIC_* references. The app-generated CSVs and HTML are unchanged. Local checks enforce that both embedded reference programs match the standalone sources, all CSV schema fields match engine headers/types, and isolated computations preserve the original datasets. Actual execution of this latest helper in SAS is pending.
+
+## Third uploaded SAS report: fresh comparisons
+
+`03-sas-comparison-results (2).html` has fresh correctly typed references. All 21 selected systematic variables on 20,000 rows pass relative tolerance 1e-12; 26 values are not exactly equal, maximum criterion 2.0648e-16. All five integer summary values, all merge rows, merge summary, and shared-variable fixture match exactly. Same-input random arithmetic passes again, with 5,121 nonexact values and maximum criterion 2.2194e-16.
+
+The exact uniform RAND test fails all 40,000 values. The first 50 printed values of each column indicate matching underlying MT32 integers but a different uniform conversion. A candidate scaling constant reproduces all 100 displayed SAS bit patterns; this is insufficient to certify all 40,000 draws or other seeds. The core and app conversion remain unchanged pending full output validation; normal RAND parity is not tested here.
+
+The helper additionally exports **sas_mt32_inputs.csv** into your app_path folder. Run it with your existing app_path and upload this CSV to verify the entire original SAS random sequence. It preserves the original HEX16 fields, so decimal export precision will not affect the exact comparison.

@@ -1,5 +1,14 @@
 # SASita project status
 
+## Fresh SAS report: arithmetic passes; uniform RAND differs
+
+Branch `test/sas-mt32-evidence` records the third uploaded report, `03-sas-comparison-results (2).html`. Fresh references remove the type conflicts. All 21 selected systematic numeric variables across 20,000 rows pass relative tolerance 1e-12 (26 nonexact values, maximum criterion 2.0648e-16). All five integer summary values, 40,000 merge rows, merge summary, and six shared-variable observations match exactly. Same-input random arithmetic passes all 15 selected variables across 20,000 rows (5,121 nonexact values, maximum criterion 2.2194e-16).
+
+Both random input HEX columns differ on every row: 40,000 exact mismatches. The 100 printed pairs are saved with source hash/provenance in fixtures/sas/mt32-seed12345-printed.json. In those displayed draws, recovered MT32 integers match the app's core. Multiplication by 2.328306436538696e-10 reproduces all 100 SAS bit patterns; the app currently uses (integer + 0.5)/2^32. This diagnoses a candidate uniform conversion, not full-sequence or multi-seed SAS equivalence. No runtime change has been made; normal sequences remain unverified.
+
+The SAS helper now additionally exports ORIGINAL SAS inputs as sas_mt32_inputs.csv, preserving exact HEX16 strings. It requires the same app_path and one run; full 40,000-draw export is pending. Pack/source checks pass and packaged app inputs/HTML are unchanged. Main and v1.0 remain untouched.
+
+
 ## SAS report: merge and same-input arithmetic verified
 
 Branch `fix/sas-reference-isolation` records the second supplied SAS report, `03-sas-comparison-results (1).html`. All 40,000 merge rows, the merge summary, and six shared-variable rows compare exactly. All 15 selected numeric variables on 20,000 same-input observations pass relative tolerance 1e-12; 5,121 values are not exactly equal, maximum reported criterion 2.2194e-16.
