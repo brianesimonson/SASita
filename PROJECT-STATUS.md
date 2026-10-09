@@ -1,5 +1,16 @@
 # SASita project status
 
+## Sassy v0.4.4: offline Chart.js plotting
+
+Branch feature/sassy-chartjs-plots adds bounded PROC SGPLOT SCATTER/HBAR/VBAR/HISTOGRAM and PROC SGPIE PIE, TITLE/reset, axis labels, scatter/bar grouping, bar/pie FREQ/SUM/MEAN, grouped stack/cluster layouts, histogram counts/percent/proportion and explicit/automatic bins. Sources can be WORK or named JSON libraries; macros expand before parsing. Unsupported options, overlays and PROC PLOT fail clearly. docs/charts.md and in-app Help define the implemented subset and non-SAS-exact defaults.
+
+Chart.js 4.5.1 was vendored from the verified npm release with MIT attribution; its UMD renderer is embedded directly in the standalone HTML. No CDN/internet dependency was introduced. Pure chart models are prepared in the worker, capture values at procedure execution, and append to session Output after successful final table snapshots. Output history can select prior plots after dataset replacement. Canvas instances are destroyed on table selection/clear, and PNG downloads include the title and white background. Titles commit across runs only on success. Programmatic CSV/native writes retain staging/preflight/partial-write safeguards.
+
+Bounds: 20 charts/100,000 plotted values per run, 20,000 scatter points, 200 categories, 50 groups, 1–100 explicit histogram bins; output history shares the 100-entry/250,000-row-or-point cap. Missing/nonfinite observations are omitted and counted. Pie totals must be positive/nonnegative and finite, and overflowing ranges/statistics fail clearly. Histograms use defined bounded Sturges bins rather than SAS's exact default algorithm; means use online double arithmetic. Source formats do not currently alter chart ticks/tooltips. No new SAS runtime graph/statistics comparison or SGPLOT manual fixture has been supplied.
+
+Validation passed: npm test, including new chart grouping/statistics/bin-edge/missing/title/macro/native-library/snapshot/bounds/rollback checks and all existing numeric fixtures; npm run test:browser -- --validation --large-numbers --screenshots in modular and standalone Chromium for all five rendered chart types, histogram totals, PNG bytes, history snapshots, Clear/instance cleanup, failed-chart rollback, library reads/writes and the full calculation CSV suites. A final focused browser run verifies titled PNG export dimensions. The desktop chart screenshot and titled PNG were inspected. charts-demo.sas generates all five plots without a project folder; ZIP/license/member checksums are verified. Cloud file://, Windows OS dialogs and hosted CI remain outside this local validation. Download dist/Sassy-v0.4.4.zip. Main and v1.0 remain unchanged.
+
+
 ## Sassy v0.4.3: native JSON libraries and SPI logo
 
 Branch feature/sassy-json-libraries adds LIBNAME bindings for existing relative project subfolders (or '.' for the project root), session-persistent bindings/CLEAR, permanent DATA and PROC SORT targets, named-library CSV import/export, and sidebar discovery/refresh/open. One-level/WORK datasets remain temporary. Changing/disconnecting a project clears bindings. Reopening the app requires reassignment; disk tables remain. Permanent PROC IMPORT requires REPLACE; native DATA/SORT targets replace on success. Libraries cannot be reassigned/cleared after writing through them in one run.

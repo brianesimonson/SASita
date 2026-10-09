@@ -112,6 +112,48 @@ try {
     assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
     console.log(`${label}: tabbed workspace, offline SAS colors, rolling output/log, independent clears and snapshot preservation passed`);
+    // Chart.js renders all five types; history keeps data snapshots and PNG export.
+    const chartCode=await readFile('examples/project-demo/charts-demo.sas','utf8');
+    await evaluate(`document.querySelector('#code').value=${JSON.stringify(chartCode)};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#chartcanvas canvas') && Chart.getChart(document.querySelector('#chartcanvas canvas'))?.width>500");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).config.type"),'pie');
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).data.labels.length"),3);
+    assert.equal(await evaluate("document.querySelector('#export').hidden"),true);
+    const options=await evaluate("Array.from(document.querySelector('#outputhistory').options).map(o=>({id:o.value,label:o.textContent}))");
+    const chooseChart=async text=>{const item=options.find(o=>o.label.includes(text));assert.ok(item,text);await evaluate(`document.querySelector('#outputhistory').value=${JSON.stringify(item.id)};document.querySelector('#outputhistory').dispatchEvent(new Event('change'))`);await waitFor("Chart.getChart(document.querySelector('#chartcanvas canvas'))?.width>500");return item.id;};
+    await chooseChart('Distribution of calculated values');
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).data.datasets[0].data.reduce((n,v)=>n+v,0)"),120);
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).data.labels.length"),12);
+    await chooseChart('Total amount by category');
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).options.indexAxis"),'y');
+    await chooseChart('Mean amount by category');
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).options.indexAxis"),'x');
+    const scatterId=await chooseChart('Values by category');
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).config.type"),'scatter');
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).data.datasets.reduce((n,s)=>n+s.data.length,0)"),120);
+    const png=await evaluate("(()=>{let href='';const click=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){href=this.href};try{document.querySelector('#downloadchart').click();return href;}finally{HTMLAnchorElement.prototype.click=click;}})()");
+    assert.ok(png.startsWith('data:image/png;base64,'));assert.ok(png.length>10000);assert.equal(Buffer.from(png.split(',')[1],'base64').subarray(0,8).toString('hex'),'89504e470d0a1a0a');
+    assert.ok(Buffer.from(png.split(',')[1],'base64').readUInt32BE(20)>await evaluate("document.querySelector('#chartcanvas canvas').height"));
+    if(process.argv.includes('--screenshots'))await writeFile('/tmp/sassy-chart-export-'+label+'.png',Buffer.from(png.split(',')[1],'base64'));
+    if(process.argv.includes('--screenshots')){const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-charts-'+label+'.png',Buffer.from(capture.data,'base64'));}
+    await evaluate("document.querySelector('#code').value='data chart_sample;x=999;y=999;run;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    await evaluate(`document.querySelector('#outputhistory').value=${JSON.stringify(scatterId)};document.querySelector('#outputhistory').dispatchEvent(new Event('change'))`);
+    assert.equal(await evaluate("Chart.getChart(document.querySelector('#chartcanvas canvas')).data.datasets.reduce((n,s)=>n+s.data.length,0)"),120);
+    const chartHistoryBeforeFailure=await evaluate("document.querySelector('#outputhistory').options.length");
+    const workBeforeChartFailure=await evaluate("document.querySelector('#datasets').textContent");
+    await evaluate("document.querySelector('#code').value='data chart_should_not_commit;x=1;run;proc sgplot data=chart_should_not_commit;scatter x=x y=missing_variable;run;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Error');
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),chartHistoryBeforeFailure);
+    assert.equal(await evaluate("document.querySelector('#datasets').textContent"),workBeforeChartFailure);
+    const chartLogBeforeClear=await evaluate("document.querySelector('#log').textContent");
+    await evaluate("document.querySelector('#workspaceoutputtab').click();document.querySelector('#clearoutput').click()");
+    assert.equal(await evaluate("Object.keys(Chart.instances).length"),0);
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),1);
+    assert.equal(await evaluate("document.querySelector('#log').textContent"),chartLogBeforeClear);
+    console.log(`${label}: five Chart.js plots, bin counts, PNG export, chart snapshots, instance cleanup and failed-chart rollback passed`);
     // Open the reference in the real browser, including new conversion/RAND help.
     await evaluate("document.querySelector('#help').click()");
     assert.ok((await evaluate("document.querySelector('#helpdialog').textContent")).includes('CALL STREAMINIT'));

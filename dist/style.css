@@ -22,3 +22,7 @@ main{width:100%;margin:0}header .filebar{color:#203049}
 .libraryheading{font-size:.73rem;letter-spacing:.06em;margin:12px 12px 5px;color:#506580}.librarypath{display:block;color:#7c8aa0;font-size:.7rem;margin:0 12px 5px;overflow:hidden;text-overflow:ellipsis}#refreshlibraries{margin:0 9px 5px;font-size:.75rem}
 
 .brandlogo{display:block;width:68px;height:30px;object-fit:contain;background:white;padding:3px;border-radius:4px}header .brand{gap:7px}header .filebar{max-width:calc(100% - 215px)}@media(max-width:1000px){header .filebar{max-width:100%}}
+
+#chartview{flex:1;min-height:0;display:flex;flex-direction:column;padding:12px 20px 18px;overflow:auto;background:#fff}#chartsummary{font-size:.75rem;color:#6c7e97;margin:0 0 12px}#chartcanvas{position:relative;flex:1;min-height:300px;min-width:0}#chartcanvas canvas{max-width:100%}#chartcanvas:empty{display:none}
+
+.resultpanel .paneltitle h2{min-width:0;overflow-wrap:anywhere}

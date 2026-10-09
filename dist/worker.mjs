@@ -9,6 +9,6 @@ self.onmessage=async({data})=>{
   expanded=expandMacros(data.code).code;
   const readFile=path=>new Promise((resolve,reject)=>{const id=++nextRequest;requests.set(id,{resolve,reject});self.postMessage({kind:'read-file',id,path});});
   const checkDirectory=path=>new Promise((resolve,reject)=>{const id=++nextRequest;requests.set(id,{resolve,reject});self.postMessage({kind:'check-directory',id,path});});
-  self.postMessage({ok:true,result:await runFileProgram(data.code,data.datasets,readFile,{libraries:data.libraries,checkDirectory})});
+  self.postMessage({ok:true,result:await runFileProgram(data.code,data.datasets,readFile,{libraries:data.libraries,chartTitle:data.chartTitle,checkDirectory})});
  } catch(e){self.postMessage({ok:false,error:e.message,expanded})}
 };

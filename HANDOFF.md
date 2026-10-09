@@ -1,3 +1,5 @@
+Latest milestone: Sassy v0.4.4 on feature/sassy-chartjs-plots. Chart.js is bundled offline; PROC SGPLOT/SGPIE subset, Output chart history and titled PNG exports are documented in docs/charts.md. See PROJECT-STATUS.md for validation and scope. Main and v1.0 remain unchanged.
+
 Latest milestone: Sassy v0.4.3 on feature/sassy-json-libraries. LIBNAME/native JSON tables and an adapted SPI logo are implemented; docs/native-tables.md and its schema are authoritative for storage. See PROJECT-STATUS.md for scope and verified checks. Main and v1.0 remain unchanged.
 
 Latest layout milestone: Sassy v0.4.2 on feature/sassy-compact-header. File controls share the upper-right brand header. SPI is a text placeholder awaiting artwork. LIBNAME storage is proposed in docs/library-storage-proposal.md and is not implemented.

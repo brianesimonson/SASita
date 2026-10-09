@@ -1,4 +1,5 @@
 import {parseCSV,csv,display} from './engine.mjs';
+import {createChartView} from './chart-view.mjs';
 import {readTable} from './table-storage.mjs';
 import {createProjectFiles} from './project-files.mjs';
 import {projectCSV} from './file-program.mjs';
@@ -54,16 +55,17 @@ function el(tag,txt,cls){let n=document.createElement(tag);if(txt!==undefined)n.
 function highlight(){const code=$('code').value; $('highlight').innerHTML=code.length<=100000&&globalThis.Prism?Prism.highlight(code,Prism.languages.sas,'sas')+'\n': ''; if(code.length>100000)$('highlight').textContent=code+'\n';syncEditor();}
 function syncEditor(){$('lines').scrollTop=$('code').scrollTop;$('highlight').style.transform=`translate(${-$('code').scrollLeft}px,${-$('code').scrollTop}px)`;}
 function lines(){highlight();let n=$('code').value.split('\n').length;$('lines').textContent=Array.from({length:n},(_,i)=>i+1).join('\n');$('linecount').textContent=n+' lines'}
-let outputHistory=[],outputSnapshot=null,runNumber=0,libraries=Object.create(null),libraryMembers=Object.create(null);
+const chartView=createChartView($('chartcanvas'),$('chartsummary'));
+let outputHistory=[],outputSnapshot=null,chartTitle='',runNumber=0,libraries=Object.create(null),libraryMembers=Object.create(null);
 async function refreshLibraries(){libraryMembers=Object.create(null);for(const [alias,path] of Object.entries(libraries)){try{libraryMembers[alias]=(await project.list(path==='.'?'':path)).filter(e=>e.kind==='file'&&/^[a-z_]\w{0,31}\.sassy-table\.json$/.test(e.name)).map(e=>e.name.replace(/\.sassy-table\.json$/,''));}catch(e){log('WARNING: Could not list '+alias.toUpperCase()+': '+e.message,true);}}render();}
 function resetLibraries(){libraries=Object.create(null);libraryMembers=Object.create(null);for(const name of Object.keys(datasets))if(name.includes('.'))delete datasets[name];if(selected.includes('.'))selected='';outputSnapshot=null;renderHistory();render();}
 $('refreshlibraries').onclick=()=>userAction(refreshLibraries);
-function shownDataset(){return outputSnapshot?.dataset||datasets[selected]}
-function showWorkspace(name){for(const pane of ['program','output','log']){const active=pane===name;$(pane+'pane').hidden=!active;$('workspace'+pane+'tab').setAttribute('aria-selected',String(active));$('workspace'+pane+'tab').tabIndex=active?0:-1;}if(name==='program')syncEditor();}
+function shownDataset(){return outputSnapshot?.chart?null:outputSnapshot?.dataset||datasets[selected]}
+function showWorkspace(name){for(const pane of ['program','output','log']){const active=pane===name;$(pane+'pane').hidden=!active;$('workspace'+pane+'tab').setAttribute('aria-selected',String(active));$('workspace'+pane+'tab').tabIndex=active?0:-1;}if(name==='program')syncEditor();if(name==='output')requestAnimationFrame(()=>chartView.resize());}
 for(const name of ['program','output','log']){$('workspace'+name+'tab').onclick=()=>showWorkspace(name);$('workspace'+name+'tab').onkeydown=e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const names=['program','output','log'],index=e.key==='Home'?0:e.key==='End'?2:(names.indexOf(name)+(e.key==='ArrowRight'?1:2))%3;showWorkspace(names[index]);$('workspace'+names[index]+'tab').focus();}}}
-function renderHistory(){$('outputhistory').replaceChildren(el('option','Current WORK dataset'));$('outputhistory').firstChild.value='';for(const item of outputHistory){const option=el('option',`Run ${item.run} · ${item.program} · ${item.name} (${item.dataset.rows.length.toLocaleString()} rows)`);option.value=item.id;$('outputhistory').append(option);}$('outputhistory').value=outputSnapshot?.id||'';}
+function renderHistory(){$('outputhistory').replaceChildren(el('option','Current WORK dataset'));$('outputhistory').firstChild.value='';for(const item of outputHistory){const option=el('option',`Run ${item.run} · ${item.program} · ${item.name} (${item.chart?'chart':item.dataset.rows.length.toLocaleString()+' rows'})`);option.value=item.id;$('outputhistory').append(option);}$('outputhistory').value=outputSnapshot?.id||'';}
 $('outputhistory').onchange=()=>{outputSnapshot=outputHistory.find(x=>x.id===$('outputhistory').value)||null;page=0;render();};
-$('clearoutput').onclick=()=>{outputHistory=[];outputSnapshot=null;selected='';page=0;renderHistory();render();};
+$('clearoutput').onclick=()=>{chartView.clear();outputHistory=[];outputSnapshot=null;selected='';page=0;renderHistory();render();};
 $('clearlog').onclick=()=>{$('log').replaceChildren();};
 function render(){let list=$('datasets');list.replaceChildren();$('datasetcount').textContent=Object.keys(datasets).filter(n=>!n.includes('.')).length+Object.values(libraryMembers).reduce((n,m)=>n+m.length,0);list.append(el('h3','WORK','libraryheading'));
  function datasetButton(name,ds,open){let b=el('button',undefined,'dataset'+(name===selected&&!outputSnapshot?' active':''));b.disabled=busy;b.append(el('strong',name),el('small',ds?`${ds.rows.length.toLocaleString()} rows · ${ds.columns.length} variables`:'Saved table'));b.onclick=open;list.append(b);}
@@ -71,6 +73,8 @@ function render(){let list=$('datasets');list.replaceChildren();$('datasetcount'
  for(const [name,ds] of Object.entries(datasets))if(!name.includes('.'))datasetButton(name,ds,()=>selectDataset(name));
  for(const [alias,path] of Object.entries(libraries)){list.append(el('h3',alias.toUpperCase(),'libraryheading'));const folder=el('small',path,'librarypath');folder.title=path;list.append(folder);for(const member of libraryMembers[alias]||[]){const name=alias+'.'+member;datasetButton(name,datasets[name],()=>userAction(async()=>{datasets[name]=readTable(await project.read((path==='.'?'':path+'/')+member+'.sassy-table.json'));selectDataset(name);}));}if(!(libraryMembers[alias]||[]).length)list.append(el('small','No saved tables','librarypath'));}
 
+ const plot=outputSnapshot?.chart;for(const id of ['table','resultmeta','resultpager'])$(id).hidden=!!plot;$('chartview').hidden=!plot;$('downloadchart').hidden=!plot;$('export').hidden=!!plot;$('savecsvproject').hidden=!!plot;
+ if(plot){$('resulttitle').textContent=plot.title;chartView.show(plot);$('downloadchart').disabled=busy||!chartView.ready;return;}chartView.clear();
  let ds=shownDataset();$('resulttitle').textContent=ds?(outputSnapshot?.name||selected):'Results';$('export').disabled=!ds||busy;$('savecsvproject').disabled=!ds||busy||!project.directory;$('rowcount').textContent=ds?`${ds.rows.length.toLocaleString()} observations · ${ds.columns.length} variables`:'';$('table').replaceChildren();if(!ds||!ds.rows.length){$('table').append(el('div',ds?'This dataset has no observations.':'Run a program to see results.','empty'))}else{let table=el('table'),head=el('thead'),tr=el('tr');tr.append(el('th','#'));for(let c of ds.columns)tr.append(el('th',c));head.append(tr);table.append(head);let body=el('tbody');for(let [idx,r]of ds.rows.slice(page*50,page*50+50).entries()){let tr=el('tr');tr.append(el('td',page*50+idx+1,'rownum'));for(let c of ds.columns){let val=r[c],td=el('td',display(val,$('formatted').checked?ds.formats[c]:null),typeof val==='number'?'numeric':undefined);td.title='Raw: '+(val??'.');tr.append(td)}body.append(tr)}table.append(body);$('table').append(table)}let total=ds?.rows.length||0;$('pageinfo').textContent=total?`${page*50+1}–${Math.min(page*50+50,total)} of ${total.toLocaleString()}`:'0 observations';$('prev').disabled=page===0;$('next').disabled=(page+1)*50>=total;
 }
 function log(msg,error=false){const pane=$('log'),bottom=pane.scrollHeight-pane.scrollTop-pane.clientHeight<40;const entry=el('span',`[${new Date().toLocaleTimeString()}] ${msg}\n\n`,error?'error':'logentry');pane.append(entry);if(pane.textContent.length>1000000){while(pane.childNodes.length>1&&pane.textContent.length>1000000)pane.firstChild.remove();}if(bottom)pane.scrollTop=pane.scrollHeight;$('status').textContent=error?'Error':'Ready';$('status').style.color=error?'#b33c47':'#137e72'}
@@ -101,14 +105,14 @@ function execute(code=$('code').value){
    clearTimeout(timer);worker.terminate();
    try{
     const saved=await project.saveExports(data.result.exports);
-    $('expandedview').textContent=data.result.expanded;datasets=data.result.datasets;libraries=data.result.libraries||libraries;
-    for(const name of new Set(data.result.written)){outputHistory.push({id:`${run}:${name}`,run,program,name,dataset:datasets[name]});}let retained=outputHistory.reduce((n,x)=>n+x.dataset.rows.length,0),trimmed=0;while(outputHistory.length>1&&(outputHistory.length>100||retained>250000)){retained-=outputHistory.shift().dataset.rows.length;trimmed++;}if(trimmed)log('NOTE: Older output snapshots removed (session limit: 100 datasets / 250,000 rows).');outputSnapshot=outputHistory.at(-1)||null;renderHistory();selected=data.result.written.at(-1)||selected;page=0;await refreshLibraries();finish();showWorkspace('output');
+    $('expandedview').textContent=data.result.expanded;datasets=data.result.datasets;libraries=data.result.libraries||libraries;chartTitle=data.result.chartTitle??chartTitle;
+    for(const name of new Set(data.result.written)){outputHistory.push({id:`${run}:${name}`,run,program,name,dataset:datasets[name]});}for(const [index,chart] of (data.result.plots||[]).entries())outputHistory.push({id:`${run}:chart:${index}`,run,program,name:chart.title,chart});let retained=outputHistory.reduce((n,x)=>n+(x.chart?.pointCount??x.dataset.rows.length),0),trimmed=0;while(outputHistory.length>1&&(outputHistory.length>100||retained>250000)){{const oldest=outputHistory.shift();retained-=oldest.chart?.pointCount??oldest.dataset.rows.length;};trimmed++;}if(trimmed)log('NOTE: Older output snapshots removed (session limit: 100 outputs / 250,000 rows or chart points).');outputSnapshot=outputHistory.at(-1)||null;renderHistory();selected=data.result.written.at(-1)||selected;page=0;await refreshLibraries();finish();showWorkspace('output');
     const elapsed=((performance.now()-start)/1000).toFixed(2);
     log(data.result.logs.join('\n')+(saved.length?'\nNOTE: Saved project files: '+saved.join(', '):'')+`\nNOTE: Completed in ${elapsed}s. All processing stayed in this browser.`);
     resolve({written:data.result.written,observations:Object.fromEntries(data.result.written.map(name=>[name,datasets[name].rows.length]))});
    }catch(e){error(e.message)}
   };
-  worker.postMessage({code,datasets,libraries});
+  worker.postMessage({code,datasets,libraries,chartTitle});
  });
 }
 function view(expanded){$('codeview').hidden=expanded;$('expandedview').hidden=!expanded;$('programtab').setAttribute('aria-selected',String(!expanded));$('expandedtab').setAttribute('aria-selected',String(expanded));$('programtab').tabIndex=expanded?-1:0;$('expandedtab').tabIndex=expanded?0:-1;}
@@ -119,6 +123,7 @@ $('help').onclick=()=>$('helpdialog').showModal();$('closehelp').onclick=()=>$('
 function downloadLocalFile(name,text,type='text/plain;charset=utf-8') {
  const url=URL.createObjectURL(new Blob([text],{type})),anchor=el('a');anchor.href=url;anchor.download=name;anchor.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
+$('downloadchart').onclick=()=>{try{const anchor=el('a');anchor.href=chartView.image();anchor.download='sassy-chart-'+(outputSnapshot?.id||'output').replaceAll(':','-')+'.png';anchor.click();}catch(e){log(e.message,true)}};
 $('export').onclick=()=>{try{downloadLocalFile((outputSnapshot?.name||selected)+'.csv',projectCSV(shownDataset()),'text/csv;charset=utf-8')}catch(e){log(e.message,true)}};
 function programFilename() {
  const name=$('programname').value.trim();

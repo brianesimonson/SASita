@@ -7,11 +7,14 @@ entries=[('data-step-lab.html',root/'dist/data-step-lab.html'),
          ('README.md',root/'docs/app-guide.md'),
          ('project-files.md',root/'docs/project-files.md'),
          ('native-tables.md',root/'docs/native-tables.md'),
+         ('charts.md',root/'docs/charts.md'),
+         ('ChartJS-LICENSE.md',root/'dist/vendor/ChartJS-LICENSE.md'),
          ('native-table-v1.schema.json',root/'docs/schemas/native-table-v1.schema.json'),
          ('PrismJS-LICENSE.txt',root/'dist/vendor/PrismJS-LICENSE.txt'),
          ('demo-project/claims.csv',root/'examples/project-demo/claims.csv'),
          ('demo-project/project-demo.sas',root/'examples/project-demo/project-demo.sas'),
          ('demo-project/library-demo.sas',root/'examples/project-demo/library-demo.sas'),
+         ('demo-project/charts-demo.sas',root/'examples/project-demo/charts-demo.sas'),
          ('demo-project/tables/README.txt',root/'examples/project-demo/tables/README.txt')]
 version=json.loads((root/'package.json').read_text())['version']
 output=root/f'dist/Sassy-v{version}.zip'

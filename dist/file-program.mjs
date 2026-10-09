@@ -1,4 +1,5 @@
 import {tokenize,run,parseCSV,csv,datasetReferences} from './engine.mjs';
+import {parsePlot,preparePlot} from './charts.mjs';
 import {readTable,writeTable} from './table-storage.mjs';
 import {expandMacros} from './macros.mjs';
 // Files are relative to the folder selected by the user. No OS paths or URLs.
@@ -28,6 +29,10 @@ export function filePlan(expanded) {
  const take=()=>{if(!tokens[i])throw new Error('Incomplete file procedure');return tokens[i++]};
  while(i<tokens.length) {
   const start=i,t=take();
+  if(t.v==='title'){
+   let value='';if(tokens[i]?.v!==';'){const title=take();if(title.type!=='str'||title.v.length>200)throw new Error('TITLE requires quoted text of at most 200 characters');value=title.v;}need(';');plan.push({kind:'title',value});continue;
+  }
+  if(t.v==='proc'&&['sgplot','sgpie'].includes(tokens[i]?.v)){const parsed=parsePlot(tokens,start);i=parsed.next;plan.push({kind:'plot',plot:parsed.plot});continue;}
   if(t.v==='libname'){
    const alias=take(),path=take();if(alias.type!=='id'||!/^[a-z_]\w{0,7}$/.test(alias.v)||['work','sashelp','sasuser'].includes(alias.v))throw new Error('LIBNAME requires a nonreserved library name of at most 8 characters');
    if(path.type!=='str'&&path.v!=='clear')throw new Error('LIBNAME requires a quoted relative folder or CLEAR');
@@ -78,9 +83,11 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  const macro=expandMacros(code);
  // Keep the original synchronous engine and global execution limit for ordinary programs.
  const tokens=tokenize(macro.code);
- const hasFiles=tokens.some((t,i)=>t.type==='id'&&((t.v==='libname')||(/^[a-z_]\w*\.[a-z_]\w*$/.test(t.v)&&! /^(work|first|last)\./.test(t.v))||(t.v==='filename'&&tokens[i+1]?.type==='id'&&(i===0||tokens[i-1]?.v===';'))||(t.v==='proc'&&['import','export'].includes(tokens[i+1]?.v))));
+ let hasFiles=tokens.some(t=>t.type==='id'&&/^[a-z_]\w*\.[a-z_]\w*$/.test(t.v)&&!/^(work|first|last)\./.test(t.v)),inBlock=false;
+ for(let i=0;i<tokens.length;i++){const t=tokens[i];if(t.type!=='id')continue;if(inBlock){if(t.v==='run'&&tokens[i-1]?.v===';'&&tokens[i+1]?.v===';')inBlock=false;continue;}if(['libname','filename','title'].includes(t.v))hasFiles=true;if(t.v==='proc'){if(['import','export','sgplot','sgpie'].includes(tokens[i+1]?.v))hasFiles=true;inBlock=true;}else if(t.v==='data')inBlock=true;}
+
  if(!hasFiles){const result=run(macro.code,input,{expanded:true});result.logs.unshift(...macro.logs);return result;}
- const plan=filePlan(macro.code),aliases=new Map(),exports=[],logs=[...macro.logs],written=[],libraries=Object.assign(Object.create(null),options.libraries||{}),fresh=new Set(),libraryWrites=new Set();
+ const plan=filePlan(macro.code),aliases=new Map(),exports=[],logs=[...macro.logs],written=[],libraries=Object.assign(Object.create(null),options.libraries||{}),fresh=new Set(),libraryWrites=new Set(),plots=[];let chartTitle=options.chartTitle||'';
  let datasets=Object.assign(Object.create(null),input),exportBytes=0;
  function location(name){
   if(!/^[a-z_]\w{0,7}\.[a-z_]\w{0,31}$/.test(name))throw new Error('Invalid library table name '+name);
@@ -91,6 +98,8 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  function stage(name){if(!name.includes('.'))return;const path=location(name),text=writeTable(datasets[name],name.split('.')[1]),prior=exports.findIndex(e=>e.path.toLowerCase()===path.toLowerCase());if(prior>=0&&(!exports[prior].native||exports[prior].path!==path))throw new Error('Conflicting export path '+path);if(prior>=0)exports.splice(prior,1);exports.push({path,text,replace:true,native:true});libraryWrites.add(name.split('.')[0]);for(const other of fresh)if(other!==name&&location(other)===path){datasets[other]=datasets[name];}fresh.add(name);logs.push('NOTE: Prepared permanent table '+name.toUpperCase()+' at '+path+'.');}
  function checkExportLimit(){if(exports.reduce((n,e)=>n+new TextEncoder().encode(e.text).length,0)>50000000)throw new Error('Total program exports are limited to 50 MB');}
  for(const step of plan) {
+  if(step.kind==='title'){chartTitle=step.value;continue;}
+  if(step.kind==='plot'){if(plots.length>=20)throw new Error('Programs are limited to 20 charts');const source=step.plot.source;await load(source);const chart=preparePlot(step.plot,datasets[source],chartTitle);plots.push(chart);if(plots.reduce((n,p)=>n+p.pointCount,0)>100000)throw new Error('Programs are limited to 100,000 chart points');logs.push(`NOTE: Prepared ${chart.kind} chart from ${chart.source.toUpperCase()}: ${chart.used} used, ${chart.omitted} omitted observations.`);continue;}
   if(step.kind==='libname'){
    if(libraryWrites.has(step.alias))throw new Error('Cannot clear or reassign a library after writing to it in this run');
    for(const name of Object.keys(datasets))if(name.startsWith(step.alias+'.')){delete datasets[name];fresh.delete(name);}
@@ -117,5 +126,5 @@ export async function runFileProgram(code,input={},readFile,options={}) {
    exports.push({path,text,replace:step.replace});checkExportLimit();logs.push(`NOTE: Prepared export ${step.name.includes('.')?'':'WORK.'}${step.name.toUpperCase()} to ${path}.`);
   }
  }
- return {datasets,written,logs,expanded:macro.code,exports,libraries};
+ return {datasets,written,logs,expanded:macro.code,exports,libraries,plots,chartTitle};
 }
