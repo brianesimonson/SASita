@@ -1,5 +1,12 @@
 # SASita project status
 
+## Final SAS confirmation: all seven comparisons pass
+
+The final uploaded 03-sas-comparison-results.html confirms all 40,000 explicit MT32 seed-12345 uniform draws match exactly after the conversion fix. Integer summary, 40,000 merge observations, merge summary, and six shared-variable observations also match exactly. All 21 selected systematic numeric variables and 15 same-input random numeric variables pass relative tolerance 1e-12 across 20,000 rows each. Nonexact counts are 26 and 5,343 respectively, with maximum reported criteria 2.0648e-16 and 5.6717e-16. No conflicting column types remain.
+
+Evidence, report checksum, implementation commit, and scope limits are recorded in docs/validation/sas-seed12345-results.md on branch docs/sas-validation-confirmed. This round is complete; no additional SAS run or app changes are required. Other seeds and normal sequences remain unverified. The following sections preserve earlier milestones and do not supersede this confirmation. Main and v1.0 remain untouched.
+
+
 ## Uniform MT32 conversion fixed against full SAS sequence
 
 Branch `fix/mt32-sas-uniform-conversion` corrects the mapping from MT32 integers to uniform decimals. All 40,000 exact HEX16 values in the uploaded sas_mt32_inputs.csv match the app after changing (integer + 0.5)/2^32 to integer * 2.328306436538696e-10. All 40,000 underlying integers also agree. The exact constant is significant; rounding it to 1/2^32 changes bits.
