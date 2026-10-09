@@ -10,7 +10,7 @@ Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the 
 
 ## Current development build
 
-Version 0.4.1 renames the app Sassy and provides full-size Program, Output, and Log tabs, rolling session histories with separate Clear buttons, and offline SAS syntax colors from PrismJS. Download [Sassy-v0.4.1.zip](dist/Sassy-v0.4.1.zip), unzip, and open data-step-lab.html. See [the app guide](docs/app-guide.md).
+Version 0.4.2 compacts the file controls into the upper-right header. Version 0.4.1 renames the app Sassy and provides full-size Program, Output, and Log tabs, rolling session histories with separate Clear buttons, and offline SAS syntax colors from PrismJS. Download [Sassy-v0.4.2.zip](dist/Sassy-v0.4.2.zip), unzip, and open data-step-lab.html. See [the app guide](docs/app-guide.md).
 
 The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 

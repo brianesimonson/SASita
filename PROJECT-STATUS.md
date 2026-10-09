@@ -1,5 +1,14 @@
 # SASita project status
 
+## Sassy v0.4.2: more editor space
+
+Branch feature/sassy-compact-header moves the program/project file box into the upper-right brand header and puts Supported syntax inside it. The separate full-width toolbar row is gone; the editor gains about 70 pixels at a 1400×900 desktop viewport. The brand and favicon use temporary SPI text because the actual SPI logo asset is not available in the checkout. Replace this placeholder when supplied; do not invent the graphic.
+
+Validation: npm test passes. Modular and standalone Chromium checks pass for tab visibility, editor dimensions, help placement, rolling histories, prior snapshot preservation, all ten regression programs, program open/save, folder streams and persistence, import/export and failed-run rollback. The desktop screenshot was visually inspected. The ZIP and member checksums are verified. OS picker dialogs and cloud-blocked file:// navigation remain manual checks. Main and v1.0 are unchanged.
+
+LIBNAME is not implemented in this release. docs/library-storage-proposal.md records the requested design discussion: versioned native .sassy-table.json files preserving rows and descriptors, scoped folder libraries, temporary WORK, CSV interchange, and required replacement/validation semantics. SAS7BDAT is not the recommended first implementation. Storage decisions remain for discussion before that feature is built.
+
+
 ## Sassy v0.4.1: compact tabbed workspace
 
 Branch `feature/sassy-tabbed-workspace` builds on v0.4.0. The app is now Sassy, with a compact filename/file toolbar, Run beside program controls, full-size Program/Output/Log panes, and WORK datasets kept at the left. Introductory, example-loading, browser/offline-download chrome has been removed. Supported syntax and macro-expanded source remain available. A fresh editor starts blank; recovered drafts are never executed automatically.

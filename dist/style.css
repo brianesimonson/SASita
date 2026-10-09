@@ -9,3 +9,12 @@ header{height:50px;padding:0 16px;border-bottom-width:2px}.brand{gap:9px}.topact
 @media(max-width:1000px){.workspace{grid-template-columns:160px minmax(0,1fr)}.editorpanel{grid-column:auto}.resultpanel{grid-column:auto}.projectactions #projectstatus{flex-basis:100%}}
 @media(max-width:650px){header{padding:0 10px}.brand{font-size:1rem}main{padding:6px;height:calc(100dvh - 50px);min-height:620px}.workspace{grid-template-columns:125px minmax(0,1fr)}aside{border-bottom:0}.dataset{padding:10px 7px}.dataset strong{font-size:.75rem}.dataset small{font-size:.65rem}.asidefoot{display:none}.workspacetabs button{padding:10px 12px}.outputhistory{flex-wrap:wrap}.outputhistory label{display:none}.programfiles #run{margin-left:0}.resultpanel .paneltitle{flex-wrap:wrap}.programfiles{gap:5px}#programstate{display:none}}
 .workspace{grid-template-rows:minmax(0,1fr)}aside{min-height:0;overflow:hidden}#datasets{flex:1}.paneltitle,.editorfooter,.resultmeta,.pager,.outputhistory{flex-shrink:0}.editor{height:auto;flex:1 1 0}.asidefoot{flex-shrink:0}
+
+/* Compact file controls share the brand header instead of consuming a separate row. */
+body{height:100dvh;min-height:480px;display:flex;flex-direction:column}header{height:auto;min-height:50px;flex-shrink:0;align-items:flex-start;padding:7px 12px;gap:14px}header .brand{padding-top:12px;flex-shrink:0}header .filebar{margin:0 0 0 auto;min-width:0;max-width:calc(100% - 165px);padding:6px 8px;gap:5px;flex:1}header .programfiles,header .projectactions{gap:5px}header .projectactions{padding-top:5px}header #programname{width:155px;padding:5px 7px}header #programstate{font-size:.65rem}header #projectstatus{flex:1;min-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}main{height:auto;flex:1;min-height:0;padding-top:6px}header .filebar button{font-size:.78rem;padding:5px 8px}header kbd{margin-left:6px}
+@media(max-width:1000px){header{flex-wrap:wrap;gap:6px}header .brand{padding-top:0}header .filebar{max-width:100%;flex-basis:100%}header .projectactions #projectstatus{flex-basis:auto}}
+@media(max-width:650px){body{min-height:620px}main{height:auto;min-height:0}header #projectstatus{flex-basis:100%}}
+
+header .mark{font-family:Segoe UI,Arial,sans-serif;font-size:1rem;letter-spacing:.04em}
+main{width:100%;margin:0}header .filebar{color:#203049}
+@media(max-width:520px){.workspace{display:grid;grid-template-columns:125px minmax(0,1fr)}#datasets{display:block}.dataset{min-width:0}.editorpanel{min-height:0}}

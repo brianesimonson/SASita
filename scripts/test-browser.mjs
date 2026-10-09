@@ -60,6 +60,7 @@ try {
     throw new Error('UI condition timed out: '+expression+'; page: '+JSON.stringify(await evaluate("({url:location.href,state:document.readyState,log:document.querySelector('#log')?.textContent,status:document.querySelector('#status')?.textContent})")));
   }
   await send('Page.enable');
+  await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});
   const appSource=await readFile('dist/app.mjs','utf8');
   const samples=Function('return ('+appSource.match(/const examples=(\{[\s\S]*?\});/)[1]+')')();
   const expected={conversions:['converted',1],formats:['format_gallery',1],random:['random_sample',8],flags:['flagged',6],groups:['provider_totals',3],loop:['squares',12],split:['missing_payment',1],merge:['enriched',10],macro:['macro_flagged',6],macroloop:['above_3000',1]};
@@ -87,7 +88,9 @@ try {
     await evaluate("document.querySelector('#workspaceprogramtab').click();document.querySelector('#programtab').click();document.querySelector('#code').value=\"data color; /* note */ text='<img src=x onerror=alert(1)>'; x=12; run;\";document.querySelector('#code').dispatchEvent(new Event('input'))");
     assert.ok(await evaluate("document.querySelector('#highlight .token.keyword')!==null && document.querySelector('#highlight .token.string')!==null && document.querySelector('#highlight .token.comment')!==null"));
     assert.equal(await evaluate("document.querySelector('#highlight img')!==null"),false);
-    assert.ok(await evaluate("document.querySelector('#code').getBoundingClientRect().width>500"));
+    assert.ok(await evaluate("document.querySelector('#code').getBoundingClientRect().width>900"));
+    assert.ok(await evaluate("document.querySelector('header .filebar #help')!==null && document.querySelector('main .filebar')===null"));
+    assert.ok(await evaluate("document.querySelector('#code').getBoundingClientRect().height>650"));
     if(process.argv.includes('--screenshots')){await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-'+label+'.png',Buffer.from(capture.data,'base64'));}
     await evaluate("document.querySelector('#code').value='data snapshot; x=1; run;';document.querySelector('#run').click()");
     await waitFor("!document.querySelector('#run').disabled");

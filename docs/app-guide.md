@@ -1,8 +1,8 @@
-# Sassy v0.4.1
+# Sassy v0.4.2
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
-The Program, Output, and Log tabs share the main workspace. WORK datasets stay on the left; clicking one opens its current table in Output. Use New, Open program, Save, or Save as alongside the program filename. Run executes the editor; Ctrl+Enter also runs it. Source and Expanded code are views within Program. Supported syntax remains at the top right.
+The Program, Output, and Log tabs share the main workspace. WORK datasets stay on the left; clicking one opens its current table in Output. Use New, Open program, Save, or Save as alongside the program filename. Run executes the editor; Ctrl+Enter also runs it. Source and Expanded code are views within Program. Program and project-folder controls, including Supported syntax, share a compact box at the top right.
 
 Output accumulates final dataset snapshots from successful runs. Choose an earlier run in the Session output dropdown to review or download its table even after a later run replaces that WORK dataset. The log appends run starts, file reads, notes, errors, and file actions. Successful runs open Output; failed runs open Log. Clear output removes output history without deleting WORK datasets. Clear log removes only log text. Both histories are held in this tab and reset on reload; the program recovery draft and remembered folder remain separate.
 
@@ -12,4 +12,4 @@ SAS syntax colors use bundled PrismJS 1.30.0: blue statements/functions, red str
 
 For a ready-to-test file workflow, choose the included demo-project folder, click Browse files, open project-demo.sas, and Run. It imports claims.csv and saves reviewed.csv. See project-files.md for relative paths, permission/reconnection rules, overwrite behavior, and the current PROC IMPORT/EXPORT subset.
 
-This patch follows v0.4.0 and changes the workspace interface. The numerical engine and folder permission rules are unchanged. Further small releases can use v0.4.2, v0.4.3, and so on; a major milestone can be cut when agreed.
+This patch follows v0.4.1 and changes the workspace interface. The numerical engine and folder permission rules are unchanged. Further small releases can use v0.4.3, v0.4.4, and so on; a major milestone can be cut when agreed.

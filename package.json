@@ -1,6 +1,6 @@
 {
   "name": "data-step-lab",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "private": true,
   "type": "module",
   "description": "Browser-local SAS DATA step subset prototype with macros, match merge, sort, and offline packaging",
