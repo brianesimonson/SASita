@@ -1,5 +1,16 @@
 # SASita project status
 
+## Sassy v0.4.3: native JSON libraries and SPI logo
+
+Branch feature/sassy-json-libraries adds LIBNAME bindings for existing relative project subfolders (or '.' for the project root), session-persistent bindings/CLEAR, permanent DATA and PROC SORT targets, named-library CSV import/export, and sidebar discovery/refresh/open. One-level/WORK datasets remain temporary. Changing/disconnecting a project clears bindings. Reopening the app requires reassignment; disk tables remain. Permanent PROC IMPORT requires REPLACE; native DATA/SORT targets replace on success. Libraries cannot be reassigned/cleared after writing through them in one run.
+
+Native .sassy-table.json files have a version marker, ordered column descriptors and ordinary row objects. Codecs validate names, types, supported formats, character lengths, row shape, finite numeric values, version and file bounds. Finite doubles including signed zero round-trip exactly in JavaScript. The engine now carries declared character-length metadata through input selection/rename, SET/MERGE and SORT and enforces inherited lengths on assignments. This is a bounded descriptor subset, not full SAS descriptor semantics. See docs/native-tables.md and its included machine-readable JSON Schema.
+
+First library reads per run refresh from disk; same-run reads see staged writes, including shared-folder aliases. Repeated native writes save the final version; ambiguous case-colliding paths fail. CSV/native exports share staging, all-target preflight, 20 MB/file and 50 MB/run bounds; partial disk failures remain explicitly non-atomic. WORK and library bindings commit after saves. The offline build includes the codec. The SPI header uses an image_gen-prepared adaptation of the supplied logo, embedded in the HTML; provenance is in dist/spi-logo-provenance.md.
+
+Validation passed: npm test, with new native-schema/finite-double/alias/replacement/reload/CLEAR/rollback/library-demo checks and the prior 40,000-draw SAS fixture; npm run test:browser -- --validation --large-numbers --screenshots for modular and standalone builds. Browser checks cover actual sandbox native writes, metadata, later-run and reopened-session reads, library discovery, rendered logo, failed-run disk preservation, and prior full CSV validation suites. The desktop screenshot was inspected. Latest packaged library demo writes and reloads six formatted observations; ZIP member checksums are verified. No fresh SAS-runtime comparison was performed for LIBNAME or inherited character-length semantics. OS picker dialogs and cloud-blocked file:// remain manual checks. Download dist/Sassy-v0.4.3.zip. Main and v1.0 are unchanged.
+
+
 ## Sassy v0.4.2: more editor space
 
 Branch feature/sassy-compact-header moves the program/project file box into the upper-right brand header and puts Supported syntax inside it. The separate full-width toolbar row is gone; the editor gains about 70 pixels at a 1400×900 desktop viewport. The brand and favicon use temporary SPI text because the actual SPI logo asset is not available in the checkout. Replace this placeholder when supplied; do not invent the graphic.

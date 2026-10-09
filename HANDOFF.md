@@ -1,3 +1,5 @@
+Latest milestone: Sassy v0.4.3 on feature/sassy-json-libraries. LIBNAME/native JSON tables and an adapted SPI logo are implemented; docs/native-tables.md and its schema are authoritative for storage. See PROJECT-STATUS.md for scope and verified checks. Main and v1.0 remain unchanged.
+
 Latest layout milestone: Sassy v0.4.2 on feature/sassy-compact-header. File controls share the upper-right brand header. SPI is a text placeholder awaiting artwork. LIBNAME storage is proposed in docs/library-storage-proposal.md and is not implemented.
 
 Current workspace milestone: Sassy v0.4.1 on feature/sassy-tabbed-workspace. Program/Output/Log are full-size tabs, with rolling bounded in-memory histories and vendored offline PrismJS SAS colors. See docs/app-guide.md. Main and v1.0 are protected by the user agreement.

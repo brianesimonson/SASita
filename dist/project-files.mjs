@@ -31,7 +31,7 @@ export function createProjectFiles() {
  async function forget() {directory=null;remembered=null;notice='';try{await storedHandle('delete')}catch{notice='Disconnected for this session; clear browser site data to remove any stored folder.';}}
  async function read(path) {
   const {folder,name}=await parent(path),handle=await folder.getFileHandle(name),file=await handle.getFile();
-  if(file.size>20000000)throw new Error('CSV import limit is 20 MB');return file.text();
+  if(file.size>20000000)throw new Error('File read limit is 20 MB');return file.text();
  }
  async function list(path='') {
   await permission(directory);let folder=directory;
@@ -39,13 +39,14 @@ export function createProjectFiles() {
   const entries=[];for await(const [name,handle] of folder.entries()){entries.push({name,handle,kind:handle.kind});if(entries.length>=500)break;}
   return entries.sort((a,b)=>a.kind.localeCompare(b.kind)||a.name.localeCompare(b.name));
  }
+ async function checkDirectory(path){await permission(directory);let folder=directory;if(path!=='.')for(const part of projectPath(path))folder=await folder.getDirectoryHandle(part);return true;}
  async function open(path) {const {folder,name}=await parent(path);return folder.getFileHandle(name);}
  async function saveExports(exports=[]) {
   if(!exports.length)return [];
   const root=directory,prepared=[],touched=[];
   // Check every target before writing any file. Existing subfolders are required.
   for(const item of exports) {
-   if(!/\.csv$/i.test(item.path))throw new Error('Program exports must end in .csv');
+   if(item.native?!/\.sassy-table\.json$/i.test(item.path):!/\.csv$/i.test(item.path))throw new Error('Program exports require .csv or a native .sassy-table.json table');
    if(new TextEncoder().encode(item.text).length>20000000)throw new Error('CSV export limit is 20 MB');
    const {folder,name}=await parent(item.path,root);let handle=null;
    try{handle=await folder.getFileHandle(name)}catch(e){if(e.name!=='NotFoundError')throw e;}
@@ -58,5 +59,5 @@ export function createProjectFiles() {
   } catch(e){throw new Error(e.message+'\nDisk files possibly changed: '+touched.join(', ')+'. File saves cannot be rolled back as a group.');}
   return touched;
  }
- return {supported,connect,restore,reconnect,forget,read,list,open,saveExports,get directory(){return directory},get remembered(){return remembered},get notice(){return notice}};
+ return {supported,connect,restore,reconnect,forget,read,list,open,checkDirectory,saveExports,get directory(){return directory},get remembered(){return remembered},get notice(){return notice}};
 }

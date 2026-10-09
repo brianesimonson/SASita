@@ -1,0 +1,1 @@
+SPI header logo prepared from the user-provided image using image_gen on 2026-10-08. The PNG is an adapted web asset, not a byte-for-byte copy of the uploaded graphic. It is embedded in the standalone HTML; the modular app reads the local PNG. No runtime network request is made.

@@ -1,3 +1,5 @@
+Implemented milestone: v0.4.3 now provides native JSON libraries based on this proposal. See [native-tables.md](native-tables.md) for the actual schema, scope, replacement behavior and limits. The text below preserves the original proposal.
+
 # LIBNAME and permanent tables: proposed next milestone
 
 This is a design proposal, not an implemented feature in v0.4.2. The user requested a discussion of persistent table storage before building LIBNAME.

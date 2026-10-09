@@ -18,3 +18,7 @@ body{height:100dvh;min-height:480px;display:flex;flex-direction:column}header{he
 header .mark{font-family:Segoe UI,Arial,sans-serif;font-size:1rem;letter-spacing:.04em}
 main{width:100%;margin:0}header .filebar{color:#203049}
 @media(max-width:520px){.workspace{display:grid;grid-template-columns:125px minmax(0,1fr)}#datasets{display:block}.dataset{min-width:0}.editorpanel{min-height:0}}
+
+.libraryheading{font-size:.73rem;letter-spacing:.06em;margin:12px 12px 5px;color:#506580}.librarypath{display:block;color:#7c8aa0;font-size:.7rem;margin:0 12px 5px;overflow:hidden;text-overflow:ellipsis}#refreshlibraries{margin:0 9px 5px;font-size:.75rem}
+
+.brandlogo{display:block;width:68px;height:30px;object-fit:contain;background:white;padding:3px;border-radius:4px}header .brand{gap:7px}header .filebar{max-width:calc(100% - 215px)}@media(max-width:1000px){header .filebar{max-width:100%}}

@@ -15,7 +15,7 @@ const server=createServer(async(req,res)=>{
     const path=resolve(root,'.'+new URL(req.url,'http://localhost').pathname);
     if(!path.startsWith(root+'/')) {res.writeHead(403).end();return;}
     const data=await readFile(path);
-    res.setHeader('Content-Type',({'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css'})[extname(path)]||'application/octet-stream');
+    res.setHeader('Content-Type',({'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css','.png':'image/png'})[extname(path)]||'application/octet-stream');
     res.end(data);
   } catch {res.writeHead(404).end();}
 });
@@ -73,7 +73,7 @@ try {
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#status').textContent==='Ready' && document.querySelector('#log').textContent.length>0");
     for(const [example,[dataset,rows]] of Object.entries(expected)) {
       await evaluate(`document.querySelector('#code').value=${JSON.stringify(samples[example])};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
-      await waitFor("!document.querySelector('#run').disabled");
+      await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
       const result=await evaluate("({name:document.querySelector('#resulttitle').textContent,count:document.querySelector('#rowcount').textContent,log:document.querySelector('#log').textContent})");
       assert.equal(result.name,dataset,`${label} ${example}: ${result.log}`);
       assert.ok(result.count.startsWith(`${rows} observations`),`${label} ${example}: ${result.count}`);
@@ -93,10 +93,10 @@ try {
     assert.ok(await evaluate("document.querySelector('#code').getBoundingClientRect().height>650"));
     if(process.argv.includes('--screenshots')){await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-'+label+'.png',Buffer.from(capture.data,'base64'));}
     await evaluate("document.querySelector('#code').value='data snapshot; x=1; run;';document.querySelector('#run').click()");
-    await waitFor("!document.querySelector('#run').disabled");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     const firstSnapshot=await evaluate("document.querySelector('#outputhistory').value");
     await evaluate("document.querySelector('#code').value='data snapshot; x=2; run;';document.querySelector('#run').click()");
-    await waitFor("!document.querySelector('#run').disabled");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     await evaluate(`document.querySelector('#outputhistory').value=${JSON.stringify(firstSnapshot)};document.querySelector('#outputhistory').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#table tbody td:nth-child(2)').textContent"),'1');
     const historyCount=await evaluate("document.querySelector('#outputhistory').options.length");
@@ -108,7 +108,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),1);
     assert.equal(await evaluate("document.querySelector('#datasets').textContent"),workBeforeClear);
     await evaluate("document.querySelector('#code').value='data snapshot; x=3; run;';document.querySelector('#run').click()");
-    await waitFor("!document.querySelector('#run').disabled");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
     console.log(`${label}: tabbed workspace, offline SAS colors, rolling output/log, independent clears and snapshot preservation passed`);
@@ -126,7 +126,7 @@ try {
         const code=await readFile(`examples/${folder}/${file}`,'utf8');
         const reference=run(code,{});
         await evaluate(`document.querySelector('#code').value=${JSON.stringify(code)};document.querySelector('#run').click()`);
-        await waitFor("!document.querySelector('#run').disabled");
+        await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
         assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
         const names=folder==='large-numbers'?['big_number_results','big_integer_edges']:file.startsWith('01')?['numeric_inputs','numeric_results','numeric_summary']:['merge_results','merge_summary','shared_results'];
         for(const name of names) {
@@ -153,36 +153,61 @@ try {
       window.showOpenFilePicker=async()=>[program];
       document.querySelector('#chooseproject').click();
     })()`);
-    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#projectstatus').textContent.includes('Project: sasita-project-test')");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#projectstatus').textContent.includes('Project: sasita-project-test')");
     await evaluate("document.querySelector('#openprogram').click()");
-    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#programname').value==='saved.sas'");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#programname').value==='saved.sas'");
     assert.equal(await evaluate("document.querySelector('#code').value"),'data opened; x=1; run;');
     await evaluate("document.querySelector('#code').value='data opened; x=2; run;';document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#saveprogram').click()");
-    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Saved saved.sas')");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Saved saved.sas')");
     assert.equal(await evaluate("(async()=>await (await window.__programTest.getFile()).text())()"),'data opened; x=2; run;');
     const projectCode="filename source 'inputs/source.csv';proc import datafile=source out=project_input dbms=csv replace;getnames=yes;guessingrows=max;run;data project_result;set project_input;doubled=amount*2;run;proc export data=project_result outfile='outputs/result.csv' dbms=csv replace;run;";
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(projectCode)};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
-    await waitFor("!document.querySelector('#run').disabled");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
     const savedProjectCSV=await evaluate("(async()=>await (await (await (await window.__projectTest.getDirectoryHandle('outputs')).getFileHandle('result.csv')).getFile()).text())()");
     assert.equal(savedProjectCSV,'"id","amount","doubled"\r\n"1","10","20"\r\n"2","20","40"\r\n');
     // No REPLACE: existing disk output remains intact and WORK rolls back.
     const projectBefore=await evaluate("document.querySelector('#datasets').textContent");
     await evaluate(`document.querySelector('#code').value="data should_not_commit; x=3; run;proc export data=should_not_commit outfile='outputs/result.csv' dbms=csv;run;";document.querySelector('#run').click()`);
-    await waitFor("!document.querySelector('#run').disabled");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     assert.match(await evaluate("document.querySelector('#log').textContent"),/add REPLACE/);
     assert.equal(await evaluate("document.querySelector('#datasets').textContent"),projectBefore);
     assert.equal(await evaluate("(async()=>await (await (await (await window.__projectTest.getDirectoryHandle('outputs')).getFileHandle('result.csv')).getFile()).text())()"),savedProjectCSV);
     // A later program error must not create an earlier prepared export.
     await evaluate(`document.querySelector('#code').value="data pending; x=1; run;proc export data=pending outfile='outputs/not_written.csv' dbms=csv;run;data broken;bad_statement;run;";document.querySelector('#run').click()`);
-    await waitFor("!document.querySelector('#run').disabled");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     assert.equal(await evaluate("(async()=>{try{await (await window.__projectTest.getDirectoryHandle('outputs')).getFileHandle('not_written.csv');return true}catch(e){if(e.name==='NotFoundError')return false;throw e}})()"),false);
+    // Permanent native tables: real sandbox disk writes, metadata and later-session reads.
+    await evaluate("(async()=>{await window.__projectTest.getDirectoryHandle('tables',{create:true})})()");
+    const libraryCode="libname saved 'tables';data saved.persist;length label $ 4;format amount comma12.2;do id=1 to 2;amount=id/3;label='abcdef';output;end;run;";
+    await evaluate(`document.querySelector('#code').value=${JSON.stringify(libraryCode)};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    const nativeText=await evaluate("(async()=>await (await (await (await window.__projectTest.getDirectoryHandle('tables')).getFileHandle('persist.sassy-table.json')).getFile()).text())()");
+    const native=JSON.parse(nativeText);assert.equal(native.format,'sassy-table');assert.equal(native.version,1);assert.equal(native.rows[0].amount,1/3);assert.equal(native.rows[0].label,'abcd');assert.equal(native.columns.find(c=>c.name==='label').length,4);assert.equal(native.columns.find(c=>c.name==='amount').format,'comma12.2');
+    assert.ok(await evaluate("Array.from(document.querySelectorAll('#datasets strong')).some(n=>n.textContent==='saved.persist')"));
+    if(process.argv.includes('--screenshots')){const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-libraries-'+label+'.png',Buffer.from(capture.data,'base64'));}
+    assert.ok(await evaluate("document.querySelector('.brandlogo').complete && document.querySelector('.brandlogo').naturalWidth>0"));
+    await evaluate("document.querySelector('#code').value='data restored_native;set saved.persist;run;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#resulttitle').textContent"),'restored_native');
+    assert.ok((await evaluate("document.querySelector('#table').textContent")).includes('abcd'));
+    // A failure after a native table has been prepared leaves its old disk file intact.
+    await evaluate("document.querySelector('#code').value='data saved.persist;amount=999;run;data bad;unsupported;run;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Error');
+    assert.equal(await evaluate("(async()=>await (await (await (await window.__projectTest.getDirectoryHandle('tables')).getFileHandle('persist.sassy-table.json')).getFile()).text())()"),nativeText);
+    console.log(`${label}: LIBNAME native writes, typed descriptors, later-run disk reads and failed-write rollback passed`);
     // Remembered native handle survives reload; cached code is not auto-executed.
     await send('Page.reload');
-    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Recovered') && document.querySelector('#projectstatus').textContent.includes('Project: sasita-project-test')");
-    assert.ok((await evaluate("document.querySelector('#code').value")).includes('bad_statement'));
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Recovered') && document.querySelector('#projectstatus').textContent.includes('Project: sasita-project-test')");
+    assert.ok((await evaluate("document.querySelector('#code').value")).includes('unsupported'));
+    await evaluate("document.querySelector('#code').value=\"libname saved 'tables';data from_new_session;set saved.persist;run;\";document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#resulttitle').textContent"),'from_new_session');
+    assert.ok((await evaluate("document.querySelector('#table').textContent")).includes('abcd'));
     await evaluate("document.querySelector('#forgetproject').click()");
-    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#projectstatus').textContent.includes('Choose a folder')");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#projectstatus').textContent.includes('Choose a folder')");
     console.log(`${label}: program open/direct save, native project streams, staged export rollback, overwrite guard, remembered folder and draft recovery passed`);
     // Import through the actual file input and form.
     await evaluate(`(()=>{const transfer=new DataTransfer();transfer.items.add(new File(['id,amount\\n1,10\\n2,20'],'browser_input.csv',{type:'text/csv'}));const input=document.querySelector('#file');input.files=transfer.files;input.dispatchEvent(new Event('change'));document.querySelector('#importform').requestSubmit();})()`);
@@ -194,7 +219,7 @@ try {
     const outputBeforeFailure=await evaluate("document.querySelector('#outputhistory').options.length");
     const before=await evaluate("document.querySelector('#datasets').textContent");
     await evaluate("document.querySelector('#code').value='data should_not_exist; x=1; run; data broken; unknown_statement; run;';document.querySelector('#run').click()");
-    await waitFor("!document.querySelector('#run').disabled");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     assert.match(await evaluate("document.querySelector('#log').textContent"),/No dataset changes were committed/);
     assert.equal(await evaluate("document.querySelector('#datasets').textContent"),before);
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),outputBeforeFailure);

@@ -17,3 +17,5 @@
 - Common formats and RAND scope are documented in docs/formats-conversions-rand.md. Preserve the explicit MT32 selection; do not label uniform/normal sequences SAS-identical without real SAS fixtures. Keep new modules included in the offline build.
 
 - Program/folder workflows are documented in docs/project-files.md. Keep programmatic file access relative to a user-selected directory handle; never request permission silently during a run. Remember handles in browser storage without treating permission as permanent. Preserve staged exports, all-target preflight, explicit REPLACE, and honest partial-save reporting. Build the ZIP with python3 scripts/package-app.py after rebuilding HTML; keep the packaged demo verified.
+
+- Native JSON libraries are documented in docs/native-tables.md. Preserve version/schema validation, scoped LIBNAME directories, cross-run disk refresh, alias read-after-write behavior, staged final table saves and inherited length metadata. Run test-libraries.mjs with the baseline suite. Keep the documented JSON Schema and library demo in the ZIP. The SPI PNG is an adapted user-supplied logo; keep it embedded for offline delivery.
