@@ -1,5 +1,14 @@
 # SASita project status
 
+## Large-number precision test
+
+Branch `test/large-number-precision` adds a separate examples/large-numbers/large-number-tests.zip: unchanged standalone HTML, a portable 3,000-row large-number program, a SAS-only comparison helper, app CSVs, 100-digit independent decimal-reference report, and integer-boundary demonstration. Ordinary SAS and JavaScript calculations use double precision; this tests significant-digit error thresholds, not 15 fractional digits at arbitrary magnitudes.
+
+All 24,000 computed values pass 1e-10 error versus 100-digit Decimal references on exact stored binary inputs. Seven operations pass 1e-15 on all cases; cube roots via **(1/3) exceed that tighter threshold on 2,028 cases, with maximum relative error 4.45287319e-15. Basic multiplication/division/squares/cubes/square roots max out around 1.1e-16. This does not certify all expressions, powers, overflow behavior or exact decimal input storage.
+
+The new program and its two complete CSV exports pass modular and standalone Chromium checks using npm run test:browser -- --large-numbers. The generated SAS helper runs fresh references itself and reports absolute differences and precision threshold failures; the user needs only the two CSVs, helper, app_path, and one run. Actual SAS execution of the new test remains pending. Existing seed-12345 validation files and app runtime are unchanged; main and v1.0 are preserved.
+
+
 ## Final SAS confirmation: all seven comparisons pass
 
 The final uploaded 03-sas-comparison-results.html confirms all 40,000 explicit MT32 seed-12345 uniform draws match exactly after the conversion fix. Integer summary, 40,000 merge observations, merge summary, and six shared-variable observations also match exactly. All 21 selected systematic numeric variables and 15 same-input random numeric variables pass relative tolerance 1e-12 across 20,000 rows each. Nonexact counts are 26 and 5,343 respectively, with maximum reported criteria 2.0648e-16 and 5.6717e-16. No conflicting column types remain.

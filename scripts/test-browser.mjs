@@ -82,14 +82,17 @@ try {
     await evaluate("document.querySelector('#closehelp').click()");
     await evaluate("document.querySelector('#expandedtab').click()");
     assert.equal(await evaluate("document.querySelector('#expandedview').hidden"),false);
-    if(process.argv.includes('--validation')) {
-      for(const file of ['01-calculations.sas','02-merge.sas']) {
-        const code=await readFile(`examples/validation/${file}`,'utf8');
+    if(process.argv.includes('--validation')||process.argv.includes('--large-numbers')) {
+      for(const [folder,file] of [
+        ...(process.argv.includes('--validation')?['01-calculations.sas','02-merge.sas'].map(file=>['validation',file]):[]),
+        ...(process.argv.includes('--large-numbers')?[['large-numbers','04-large-numbers.sas']]:[])
+      ]) {
+        const code=await readFile(`examples/${folder}/${file}`,'utf8');
         const reference=run(code,{});
         await evaluate(`document.querySelector('#code').value=${JSON.stringify(code)};document.querySelector('#run').click()`);
         await waitFor("!document.querySelector('#run').disabled");
         assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
-        const names=file.startsWith('01')?['numeric_inputs','numeric_results','numeric_summary']:['merge_results','merge_summary','shared_results'];
+        const names=folder==='large-numbers'?['big_number_results','big_integer_edges']:file.startsWith('01')?['numeric_inputs','numeric_results','numeric_summary']:['merge_results','merge_summary','shared_results'];
         for(const name of names) {
           await evaluate(`Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong').textContent===${JSON.stringify(name)}).click()`);
           const hash=await evaluate(`(async()=>{let blob;const original=URL.createObjectURL,click=HTMLAnchorElement.prototype.click;URL.createObjectURL=value=>{blob=value;return original(value)};HTMLAnchorElement.prototype.click=function(){};try{document.querySelector('#export').click();return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',await blob.arrayBuffer()))).map(x=>x.toString(16).padStart(2,'0')).join('');}finally{URL.createObjectURL=original;HTMLAnchorElement.prototype.click=click;}})()`);
