@@ -2,7 +2,7 @@
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {run,csv} from '../dist/engine.mjs';
-import {spawn} from 'node:child_process';
+import {spawn,spawnSync} from 'node:child_process';
 import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join, resolve, extname} from 'node:path';
@@ -132,6 +132,22 @@ try {
     assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
     console.log(`${label}: tabbed workspace, offline SAS colors, rolling output/log, independent clears and snapshot preservation passed`);
+    // Export from the REAL browser build, extract, and execute the Python bridge.
+    await evaluate("document.querySelector('#code').value='data portable_result; set snapshot; square=x*x; run;';document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))");
+    assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.6.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await waitFor("window.__portableZip!==null");
+    const portableDownload=await evaluate("window.__portableZip");
+    const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
+    await writeFile(zipPath,Buffer.from(portableDownload.split(',')[1],'base64'));
+    const extracted=spawnSync('python3',['-c','import sys,zipfile; z=zipfile.ZipFile(sys.argv[1]); assert z.testzip() is None; z.extractall(sys.argv[2])',zipPath,packagePath],{encoding:'utf8'});
+    assert.equal(extracted.status,0,extracted.stderr);
+    const wrapped=spawnSync('python3',[join(packagePath,'run.py')],{encoding:'utf8',maxBuffer:10000000,timeout:35000});assert.equal(wrapped.status,0,wrapped.stderr);
+    assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_result).rows,[{x:3,square:9}]);
+    assert.ok(await evaluate("document.querySelector('#portablestatus').textContent.includes('Downloaded')"));
+    if(process.argv.includes('--screenshots')){const shot=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-portable-'+label+'.png',Buffer.from(shot.data,'base64'));}
+    await evaluate("HTMLAnchorElement.prototype.click=window.__portableClick;document.querySelector('#closeportable').click()");
+    console.log(`${label}: actual-source viewer and downloaded ZIP executed through Python/Node passed`);
     // Chart.js renders all five types; history keeps data snapshots and PNG export.
     const chartCode=await readFile('examples/project-demo/charts-demo.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(chartCode)};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);

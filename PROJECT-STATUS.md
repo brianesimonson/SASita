@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.6: portable wrapper proof of concept
+
+Branch feature/sassy-portable-wrapper adds a small Code & export control in the upper-right project file box. Its read-only modal shows current SAS, Node/Python runners and exact build-snapshotted runtime modules. The exported ZIP includes current WORK native table snapshots, unchanged program.sas, remembered bindings/title, runtime and runners. This remains an interpreter, not generated JavaScript per program. External project files are intentionally not copied; --project selects the actual data folder. Default project library folders are empty. Chart models are returned, not rendered PNGs. The app stays one offline HTML (~95 KB added); the optional local runner needs Node.js 24+, and Python is optional.
+
+Validation: npm test passed with new source/ZIP CRC/Node/Python/RAND/signed-zero/library/CSV/chart/rollback/preflight/symlink checks. Modular and standalone Chromium checks export the actual ZIP, compare visible source byte-for-byte, extract and execute the Python wrapper, and verify output rows. Existing editor/history/charts/library/files checks also passed; modal screenshot inspected. docs/portable-demo.md records precise snapshot semantics, limits and filesystem scope; OS-specific Windows validation and multiuser/concurrent filesystem hardening are not claimed. Main/v1.0 unchanged; v0.4.5 tag and snapshot branch point at b30711e.
+
+
 ## Sassy v0.4.5: contextual syntax guide
 
 Branch feature/sassy-context-help adds an initially collapsed right-side Program syntax guide. Cursor scanning ignores comments/strings, tracks procedure boundaries and nested function calls, and supports a searchable catalog of all five procedures, 35 DATA step functions, 20 format families and six statement/macro references (66 entries). Manual browsing pauses cursor following; a checkbox resumes it. Ctrl+Space opens help; Tab keeps indentation. Templates insert only at the current selection/caret, mark edits unsaved, preserve surrounding code and never execute. Formats are reference-only. No AI/network/runtime dependency; modular catalog embedded in standalone HTML adds about 24 KB (1.6%).

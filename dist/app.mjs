@@ -1,3 +1,4 @@
+import {createPortableView} from './portable-view.mjs';
 import {createSyntaxHelp} from './syntax-help.mjs';
 import {parseCSV,csv,display} from './engine.mjs';
 import {createChartView} from './chart-view.mjs';
@@ -205,3 +206,5 @@ if(!recovered)setProgram('');
 updateProjectUI();project.restore().then(updateProjectUI);
 render();log(recovered?'NOTE: Recovered your editor draft; it has not been run or saved to disk.':'Ready. Open a program or start typing.');
 if(document.modelContext?.registerTool){try{Promise.resolve(document.modelContext.registerTool({name:'run_data_step',title:'Run DATA step',description:'Replace the visible program and execute the supported SAS DATA step subset against the current WORK datasets. Updates datasets and results on success.',inputSchema:{type:'object',properties:{code:{type:'string'}},required:['code'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:true},execute:async input=>{if(!input||typeof input.code!=='string'||Object.keys(input).some(k=>k!=='code'))throw new Error('Provide code as a string');$('code').value=input.code;lines();programDirty=input.code!==programBaseline;updateProgramUI();rememberDraft();return await execute(input.code)}})).catch(()=>{})}catch{}}
+
+createPortableView(()=>({code:$('code').value,datasets,libraries,chartTitle,busy}),log);

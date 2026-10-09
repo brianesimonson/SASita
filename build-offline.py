@@ -2,6 +2,15 @@ from pathlib import Path
 import json,re,base64
 root=Path(__file__).resolve().parent
 assets=root/'dist'
+# Keep viewed/exported execution sources byte-for-byte aligned with this build.
+module_names=['macros.mjs','formats.mjs','random.mjs','engine.mjs','charts.mjs','table-storage.mjs','file-program.mjs']
+export_assets={'runtime/'+name:(assets/name).read_text() for name in module_names}
+export_assets.update({name:(root/'portable'/name).read_text() for name in ['run.mjs','run.py','README.md']})
+(assets/'runtime-assets.mjs').write_text('export function runtimeAssets(){return '+json.dumps(export_assets).replace('<','\\u003c')+';}\n')
+runtime_assets=(assets/'runtime-assets.mjs').read_text()
+portable_export=(assets/'portable-export.mjs').read_text()
+portable_view=(assets/'portable-view.mjs').read_text()
+
 macros=(assets/'macros.mjs').read_text()
 engine=(assets/'engine.mjs').read_text()
 formats=(assets/'formats.mjs').read_text()
@@ -21,7 +30,7 @@ worker_source=plain(macros)+'\n'+plain(formats)+'\n'+plain(random)+'\n'+plain(en
 worker_json=json.dumps(worker_source).replace('<','\\u003c')
 vendor='/* PrismJS 1.30.0 — MIT license, Copyright (c) 2012-2025 Lea Verou. Full license below.\n'+(assets/'vendor/PrismJS-LICENSE.txt').read_text()+'*/\n'+(assets/'vendor/prism-core.min.js').read_text()+'\n'+(assets/'vendor/prism-sas.min.js').read_text()+'\n'
 vendor+='/* Chart.js 4.5.1, MIT license — full license below.\n'+(assets/'vendor/ChartJS-LICENSE.md').read_text()+'*/\n'+(assets/'vendor/chart.umd.min.js').read_text()+'\n'
-inline='(()=>{\n'+vendor+plain(macros)+'\n'+plain(formats)+'\n'+plain(random)+'\n'+plain(engine)+'\n'+plain(table_storage)+'\n'+plain(charts)+'\n'+plain(file_program)+'\n'+plain(project_files)+'\nconst dataStepWorkerURL=URL.createObjectURL(new Blob([JSON.parse(document.getElementById("worker-source").textContent)],{type:"text/javascript"}));\n'+plain(chart_view)+'\n'+plain(syntax_help)+'\n'+plain(app).replace("new Worker('worker.mjs',{type:'module'})",'new Worker(dataStepWorkerURL)')+'\n})();'
+inline='(()=>{\n'+vendor+plain(macros)+'\n'+plain(formats)+'\n'+plain(random)+'\n'+plain(engine)+'\n'+plain(table_storage)+'\n'+plain(charts)+'\n'+plain(file_program)+'\n'+plain(project_files)+'\nconst dataStepWorkerURL=URL.createObjectURL(new Blob([JSON.parse(document.getElementById("worker-source").textContent)],{type:"text/javascript"}));\n'+plain(chart_view)+'\n'+plain(syntax_help)+'\n'+runtime_assets.replace('export function runtimeAssets','function runtimeAssets',1)+'\n'+plain(portable_export)+'\n'+plain(portable_view)+'\n'+plain(app).replace("new Worker('worker.mjs',{type:'module'})",'new Worker(dataStepWorkerURL)')+'\n})();'
 html=(assets/'index.html').read_text().replace('<script src="vendor/prism-core.min.js" data-manual></script><script src="vendor/prism-sas.min.js"></script>','')
 html=html.replace('<script src="vendor/chart.umd.min.js"></script>','')
 html=html.replace('src="spi-logo.png"','src="data:image/png;base64,'+base64.b64encode((assets/'spi-logo.png').read_bytes()).decode()+'"')
