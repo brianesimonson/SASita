@@ -1,5 +1,12 @@
 # SASita project status
 
+## Large-number SAS validation confirmed
+
+The uploaded 05-sas-large-number-comparison-results.html confirms all 3,000 large-number rows pass both 1e-10 and 1e-15 SAS/app comparison thresholds. There are 761 nonexact values and a maximum criterion of 2.219e-16. All nine integer-boundary observations match exactly. Per-operation summaries show no missing results or threshold failures; multiplication, division, squares, square roots, cube roots, and mixed expressions have zero absolute difference. Cubes and fourth powers have small differences relative to their magnitude.
+
+This actual SAS comparison complements the independent 100-digit reference. Cube roots via **(1/3) agree exactly with SAS for this program, while sharing the approximate-exponent accuracy limitation observed against mathematical reference values. Evidence and source checksum are recorded in docs/validation/large-number-sas-results.md on branch docs/large-number-sas-confirmed. This validation round is complete. The following sections preserve earlier milestones; no app/package changes or additional SAS reruns are required. Main and v1.0 remain unchanged.
+
+
 ## Large-number precision test
 
 Branch `test/large-number-precision` adds a separate examples/large-numbers/large-number-tests.zip: unchanged standalone HTML, a portable 3,000-row large-number program, a SAS-only comparison helper, app CSVs, 100-digit independent decimal-reference report, and integer-boundary demonstration. Ordinary SAS and JavaScript calculations use double precision; this tests significant-digit error thresholds, not 15 fractional digits at arbitrary magnitudes.
