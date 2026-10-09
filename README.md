@@ -12,7 +12,7 @@ Choose an example and Run program (Ctrl+Enter). Import CSV datasets into the WOR
 
 The feature/formats-conversions-rand branch adds common formats, INPUT/PUT conversion functions, and seeded RAND for UNIFORM/NORMAL with explicit MT32. Try the new INPUT & PUT, format gallery, and seeded RAND examples. See [feature scope and validation](docs/formats-conversions-rand.md). The standalone HTML still requires no server or installed runtime. Main and v1.0 remain preserved checkpoints.
 
-Width now controls value-changing formatting and PUT padding. Some SAS format semantics remain simplified. The MT32 integer core is verified; SAS uniform/normal bit equivalence remains unverified. The current inventory is 35 DATA step functions and 20 common format families (date separator variants grouped within their parent family).
+Width now controls value-changing formatting and PUT padding. Some SAS format semantics remain simplified. The MT32 integer core is verified, and 40,000 seed-12345 uniform values match a supplied SAS fixture bit-for-bit. Other seeds and normal sequences remain unverified. The current inventory is 35 DATA step functions and 20 common format families (date separator variants grouped within their parent family).
 
 ## Function and format references
 

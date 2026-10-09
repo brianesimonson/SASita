@@ -1,5 +1,14 @@
 # SASita project status
 
+## Uniform MT32 conversion fixed against full SAS sequence
+
+Branch `fix/mt32-sas-uniform-conversion` corrects the mapping from MT32 integers to uniform decimals. All 40,000 exact HEX16 values in the uploaded sas_mt32_inputs.csv match the app after changing (integer + 0.5)/2^32 to integer * 2.328306436538696e-10. All 40,000 underlying integers also agree. The exact constant is significant; rounding it to 1/2^32 changes bits.
+
+The actual SAS CSV is preserved in fixtures/sas/mt32-seed12345.csv with its source SHA-256, provenance, and unknown SAS release recorded in the adjacent metadata JSON. A new mandatory npm regression test checks all 20,000 IDs/systematic inputs and 40,000 random bit patterns and recovered integers. The embedded offline worker also checks actual SAS bit patterns. Evidence applies to unbounded uniform draws with seed 12345 in the supplied run; other seeds, zero-integer endpoint behavior, bound transformations and normal bit sequences remain unverified against SAS.
+
+The normal sampler uses the same corrected uniform conversion, so its app sequence changes too, without a claim of SAS normal equivalence. Source, Help, generated standalone HTML, and test-pack CSVs are refreshed together. Main and v1.0 are preserved. Validation passed: npm test (including the 40,000-draw SAS fixture and offline worker), analytic/CSV-schema pack checks, and npm run test:browser -- --validation for modular and standalone builds. Both full-sized programs complete within the worker timeout and browser exports match engine results. Updated archive checksums and HTML are verified. Windows file:// testing remains pending.
+
+
 ## Fresh SAS report: arithmetic passes; uniform RAND differs
 
 Branch `test/sas-mt32-evidence` records the third uploaded report, `03-sas-comparison-results (2).html`. Fresh references remove the type conflicts. All 21 selected systematic numeric variables across 20,000 rows pass relative tolerance 1e-12 (26 nonexact values, maximum criterion 2.0648e-16). All five integer summary values, 40,000 merge rows, merge summary, and six shared-variable observations match exactly. Same-input random arithmetic passes all 15 selected variables across 20,000 rows (5,121 nonexact values, maximum criterion 2.2194e-16).

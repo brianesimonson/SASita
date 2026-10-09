@@ -85,12 +85,12 @@ assert.ok(sample.every(r=>r.u>0&&r.u<1&&Number.isFinite(r.n)));
 assert.deepEqual(run(program+program.replace('data sample','data second')).datasets.second.rows,sample);
 const normal=one(`call streaminit('MT32',5489);x=rand('normal');`).x;
 assert.equal(one(`call streaminit('MT2002',5489);x=rand('normal',10,2);`).x,10+2*normal);
-assert.equal(one(`call streaminit('MT32',5489);x=rand('uniform',-2,5);`).x,-2+7*((3499211612+.5)/2**32));
-assert.equal(one(`call streaminit('MT32',5489);call streaminit('MT32',1);x=rand('uniform');`).x,(3499211612+.5)/2**32);
+assert.equal(one(`call streaminit('MT32',5489);x=rand('uniform',-2,5);`).x,-2+7*(3499211612*2.328306436538696e-10));
+assert.equal(one(`call streaminit('MT32',5489);call streaminit('MT32',1);x=rand('uniform');`).x,3499211612*2.328306436538696e-10);
 assert.equal(one(`call streaminit('MT32',1);x=rand('normal',7,0);`).x,7);
 const many=run(`data s;call streaminit('MT32',12345);do i=1 to 10000;x=rand('normal');output;end;run;`).datasets.s.rows.map(r=>r.x);
 const mean=many.reduce((a,b)=>a+b,0)/many.length,variance=many.reduce((a,b)=>a+(b-mean)**2,0)/(many.length-1);
 assert.ok(Math.abs(mean)<.05 && Math.abs(variance-1)<.1,`normal mean=${mean}, variance=${variance}`);
 for(const code of ["x=rand('uniform');","call streaminit(12345);","call streaminit('MTHYBRID',1);","call streaminit('MT32',0);","call streaminit('MT32',4294967296);","call streaminit('MT32',1.5);","call streaminit('MT32',1);x=rand('poisson',1);","call streaminit('MT32',1);x=rand('normal',0,-1);","call streaminit('MT32',1);x=rand('uniform',.);"])
  assert.throws(()=>one(code),undefined,code);
-console.log('Format/conversion/RAND checks passed: manual examples, width effects, date validity, INPUT diagnostics, 60,000 independently matched MT32 integers, stream lifecycle, reproducibility, and normal sample sanity. SAS RAND bit equivalence is unverified.');
+console.log('Format/conversion/RAND checks passed: manual examples, width effects, date validity, INPUT diagnostics, 60,000 independently matched MT32 integers, stream lifecycle, reproducibility, and normal sample sanity. Full SAS uniform fixture is checked separately; normal bit equivalence remains unverified.');

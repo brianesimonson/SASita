@@ -1,0 +1,15 @@
+{
+  "source": "User-uploaded sas_mt32_inputs.csv exported by the SAS comparison helper",
+  "source_sha256": "973cb2bc3792389810159438931f83f0df868f48a2334b345ebeef4339237db1",
+  "sas_release": "Not provided",
+  "seed": 12345,
+  "generator": "Explicit MT32",
+  "distribution": "Uniform without bounds",
+  "observations": 20000,
+  "draws": 40000,
+  "comparison_fields": [
+    "random_x_hex",
+    "random_y_hex"
+  ],
+  "notes": "Compare HEX16 bits, not decimal columns: SAS CSV decimals have fewer digits. Evidence applies to this seed, draw order and distribution only."
+}

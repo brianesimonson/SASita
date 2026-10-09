@@ -40,12 +40,13 @@ export function createRandomStream(tick, logs) {
     if (!Number.isInteger(seed) || seed < 1 || seed > 0xffffffff)
       throw new Error('STREAMINIT requires an integer seed from 1 to 4294967295');
     generator = createMT32(seed);
-    logs.push('NOTE: RAND uses MT32 (2002 initialization). Reproducible in this app; SAS uniform/normal sequences are not verified.');
+    logs.push('NOTE: RAND uses MT32 (2002 initialization). Uniform conversion matches the SAS seed-12345 fixture; normal sequences and other seeds are unverified.');
   }
   function uniform() {
     tick();
-    // A defined open-interval conversion; do not claim the SAS conversion.
-    return (generator.uint32() + 0.5) / 4294967296;
+    // Preserve this exact double constant: all 40,000 seed-12345 SAS
+    // uniform HEX16 values match. Replacing it with 1 / 2**32 changes bits.
+    return generator.uint32() * 2.328306436538696e-10;
   }
   function sample(args) {
     if (!generator) throw new Error("Initialize RAND with CALL STREAMINIT('MT32', positive_seed) before use.");
