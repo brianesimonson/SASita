@@ -4,10 +4,13 @@ from zipfile import ZipFile,ZipInfo,ZIP_DEFLATED
 import hashlib,json
 root=Path(__file__).resolve().parent.parent
 entries=[('data-step-lab.html',root/'dist/data-step-lab.html'),
-         ('README.md',root/'docs/project-files.md'),
+         ('README.md',root/'docs/app-guide.md'),
+         ('project-files.md',root/'docs/project-files.md'),
+         ('PrismJS-LICENSE.txt',root/'dist/vendor/PrismJS-LICENSE.txt'),
          ('demo-project/claims.csv',root/'examples/project-demo/claims.csv'),
          ('demo-project/project-demo.sas',root/'examples/project-demo/project-demo.sas')]
-output=root/'dist/SASita-v0.4.0.zip'
+version=json.loads((root/'package.json').read_text())['version']
+output=root/f'dist/Sassy-v{version}.zip'
 manifest={name:hashlib.sha256(path.read_bytes()).hexdigest() for name,path in entries}
 with ZipFile(output,'w',compression=ZIP_DEFLATED,compresslevel=9) as z:
     for name,path in entries:

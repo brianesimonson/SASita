@@ -1,19 +1,21 @@
-# SASita — DATA Step Lab baseline
+# Sassy — standalone SAS-style workspace
 
 Start with [START-HERE.md](START-HERE.md) for use and development, and [PROJECT-STATUS.md](PROJECT-STATUS.md) for current validation and next steps. The following description comes from the supplied v0.2.0 prototype. Development commands are `npm run build`, `npm test`, `npm run test:browser`, and `npm run dev`; Node 24+ is used for development. There are no npm dependencies to install.
 
 # Original DATA Step Lab v2 scope
 
-Browser-local SAS-style analysis prototype. Use the hosted Site, or download `dist/data-step-lab.html`, double-click it on Windows, and open it in a modern Edge/Chrome browser. The standalone file includes its styling, interpreter, macro processor, and Blob-based worker. No Python installation, server, AI API, external assets, or internet connection is required for computation.
+Browser-local SAS-style analysis prototype. Download the latest ZIP below, unzip it, then double-click it on Windows, and open it in a modern Edge/Chrome browser. The standalone file includes its styling, interpreter, macro processor, and Blob-based worker. No Python installation, server, AI API, external assets, or internet connection is required for computation.
 
-Choose an example and Run program (Ctrl+Enter). Import CSV datasets into the WORK library and export results as raw CSV. Dataset and variable names are case-insensitive. Datasets and macro definitions exist in tab memory; programs can be saved to files and recovered from a browser-local draft. Macro definitions/variables reset on each Run. Export results before closing. Failed programs do not commit partial dataset changes.
+Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the WORK library and export results as raw CSV. Dataset and variable names are case-insensitive. Datasets and macro definitions exist in tab memory; programs can be saved to files and recovered from a browser-local draft. Macro definitions/variables reset on each Run. Export results before closing. Failed programs do not commit partial dataset changes.
 
 ## Current development build
 
-Version 0.4.0 adds program open/save, editor recovery, and a project folder workflow with remembered browser handles and CSV PROC IMPORT/EXPORT. Download [SASita-v0.4.0.zip](dist/SASita-v0.4.0.zip), unzip, and open the standalone HTML. The included demo folder lets you select a project, open its program and run an import/export immediately. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
+Version 0.4.1 renames the app Sassy and provides full-size Program, Output, and Log tabs, rolling session histories with separate Clear buttons, and offline SAS syntax colors from PrismJS. Download [Sassy-v0.4.1.zip](dist/Sassy-v0.4.1.zip), unzip, and open data-step-lab.html. See [the app guide](docs/app-guide.md).
+
+The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 
 
-The feature/formats-conversions-rand branch adds common formats, INPUT/PUT conversion functions, and seeded RAND for UNIFORM/NORMAL with explicit MT32. Try the new INPUT & PUT, format gallery, and seeded RAND examples. See [feature scope and validation](docs/formats-conversions-rand.md). The standalone HTML still requires no server or installed runtime. Main and v1.0 remain preserved checkpoints.
+The feature/formats-conversions-rand branch adds common formats, INPUT/PUT conversion functions, and seeded RAND for UNIFORM/NORMAL with explicit MT32. Regression samples cover INPUT/PUT, the format gallery, and seeded RAND. See [feature scope and validation](docs/formats-conversions-rand.md). The standalone HTML still requires no server or installed runtime. Main and v1.0 remain preserved checkpoints.
 
 Width now controls value-changing formatting and PUT padding. Some SAS format semantics remain simplified. The MT32 integer core is verified, and 40,000 seed-12345 uniform values match a supplied SAS fixture bit-for-bit. Other seeds and normal sequences remain unverified. The current inventory is 35 DATA step functions and 20 common format families (date separator variants grouped within their parent family).
 

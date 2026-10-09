@@ -1,3 +1,5 @@
+Current workspace milestone: Sassy v0.4.1 on feature/sassy-tabbed-workspace. Program/Output/Log are full-size tabs, with rolling bounded in-memory histories and vendored offline PrismJS SAS colors. See docs/app-guide.md. Main and v1.0 are protected by the user agreement.
+
 # Current repository status
 
 Version 0.4.0 now implements program open/save/recovery and permission-aware project folders with browser CSV IMPORT/EXPORT. Read docs/project-files.md and PROJECT-STATUS.md for current architecture and checks; historical roadmap items below may now be complete. The synchronous numeric engine remains covered by actual SAS fixtures.

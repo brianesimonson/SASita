@@ -50,29 +50,39 @@ split:`/* Explicit OUTPUT controls which dataset gets a row. */\ndata paid missi
 const sample='claim_id,provider,paid_amount,allowed_amount,service_date\nC001,Alpha Medical,1200,900,24380\nC002,Alpha Medical,750,750,24381\nC003,Alpha Medical,2400,1500,24382\nC004,Beacon Care,1800,1700,24383\nC005,Beacon Care,300,300,24384\nC006,Beacon Care,,0,24385\nC007,Cedar Health,4500,3200,24386\nC008,Cedar Health,1100,800,24387\nC009,Cedar Health,600,600,24388\nC010,Cedar Health,2100,1450,24389';
 let datasets=Object.assign(Object.create(null),{claims:parseCSV(sample),providers:parseCSV('provider,specialty\nCedar Health,Rehabilitation\nAlpha Medical,Internal medicine\nBeacon Care,Home health\nDelta Clinic,Cardiology')}),selected='claims',page=0,busy=false,pendingFile=null;datasets.claims.formats={paid_amount:'dollar12.2',allowed_amount:'dollar12.2',service_date:'date9'};
 function el(tag,txt,cls){let n=document.createElement(tag);if(txt!==undefined)n.textContent=txt;if(cls)n.className=cls;return n}
-function lines(){let n=$('code').value.split('\n').length;$('lines').textContent=Array.from({length:n},(_,i)=>i+1).join('\n');$('linecount').textContent=n+' lines'}
-function render(){let list=$('datasets');list.replaceChildren();$('datasetcount').textContent=Object.keys(datasets).length;for(let [name,ds]of Object.entries(datasets)){let b=el('button',undefined,'dataset'+(name===selected?' active':''));b.append(el('strong',name),el('small',`${ds.rows.length.toLocaleString()} rows · ${ds.columns.length} variables`));b.onclick=()=>{selected=name;page=0;render()};list.append(b)}
- let ds=datasets[selected];$('resulttitle').textContent=ds?selected:'Results';$('export').disabled=!ds||busy;$('savecsvproject').disabled=!ds||busy||!project.directory;$('rowcount').textContent=ds?`${ds.rows.length.toLocaleString()} observations · ${ds.columns.length} variables`:'';$('table').replaceChildren();if(!ds||!ds.rows.length){$('table').append(el('div',ds?'This dataset has no observations.':'Run a program to see results.','empty'))}else{let table=el('table'),head=el('thead'),tr=el('tr');tr.append(el('th','#'));for(let c of ds.columns)tr.append(el('th',c));head.append(tr);table.append(head);let body=el('tbody');for(let [idx,r]of ds.rows.slice(page*50,page*50+50).entries()){let tr=el('tr');tr.append(el('td',page*50+idx+1,'rownum'));for(let c of ds.columns){let val=r[c],td=el('td',display(val,$('formatted').checked?ds.formats[c]:null),typeof val==='number'?'numeric':undefined);td.title='Raw: '+(val??'.');tr.append(td)}body.append(tr)}table.append(body);$('table').append(table)}let total=ds?.rows.length||0;$('pageinfo').textContent=total?`${page*50+1}–${Math.min(page*50+50,total)} of ${total.toLocaleString()}`:'0 observations';$('prev').disabled=page===0;$('next').disabled=(page+1)*50>=total;
+function highlight(){const code=$('code').value; $('highlight').innerHTML=code.length<=100000&&globalThis.Prism?Prism.highlight(code,Prism.languages.sas,'sas')+'\n': ''; if(code.length>100000)$('highlight').textContent=code+'\n';syncEditor();}
+function syncEditor(){$('lines').scrollTop=$('code').scrollTop;$('highlight').style.transform=`translate(${-$('code').scrollLeft}px,${-$('code').scrollTop}px)`;}
+function lines(){highlight();let n=$('code').value.split('\n').length;$('lines').textContent=Array.from({length:n},(_,i)=>i+1).join('\n');$('linecount').textContent=n+' lines'}
+let outputHistory=[],outputSnapshot=null,runNumber=0;
+function shownDataset(){return outputSnapshot?.dataset||datasets[selected]}
+function showWorkspace(name){for(const pane of ['program','output','log']){const active=pane===name;$(pane+'pane').hidden=!active;$('workspace'+pane+'tab').setAttribute('aria-selected',String(active));$('workspace'+pane+'tab').tabIndex=active?0:-1;}if(name==='program')syncEditor();}
+for(const name of ['program','output','log']){$('workspace'+name+'tab').onclick=()=>showWorkspace(name);$('workspace'+name+'tab').onkeydown=e=>{if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key)){e.preventDefault();const names=['program','output','log'],index=e.key==='Home'?0:e.key==='End'?2:(names.indexOf(name)+(e.key==='ArrowRight'?1:2))%3;showWorkspace(names[index]);$('workspace'+names[index]+'tab').focus();}}}
+function renderHistory(){$('outputhistory').replaceChildren(el('option','Current WORK dataset'));$('outputhistory').firstChild.value='';for(const item of outputHistory){const option=el('option',`Run ${item.run} · ${item.program} · ${item.name} (${item.dataset.rows.length.toLocaleString()} rows)`);option.value=item.id;$('outputhistory').append(option);}$('outputhistory').value=outputSnapshot?.id||'';}
+$('outputhistory').onchange=()=>{outputSnapshot=outputHistory.find(x=>x.id===$('outputhistory').value)||null;page=0;render();};
+$('clearoutput').onclick=()=>{outputHistory=[];outputSnapshot=null;selected='';page=0;renderHistory();render();};
+$('clearlog').onclick=()=>{$('log').replaceChildren();};
+function render(){let list=$('datasets');list.replaceChildren();$('datasetcount').textContent=Object.keys(datasets).length;for(let [name,ds]of Object.entries(datasets)){let b=el('button',undefined,'dataset'+(name===selected?' active':''));b.append(el('strong',name),el('small',`${ds.rows.length.toLocaleString()} rows · ${ds.columns.length} variables`));b.onclick=()=>{selected=name;outputSnapshot=null;page=0;renderHistory();render();showWorkspace('output')};list.append(b)}
+ let ds=shownDataset();$('resulttitle').textContent=ds?(outputSnapshot?.name||selected):'Results';$('export').disabled=!ds||busy;$('savecsvproject').disabled=!ds||busy||!project.directory;$('rowcount').textContent=ds?`${ds.rows.length.toLocaleString()} observations · ${ds.columns.length} variables`:'';$('table').replaceChildren();if(!ds||!ds.rows.length){$('table').append(el('div',ds?'This dataset has no observations.':'Run a program to see results.','empty'))}else{let table=el('table'),head=el('thead'),tr=el('tr');tr.append(el('th','#'));for(let c of ds.columns)tr.append(el('th',c));head.append(tr);table.append(head);let body=el('tbody');for(let [idx,r]of ds.rows.slice(page*50,page*50+50).entries()){let tr=el('tr');tr.append(el('td',page*50+idx+1,'rownum'));for(let c of ds.columns){let val=r[c],td=el('td',display(val,$('formatted').checked?ds.formats[c]:null),typeof val==='number'?'numeric':undefined);td.title='Raw: '+(val??'.');tr.append(td)}body.append(tr)}table.append(body);$('table').append(table)}let total=ds?.rows.length||0;$('pageinfo').textContent=total?`${page*50+1}–${Math.min(page*50+50,total)} of ${total.toLocaleString()}`:'0 observations';$('prev').disabled=page===0;$('next').disabled=(page+1)*50>=total;
 }
-function log(msg,error=false){$('log').textContent=msg;$('log').classList.toggle('error',error);$('status').textContent=error?'Error':'Ready';$('status').style.color=error?'#b33c47':'#137e72'}
+function log(msg,error=false){const pane=$('log'),bottom=pane.scrollHeight-pane.scrollTop-pane.clientHeight<40;const entry=el('span',`[${new Date().toLocaleTimeString()}] ${msg}\n\n`,error?'error':'logentry');pane.append(entry);if(pane.textContent.length>1000000){while(pane.childNodes.length>1&&pane.textContent.length>1000000)pane.firstChild.remove();}if(bottom)pane.scrollTop=pane.scrollHeight;$('status').textContent=error?'Error':'Ready';$('status').style.color=error?'#b33c47':'#137e72'}
 function lockWorkspace(value) {
  busy=value;
- for(const id of ['run','newprogram','openprogram','saveprogram','saveasprogram','load','import','chooseproject','programname','code'])$(id).disabled=value;
+ for(const id of ['run','newprogram','openprogram','saveprogram','saveasprogram','import','chooseproject','programname','code'])$(id).disabled=value;
  updateProjectUI();render();
 }
 function execute(code=$('code').value){
  if(busy)return Promise.reject(new Error('A program is already running'));
- lockWorkspace(true);$('status').textContent='Running…';const start=performance.now();
+ lockWorkspace(true);const run=++runNumber,program=$('programname').value;log(`Run ${run} · ${program} started.`);$('status').textContent='Running…';const start=performance.now();
  return new Promise((resolve,reject)=>{
   const worker=new Worker('worker.mjs',{type:'module'});let ended=false;
   const timer=setTimeout(()=>error('Execution exceeded 8 seconds. Reduce the data or loop size.'),8000);
   const finish=()=>{clearTimeout(timer);worker.terminate();ended=true;lockWorkspace(false)};
-  const error=message=>{if(ended)return;finish();log('ERROR: '+message+'\nNo dataset changes were committed.',true);reject(new Error(message))};
+  const error=message=>{if(ended)return;finish();log('ERROR: '+message+'\nNo dataset changes were committed.',true);showWorkspace('log');reject(new Error(message))};
   worker.onerror=()=>error('The execution worker could not run. Try reopening the page.');
   worker.onmessage=async({data})=>{
    if(ended)return;
    if(data.kind==='read-file'){
-    try{const text=await project.read(data.path);if(!ended)worker.postMessage({kind:'file-response',id:data.id,text});}
+    try{log('Reading project file: '+data.path);$('status').textContent='Running…';const text=await project.read(data.path);if(!ended)worker.postMessage({kind:'file-response',id:data.id,text});}
     catch(e){if(!ended)worker.postMessage({kind:'file-response',id:data.id,error:e.message});}
     return;
    }
@@ -82,7 +92,7 @@ function execute(code=$('code').value){
    try{
     const saved=await project.saveExports(data.result.exports);
     $('expandedview').textContent=data.result.expanded;datasets=data.result.datasets;
-    selected=data.result.written.at(-1)||selected;page=0;finish();
+    for(const name of new Set(data.result.written)){outputHistory.push({id:`${run}:${name}`,run,program,name,dataset:datasets[name]});}let retained=outputHistory.reduce((n,x)=>n+x.dataset.rows.length,0),trimmed=0;while(outputHistory.length>1&&(outputHistory.length>100||retained>250000)){retained-=outputHistory.shift().dataset.rows.length;trimmed++;}if(trimmed)log('NOTE: Older output snapshots removed (session limit: 100 datasets / 250,000 rows).');outputSnapshot=outputHistory.at(-1)||null;renderHistory();selected=data.result.written.at(-1)||selected;page=0;finish();showWorkspace('output');
     const elapsed=((performance.now()-start)/1000).toFixed(2);
     log(data.result.logs.join('\n')+(saved.length?'\nNOTE: Saved project files: '+saved.join(', '):'')+`\nNOTE: Completed in ${elapsed}s. All processing stayed in this browser.`);
     resolve({written:data.result.written,observations:Object.fromEntries(data.result.written.map(name=>[name,datasets[name].rows.length]))});
@@ -93,13 +103,13 @@ function execute(code=$('code').value){
 }
 function view(expanded){$('codeview').hidden=expanded;$('expandedview').hidden=!expanded;$('programtab').setAttribute('aria-selected',String(!expanded));$('expandedtab').setAttribute('aria-selected',String(expanded));$('programtab').tabIndex=expanded?-1:0;$('expandedtab').tabIndex=expanded?0:-1;}
 $('programtab').onclick=()=>view(false);$('expandedtab').onclick=()=>view(true);for(let id of ['programtab','expandedtab'])$(id).onkeydown=e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();let expanded=id==='programtab';view(expanded);$(expanded?'expandedtab':'programtab').focus()}};
-$('run').onclick=()=>execute().catch(()=>{});$('load').onclick=()=>{if(!canReplaceProgram())return;setProgram(examples[$('examples').value],'untitled.sas');log('Example loaded. Run the program to update results.')};$('code').oninput=()=>{lines();programDirty=$('code').value!==programBaseline;updateProgramUI();rememberDraft()};$('code').onscroll=()=>{$('lines').scrollTop=$('code').scrollTop};$('code').onkeydown=e=>{if(e.key==='Tab'){e.preventDefault();let a=e.target.selectionStart,b=e.target.selectionEnd;e.target.setRangeText('    ',a,b,'end');lines()}};document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();execute().catch(()=>{})}});
+$('run').onclick=()=>execute().catch(()=>{});$('code').oninput=()=>{lines();programDirty=$('code').value!==programBaseline;updateProgramUI();rememberDraft()};$('code').onscroll=syncEditor;$('code').onkeydown=e=>{if(e.key==='Tab'){e.preventDefault();let a=e.target.selectionStart,b=e.target.selectionEnd;e.target.setRangeText('    ',a,b,'end');e.target.dispatchEvent(new Event('input'))}};document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();execute().catch(()=>{})}});
 $('prev').onclick=()=>{page--;render()};$('next').onclick=()=>{page++;render()};$('formatted').onchange=render;
-$('help').onclick=()=>$('helpdialog').showModal();$('closehelp').onclick=()=>$('helpdialog').close();$('import').onclick=()=>$('file').click();$('file').onchange=()=>{let file=$('file').files[0];if(!file)return;pendingFile=file;$('filename').textContent=file.name;$('importname').value=file.name.replace(/\.csv$/i,'').replace(/[^a-z0-9_]/gi,'_').replace(/^(?=\d)/,'_').toLowerCase()||'imported';$('importdialog').showModal();$('file').value=''};$('closeimport').onclick=()=>$('importdialog').close();$('importform').onsubmit=async e=>{e.preventDefault();if(busy){log('ERROR: Wait for the program to finish before importing.',true);return}try{if(pendingFile.size>20000000)throw new Error('CSV import limit is 20 MB');let name=$('importname').value.toLowerCase();if(!/^[a-z_]\w*$/.test(name))throw new Error('Use a valid SAS dataset name');let ds=parseCSV(await pendingFile.text());datasets[name]=ds;selected=name;page=0;render();$('importdialog').close();log(`NOTE: Imported WORK.${name.toUpperCase()}: ${ds.rows.length} observations, ${ds.columns.length} variables.`)}catch(e){log('ERROR: '+e.message,true)}};
+$('help').onclick=()=>$('helpdialog').showModal();$('closehelp').onclick=()=>$('helpdialog').close();$('import').onclick=()=>$('file').click();$('file').onchange=()=>{let file=$('file').files[0];if(!file)return;pendingFile=file;$('filename').textContent=file.name;$('importname').value=file.name.replace(/\.csv$/i,'').replace(/[^a-z0-9_]/gi,'_').replace(/^(?=\d)/,'_').toLowerCase()||'imported';$('importdialog').showModal();$('file').value=''};$('closeimport').onclick=()=>$('importdialog').close();$('importform').onsubmit=async e=>{e.preventDefault();if(busy){log('ERROR: Wait for the program to finish before importing.',true);return}try{if(pendingFile.size>20000000)throw new Error('CSV import limit is 20 MB');let name=$('importname').value.toLowerCase();if(!/^[a-z_]\w*$/.test(name))throw new Error('Use a valid SAS dataset name');let ds=parseCSV(await pendingFile.text());datasets[name]=ds;selected=name;outputSnapshot=null;page=0;renderHistory();render();showWorkspace('output');$('importdialog').close();log(`NOTE: Imported WORK.${name.toUpperCase()}: ${ds.rows.length} observations, ${ds.columns.length} variables.`)}catch(e){log('ERROR: '+e.message,true)}};
 function downloadLocalFile(name,text,type='text/plain;charset=utf-8') {
  const url=URL.createObjectURL(new Blob([text],{type})),anchor=el('a');anchor.href=url;anchor.download=name;anchor.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
-$('export').onclick=()=>{try{downloadLocalFile(selected+'.csv',projectCSV(datasets[selected]),'text/csv;charset=utf-8')}catch(e){log(e.message,true)}};
+$('export').onclick=()=>{try{downloadLocalFile((outputSnapshot?.name||selected)+'.csv',projectCSV(shownDataset()),'text/csv;charset=utf-8')}catch(e){log(e.message,true)}};
 function programFilename() {
  const name=$('programname').value.trim();
  if(!/^[^\/\\:\x00-\x1f<>"|?*]+\.(sas|txt)$/i.test(name)||/[. ]$/.test(name))throw new Error('Use a program filename ending in .sas or .txt');
@@ -107,7 +117,7 @@ function programFilename() {
 }
 function updateProgramUI(){ $('programstate').textContent=programDirty?'Unsaved changes':programHandle?'Saved file':'Editor draft'; }
 function rememberDraft(){try{localStorage.setItem('sasita-program-draft',JSON.stringify({name:$('programname').value,code:$('code').value}));}catch{}}
-function setProgram(code,name='untitled.sas',handle=null){$('code').value=code;$('programname').value=name;programHandle=handle;programBaseline=code;programDirty=false;lines();view(false);updateProgramUI();rememberDraft();}
+function setProgram(code,name='untitled.sas',handle=null){$('code').value=code;$('programname').value=name;programHandle=handle;programBaseline=code;programDirty=false;lines();view(false);updateProgramUI();rememberDraft();showWorkspace('program');}
 function canReplaceProgram(){return !programDirty||confirm('This program has unsaved edits. Replace them? Your recovery draft will also be replaced.');}
 async function openProgramFile(file,handle=null){
  if(file.size>1000000)throw new Error('Program files are limited to 1 MB');
@@ -145,7 +155,7 @@ function updateProjectUI(){
  $('reconnectproject').hidden=!project.remembered||!!project.directory;$('reconnectproject').disabled=busy;
  $('forgetproject').disabled=busy||!project.remembered;$('projectbrowse').disabled=busy||!project.directory;
  $('projectstatus').textContent=project.directory?'Project: '+project.directory.name+(project.notice?' · '+project.notice:' · read/write access'):project.remembered?'Remembered: '+project.remembered.name+' · reconnect to grant access':!project.supported()?'Folder access unavailable here. Program upload/download and manual CSV import/download still work.':project.notice||'Choose a folder for programmatic imports and exports.';
- $('savecsvproject').disabled=busy||!project.directory||!datasets[selected];
+ $('savecsvproject').disabled=busy||!project.directory||!shownDataset();
 }
 $('chooseproject').onclick=()=>userAction(async()=>{await project.connect();projectFolderPath='';updateProjectUI();log('Project folder connected: '+project.directory.name+'. Relative CSV paths now use this folder.')});
 $('reconnectproject').onclick=()=>userAction(async()=>{await project.reconnect();updateProjectUI();log('Project folder reconnected.')});
@@ -169,12 +179,12 @@ $('projectbrowse').onclick=()=>userAction(async()=>{await browseProject();$('pro
 $('closeproject').onclick=()=>$('projectdialog').close();$('refreshproject').onclick=()=>userAction(browseProject);
 $('projectup').onclick=()=>userAction(async()=>{projectFolderPath=projectFolderPath.split('/').slice(0,-1).join('/');await browseProject()});
 $('savecsvproject').onclick=()=>userAction(async()=>{
- const name=selected+'.csv',text=projectCSV(datasets[selected],19999998)+'\r\n';lockWorkspace(true);
+ const name=(outputSnapshot?.name||selected)+'.csv',text=projectCSV(shownDataset(),19999998)+'\r\n';lockWorkspace(true);
  try{await project.saveExports([{path:name,text,replace:true}]);log('Saved '+name+' to '+project.directory.name+'.');}finally{lockWorkspace(false)}
 });
 let recovered=false;
 try{const draft=JSON.parse(localStorage.getItem('sasita-program-draft'));if(draft&&typeof draft.code==='string'&&draft.code.length<=1000000&&typeof draft.name==='string'){setProgram(draft.code,draft.name);programDirty=true;updateProgramUI();recovered=true;}}catch{}
-if(!recovered)setProgram(examples.flags);
+if(!recovered)setProgram('');
 updateProjectUI();project.restore().then(updateProjectUI);
-render();execute(examples.flags).then(()=>{if(recovered)log($('log').textContent+'\nNOTE: Recovered your editor draft; it has not been run or saved to disk.');}).catch(()=>{});
+render();log(recovered?'NOTE: Recovered your editor draft; it has not been run or saved to disk.':'Ready. Open a program or start typing.');
 if(document.modelContext?.registerTool){try{Promise.resolve(document.modelContext.registerTool({name:'run_data_step',title:'Run DATA step',description:'Replace the visible program and execute the supported SAS DATA step subset against the current WORK datasets. Updates datasets and results on success.',inputSchema:{type:'object',properties:{code:{type:'string'}},required:['code'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:true},execute:async input=>{if(!input||typeof input.code!=='string'||Object.keys(input).some(k=>k!=='code'))throw new Error('Provide code as a string');$('code').value=input.code;lines();programDirty=input.code!==programBaseline;updateProgramUI();rememberDraft();return await execute(input.code)}})).catch(()=>{})}catch{}}

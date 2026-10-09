@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
 import {run,csv} from '../dist/engine.mjs';
 import {spawn} from 'node:child_process';
-import {mkdtemp, readFile, rm} from 'node:fs/promises';
+import {mkdtemp, readFile, rm, writeFile} from 'node:fs/promises';
 import {tmpdir} from 'node:os';
 import {join, resolve, extname} from 'node:path';
 import {createServer} from 'node:http';
@@ -15,7 +15,7 @@ const server=createServer(async(req,res)=>{
     const path=resolve(root,'.'+new URL(req.url,'http://localhost').pathname);
     if(!path.startsWith(root+'/')) {res.writeHead(403).end();return;}
     const data=await readFile(path);
-    res.setHeader('Content-Type',({'.html':'text/html','.mjs':'text/javascript','.css':'text/css'})[extname(path)]||'application/octet-stream');
+    res.setHeader('Content-Type',({'.html':'text/html','.mjs':'text/javascript','.js':'text/javascript','.css':'text/css'})[extname(path)]||'application/octet-stream');
     res.end(data);
   } catch {res.writeHead(404).end();}
 });
@@ -60,6 +60,8 @@ try {
     throw new Error('UI condition timed out: '+expression+'; page: '+JSON.stringify(await evaluate("({url:location.href,state:document.readyState,log:document.querySelector('#log')?.textContent,status:document.querySelector('#status')?.textContent})")));
   }
   await send('Page.enable');
+  const appSource=await readFile('dist/app.mjs','utf8');
+  const samples=Function('return ('+appSource.match(/const examples=(\{[\s\S]*?\});/)[1]+')')();
   const expected={conversions:['converted',1],formats:['format_gallery',1],random:['random_sample',8],flags:['flagged',6],groups:['provider_totals',3],loop:['squares',12],split:['missing_payment',1],merge:['enriched',10],macro:['macro_flagged',6],macroloop:['above_3000',1]};
   for(const [label,url] of [
     ['modular',`http://127.0.0.1:${server.address().port}/index.html`],
@@ -67,9 +69,9 @@ try {
     ...(process.argv.includes('--file') ? [['offline file','file://'+resolve('dist/data-step-lab.html')]] : [])
   ]) {
     const navigation=await send('Page.navigate',{url});assert.ok(!navigation.errorText, JSON.stringify(navigation));
-    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Completed')");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled && document.querySelector('#status').textContent==='Ready' && document.querySelector('#log').textContent.length>0");
     for(const [example,[dataset,rows]] of Object.entries(expected)) {
-      await evaluate(`document.querySelector('#examples').value=${JSON.stringify(example)};document.querySelector('#load').click();document.querySelector('#run').click()`);
+      await evaluate(`document.querySelector('#code').value=${JSON.stringify(samples[example])};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
       await waitFor("!document.querySelector('#run').disabled");
       const result=await evaluate("({name:document.querySelector('#resulttitle').textContent,count:document.querySelector('#rowcount').textContent,log:document.querySelector('#log').textContent})");
       assert.equal(result.name,dataset,`${label} ${example}: ${result.log}`);
@@ -77,11 +79,41 @@ try {
       assert.ok(result.log.includes('Completed'),result.log);
     }
     assert.ok((await evaluate("document.querySelector('#expandedview').textContent")).includes('data above_3000'));
+    // Full-size panes, colored code, independent rolling histories and immutable snapshots.
+    assert.equal(await evaluate("document.querySelectorAll('.workspacepane:not([hidden])').length"),1);
+    assert.equal(await evaluate("document.querySelector('#workspaceoutputtab').getAttribute('aria-selected')"),'true');
+    assert.ok((await evaluate("document.querySelector('#log').textContent")).includes('Run 1'));
+    assert.ok(await evaluate("document.querySelector('#outputhistory').options.length>10"));
+    await evaluate("document.querySelector('#workspaceprogramtab').click();document.querySelector('#programtab').click();document.querySelector('#code').value=\"data color; /* note */ text='<img src=x onerror=alert(1)>'; x=12; run;\";document.querySelector('#code').dispatchEvent(new Event('input'))");
+    assert.ok(await evaluate("document.querySelector('#highlight .token.keyword')!==null && document.querySelector('#highlight .token.string')!==null && document.querySelector('#highlight .token.comment')!==null"));
+    assert.equal(await evaluate("document.querySelector('#highlight img')!==null"),false);
+    assert.ok(await evaluate("document.querySelector('#code').getBoundingClientRect().width>500"));
+    if(process.argv.includes('--screenshots')){await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-'+label+'.png',Buffer.from(capture.data,'base64'));}
+    await evaluate("document.querySelector('#code').value='data snapshot; x=1; run;';document.querySelector('#run').click()");
+    await waitFor("!document.querySelector('#run').disabled");
+    const firstSnapshot=await evaluate("document.querySelector('#outputhistory').value");
+    await evaluate("document.querySelector('#code').value='data snapshot; x=2; run;';document.querySelector('#run').click()");
+    await waitFor("!document.querySelector('#run').disabled");
+    await evaluate(`document.querySelector('#outputhistory').value=${JSON.stringify(firstSnapshot)};document.querySelector('#outputhistory').dispatchEvent(new Event('change'))`);
+    assert.equal(await evaluate("document.querySelector('#table tbody td:nth-child(2)').textContent"),'1');
+    const historyCount=await evaluate("document.querySelector('#outputhistory').options.length");
+    await evaluate("document.querySelector('#workspacelogtab').click();document.querySelector('#clearlog').click()");
+    assert.equal(await evaluate("document.querySelector('#log').textContent"),'');
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),historyCount);
+    const workBeforeClear=await evaluate("document.querySelector('#datasets').textContent");
+    await evaluate("document.querySelector('#workspaceoutputtab').click();document.querySelector('#clearoutput').click()");
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),1);
+    assert.equal(await evaluate("document.querySelector('#datasets').textContent"),workBeforeClear);
+    await evaluate("document.querySelector('#code').value='data snapshot; x=3; run;';document.querySelector('#run').click()");
+    await waitFor("!document.querySelector('#run').disabled");
+    assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
+    console.log(`${label}: tabbed workspace, offline SAS colors, rolling output/log, independent clears and snapshot preservation passed`);
     // Open the reference in the real browser, including new conversion/RAND help.
     await evaluate("document.querySelector('#help').click()");
     assert.ok((await evaluate("document.querySelector('#helpdialog').textContent")).includes('CALL STREAMINIT'));
     await evaluate("document.querySelector('#closehelp').click()");
-    await evaluate("document.querySelector('#expandedtab').click()");
+    await evaluate("document.querySelector('#workspaceprogramtab').click();document.querySelector('#expandedtab').click()");
     assert.equal(await evaluate("document.querySelector('#expandedview').hidden"),false);
     if(process.argv.includes('--validation')||process.argv.includes('--large-numbers')) {
       for(const [folder,file] of [
@@ -144,7 +176,7 @@ try {
     assert.equal(await evaluate("(async()=>{try{await (await window.__projectTest.getDirectoryHandle('outputs')).getFileHandle('not_written.csv');return true}catch(e){if(e.name==='NotFoundError')return false;throw e}})()"),false);
     // Remembered native handle survives reload; cached code is not auto-executed.
     await send('Page.reload');
-    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Completed') && document.querySelector('#projectstatus').textContent.includes('Project: sasita-project-test')");
+    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Recovered') && document.querySelector('#projectstatus').textContent.includes('Project: sasita-project-test')");
     assert.ok((await evaluate("document.querySelector('#code').value")).includes('bad_statement'));
     await evaluate("document.querySelector('#forgetproject').click()");
     await waitFor("!document.querySelector('#run').disabled && document.querySelector('#projectstatus').textContent.includes('Choose a folder')");
@@ -156,11 +188,14 @@ try {
     // Capture the browser-generated download and check raw CSV contents.
     const exported=await evaluate(`(async()=>{let blob;const original=URL.createObjectURL,click=HTMLAnchorElement.prototype.click;URL.createObjectURL=value=>{blob=value;return original(value)};HTMLAnchorElement.prototype.click=function(){};try{document.querySelector('#export').click();return await blob.text();}finally{URL.createObjectURL=original;HTMLAnchorElement.prototype.click=click;}})()`);
     assert.equal(exported, '\"id\",\"amount\"\r\n\"1\",\"10\"\r\n\"2\",\"20\"');
+    const outputBeforeFailure=await evaluate("document.querySelector('#outputhistory').options.length");
     const before=await evaluate("document.querySelector('#datasets').textContent");
     await evaluate("document.querySelector('#code').value='data should_not_exist; x=1; run; data broken; unknown_statement; run;';document.querySelector('#run').click()");
     await waitFor("!document.querySelector('#run').disabled");
     assert.match(await evaluate("document.querySelector('#log').textContent"),/No dataset changes were committed/);
     assert.equal(await evaluate("document.querySelector('#datasets').textContent"),before);
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),outputBeforeFailure);
+    assert.equal(await evaluate("document.querySelector('#workspacelogtab').getAttribute('aria-selected')"),'true');
     console.log(`${label}: ten examples, expanded code, CSV import/export, failed-run rollback passed`);
   }
   console.log('Browser checks passed in '+await evaluate('navigator.userAgent'));

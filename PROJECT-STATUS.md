@@ -1,5 +1,16 @@
 # SASita project status
 
+## Sassy v0.4.1: compact tabbed workspace
+
+Branch `feature/sassy-tabbed-workspace` builds on v0.4.0. The app is now Sassy, with a compact filename/file toolbar, Run beside program controls, full-size Program/Output/Log panes, and WORK datasets kept at the left. Introductory, example-loading, browser/offline-download chrome has been removed. Supported syntax and macro-expanded source remain available. A fresh editor starts blank; recovered drafts are never executed automatically.
+
+Log entries append across runs and file actions. Output keeps final successful-run dataset snapshots with a run/program selector; replacing WORK datasets does not replace earlier snapshots. Independent Clear buttons preserve WORK. Histories reset on reload and have documented memory bounds. Dataset selection opens Output, successful Run opens Output, errors open Log.
+
+PrismJS 1.30.0 SAS syntax coloring is vendored from the verified npm release, with MIT attribution included in the generated HTML and ZIP. No network request or runtime dependency is required. Large programs fall back to plain coloring. Syntax coloring does not imply additional engine support. See docs/app-guide.md and dist/vendor/README.md. Download: dist/Sassy-v0.4.1.zip. Main and v1.0 remain unchanged.
+
+Validation passed: npm test and npm run test:browser -- --validation --large-numbers --screenshots, for both modular and standalone builds. Browser checks cover tab visibility, SAS token coloring and escaped HTML, accumulated histories, independent clears, prior snapshot preservation, all ten regression programs, full validation CSV exports, file open/save, directory streams, persisted folder handles, draft recovery, and failed-run rollback. The desktop Program pane was also visually inspected in a 1400×900 Chromium screenshot. The ZIP and member checksums are verified. The user reports the prior folder workflow works on their computer; browser/version details were not supplied. OS permission dialogs and cloud-blocked file:// navigation remain outside automated coverage.
+
+
 ## v0.4.0: program files and remembered project folders
 
 Branch `feature/project-folder-program-files` adds New/Open/Save/Save As program controls, filename and unsaved status, keyboard saves, recovery drafts, project folder selection/browsing, IndexedDB directory-handle persistence and permission-aware reconnect, plus manual Save CSV to project and download fallbacks. Source and generated standalone HTML remain offline and browser-local. The new download is dist/SASita-v0.4.0.zip, containing the app and a ready-to-select demo-project folder.

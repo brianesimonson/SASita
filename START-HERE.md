@@ -4,9 +4,9 @@ SASita starts from the supplied DATA Step Lab v0.2.0 prototype. The application 
 
 ## Use the app
 
-Download `dist/SASita-v0.4.0.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for syntax and permission behavior. Choose an example, click **Load example**, then **Run program**. The app requires no Python, server, account, API key, or internet connection to compute results.
+Download `dist/Sassy-v0.4.1.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for syntax and permission behavior. Use the Program, Output, and Log tabs. Open a saved program or type your own, then click **Run**. See docs/app-guide.md. The app requires no Python, server, account, API key, or internet connection to compute results.
 
-Start with the supplied synthetic data. Try all ten examples in the current feature build, inspect the Log and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs support file open/save and a browser-local recovery draft; datasets remain in tab memory until explicitly exported. Remembered project-folder permissions may need reconnecting. Save or export before closing. Macro definitions reset on each Run.
+Start with the supplied synthetic data. Inspect the rolling Log, session Output snapshots, and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs support file open/save and a browser-local recovery draft; datasets remain in tab memory until explicitly exported. Remembered project-folder permissions may need reconnecting. Save or export before closing. Macro definitions reset on each Run.
 
 ## Develop in Codex or locally
 
@@ -27,7 +27,7 @@ Edit the modules under `dist/` (including formats.mjs and random.mjs), then rege
 
 ## Keep progress safe
 
-GitHub is the durable source record. Start changes from the current main branch, use small commits and feature branches for subsequent work, and push completed changes. Keep `PROJECT-STATUS.md` current with actual checks, limitations, and next steps. Use version tags for known milestones. The initial imported baseline is tagged `v0.2.0` after validation.
+GitHub is the durable source record. Start changes from the latest agreed feature milestone; keep main and v1.0 unchanged until explicitly authorized, use small commits and feature branches for subsequent work, and push completed changes. Keep `PROJECT-STATUS.md` current with actual checks, limitations, and next steps. Use version tags for known milestones. The initial imported baseline is tagged `v0.2.0` after validation.
 
 The supplied `source-history.bundle` preserves the original two commits. `docs/imported/` contains the original handoff documents and manifest for provenance; those documents describe the pre-import package and do not supersede current project guidance. Their manifest describes original archive bytes, not the evolving repository.
 
