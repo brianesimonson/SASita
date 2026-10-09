@@ -112,8 +112,8 @@ function* frames(inputs,by,merge,tick){
  for(let i=0;i<size;i++){tick();yield{reads:groups.flatMap((g,j)=>i<g.length?[{source:inputs[j],row:g[i]}]:[]),keyrow:head,newgroup:i===0}}
  }
 }
-export function run(code,input={}){
- let macro=expandMacros(code),steps=new Parser(macro.code).parse(),datasets=Object.create(null),logs=[...macro.logs],written=[];for(let [k,v]of Object.entries(input))datasets[key(k.toLowerCase())]=v;
+export function run(code,input={},options={}){
+ let macro=options.expanded?{code,logs:[]}:expandMacros(code),steps=new Parser(macro.code).parse(),datasets=Object.create(null),logs=[...macro.logs],written=[];for(let [k,v]of Object.entries(input))datasets[key(k.toLowerCase())]=v;
  let ops=0;const tick=()=>{if(++ops>4000000)fail('Execution limit reached. Reduce the data or loop size.')};
  for(let step of steps){
  if(step.k==='sort'){let ds=datasets[key(step.data)];if(!ds)fail('Dataset '+step.data+' was not found');for(let k of step.keys)if(!ds.columns.includes(k.name))fail('Sort variable '+k.name+' was not found');let rows=ds.rows.map(r=>({...r}));rows.sort((a,b)=>{tick();return compareKeys(a,b,step.keys)});let removed=0;if(step.nodupkey){let all=rows;rows=[];for(let r of all){tick();if(!rows.length||compareKeys(rows.at(-1),r,step.keys)!==0)rows.push(r);else removed++}}let name=key(step.out);datasets[name]={...ds,rows,columns:[...ds.columns],formats:{...ds.formats}};written.push(name);logs.push('NOTE: PROC SORT wrote WORK.'+name.toUpperCase()+': '+rows.length+' observations'+(step.nodupkey?', '+removed+' duplicate keys removed':'')+'.');continue}

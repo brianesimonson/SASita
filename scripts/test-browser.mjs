@@ -43,6 +43,7 @@ try {
   let next=0;const pending=new Map();
   socket.addEventListener('message',event=>{
     const msg=JSON.parse(event.data),task=pending.get(msg.id);
+    if(msg.method==='Page.javascriptDialogOpening')send('Page.handleJavaScriptDialog',{accept:true}).catch(()=>{});
     if(task){pending.delete(msg.id);clearTimeout(task.timer);msg.error?task.reject(new Error(JSON.stringify(msg.error))):task.resolve(msg.result);}
   });
   function send(method,params={}) {return new Promise((resolve,reject)=>{
@@ -101,6 +102,53 @@ try {
         console.log(`${label}: ${file} completed within app timeout; all result CSVs match engine`);
       }
     }
+    // Native browser sandbox handles stand in for an OS picker. This exercises
+    // actual streams/IndexedDB; OS picker and grant dialogs require manual testing.
+    await evaluate(`(async()=>{
+      const root=await navigator.storage.getDirectory();
+      const folder=await root.getDirectoryHandle('sasita-project-test',{create:true});
+      const inputs=await folder.getDirectoryHandle('inputs',{create:true});
+      await folder.getDirectoryHandle('outputs',{create:true});
+      const file=await inputs.getFileHandle('source.csv',{create:true});
+      let writer=await file.createWritable();await writer.write('id,amount\\n1,10\\n2,20');await writer.close();
+      const program=await folder.getFileHandle('saved.sas',{create:true});
+      writer=await program.createWritable();await writer.write('data opened; x=1; run;');await writer.close();
+      window.__projectTest=folder;window.__programTest=program;
+      window.showDirectoryPicker=async()=>folder;
+      window.showOpenFilePicker=async()=>[program];
+      document.querySelector('#chooseproject').click();
+    })()`);
+    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#projectstatus').textContent.includes('Project: sasita-project-test')");
+    await evaluate("document.querySelector('#openprogram').click()");
+    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#programname').value==='saved.sas'");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'data opened; x=1; run;');
+    await evaluate("document.querySelector('#code').value='data opened; x=2; run;';document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#saveprogram').click()");
+    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Saved saved.sas')");
+    assert.equal(await evaluate("(async()=>await (await window.__programTest.getFile()).text())()"),'data opened; x=2; run;');
+    const projectCode="filename source 'inputs/source.csv';proc import datafile=source out=project_input dbms=csv replace;getnames=yes;guessingrows=max;run;data project_result;set project_input;doubled=amount*2;run;proc export data=project_result outfile='outputs/result.csv' dbms=csv replace;run;";
+    await evaluate(`document.querySelector('#code').value=${JSON.stringify(projectCode)};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
+    await waitFor("!document.querySelector('#run').disabled");
+    assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
+    const savedProjectCSV=await evaluate("(async()=>await (await (await (await window.__projectTest.getDirectoryHandle('outputs')).getFileHandle('result.csv')).getFile()).text())()");
+    assert.equal(savedProjectCSV,'"id","amount","doubled"\r\n"1","10","20"\r\n"2","20","40"\r\n');
+    // No REPLACE: existing disk output remains intact and WORK rolls back.
+    const projectBefore=await evaluate("document.querySelector('#datasets').textContent");
+    await evaluate(`document.querySelector('#code').value="data should_not_commit; x=3; run;proc export data=should_not_commit outfile='outputs/result.csv' dbms=csv;run;";document.querySelector('#run').click()`);
+    await waitFor("!document.querySelector('#run').disabled");
+    assert.match(await evaluate("document.querySelector('#log').textContent"),/add REPLACE/);
+    assert.equal(await evaluate("document.querySelector('#datasets').textContent"),projectBefore);
+    assert.equal(await evaluate("(async()=>await (await (await (await window.__projectTest.getDirectoryHandle('outputs')).getFileHandle('result.csv')).getFile()).text())()"),savedProjectCSV);
+    // A later program error must not create an earlier prepared export.
+    await evaluate(`document.querySelector('#code').value="data pending; x=1; run;proc export data=pending outfile='outputs/not_written.csv' dbms=csv;run;data broken;bad_statement;run;";document.querySelector('#run').click()`);
+    await waitFor("!document.querySelector('#run').disabled");
+    assert.equal(await evaluate("(async()=>{try{await (await window.__projectTest.getDirectoryHandle('outputs')).getFileHandle('not_written.csv');return true}catch(e){if(e.name==='NotFoundError')return false;throw e}})()"),false);
+    // Remembered native handle survives reload; cached code is not auto-executed.
+    await send('Page.reload');
+    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#log').textContent.includes('Completed') && document.querySelector('#projectstatus').textContent.includes('Project: sasita-project-test')");
+    assert.ok((await evaluate("document.querySelector('#code').value")).includes('bad_statement'));
+    await evaluate("document.querySelector('#forgetproject').click()");
+    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#projectstatus').textContent.includes('Choose a folder')");
+    console.log(`${label}: program open/direct save, native project streams, staged export rollback, overwrite guard, remembered folder and draft recovery passed`);
     // Import through the actual file input and form.
     await evaluate(`(()=>{const transfer=new DataTransfer();transfer.items.add(new File(['id,amount\\n1,10\\n2,20'],'browser_input.csv',{type:'text/csv'}));const input=document.querySelector('#file');input.files=transfer.files;input.dispatchEvent(new Event('change'));document.querySelector('#importform').requestSubmit();})()`);
     await waitFor("document.querySelector('#log').textContent.includes('Imported WORK.BROWSER_INPUT')");
@@ -120,5 +168,5 @@ try {
   socket?.close();
   if(browser.exitCode===null&&!launchError){const exited=new Promise(r=>browser.once('exit',r));browser.kill();await exited;}
   await new Promise(r=>server.close(r));
-  await rm(profile,{recursive:true,force:true});
+  await rm(profile,{recursive:true,force:true,maxRetries:10,retryDelay:100});
 }

@@ -1,5 +1,7 @@
 # Current repository status
 
+Version 0.4.0 now implements program open/save/recovery and permission-aware project folders with browser CSV IMPORT/EXPORT. Read docs/project-files.md and PROJECT-STATUS.md for current architecture and checks; historical roadmap items below may now be complete. The synchronous numeric engine remains covered by actual SAS fixtures.
+
 This document preserves the original architectural handoff. See PROJECT-STATUS.md for current validation and START-HERE.md for commands. The baseline now includes real Chromium browser checks. The historical hosted-site URL below is background; this repository does not control or deploy that site.
 
 # Development handoff

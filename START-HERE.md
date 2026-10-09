@@ -4,9 +4,9 @@ SASita starts from the supplied DATA Step Lab v0.2.0 prototype. The application 
 
 ## Use the app
 
-Download `dist/data-step-lab.html` from GitHub and open it in a modern Chrome or Edge browser. Choose an example, click **Load example**, then **Run program**. The app requires no Python, server, account, API key, or internet connection to compute results.
+Download `dist/SASita-v0.4.0.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for syntax and permission behavior. Choose an example, click **Load example**, then **Run program**. The app requires no Python, server, account, API key, or internet connection to compute results.
 
-Start with the supplied synthetic data. Try all ten examples in the current feature build, inspect the Log and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs and datasets currently exist only in tab memory: export before closing. Macro definitions reset on each Run.
+Start with the supplied synthetic data. Try all ten examples in the current feature build, inspect the Log and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs support file open/save and a browser-local recovery draft; datasets remain in tab memory until explicitly exported. Remembered project-folder permissions may need reconnecting. Save or export before closing. Macro definitions reset on each Run.
 
 ## Develop in Codex or locally
 

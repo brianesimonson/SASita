@@ -6,9 +6,12 @@ Start with [START-HERE.md](START-HERE.md) for use and development, and [PROJECT-
 
 Browser-local SAS-style analysis prototype. Use the hosted Site, or download `dist/data-step-lab.html`, double-click it on Windows, and open it in a modern Edge/Chrome browser. The standalone file includes its styling, interpreter, macro processor, and Blob-based worker. No Python installation, server, AI API, external assets, or internet connection is required for computation.
 
-Choose an example and Run program (Ctrl+Enter). Import CSV datasets into the WORK library and export results as raw CSV. Dataset and variable names are case-insensitive. Data, programs, and macro definitions exist only in tab memory. Macro definitions/variables reset on each Run. Export results before closing. Failed programs do not commit partial dataset changes.
+Choose an example and Run program (Ctrl+Enter). Import CSV datasets into the WORK library and export results as raw CSV. Dataset and variable names are case-insensitive. Datasets and macro definitions exist in tab memory; programs can be saved to files and recovered from a browser-local draft. Macro definitions/variables reset on each Run. Export results before closing. Failed programs do not commit partial dataset changes.
 
 ## Current development build
+
+Version 0.4.0 adds program open/save, editor recovery, and a project folder workflow with remembered browser handles and CSV PROC IMPORT/EXPORT. Download [SASita-v0.4.0.zip](dist/SASita-v0.4.0.zip), unzip, and open the standalone HTML. The included demo folder lets you select a project, open its program and run an import/export immediately. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
+
 
 The feature/formats-conversions-rand branch adds common formats, INPUT/PUT conversion functions, and seeded RAND for UNIFORM/NORMAL with explicit MT32. Try the new INPUT & PUT, format gallery, and seeded RAND examples. See [feature scope and validation](docs/formats-conversions-rand.md). The standalone HTML still requires no server or installed runtime. Main and v1.0 remain preserved checkpoints.
 
@@ -30,13 +33,13 @@ The app’s **Supported syntax** dialog now lists every implemented function and
 
 DATA, one top-level SET or MERGE per step, assignments, IF/THEN/ELSE, subsetting IF, DO/END, indexed DO/TO/BY, DELETE, STOP, OUTPUT, KEEP/DROP, RETAIN, sum statements, character LENGTH, FIRST./LAST. variables, selected formats, and common functions. See Supported syntax in the app for details.
 
-No positional MERGE without BY, arrays, other PROC procedures, INPUT/INFILE statements, SAS binary files, unlisted informats, output dataset options, variable lists, special missing values, or full SAS numeric/character coercion and fixed character semantics. Flexible character strings are used unless LENGTH is supplied. Character sorting uses Unicode, so host/locale collation can differ from SAS. Dates export as raw days since 1960-01-01. CSV types are inferred.
+No positional MERGE without BY, arrays, PROC procedures beyond SORT and the browser CSV import/export subset, INPUT/INFILE statements, SAS binary files, unlisted informats, output dataset options, variable lists, special missing values, or full SAS numeric/character coercion and fixed character semantics. Flexible character strings are used unless LENGTH is supplied. Character sorting uses Unicode, so host/locale collation can differ from SAS. Dates export as raw days since 1960-01-01. CSV types are inferred.
 
 Macro scope and conditional expressions cover a practical subset. No quoting functions, indirect && references, %SYSFUNC, CALL SYMPUT, nested macro definitions, dynamic macro names, full SAS rescanning, or advanced/empty-operand expressions. Unknown constructs and unsupported macro features produce errors rather than being ignored. Semantics outside the supported subset can still differ from SAS. This is an independent prototype, not SAS software or a certified compatible runtime.
 
 ## Implementation and rebuilding
 
-`dist/engine.mjs` parses statements into an AST and interprets it without evaluating user code as JavaScript. `dist/macros.mjs` expands bounded macro text. `dist/worker.mjs` isolates processing. `dist/app.mjs` owns the visible workspace. `python3 build-offline.py` regenerates the standalone file from these same sources.
+`dist/engine.mjs` parses statements into an AST and interprets it without evaluating user code as JavaScript. `dist/macros.mjs` expands bounded macro text. `dist/file-program.mjs` plans asynchronous CSV steps and stages exports; `dist/project-files.mjs` manages scoped native handles and permission-aware persistence. `dist/worker.mjs` isolates processing and requests reads from the UI. `dist/app.mjs` owns the visible workspace. `python3 build-offline.py` regenerates the standalone file from these same sources.
 
 Run checks:
 
@@ -47,7 +50,7 @@ node test-ui-examples.mjs
 node test-offline.mjs
 ```
 
-Checks cover match-merge behavior including the overlapping-variable example in SAS Usage Note 48705; missing/unmatched/repeated keys; IN= reset behavior; renaming; multiple BY keys/directions; stable sorting/deduplication; macro quotes, scope, parameters, branches, loops, nested calls, limits, and failure paths; all UI examples; and execution of the exact embedded offline worker in an isolated JavaScript worker runtime. The baseline also has real headless Chromium UI checks for the modular app and offline file, described in PROJECT-STATUS.md. Comparison against an installed SAS runtime, visual browser QA, and Windows browser execution remain outstanding.
+Checks cover match-merge behavior including the overlapping-variable example in SAS Usage Note 48705; missing/unmatched/repeated keys; IN= reset behavior; renaming; multiple BY keys/directions; stable sorting/deduplication; macro quotes, scope, parameters, branches, loops, nested calls, limits, and failure paths; all UI examples; and execution of the exact embedded offline worker in an isolated JavaScript worker runtime. The baseline also has real headless Chromium UI checks for the modular app and offline file, described in PROJECT-STATUS.md. The specific numeric/RAND/merge SAS comparisons are recorded in PROJECT-STATUS.md. Broader SAS compatibility and Windows OS-picker/local-file checks remain outstanding.
 
 Limits: 100,000 imported/output rows per dataset; 20 MB CSV import; four million interpreter operations; 50,000 macro-expansion operations; 10,000 iterations per macro loop; bounded expanded text and nesting; eight seconds per browser run.
 

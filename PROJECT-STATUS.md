@@ -1,5 +1,16 @@
 # SASita project status
 
+## v0.4.0: program files and remembered project folders
+
+Branch `feature/project-folder-program-files` adds New/Open/Save/Save As program controls, filename and unsaved status, keyboard saves, recovery drafts, project folder selection/browsing, IndexedDB directory-handle persistence and permission-aware reconnect, plus manual Save CSV to project and download fallbacks. Source and generated standalone HTML remain offline and browser-local. The new download is dist/SASita-v0.4.0.zip, containing the app and a ready-to-select demo-project folder.
+
+The asynchronous worker adapter supports bounded FILENAME aliases and CSV PROC IMPORT/EXPORT with relative project paths, macros, GETNAMES=YES, GUESSINGROWS=MAX, and REPLACE. Absolute paths/URLs/parent traversal are rejected. Exports are staged until all computations succeed; all targets are preflighted, existing files require REPLACE, and individual disk writes follow. Partial write failures report possibly changed files and leave WORK uncommitted. Same-path imports can read a prior staged export. CSVs are capped at 20 MB each, aggregate program exports at 50 MB, project programs at 200 steps, and program files at 1 MB. Existing numeric/merge behavior is preserved.
+
+Validation passed: npm test, including exact 40,000-draw SAS fixture and new file-program/project-adapter edge cases; npm run test:browser -- --validation --large-numbers for modular and standalone builds, all existing examples and full validation CSVs, program open/direct save, native browser sandbox directory streams, remembered handles, draft recovery, overwrite refusal, and failed-run no-write behavior. Packaged demo produces six reviewed rows and a prepared CSV; ZIP integrity and checksums are verified.
+
+Real OS picker dialogs and Windows file:// folder access remain manual checks. Chromium tests substitute native browser sandbox handles for the OS picker and run the standalone HTML over HTTP, because cloud browser file:// navigation is blocked by policy. Unsupported browsers retain upload/download workflows. Permission persistence is browser-controlled and is never promised as permanent. Existing validation ZIPs preserve previous app milestones; use the new v0.4.0 ZIP for this workflow. Main and v1.0 are unchanged.
+
+
 ## Large-number SAS validation confirmed
 
 The uploaded 05-sas-large-number-comparison-results.html confirms all 3,000 large-number rows pass both 1e-10 and 1e-15 SAS/app comparison thresholds. There are 761 nonexact values and a maximum criterion of 2.219e-16. All nine integer-boundary observations match exactly. Per-operation summaries show no missing results or threshold failures; multiplication, division, squares, square roots, cube roots, and mixed expressions have zero absolute difference. Cubes and fourth powers have small differences relative to their magnitude.

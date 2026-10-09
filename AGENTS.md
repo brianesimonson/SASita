@@ -15,3 +15,5 @@
 - GitHub is configured for brianesimonson/SASita. Push only when authorized by the user; do not reuse historical Site identities.
 
 - Common formats and RAND scope are documented in docs/formats-conversions-rand.md. Preserve the explicit MT32 selection; do not label uniform/normal sequences SAS-identical without real SAS fixtures. Keep new modules included in the offline build.
+
+- Program/folder workflows are documented in docs/project-files.md. Keep programmatic file access relative to a user-selected directory handle; never request permission silently during a run. Remember handles in browser storage without treating permission as permanent. Preserve staged exports, all-target preflight, explicit REPLACE, and honest partial-save reporting. Build the ZIP with python3 scripts/package-app.py after rebuilding HTML; keep the packaged demo verified.
