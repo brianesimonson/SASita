@@ -91,6 +91,26 @@ try {
     assert.ok(await evaluate("document.querySelector('#code').getBoundingClientRect().width>900"));
     assert.ok(await evaluate("document.querySelector('header .filebar #help')!==null && document.querySelector('main .filebar')===null"));
     assert.ok(await evaluate("document.querySelector('#code').getBoundingClientRect().height>650"));
+    // Context follows the caret; browsing and insertion preserve surrounding source.
+    await evaluate("document.querySelector('#code').value='proc sort data=claims; by provider; run;';document.querySelector('#code').setSelectionRange(20,20);document.querySelector('#syntaxhelp').click()");
+    assert.equal(await evaluate("document.querySelector('#syntaxentry').value"),'sort');
+    assert.ok(await evaluate("document.querySelector('#syntaxspec').textContent.includes('NODUPKEY')"));
+    await evaluate("document.querySelector('#code').value='data x; y=sqrt(sum(';document.querySelector('#code').setSelectionRange(19,19);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("document.querySelector('#syntaxentry').value==='fn-sum'");
+    await evaluate("document.querySelector('#syntaxsearch').value='substr';document.querySelector('#syntaxsearch').dispatchEvent(new Event('input'))");
+    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),1);
+    assert.equal(await evaluate("document.querySelector('#syntaxfollow').checked"),false);
+    await evaluate("document.querySelector('#code').value='data x; value=; run;';document.querySelector('#code').setSelectionRange(14,14);document.querySelector('#syntaxinsert').click()");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'data x; value=substr("abcd",2,2); run;');
+    assert.equal(await evaluate("document.querySelector('#programstate').textContent"),'Unsaved changes');
+    await evaluate("document.querySelector('#syntaxsearch').value='';document.querySelector('#syntaxsearch').dispatchEvent(new Event('input'))");
+    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),66);
+    await evaluate("document.querySelector('#syntaxclose').click();document.querySelector('#code').value='proc sgplot data=x; histogram x /';document.querySelector('#code').setSelectionRange(32,32);document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{ctrlKey:true,code:'Space',key:' ',bubbles:true}))");
+    assert.equal(await evaluate("document.querySelector('#syntaxentry').value"),'sgplot');
+    assert.ok(await evaluate("!document.querySelector('#syntaxpanel').hidden && document.querySelector('#syntaxfollow').checked"));
+    if(process.argv.includes('--screenshots')){const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-syntax-'+label+'.png',Buffer.from(capture.data,'base64'));}
+    await evaluate("document.querySelector('#syntaxclose').click()");
+    assert.ok(await evaluate("document.querySelector('#syntaxpanel').hidden && document.querySelector('#code').getBoundingClientRect().width>900"));
     if(process.argv.includes('--screenshots')){await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-'+label+'.png',Buffer.from(capture.data,'base64'));}
     await evaluate("document.querySelector('#code').value='data snapshot; x=1; run;';document.querySelector('#run').click()");
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");

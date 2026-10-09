@@ -10,7 +10,7 @@ Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the 
 
 ## Current development build
 
-Version 0.4.4 adds offline Chart.js scatter plots, horizontal/vertical bars, histograms, and pie charts with titles, output history, and PNG download. Download [Sassy-v0.4.4.zip](dist/Sassy-v0.4.4.zip), unzip, and open data-step-lab.html. The SPI logo, JSON table libraries, compact header, tabbed workspace, and SAS syntax colors are included. See [the app guide](docs/app-guide.md), [charts](docs/charts.md), and [native JSON tables](docs/native-tables.md).
+Version 0.4.5 adds a collapsible offline syntax guide that follows the cursor, with searchable references and insertable templates for every supported procedure and DATA step function. Chart.js plotting, output history and PNG downloads are included. Download [Sassy-v0.4.5.zip](dist/Sassy-v0.4.5.zip), unzip, and open data-step-lab.html. The SPI logo, JSON table libraries, compact header, tabbed workspace, and SAS syntax colors are included. See [the app guide](docs/app-guide.md), [charts](docs/charts.md), and [native JSON tables](docs/native-tables.md).
 
 The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 

@@ -1,3 +1,4 @@
+import {createSyntaxHelp} from './syntax-help.mjs';
 import {parseCSV,csv,display} from './engine.mjs';
 import {createChartView} from './chart-view.mjs';
 import {readTable} from './table-storage.mjs';
@@ -5,6 +6,7 @@ import {createProjectFiles} from './project-files.mjs';
 import {projectCSV} from './file-program.mjs';
 const $=id=>document.getElementById(id);
 const project=createProjectFiles();
+createSyntaxHelp();
 let programHandle=null,programBaseline='',programDirty=false,projectFolderPath='';
 const examples={
 conversions:`/* INPUT reads text; PUT produces a character result. */

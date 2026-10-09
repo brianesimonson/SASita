@@ -1,4 +1,4 @@
-# Sassy v0.4.4
+# Sassy v0.4.5
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -13,3 +13,11 @@ SAS syntax colors use bundled PrismJS 1.30.0: blue statements/functions, red str
 For a ready-to-test file workflow, choose the included demo-project folder, click Browse files, open project-demo.sas, and Run. It imports claims.csv and saves reviewed.csv. See project-files.md for relative paths, permission/reconnection rules, overwrite behavior, and the current PROC IMPORT/EXPORT subset.
 
 This patch adds Chart.js plots, titles, and PNG downloads. Open charts-demo.sas from the included demo-project folder and Run to create five charts; it needs no folder connection. Choose each chart in the Session output dropdown. Chart.js is bundled inside the HTML and works offline. See charts.md for supported syntax and limits. Permanent JSON libraries and the SPI logo are included. Open library-demo.sas from the included demo-project folder to create a native table. See native-tables.md for the file schema, library syntax and limits. Folder permission rules remain unchanged. Further small releases can use v0.4.5, v0.4.6, and so on; a major milestone can be cut when agreed.
+
+## Contextual syntax guide
+
+On the Program tab, click **Syntax guide**, or press **Ctrl+Space** in Source. The right panel follows the cursor inside a supported procedure or function and shows implemented syntax, options and limits. Close it to restore the full editor width. Tab still indents; this release does not provide a completion popup.
+
+The catalog has five procedures (SORT, IMPORT, EXPORT, SGPLOT, SGPIE), all 35 DATA step functions, 20 format families, and DATA/LIBNAME/FILENAME/TITLE/CALL STREAMINIT/macro references. Search or select an entry to browse independently; check **Follow cursor** to resume contextual help. **Insert template at cursor** inserts a procedure skeleton or function example, replacing only an explicitly selected range. Surrounding source remains. Edit example names before Run; insertion never runs code or accesses files. Format entries are reference-only.
+
+The tolerant scanner skips comments and quoted strings. It examines source before the caret, without expanding macros or validating the whole program; macro-generated procedures and incomplete/ambiguous syntax may need manual catalog selection. This is the supported Sassy subset, not the complete SAS documentation. Source catalog: dist/syntax-help.mjs, embedded in the standalone build. Added HTML size is approximately 24 KB (1.6%); no runtime dependencies or network calls.

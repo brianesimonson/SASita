@@ -4,7 +4,7 @@ SASita starts from the supplied DATA Step Lab v0.2.0 prototype. The application 
 
 ## Use the app
 
-Download `dist/Sassy-v0.4.4.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for CSV/permission behavior and docs/native-tables.md for LIBNAME. The demo-project also contains library-demo.sas and its existing tables folder, plus charts-demo.sas for all five chart types without a folder connection. See docs/charts.md. Use the Program, Output, and Log tabs. Open a saved program or type your own, then click **Run**. See docs/app-guide.md. The app requires no Python, server, account, API key, or internet connection to compute results.
+Download `dist/Sassy-v0.4.5.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for CSV/permission behavior and docs/native-tables.md for LIBNAME. The demo-project also contains library-demo.sas and its existing tables folder, plus charts-demo.sas for all five chart types without a folder connection. See docs/charts.md. Use the Program, Output, and Log tabs. Open a saved program or type your own, then click **Run**. See docs/app-guide.md. The app requires no Python, server, account, API key, or internet connection to compute results.
 
 Start with the supplied synthetic data. Inspect the rolling Log, session Output snapshots, and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs support file open/save and a browser-local recovery draft; datasets remain in tab memory until explicitly exported. Remembered project-folder permissions may need reconnecting. Save or export before closing. Macro definitions reset on each Run.
 
@@ -32,3 +32,5 @@ GitHub is the durable source record. Start changes from the latest agreed featur
 The supplied `source-history.bundle` preserves the original two commits. `docs/imported/` contains the original handoff documents and manifest for provenance; those documents describe the pre-import package and do not supersede current project guidance. Their manifest describes original archive bytes, not the evolving repository.
 
 See `PROJECT-STATUS.md` for the testing gaps and next milestone. Test failures should be investigated, not bypassed to make checks pass.
+
+Latest milestone: Sassy v0.4.5 on feature/sassy-context-help. Click Syntax guide in Program or press Ctrl+Space to open contextual references and templates.

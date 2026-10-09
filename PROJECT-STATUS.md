@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.5: contextual syntax guide
+
+Branch feature/sassy-context-help adds an initially collapsed right-side Program syntax guide. Cursor scanning ignores comments/strings, tracks procedure boundaries and nested function calls, and supports a searchable catalog of all five procedures, 35 DATA step functions, 20 format families and six statement/macro references (66 entries). Manual browsing pauses cursor following; a checkbox resumes it. Ctrl+Space opens help; Tab keeps indentation. Templates insert only at the current selection/caret, mark edits unsaved, preserve surrounding code and never execute. Formats are reference-only. No AI/network/runtime dependency; modular catalog embedded in standalone HTML adds about 24 KB (1.6%).
+
+Validation: npm test passed, including catalog/engine function coverage, runnable function examples, comments/quotes/nested calls and procedure/caret boundaries. Chromium browser checks passed in modular and standalone builds for live function tracking, PROC SORT options, catalog search/browse, non-destructive template insertion, dirty-state tracking, collapse/full-width restoration, and existing charts/libraries/files/calculation examples. Screenshot inspected. Scanner is tolerant source guidance rather than a complete SAS parser; macro-generated/incomplete contexts may need manual browsing. No engine semantics changed. Main and v1.0 remain unchanged.
+
+
 ## Sassy v0.4.4: offline Chart.js plotting
 
 Branch feature/sassy-chartjs-plots adds bounded PROC SGPLOT SCATTER/HBAR/VBAR/HISTOGRAM and PROC SGPIE PIE, TITLE/reset, axis labels, scatter/bar grouping, bar/pie FREQ/SUM/MEAN, grouped stack/cluster layouts, histogram counts/percent/proportion and explicit/automatic bins. Sources can be WORK or named JSON libraries; macros expand before parsing. Unsupported options, overlays and PROC PLOT fail clearly. docs/charts.md and in-app Help define the implemented subset and non-SAS-exact defaults.
