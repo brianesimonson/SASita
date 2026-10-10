@@ -1,4 +1,4 @@
-# PROC MEANS — v0.4.7 supported subset
+# PROC MEANS — v0.4.8 supported subset
 
 Reference: user-supplied Base SAS 9.2 Procedures Guide (2009), Chapter 33, especially
 pp. 617–621 (NWAY, variance divisor), 628–632 (OUTPUT), 638 (class types), 644–646
@@ -50,7 +50,8 @@ user-defined formats, PRELOADFMT, CLASSDATA or ORDER options.
 
 OUTPUT OUT= requires an explicit table name. Multiple statements (max 10), explicit
 names, statistic(variable-list) subsets, and `/ AUTONAME` are supported. Generated
-names append the requested statistic suffix, with numeric suffixes for collisions;
+names append the statistic suffix (STD and STDDEV both use the SAS canonical
+StdDev suffix), with numeric suffixes for collisions;
 explicit names are retained. Statistics follow request and VAR order. Appropriate
 source formats are inherited, excluding N/NMISS/CSS/USS/VAR/CV. CLASS/BY lengths and
 formats are preserved. Metadata labels/informats are not modeled by Sassy.
@@ -83,3 +84,5 @@ Deferred: WEIGHT/FREQ, quantiles, confidence limits/tests, skewness/kurtosis,
 TYPES/WAYS, CHARTYPE, WHERE/LABEL/FORMAT statements within MEANS, advanced ID/extreme
 selection, PROC SUMMARY alias, anonymous OUTPUT names and SAS dataset options.
 Unsupported syntax fails explicitly.
+
+The initial SAS logs confirm matching dimensions for all six fixtures, but comparisons aborted on CSV character/numeric conflicts and the former *_std naming error. v0.4.8 fixes those blockers; numerical agreement still awaits the corrected SAS run. See docs/validation/means-initial-logs.md.

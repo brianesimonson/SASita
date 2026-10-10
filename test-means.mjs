@@ -9,7 +9,7 @@ const run=code=>runFileProgram(code,{input:ds});
 let r=await run('proc means data=input n nmiss mean std var; class site period; var x y; output out=stats n= nmiss= mean= std= var= / autoname; run;');
 const rows=r.datasets.stats.rows;
 assert.deepEqual(rows.map(x=>x._type_),[0,1,1,2,2,3,3,3,3]);
-assert.deepEqual(rows[0],{site:'',period:null,_type_:0,_freq_:4,x_n:3,y_n:3,x_nmiss:1,y_nmiss:1,x_mean:3,y_mean:30,x_std:2,y_std:20,x_var:4,y_var:400});
+assert.deepEqual(rows[0],{site:'',period:null,_type_:0,_freq_:4,x_n:3,y_n:3,x_nmiss:1,y_nmiss:1,x_mean:3,y_mean:30,x_stddev:2,y_stddev:20,x_var:4,y_var:400});
 assert.equal(rows[1].site,'');assert.equal(rows[1].period,1);assert.equal(rows[1].x_var,8);
 assert.equal(rows[3].site,'A');assert.equal(rows[3].period,null);assert.equal(rows[3].x_mean,2);
 assert.equal(r.reports[0].dataset.rows.length,8);assert.ok(r.reports[0].dataset.rows.every(row=>row.site!==''&&row.period!==null));
@@ -35,4 +35,6 @@ r=await run('proc means data=input; var x y; output out=stats mean(x)=selected n
 const permanent=await runFileProgram("libname saved 'tables'; proc means data=input; class site period; var x; output out=saved.stats mean=m; run; data loaded; set saved.stats; run;",{input:ds},async()=>{throw new Error('Unexpected disk read')},{checkDirectory:async()=>true});assert.equal(permanent.exports.length,1);assert.deepEqual(permanent.datasets.loaded.rows,permanent.datasets['saved.stats'].rows);
 for(const example of programExamples())if(!['06-project-csv.sas','07-json-libraries.sas'].includes(example.file)){const result=await runFileProgram(example.code);assert.ok(result.written.length,example.file);assert.equal(example.code,await readFile('examples/catalog/'+example.file,'utf8'));}
 r=await runFileProgram("data input; variable='A'; x=1; run; proc means data=input noprint; class variable; var x; output out=stats mean=m; run;");assert.equal(r.datasets.stats.rows.length,2);
+r=await runFileProgram('data input; x=1; output; x=3; output; run; proc means data=input; var x; output out=stats std= stddev= / autoname; run;');assert.deepEqual(r.datasets.stats.columns,['_type_','_freq_','x_stddev','x_stddev2']);assert.ok(!r.datasets.stats.columns.includes('x_std'));
+r=await runFileProgram('data input; x=1; output; x=3; output; run; proc means data=input; var x; output out=stats std=explicit_sd / autoname; run;');assert.ok(r.datasets.stats.columns.includes('explicit_sd'));
 console.log('PROC MEANS totals/type bits/frequencies/default rows, per-variable missingness, moments, formatted CLASS, BY, NWAY, native storage and example programs passed.');

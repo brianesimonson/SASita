@@ -1,4 +1,4 @@
-# Sassy v0.4.7
+# Sassy v0.4.8
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -12,7 +12,7 @@ SAS syntax colors use bundled PrismJS 1.30.0: blue statements/functions, red str
 
 For a ready-to-test file workflow, choose the included demo-project folder, click Browse files, open project-demo.sas, and Run. It imports claims.csv and saves reviewed.csv. See project-files.md for relative paths, permission/reconnection rules, overwrite behavior, and the current PROC IMPORT/EXPORT subset.
 
-This patch adds Chart.js plots, titles, and PNG downloads. Open charts-demo.sas from the included demo-project folder and Run to create five charts; it needs no folder connection. Choose each chart in the Session output dropdown. Chart.js is bundled inside the HTML and works offline. See charts.md for supported syntax and limits. Permanent JSON libraries and the SPI logo are included. Open library-demo.sas from the included demo-project folder to create a native table. See native-tables.md for the file schema, library syntax and limits. Folder permission rules remain unchanged. Further small releases can use v0.4.7, v0.4.7, and so on; a major milestone can be cut when agreed.
+This patch adds Chart.js plots, titles, and PNG downloads. Open charts-demo.sas from the included demo-project folder and Run to create five charts; it needs no folder connection. Choose each chart in the Session output dropdown. Chart.js is bundled inside the HTML and works offline. See charts.md for supported syntax and limits. Permanent JSON libraries and the SPI logo are included. Open library-demo.sas from the included demo-project folder to create a native table. See native-tables.md for the file schema, library syntax and limits. Folder permission rules remain unchanged. Further small releases can use v0.4.8, v0.4.8, and so on; a major milestone can be cut when agreed.
 
 ## Contextual syntax guide
 

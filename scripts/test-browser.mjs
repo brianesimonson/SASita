@@ -135,7 +135,7 @@ try {
     // Export from the REAL browser build, extract, and execute the Python bridge.
     await evaluate("document.querySelector('#code').value='data portable_result; set snapshot; square=x*x; run;';document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))");
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.7.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.8.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
@@ -322,6 +322,7 @@ try {
     const meansData=(await import('../dist/engine.mjs')).parseCSV(meansCSV);
     assert.equal(meansData.rows.length,12);
     assert.deepEqual(meansData.rows.map(r=>r._type_),[0,1,1,1,2,2,3,3,3,3,3,3]);
+    assert.ok(meansData.columns.includes('amount_stddev'));assert.ok(!meansData.columns.includes('amount_std'));
     assert.equal(meansData.rows[0]._freq_,24);assert.equal(meansData.rows[0].amount_n,20);assert.equal(meansData.rows[0].amount_nmiss,4);
     if(process.argv.includes('--screenshots')){const shot=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-means-'+label+'.png',Buffer.from(shot.data,'base64'));}
     console.log(`${label}: example catalog, PROC MEANS reports and exact CLASS type/frequency structure passed`);

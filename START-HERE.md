@@ -4,7 +4,7 @@ SASita starts from the supplied DATA Step Lab v0.2.0 prototype. The application 
 
 ## Use the app
 
-Download `dist/Sassy-v0.4.7.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for CSV/permission behavior and docs/native-tables.md for LIBNAME. The demo-project also contains library-demo.sas and its existing tables folder, plus charts-demo.sas for all five chart types without a folder connection. See docs/charts.md. Use the Program, Output, and Log tabs. Open a saved program or type your own, then click **Run**. See docs/app-guide.md. The app requires no Python, server, account, API key, or internet connection to compute results.
+Download `dist/Sassy-v0.4.8.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for CSV/permission behavior and docs/native-tables.md for LIBNAME. The demo-project also contains library-demo.sas and its existing tables folder, plus charts-demo.sas for all five chart types without a folder connection. See docs/charts.md. Use the Program, Output, and Log tabs. Open a saved program or type your own, then click **Run**. See docs/app-guide.md. The app requires no Python, server, account, API key, or internet connection to compute results.
 
 Start with the supplied synthetic data. Inspect the rolling Log, session Output snapshots, and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs support file open/save and a browser-local recovery draft; datasets remain in tab memory until explicitly exported. Remembered project-folder permissions may need reconnecting. Save or export before closing. Macro definitions reset on each Run.
 
@@ -37,4 +37,6 @@ Previous milestone: Sassy v0.4.5 on feature/sassy-context-help. Click Syntax gui
 
 Previous milestone: Sassy v0.4.6 on feature/sassy-portable-wrapper. Code & export opens the actual runtime-source viewer and runnable demo exporter; see docs/portable-demo.md. v0.4.5 is preserved on GitHub as a snapshot branch and tag.
 
-Latest milestone: Sassy v0.4.7 on feature/sassy-proc-means. Use Examples in the upper-right header to open PROC MEANS or another snippet without running. See docs/means.md and examples/means-validation.
+Previous milestone: Sassy v0.4.7 on feature/sassy-proc-means. Use Examples in the upper-right header to open PROC MEANS or another snippet without running. See docs/means.md and examples/means-validation.
+
+Latest milestone: Sassy v0.4.8 on fix/sassy-means-autoname. STD= with AUTONAME uses the SAS StdDev suffix. The corrected comparison kit declares CSV types explicitly; actual numeric SAS comparison remains pending.

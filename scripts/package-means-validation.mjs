@@ -7,7 +7,7 @@ const result=await runFileProgram(code),files={};
 for(const name of ['means_all','means_missing','means_nway','means_default','means_by','means_large']){const text=projectCSV(result.datasets[name]);await writeFile(new URL('app_'+name+'.csv',home),text);files['app_'+name+'.csv']=text;}
 // The schema comes from the actual generated tables, never CSV type guessing.
 const checks=[
- ['means_all','site period _type_','_freq_ amount_n other_n amount_nmiss other_nmiss amount_mean other_mean amount_std other_std amount_var other_var amount_min other_min amount_max other_max'],
+ ['means_all','site period _type_','_freq_ amount_n other_n amount_nmiss other_nmiss amount_mean other_mean amount_stddev other_stddev amount_var other_var amount_min other_min amount_max other_max'],
  ['means_missing','site period _type_','_freq_ count missing_count avg'],
  ['means_nway','site period _type_','_freq_ count avg'],
  ['means_default','_type_ _stat_','_freq_ amount other'],
@@ -30,6 +30,9 @@ let comparison=`/* SAS ONLY. Run 01-means-validation.sas first. Upload the six a
             stop;
         end;
     run;
+    %if &table=means_all %then %do;
+        proc contents data=&table varnum; run;
+    %end;
     proc sort data=&table out=base_sorted; by &keys; run;
     proc sort data=app_&table out=app_sorted; by &keys; run;
     proc compare base=base_sorted compare=app_sorted

@@ -14,6 +14,9 @@
             stop;
         end;
     run;
+    %if &table=means_all %then %do;
+        proc contents data=&table varnum; run;
+    %end;
     proc sort data=&table out=base_sorted; by &keys; run;
     proc sort data=app_&table out=app_sorted; by &keys; run;
     proc compare base=base_sorted compare=app_sorted
@@ -22,7 +25,7 @@
         var &variables;
     run;
 %mend;
-%check(means_all, site period _type_, _freq_ amount_n other_n amount_nmiss other_nmiss amount_mean other_mean amount_std other_std amount_var other_var amount_min other_min amount_max other_max, site $ 8 period 8 _type_ 8 _freq_ 8 amount_n 8 other_n 8 amount_nmiss 8 other_nmiss 8 amount_mean 8 other_mean 8 amount_std 8 other_std 8 amount_var 8 other_var 8 amount_min 8 other_min 8 amount_max 8 other_max 8, site :$8. period :best32. _type_ :best32. _freq_ :best32. amount_n :best32. other_n :best32. amount_nmiss :best32. other_nmiss :best32. amount_mean :best32. other_mean :best32. amount_std :best32. other_std :best32. amount_var :best32. other_var :best32. amount_min :best32. other_min :best32. amount_max :best32. other_max :best32.);
+%check(means_all, site period _type_, _freq_ amount_n other_n amount_nmiss other_nmiss amount_mean other_mean amount_stddev other_stddev amount_var other_var amount_min other_min amount_max other_max, site $ 8 period 8 _type_ 8 _freq_ 8 amount_n 8 other_n 8 amount_nmiss 8 other_nmiss 8 amount_mean 8 other_mean 8 amount_stddev 8 other_stddev 8 amount_var 8 other_var 8 amount_min 8 other_min 8 amount_max 8 other_max 8, site :$8. period :best32. _type_ :best32. _freq_ :best32. amount_n :best32. other_n :best32. amount_nmiss :best32. other_nmiss :best32. amount_mean :best32. other_mean :best32. amount_stddev :best32. other_stddev :best32. amount_var :best32. other_var :best32. amount_min :best32. other_min :best32. amount_max :best32. other_max :best32.);
 %check(means_missing, site period _type_, _freq_ count missing_count avg, site $ 8 period 8 _type_ 8 _freq_ 8 count 8 missing_count 8 avg 8, site :$8. period :best32. _type_ :best32. _freq_ :best32. count :best32. missing_count :best32. avg :best32.);
 %check(means_nway, site period _type_, _freq_ count avg, site $ 8 period 8 _type_ 8 _freq_ 8 count 8 avg 8, site :$8. period :best32. _type_ :best32. _freq_ :best32. count :best32. avg :best32.);
 %check(means_default, _type_ _stat_, _freq_ amount other, _type_ 8 _freq_ 8 _stat_ $ 8 amount 8 other 8, _type_ :best32. _freq_ :best32. _stat_ :$8. amount :best32. other :best32.);

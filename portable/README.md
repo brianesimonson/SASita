@@ -1,4 +1,4 @@
-# Sassy portable wrapper demo (v0.4.7)
+# Sassy portable wrapper demo (v0.4.8)
 
 This package interprets program.sas with the same JavaScript runtime as Sassy.
 It is not translated standalone JavaScript or the SAS runtime. No npm or pip

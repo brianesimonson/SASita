@@ -1,3 +1,5 @@
+Latest milestone: Sassy v0.4.8 on fix/sassy-means-autoname. Uploaded original SAS logs revealed both CSV-type conflicts and incorrect STD AUTONAME suffixes. STD/STDDEV now generate *_stddev; explicit names/statistics unchanged. Replace app_means_all.csv and 02-sas-comparison.sas from the latest kit. New actual SAS numeric results remain pending. See docs/validation/means-initial-logs.md. Main and prior milestones unchanged.
+
 Current follow-up: fix/means-sas-comparison-types corrects ONLY the SAS validation importer after the initial uploaded report showed numeric/character conflicts. Replace 02-sas-comparison.sas from the corrected kit, not app CSV values; new actual SAS results/log remain pending. See docs/validation/means-initial-comparison.md. Sassy app milestone remains v0.4.7.
 
 Latest milestone: Sassy v0.4.7 on feature/sassy-proc-means. See docs/means.md for statistical scope/output semantics and examples/means-validation for the pending real-SAS comparison kit. Default CLASS OUTPUT preserves totals/subtotals; do not silently impose NWAY. Example catalog is generated from examples/catalog .sas files. Main and earlier milestones remain unchanged.

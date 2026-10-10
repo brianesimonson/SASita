@@ -1,7 +1,7 @@
 # PROC MEANS validation kit
 
 01-means-validation.sas runs unchanged in Sassy and SAS. The supplied app_*.csv
-files were computed by Sassy v0.4.7; regenerate with
+files were computed by Sassy v0.4.8; regenerate with
 `node scripts/package-means-validation.mjs` after rebuilding/changing the engine.
 
 Run 01 in SAS, upload the six CSVs to the same SAS Studio folder, then edit
@@ -19,3 +19,5 @@ No random input or external project directory is needed for 01. The large-offset
 case isolates variance accuracy rather than comparing only large magnitudes.
 
 October 10 correction: the first uploaded SAS report stopped at conflicting types, so it did not establish numerical agreement. Replace only 02-sas-comparison.sas, set app_csv_folder again and rerun (run 01 first if the SAS WORK tables are no longer present). Existing six CSV files are unchanged. Please send both the new HTML results and SAS log.
+
+Additional log finding: STD AUTONAME needs *_StdDev, not *_std. The updated app_means_all.csv fixes these headers with unchanged numbers. Replace that CSV and 02-sas-comparison.sas from this kit, reset the upload folder path and rerun 02. The other five CSVs and 01 program are unchanged. Rerun 01 only if its WORK datasets are gone.

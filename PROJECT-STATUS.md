@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.8: PROC MEANS AUTONAME correction
+
+User-supplied initial SAS logs confirm all six base datasets have the same dimensions as Sassy, with clean 01 execution. Original 02 guessed all numeric CSV columns as character and aborted comparisons; first compare also failed because SAS lacks AMOUNT_STD/OTHER_STD. STD AUTONAME uses the canonical StdDev suffix. Branch fix/sassy-means-autoname changes generated STD/STDDEV names to *_stddev, preserves explicit names, tests repeated *_stddev2 requests, updates fixture headers and bundles the typed SAS helper (plus first-table PROC CONTENTS). Numeric CSV values are unchanged. Evidence hashes and exact diagnostic summary: docs/validation/means-initial-logs.md. Actual numerical comparison remains pending.
+
+Validation: full baseline npm test and modular/standalone Chromium checks, including returned Python/Node tables, example execution and canonical header checks. App and portable ZIPs are rebuilt with the corrected runtime; corrected comparison ZIP contains six CSVs and the typed helper. Main and earlier tags/branches remain unchanged.
+
+
 ## Initial PROC MEANS SAS report: typed-import correction
 
 User-uploaded October 10 report contains five dataset summaries with matching row counts (14, 6, 5, 3, 1), but numeric-column type conflicts (6, 5, 4, 5, 7) and no value comparisons. The first comparison section is empty. This does not validate the calculations. Evidence/hash are in docs/validation/means-initial-comparison.md. Branch fix/means-sas-comparison-types replaces the SAS-only test importer with schema-generated explicit LENGTH/INFILE DSD/INPUT, preserving the six app CSVs unchanged and adding table titles. Corrected harness ZIP is available on that branch; v0.4.7 app ZIP/tag remains the existing milestone. Actual corrected SAS run and log remain pending; main and prior milestones unchanged.
