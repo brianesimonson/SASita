@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html class="ods_3f434f0c-54da-411e-92ee-966b8e914ac6" lang="en" xml:lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta charset="utf-8"/>
+<meta content="SAS 9.4" name="generator"/>
+<title>Results: 02-sas-comparison.sas</title>
+<style>
+/*<![CDATA[*/
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c section > table, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c section > pre, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c div > table,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c div > pre, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c article > table, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c article > pre,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j section > table, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j section > pre, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j div > table,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j div > pre, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j article > table, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j article > pre,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c p.note, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c p.warning, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c p.error, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c p.fatal,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j p.note, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j p.warning, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j p.error, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j p.fatal,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.c > table.layoutcontainer, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body.j > table.layoutcontainer { margin-left: auto; margin-right: auto }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.l table, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.l pre, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.l p.note,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.l p.warning, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.l p.error, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.l p.fatal { margin-left: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.c table, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.c pre, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.c p.note,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.c p.warning, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.c p.error, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.c p.fatal { margin-left: auto; margin-right: auto }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r table, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r pre, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r p.note,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r table, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r pre, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r p.note,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r p.warning, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r p.error, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion.r p.fatal { margin-right: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 article, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 aside, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 details, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 figcaption, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 figure, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 footer, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 header, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 hgroup, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 nav, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 section { display: block }
+html.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 { font-size: 100% }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body { margin: 1em; font-size: 13px; line-height: 1.231 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 sup { position: relative; vertical-align: baseline; bottom: 0.25em; font-size: 0.8em }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 sub { position: relative; vertical-align: baseline; top: 0.25em; font-size: 0.8em }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 ul, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 ol { margin: 1em 0; padding: 0 0 0 40px }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 dd { margin: 0 0 0 40px }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 nav ul, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 nav ol { list-style: none; list-style-image: none; margin: 0; padding: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 img { border: 0; vertical-align: middle }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 svg:not(:root) { overflow: hidden }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 figure { margin: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 table { border-collapse: collapse; border-spacing: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutcontainer { border-collapse: separate; border-spacing: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 p { margin-top: 0; text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 h1.heading1 { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 h2.heading2 { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 h3.heading3 { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 h4.heading4 { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 h5.heading5 { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 h6.heading6 { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 span { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 table { margin-bottom: 1em }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 td, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 th { text-align: left; padding: 3px 6px; vertical-align: top }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 td[class$="fixed"], .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 th[class$="fixed"] { white-space: pre }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 section, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 article { padding-top: 1px; padding-bottom: 8px }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 hr.pagebreak { height: 0px; border: 0; border-bottom: 1px solid #c0c0c0; margin: 1em 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .stacked-value { text-align: left; display: block }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .stacked-cell > .stacked-value, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 td.data > td.data, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 th.data > td.data, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 th.data > th.data, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 td.data > th.data, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 th.header > th.header { border: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .stacked-cell > div.data { border-width: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer { white-space: nowrap; margin-bottom: 1em }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > p { margin: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > p > span { display: inline-block; width: 100%; white-space: normal }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .batch { display: table }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .toc { display: none }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .proc_note_group, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .proc_title_group { margin-bottom: 1em }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 p.proctitle { margin: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 p.note, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 p.warning, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 p.error, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 p.fatal { display: table }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .notebanner, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .warnbanner, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .errorbanner, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .fatalbanner,
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .notecontent, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .warncontent, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .errorcontent, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .fatalcontent { display: table-cell; padding: 0.5em }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .notebanner, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .warnbanner, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .errorbanner, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .fatalbanner { padding-right: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body > div > ol li { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .beforecaption > h4 { margin-top: 0; margin-bottom: 0 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .c { text-align: center }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .r { text-align: right }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .l { text-align: left }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .j { text-align: justify }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .d { text-align: right }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .b { vertical-align: bottom }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .m { vertical-align: middle }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .t { vertical-align: top }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .accessiblecaption {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 a:active { color: #800080 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .aftercaption {
+    background-color: #fafbfe;
+    border-spacing: 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+    padding-top: 4pt;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .batch > colgroup {
+    border-left: 1px solid #c1c1c1;
+    border-right: 1px solid #c1c1c1;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .batch > tbody, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .batch > thead, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .batch > tfoot {
+    border-top: 1px solid #c1c1c1;
+    border-bottom: 1px solid #c1c1c1;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .batch { border: hidden; }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .batch {
+    background-color: #fafbfe;
+    border: 1px solid #c1c1c1;
+    border-collapse: separate;
+    border-spacing: 1px;
+    color: #000000;
+    font-family: 'SAS Monospace', 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    padding: 7px;
+    }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .beforecaption {
+    background-color: #fafbfe;
+    border-spacing: 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .body {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bodydate {
+    background-color: #fafbfe;
+    border-spacing: 0;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    text-align: right;
+    vertical-align: top;
+    width: 100%;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bycontentfolder {
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: none;
+    margin-left: 6pt;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .byline {
+    background-color: #fafbfe;
+    border-spacing: 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer > colgroup > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer > colgroup, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer > * > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer > thead, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer > tbody, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer > tfoot { border: none; }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .bylinecontainer {
+    background-color: #fafbfe;
+    border: none;
+    border-spacing: 1px;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    width: 100%;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .caption {
+    background-color: #fafbfe;
+    border-spacing: 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .cell, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .container {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .contentfolder, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .contentitem {
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: none;
+    margin-left: 6pt;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .contentproclabel, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .contentprocname {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .contents {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: decimal;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .contentsdate {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    width: 100%;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .contenttitle {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .continued {
+    background-color: #fafbfe;
+    border-spacing: 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+    width: 100%;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .data, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .dataemphasis {
+    background-color: #ffffff;
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .dataemphasisfixed {
+    background-color: #ffffff;
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .dataempty {
+    background-color: #ffffff;
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .datafixed {
+    background-color: #ffffff;
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .datastrong {
+    background-color: #ffffff;
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .datastrongfixed {
+    background-color: #ffffff;
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #000000;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .date {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    width: 100%;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .document {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .errorbanner {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .errorcontent {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .errorcontentfixed {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .extendedpage {
+    background-color: #fafbfe;
+    border-style: solid;
+    border-width: 1pt;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+    text-align: center;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .fatalbanner {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .fatalcontent {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .fatalcontentfixed {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .folderaction {
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: none;
+    margin-left: 6pt;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .footer {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .footeremphasis {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .footeremphasisfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .footerempty {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .footerfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .footerstrong {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .footerstrongfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .frame {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .graph > colgroup {
+    border-left: 1px solid #c1c1c1;
+    border-right: 1px solid #c1c1c1;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .graph > tbody, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .graph > thead, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .graph > tfoot {
+    border-top: 1px solid #c1c1c1;
+    border-bottom: 1px solid #c1c1c1;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .graph { border: hidden; }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .graph {
+    background-color: #fafbfe;
+    border: 1px solid #c1c1c1;
+    border-collapse: separate;
+    border-spacing: 1px;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .header {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .headeremphasis {
+    background-color: #d8dbd3;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .headeremphasisfixed {
+    background-color: #d8dbd3;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #000000;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .headerempty {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .headerfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .headersandfooters {
+    background-color: #edf2f9;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .headerstrong {
+    background-color: #d8dbd3;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .headerstrongfixed {
+    background-color: #d8dbd3;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #000000;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .heading1, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .heading2, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .heading3, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .heading4, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .heading5, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .heading6 { font-family: Arial, Helvetica, sans-serif }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .index {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .indexaction, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .indexitem {
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: none;
+    margin-left: 6pt;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .indexprocname {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .indextitle {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutcontainer, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .layoutregion {
+    border-width: 0;
+    border-spacing: 30px;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .linecontent {
+    background-color: #fafbfe;
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 a:link { color: #0000ff }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: disc;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list10 {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: square;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list2 {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: circle;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list3, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list4, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list5, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list6, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list7, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list8, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .list9 {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: square;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: disc;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem10 {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: square;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem2 {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: circle;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem3, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem4, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem5, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem6, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem7, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem8, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .listitem9 {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: square;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .note {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .notebanner {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .notecontent {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .notecontentfixed {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .output > colgroup {
+    border-left: 1px solid #c1c1c1;
+    border-right: 1px solid #c1c1c1;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .output > tbody, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .output > thead, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .output > tfoot {
+    border-top: 1px solid #c1c1c1;
+    border-bottom: 1px solid #c1c1c1;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .output { border: hidden; }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .output {
+    background-color: #fafbfe;
+    border: 1px solid #c1c1c1;
+    border-collapse: separate;
+    border-spacing: 1px;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .pageno {
+    background-color: #fafbfe;
+    border-spacing: 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+    text-align: right;
+    vertical-align: top;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .pages {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: decimal;
+    margin-left: 8px;
+    margin-right: 8px;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .pagesdate {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    width: 100%;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .pagesitem {
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    list-style-type: none;
+    margin-left: 6pt;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .pagesproclabel, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .pagesprocname {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .pagestitle {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .paragraph {
+    background-color: #fafbfe;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip > colgroup > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip > colgroup, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip > * > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip > thead, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip > tbody, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip > tfoot { border: none; }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .parskip {
+    border: none;
+    border-spacing: 0;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+    }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .prepage {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    text-align: left;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .proctitle {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .proctitlefixed {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowfooter {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowfooteremphasis {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowfooteremphasisfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowfooterempty {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowfooterfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowfooterstrong {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowfooterstrongfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowheader {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowheaderemphasis {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowheaderemphasisfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: italic;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowheaderempty {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowheaderfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowheaderstrong {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .rowheaderstrongfixed {
+    background-color: #edf2f9;
+    border-color: #b0b7bb;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+    color: #112277;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter10, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter2, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter3, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter4, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter5, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter6, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter7, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter8, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemfooter9 {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle10, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle2, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle3, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle4, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle5, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle6, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle7, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle8, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systemtitle9 {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > colgroup > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > colgroup, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > * > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > thead, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > tbody, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer > tfoot { border: none; }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .systitleandfootercontainer {
+    background-color: #fafbfe;
+    border: none;
+    border-spacing: 1px;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    width: 100%;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .table > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .table > colgroup > col {
+    border-left: 1px solid #c1c1c1;
+    border-right: 0 solid #c1c1c1;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .table > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .table > * > tr {
+    border-top: 1px solid #c1c1c1;
+    border-bottom: 0 solid #c1c1c1;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .table { border: hidden; }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .table {
+    border-color: #c1c1c1;
+    border-style: solid;
+    border-width: 1px 0 0 1px;
+    border-collapse: collapse;
+    border-spacing: 0;
+    }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer > colgroup > col, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer > colgroup, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer > * > tr, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer > thead, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer > tbody, .ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer > tfoot { border: none; }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titleandnotecontainer {
+    background-color: #fafbfe;
+    border: none;
+    border-spacing: 1px;
+    color: #000000;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+    width: 100%;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .titlesandfooters {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .usertext {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 a:visited { color: #800080 }
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .warnbanner {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: bold;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .warncontent {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: Arial, 'Albany AMT', Helvetica, Helv;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+.ods_3f434f0c-54da-411e-92ee-966b8e914ac6 .warncontentfixed {
+    background-color: #fafbfe;
+    color: #112277;
+    font-family: 'Courier New', Courier;
+    font-size: x-small;
+    font-style: normal;
+    font-weight: normal;
+}
+/*]]>*/
+</style>
+</head>
+<body class="body">
+<div id="div_3f434f0c-54da-411e-92ee-966b8e914ac6" class="c body">
+<h1 class="body toc">Results: 02-sas-comparison.sas</h1>
+<section data-name="Compare" data-sec-type="proc">
+</section>
+<section data-name="Compare" data-sec-type="proc">
+<h1 class="contentprocname toc">The Compare Procedure</h1>
+<article id="IDX" aria-label="Datasets">
+<h1 class="contentitem toc">Datasets</h1>
+<pre class="batch" style="border-spacing: 1px">
+                                                       The COMPARE Procedure                                                        
+                                        Comparison of WORK.BASE_SORTED with WORK.APP_SORTED                                         
+                                                (Method=RELATIVE, Criterion=1.0E-12)                                                
+                                                                                                                                    
+                                                         Data Set Summary                                                           
+                                                                                                                                    
+                                 Dataset                    Created          Modified  NVar    NObs                                 
+                                                                                                                                    
+                                 WORK.BASE_SORTED  10OCT26:19:50:01  10OCT26:19:50:01     7      14                                 
+                                 WORK.APP_SORTED   10OCT26:19:50:01  10OCT26:19:50:01     7      14                                 
+                                                                                                                                    
+                                                                                                                                    
+                                                         Variables Summary                                                          
+                                                                                                                                    
+                                         Number of Variables in Common: 7.                                                          
+                                         Number of Variables with Conflicting Types: 6.                                             
+                                         Number of Variables with Differing Attributes: 1.                                          
+                                         Number of ID Variables: 3.                                                                 
+                                         Number of VAR Statement Variables: 4.                                                      
+</pre>
+</article>
+</section>
+<section data-name="Compare" data-sec-type="proc">
+<hr class="pagebreak"/>
+<h1 class="contentprocname toc">The Compare Procedure</h1>
+<article id="IDX1" aria-label="Datasets">
+<h1 class="contentitem toc">Datasets</h1>
+<pre class="batch" style="border-spacing: 1px">
+                                                       The COMPARE Procedure                                                        
+                                        Comparison of WORK.BASE_SORTED with WORK.APP_SORTED                                         
+                                                (Method=RELATIVE, Criterion=1.0E-12)                                                
+                                                                                                                                    
+                                                         Data Set Summary                                                           
+                                                                                                                                    
+                                 Dataset                    Created          Modified  NVar    NObs                                 
+                                                                                                                                    
+                                 WORK.BASE_SORTED  10OCT26:19:50:01  10OCT26:19:50:01     6       6                                 
+                                 WORK.APP_SORTED   10OCT26:19:50:01  10OCT26:19:50:01     6       6                                 
+                                                                                                                                    
+                                                                                                                                    
+                                                         Variables Summary                                                          
+                                                                                                                                    
+                                         Number of Variables in Common: 6.                                                          
+                                         Number of Variables with Conflicting Types: 5.                                             
+                                         Number of Variables with Differing Attributes: 1.                                          
+                                         Number of ID Variables: 3.                                                                 
+                                         Number of VAR Statement Variables: 3.                                                      
+</pre>
+</article>
+</section>
+<section data-name="Compare" data-sec-type="proc">
+<hr class="pagebreak"/>
+<h1 class="contentprocname toc">The Compare Procedure</h1>
+<article id="IDX2" aria-label="Datasets">
+<h1 class="contentitem toc">Datasets</h1>
+<pre class="batch" style="border-spacing: 1px">
+                                                       The COMPARE Procedure                                                        
+                                        Comparison of WORK.BASE_SORTED with WORK.APP_SORTED                                         
+                                                (Method=RELATIVE, Criterion=1.0E-12)                                                
+                                                                                                                                    
+                                                         Data Set Summary                                                           
+                                                                                                                                    
+                  Dataset           Type              Created          Modified  NVar    NObs  Label                                
+                                                                                                                                    
+                  WORK.BASE_SORTED  SUMMARY  10OCT26:19:50:01  10OCT26:19:50:01     5       5  SUMMARY STATISTICS                   
+                  WORK.APP_SORTED            10OCT26:19:50:01  10OCT26:19:50:01     5       5                                       
+                                                                                                                                    
+                                                                                                                                    
+                                                         Variables Summary                                                          
+                                                                                                                                    
+                                         Number of Variables in Common: 5.                                                          
+                                         Number of Variables with Conflicting Types: 4.                                             
+                                         Number of Variables with Differing Attributes: 1.                                          
+                                         Number of ID Variables: 2.                                                                 
+                                         Number of VAR Statement Variables: 3.                                                      
+</pre>
+</article>
+</section>
+<section data-name="Compare" data-sec-type="proc">
+<hr class="pagebreak"/>
+<h1 class="contentprocname toc">The Compare Procedure</h1>
+<article id="IDX3" aria-label="Datasets">
+<h1 class="contentitem toc">Datasets</h1>
+<pre class="batch" style="border-spacing: 1px">
+                                                       The COMPARE Procedure                                                        
+                                        Comparison of WORK.BASE_SORTED with WORK.APP_SORTED                                         
+                                                (Method=RELATIVE, Criterion=1.0E-12)                                                
+                                                                                                                                    
+                                                         Data Set Summary                                                           
+                                                                                                                                    
+                                 Dataset                    Created          Modified  NVar    NObs                                 
+                                                                                                                                    
+                                 WORK.BASE_SORTED  10OCT26:19:50:01  10OCT26:19:50:01     6       3                                 
+                                 WORK.APP_SORTED   10OCT26:19:50:01  10OCT26:19:50:01     6       3                                 
+                                                                                                                                    
+                                                                                                                                    
+                                                         Variables Summary                                                          
+                                                                                                                                    
+                                         Number of Variables in Common: 6.                                                          
+                                         Number of Variables with Conflicting Types: 5.                                             
+                                         Number of Variables with Differing Attributes: 1.                                          
+                                         Number of ID Variables: 2.                                                                 
+                                         Number of VAR Statement Variables: 4.                                                      
+</pre>
+</article>
+</section>
+<section data-name="Compare" data-sec-type="proc">
+<hr class="pagebreak"/>
+<h1 class="contentprocname toc">The Compare Procedure</h1>
+<article id="IDX4" aria-label="Datasets">
+<h1 class="contentitem toc">Datasets</h1>
+<pre class="batch" style="border-spacing: 1px">
+                                                       The COMPARE Procedure                                                        
+                                        Comparison of WORK.BASE_SORTED with WORK.APP_SORTED                                         
+                                                (Method=RELATIVE, Criterion=1.0E-12)                                                
+                                                                                                                                    
+                                                         Data Set Summary                                                           
+                                                                                                                                    
+                                 Dataset                    Created          Modified  NVar    NObs                                 
+                                                                                                                                    
+                                 WORK.BASE_SORTED  10OCT26:19:50:01  10OCT26:19:50:01     7       1                                 
+                                 WORK.APP_SORTED   10OCT26:19:50:01  10OCT26:19:50:01     7       1                                 
+                                                                                                                                    
+                                                                                                                                    
+                                                         Variables Summary                                                          
+                                                                                                                                    
+                                           Number of Variables in Common: 7.                                                        
+                                           Number of Variables with Conflicting Types: 7.                                           
+                                           Number of ID Variables: 1.                                                               
+                                           Number of VAR Statement Variables: 6.                                                    
+</pre>
+</article>
+</section>
+</div>
+</body>
+</html>

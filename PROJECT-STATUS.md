@@ -1,5 +1,10 @@
 # SASita project status
 
+## Initial PROC MEANS SAS report: typed-import correction
+
+User-uploaded October 10 report contains five dataset summaries with matching row counts (14, 6, 5, 3, 1), but numeric-column type conflicts (6, 5, 4, 5, 7) and no value comparisons. The first comparison section is empty. This does not validate the calculations. Evidence/hash are in docs/validation/means-initial-comparison.md. Branch fix/means-sas-comparison-types replaces the SAS-only test importer with schema-generated explicit LENGTH/INFILE DSD/INPUT, preserving the six app CSVs unchanged and adding table titles. Corrected harness ZIP is available on that branch; v0.4.7 app ZIP/tag remains the existing milestone. Actual corrected SAS run and log remain pending; main and prior milestones unchanged.
+
+
 ## Sassy v0.4.7: PROC MEANS and example catalog
 
 Branch feature/sassy-proc-means adds 13 unweighted descriptive statistics, numeric VAR, sorted BY, formatted CLASS grouping, default all-type totals/subtotals, NWAY, MISSING, NOPRINT, DF/N variance, MAXDEC, named OUTPUT statements and AUTONAME. Saved datasets preserve _TYPE_ bit order, _FREQ_, blank/missing inactive classes, per-variable N/NMISS, and five _STAT_ rows when OUTPUT requests are omitted. Displayed reports show full combinations and append to session Output. Native library staging and portable runtime include the new procedure. docs/means.md defines boundaries and SAS 9.2 PDF provenance; no actual new SAS reference results have been received.
