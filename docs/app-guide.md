@@ -1,4 +1,4 @@
-# Sassy v0.4.6
+# Sassy v0.4.7
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -12,7 +12,7 @@ SAS syntax colors use bundled PrismJS 1.30.0: blue statements/functions, red str
 
 For a ready-to-test file workflow, choose the included demo-project folder, click Browse files, open project-demo.sas, and Run. It imports claims.csv and saves reviewed.csv. See project-files.md for relative paths, permission/reconnection rules, overwrite behavior, and the current PROC IMPORT/EXPORT subset.
 
-This patch adds Chart.js plots, titles, and PNG downloads. Open charts-demo.sas from the included demo-project folder and Run to create five charts; it needs no folder connection. Choose each chart in the Session output dropdown. Chart.js is bundled inside the HTML and works offline. See charts.md for supported syntax and limits. Permanent JSON libraries and the SPI logo are included. Open library-demo.sas from the included demo-project folder to create a native table. See native-tables.md for the file schema, library syntax and limits. Folder permission rules remain unchanged. Further small releases can use v0.4.6, v0.4.6, and so on; a major milestone can be cut when agreed.
+This patch adds Chart.js plots, titles, and PNG downloads. Open charts-demo.sas from the included demo-project folder and Run to create five charts; it needs no folder connection. Choose each chart in the Session output dropdown. Chart.js is bundled inside the HTML and works offline. See charts.md for supported syntax and limits. Permanent JSON libraries and the SPI logo are included. Open library-demo.sas from the included demo-project folder to create a native table. See native-tables.md for the file schema, library syntax and limits. Folder permission rules remain unchanged. Further small releases can use v0.4.7, v0.4.7, and so on; a major milestone can be cut when agreed.
 
 ## Contextual syntax guide
 
@@ -27,3 +27,9 @@ The tolerant scanner skips comments and quoted strings. It examines source befor
 Click **Code & export** in the upper-right project controls to view the current SAS program, actual JavaScript runtime or Node/Python wrappers. **Export runnable demo ZIP** packages the current program and all current WORK snapshots. Export never executes code. External CSV/native project files are not copied; use `--project folder` when running to locate them.
 
 To try it, open demo-project/portable-demo.sas and export. Extract the package and run `node run.mjs`, or `python run.py` with Node.js 24+ and Python installed. The README explains calling it from Python and interpreting returned JSON tables. The standalone browser app requires neither runtime installed. Chart data models are returned, not rendered images. See portable-demo.md for scope and filesystem behavior.
+
+## PROC MEANS and example programs
+
+Click **Examples** in the upper-right header. Preview eight programs, download a .sas snippet, or **Open in editor**. Opening never runs code; unsaved edits prompt before replacement. Programs cover generated DATA/SORT/MERGE, MT32 uniform draws, all five charts, PROC MEANS, macros, CSV project files, permanent libraries and formats. The CSV/library examples require the included demo-project folder; the others generate their own inputs.
+
+PROC MEANS saves overall totals and each CLASS subset by default using _TYPE_ bit flags and _FREQ_. NWAY removes those rows when requested. Inactive character classes are blank; numeric classes are missing. OUTPUT without statistic requests uses five _STAT_ rows. Reports appear in session Output; saved tables appear in Libraries. See means.md for statistics/options, missing values, naming and limits. The included means-validation ZIP contains deterministic SAS programs and Sassy result CSVs for the next actual SAS comparison.

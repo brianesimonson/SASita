@@ -44,5 +44,5 @@ try {
   try{await writeFile(temporary,item.text,{encoding:'utf8',flag:'wx'});await rename(temporary,target);saved.push(item.path);}
   catch(e){await unlink(temporary).catch(()=>{});throw new Error(e.message+(saved.length?' Files already saved: '+saved.join(', '):''));}
  }
- process.stdout.write(JSON.stringify({version:'0.4.6',written:result.written,logs:result.logs,tables,plots:result.plots||[],saved},null,2)+'\n');
+ process.stdout.write(JSON.stringify({version:'0.4.7',written:result.written,logs:result.logs,tables,plots:result.plots||[],reports:result.reports||[],saved},null,2)+'\n');
 } catch(e){console.error('Sassy: '+e.message);process.exitCode=1;}

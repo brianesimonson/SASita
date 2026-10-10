@@ -10,7 +10,7 @@ Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the 
 
 ## Current development build
 
-Version 0.4.6 adds an unobtrusive Code & export viewer and runnable JavaScript/Python demo packages. The contextual syntax guide and templates remain included. Chart.js plotting, output history and PNG downloads are included. Download [Sassy-v0.4.6.zip](dist/Sassy-v0.4.6.zip), unzip, and open data-step-lab.html. The SPI logo, JSON table libraries, compact header, tabbed workspace, and SAS syntax colors are included. See [the app guide](docs/app-guide.md), [charts](docs/charts.md), and [native JSON tables](docs/native-tables.md).
+Version 0.4.7 adds PROC MEANS with default CLASS totals/subtotals, SAS-style saved summaries, and an eight-program example catalog. Code & export and runnable JavaScript/Python packages remain included. The contextual syntax guide and templates remain included. Chart.js plotting, output history and PNG downloads are included. Download [Sassy-v0.4.7.zip](dist/Sassy-v0.4.7.zip), unzip, and open data-step-lab.html. The SPI logo, JSON table libraries, compact header, tabbed workspace, and SAS syntax colors are included. See [the app guide](docs/app-guide.md), [charts](docs/charts.md), and [native JSON tables](docs/native-tables.md).
 
 The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 

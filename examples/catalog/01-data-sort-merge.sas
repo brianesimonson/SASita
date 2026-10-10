@@ -1,0 +1,23 @@
+/* Self-contained example: generate, sort, match-merge and calculate. */
+data demo_claims;
+    do id=1 to 12;
+        provider=mod(id,3)+1;
+        amount=id*125;
+        output;
+    end;
+run;
+data demo_providers;
+    do provider=1 to 3;
+        rate=provider*0.05;
+        output;
+    end;
+run;
+proc sort data=demo_claims; by provider; run;
+proc sort data=demo_providers; by provider; run;
+data demo_merged;
+    merge demo_claims(in=a) demo_providers(in=b);
+    by provider;
+    if a;
+    adjusted=amount*(1-rate);
+    matched=b;
+run;

@@ -1,7 +1,7 @@
-# Portable execution proof of concept — Sassy v0.4.6
+# Portable execution proof of concept — Sassy v0.4.7
 
 Use the small **Code & export** button in the upper-right project controls. The
-modal shows current SAS source, the Node runner, Python wrapper, and seven actual
+modal shows current SAS source, the Node runner, Python wrapper, and eight actual
 JavaScript runtime modules. Sources are captured at build time and checked against
 the modular files; the offline HTML contains them without a network fetch. No new
 workspace tab or editor change. Source is read-only and displayed as text.
@@ -16,7 +16,7 @@ inputs first when reproducing a previous result. Empty source/invalid programs o
 unrepresentable table data fail clearly. Package limit: 50 MB, uncompressed ZIP.
 
 Open demo-project/portable-demo.sas in a fresh app and export it for a ready example
-using default WORK.CLAIMS. dist/Sassy-wrapper-demo-v0.4.6.zip is also a prepackaged
+using default WORK.CLAIMS. dist/Sassy-wrapper-demo-v0.4.7.zip is also a prepackaged
 version using examples/claims.csv; scripts/package-portable-demo.mjs regenerates it.
 
 Extract the ZIP. With Node.js 24+ installed, run `node run.mjs`. With Python 3 also
@@ -53,3 +53,5 @@ capture the actual ZIP from both modular and standalone builds, compare viewed
 engine source exactly, extract and execute run.py, and verify returned rows. Full
 baseline and existing UI/chart/library/file checks passed. Windows OS paths/rename
 behavior remain manual validation; no new SAS runtime equivalence claim.
+
+The v0.4.7 runtime also includes PROC MEANS; result envelopes include descriptive report tables as reports, in addition to saved tables.

@@ -1,5 +1,14 @@
 # SASita project status
 
+## Sassy v0.4.7: PROC MEANS and example catalog
+
+Branch feature/sassy-proc-means adds 13 unweighted descriptive statistics, numeric VAR, sorted BY, formatted CLASS grouping, default all-type totals/subtotals, NWAY, MISSING, NOPRINT, DF/N variance, MAXDEC, named OUTPUT statements and AUTONAME. Saved datasets preserve _TYPE_ bit order, _FREQ_, blank/missing inactive classes, per-variable N/NMISS, and five _STAT_ rows when OUTPUT requests are omitted. Displayed reports show full combinations and append to session Output. Native library staging and portable runtime include the new procedure. docs/means.md defines boundaries and SAS 9.2 PDF provenance; no actual new SAS reference results have been received.
+
+Eight previewable/downloadable examples in a compact header dialog cover DATA/SORT/MERGE, uniform MT32, five charts, MEANS total/NWAY/default outputs, macros, project CSV, JSON libraries and formats. Opening never runs and prompts before replacing unsaved edits. Source .sas files generate the embedded example catalog. Six deterministic result CSVs and SAS-only PROC COMPARE helper are packaged in examples/means-validation/means-validation.zip and included in the app ZIP.
+
+Validation passed: npm test including new hand-derived CLASS/type/frequency/missingness/statistics/large-offset/singleton/formatted-group/BY/native/example checks; portable ZIP-to-Python MEANS execution/report checks; modular and standalone Chromium for example opening/no-auto-run, 12-row two-CLASS saved structure, exact counts and all existing charts/folders/history/export checks. Table screenshot inspected. Remaining SAS runtime comparison, Windows/locale validation and unsupported advanced statistics/options are explicit in docs/means.md. Main/v1.0 and v0.4.5/v0.4.6 milestones remain unchanged.
+
+
 ## Sassy v0.4.6: portable wrapper proof of concept
 
 Branch feature/sassy-portable-wrapper adds a small Code & export control in the upper-right project file box. Its read-only modal shows current SAS, Node/Python runners and exact build-snapshotted runtime modules. The exported ZIP includes current WORK native table snapshots, unchanged program.sas, remembered bindings/title, runtime and runners. This remains an interpreter, not generated JavaScript per program. External project files are intentionally not copied; --project selects the actual data folder. Default project library folders are empty. Chart models are returned, not rendered PNGs. The app stays one offline HTML (~95 KB added); the optional local runner needs Node.js 24+, and Python is optional.

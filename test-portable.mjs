@@ -19,10 +19,11 @@ async function packageFor(code,datasets={},libraries={}){
  return packageRoot;
 }
 try{
- const code="data results; set inputs; cube=x**3; root=sqrt(x); run; proc sort data=results; by descending x; run;",inputs={inputs:parseCSV('x\n4\n9')};
+ const code="data results; set inputs; cube=x**3; root=sqrt(x); run; proc sort data=results; by descending x; run; proc means data=results; var x; output out=statistics n=count mean=avg var=variance; run;",inputs={inputs:parseCSV('x\n4\n9')};
  const folder=await packageFor(code,inputs),p=python([join(folder,'run.py')]);assert.equal(p.status,0,p.stderr);
  const result=JSON.parse(p.stdout),rows=JSON.parse(result.tables.results).rows;
- assert.deepEqual(rows,run(code,inputs).datasets.results.rows);
+ assert.equal(JSON.parse(result.tables.statistics).rows[0].avg,6.5);assert.equal(result.reports.length,1);
+ assert.deepEqual(rows,run(code.split('proc means')[0],inputs).datasets.results.rows);
  const direct=spawnSync('node',[join(folder,'run.mjs')],{encoding:'utf8',cwd:tmpdir()});assert.equal(direct.status,0,direct.stderr);assert.deepEqual(JSON.parse(direct.stdout),result);
  // Exact RAND fixture path and signed-zero table strings survive the wrapper.
  const randomCode="data draws; call streaminit('MT32',12345); do i=1 to 100; u=rand('uniform'); hex=put(u,hex16.); output; end; run;";

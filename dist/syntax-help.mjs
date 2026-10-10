@@ -1,4 +1,12 @@
 const syntaxEntries=[
+{
+  "id": "means",
+  "label": "PROC MEANS",
+  "group": "Procedures",
+  "syntax": "PROC MEANS DATA=table [NWAY] [MISSING] [NOPRINT] [VARDEF=DF|N] [MAXDEC=7] N NMISS SUM MEAN MIN MAX RANGE VAR STD STDERR CSS USS CV;\nCLASS category \u2026; BY [DESCENDING] variable \u2026; VAR numeric \u2026;\nOUTPUT OUT=summary N= MEAN= STD= VAR= / AUTONAME; RUN;",
+  "description": "Unweighted statistics. Default N/MEAN/STD/MIN/MAX report. CLASS OUTPUT includes all _TYPE_ combinations and _FREQ_; inactive class values are blank/missing. NWAY removes subtotals. Missing CLASS rows excluded unless MISSING; analysis missing values handled per variable. OUTPUT without requests uses five _STAT_ rows. BY must be sorted. Up to 8 CLASS variables. WEIGHT/FREQ/quantiles/TYPES/WAYS are not supported.",
+  "template": "proc means data=input_table n nmiss mean std var;\n    class category;\n    var value;\n    output out=summary n= mean= std= var= / autoname;\nrun;\n"
+},
   {
     "id": "sort",
     "label": "PROC SORT",

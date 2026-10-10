@@ -5,5 +5,6 @@ import {parseCSV} from '../dist/engine.mjs';
 const code=await readFile(new URL('../examples/project-demo/portable-demo.sas',import.meta.url),'utf8');
 const datasets={claims:parseCSV(await readFile(new URL('../examples/claims.csv',import.meta.url),'utf8'))};
 const zip=portableZip(portableFiles({code,datasets,libraries:{},chartTitle:''},runtimeAssets()));
-await writeFile(new URL('../dist/Sassy-wrapper-demo-v0.4.6.zip',import.meta.url),zip);
+const version=JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8')).version;
+await writeFile(new URL('../dist/Sassy-wrapper-demo-v'+version+'.zip',import.meta.url),zip);
 console.log('Portable demo ZIP created: '+zip.length.toLocaleString()+' bytes');

@@ -1,3 +1,5 @@
+Latest milestone: Sassy v0.4.7 on feature/sassy-proc-means. See docs/means.md for statistical scope/output semantics and examples/means-validation for the pending real-SAS comparison kit. Default CLASS OUTPUT preserves totals/subtotals; do not silently impose NWAY. Example catalog is generated from examples/catalog .sas files. Main and earlier milestones remain unchanged.
+
 Latest milestone: Sassy v0.4.6 on feature/sassy-portable-wrapper. Actual execution-source viewer and portable ZIP/Python proof of concept are documented in docs/portable-demo.md. Build snapshots runtime sources into dist/runtime-assets.mjs; never edit that generated module independently. v0.4.5 is saved as both a GitHub snapshot branch and annotated tag at b30711e. Main and v1.0 remain unchanged.
 
 Latest milestone: Sassy v0.4.5 on feature/sassy-context-help. Contextual syntax guide and insertable templates are described in docs/app-guide.md; full verification and scope are in PROJECT-STATUS.md. Main and v1.0 remain unchanged.
