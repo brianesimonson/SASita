@@ -111,17 +111,26 @@ const singleStream = oldInitialization(12345);
 check('ss_strata_single_stream', [1, 2, 3, 4].flatMap(stratum =>
   srs(5, 2, singleStream).map(id => ({id: id + (stratum - 1) * 5, stratum}))), ['stratum', 'id']);
 
-// Read seeds saved by SAS, rather than pretending we have its automatic seed rule.
+// Derive candidate seeds from the one procedure seed, independently of the CSV.
+// Both conversion scales fit all four observed strata. They differ at stratum 5,
+// so the four-stratum fixture cannot yet establish which conversion SAS uses.
+function stratumSeeds(seed, count, scale) {
+  const master = oldInitialization(seed);
+  return Array.from({length: count}, (_, i) => i === 0 ? seed : Math.floor(master() * scale));
+}
+const scale31 = 2 ** 31, scale31minus1 = scale31 - 1;
+assert.deepEqual(stratumSeeds(12345, 4, scale31), stratumSeeds(12345, 4, scale31minus1));
+const derivedSeeds = stratumSeeds(12345, 4, scale31);
 for (const [name, sampler] of [['ss_strata_srs', srs], ['ss_strata_sys', sys]]) {
   const rows = [1, 2, 3, 4].flatMap(stratum => {
-    const ref = tables[name].filter(row => row.stratum === stratum);
-    const initialseed = ref[0].initialseed;
-    assert.ok(ref.every(row => row.initialseed === initialseed));
+    const initialseed = derivedSeeds[stratum - 1];
     return sampler(5, 2, oldInitialization(initialseed)).map(id =>
       ({id: id + (stratum - 1) * 5, stratum, initialseed}));
   });
   check(name, rows, ['stratum', 'id', 'initialseed']);
 }
 assert.equal(checked, 12);
-console.log('12 sampling cases replayed successfully. Default stratified cases use SAS-provided InitialSeed values.');
-console.log('Investigation only: automatic stratum seeds, hybrid/default rules for other seeds, and app integration remain unimplemented.');
+console.log('12 sampling cases replayed successfully, including seeds derived from the single procedure seed.');
+console.log('Stratum-5 predictions: scale 2^31 = ' + stratumSeeds(12345, 5, scale31)[4] +
+  '; scale 2^31-1 = ' + stratumSeeds(12345, 5, scale31minus1)[4] + '.');
+console.log('Investigation only: seed conversion remains ambiguous; hybrid/default rules for other seeds and app integration remain unimplemented.');

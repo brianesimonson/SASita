@@ -231,7 +231,7 @@
   "limits": [
     "Small synthetic frame only",
     "400 default RAND draws, one seed",
-    "Default stratified stream initialization is not independently reproduced; InitialSeed columns can drive replay",
+    "Four stratum seeds are independently reproduced from the main seed; two conversion scales fit those strata and require the fifth-stratum probe to distinguish",
     "CSV decimal output is shorter than full binary precision; use HEX16 for exact random-value comparisons"
   ]
 }

@@ -1,5 +1,11 @@
 # SURVEYSELECT reference collection
 
+Current focused follow-up: `stratum-seed-probe.zip` contains the standalone
+`03-stratum-seed-probe.sas` program. Run it in SAS and return HTML Results/log
+to distinguish candidate automatic stratum-seed rules; no CSV upload or folder
+configuration is needed. See STRATUM-SEEDS.md. The original collection below
+has already been received and preserved in fixtures/sas/surveyselect-9.4m8.
+
 This is a SAS-only investigation kit, not a new Sassy release. Sassy v0.4.8 does
 not implement PROC SURVEYSELECT yet. The kit collects actual selected IDs,
 NumberHits, sampling information, output descriptors, and SAS version details

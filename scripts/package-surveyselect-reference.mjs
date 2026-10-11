@@ -37,7 +37,7 @@ writeFileSync(new URL('02-export-existing-reference.sas', dir),
 %put NOTE: SURVEYSELECT reference CSV folder: &output_folder;
 \n` + source.slice(source.indexOf(marker)));
 const names = ['01-surveyselect-reference.sas', '02-export-existing-reference.sas',
-  'sassy_mt32_uniform.csv', 'README.md'];
+  '03-stratum-seed-probe.sas', 'STRATUM-SEEDS.md', 'sassy_mt32_uniform.csv', 'README.md'];
 const manifest = Object.fromEntries(names.map(name => {
   const bytes = readFileSync(new URL(name, dir));
   return [name, {bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')}];
@@ -55,3 +55,6 @@ const files = Object.fromEntries([...names, 'manifest.json'].map(name =>
 const zip = portableZip(files);
 writeFileSync(new URL('surveyselect-reference.zip', dir), zip);
 console.log(`Downloadable reference ZIP: ${zip.length} bytes.`);
+const probe = Object.fromEntries(['03-stratum-seed-probe.sas', 'STRATUM-SEEDS.md']
+  .map(name => [name, readFileSync(new URL(name, dir), 'utf8')]));
+writeFileSync(new URL('stratum-seed-probe.zip', dir), portableZip(probe));

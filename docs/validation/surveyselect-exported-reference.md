@@ -33,9 +33,13 @@ IDs/hit counts into the implementation.
 - A single random start with interval N/n matches both integer and fractional
   systematic samples exactly by selected IDs.
 - Continuous-stream stratified SRS matches all eight selected IDs.
-- Default stratified SRS and SYS match when each stratum is initialized from
-  the InitialSeed values SAS saved. Those seeds are inputs to this replay;
-  automatic stratum-seed generation has not been implemented or established.
+- Default stratified SRS and SYS originally matched using SAS-saved InitialSeed
+  values. The updated check derives the same four seeds from the procedure seed
+  alone: a separate master stream supplies draws for strata 2 onward, while
+  stratum 1 retains the procedure seed. No CSV seed is used as algorithm input.
+  Two integer-conversion scales (2^31 and 2^31-1) both fit these four strata,
+  but differ at stratum 5. The automatic rule remains ambiguous beyond this
+  fixture; 03-stratum-seed-probe.sas tests five strata and a second main seed.
 
 All twelve sampling cases match selected rows; exact assertions cover IDs,
 NumberHits, Replicate, stratum and the saved seed where applicable. Checked
@@ -50,9 +54,10 @@ sum NumberHits over an expanded sample.
 
 ## Remaining work
 
-Install a bounded PROC SURVEYSELECT parser/runtime in Sassy and its portable
-engine; choose explicit compatibility scope for generator defaults. Verify
-automatic stratum seeds, additional seeds (including SAS hybrid exceptions),
+Resolve the automatic stratum-seed conversion ambiguity first; the focused
+probe needs no external inputs or CSV exports. Then install a bounded PROC
+SURVEYSELECT parser/runtime in Sassy and its portable engine, choosing explicit
+compatibility scope for generator defaults. Verify additional seeds (including SAS hybrid exceptions),
 sequences across 624-output boundaries, missing/character strata, size/rate
 rounding, zero/oversized strata, output options and schema preservation before
 claiming broader SAS equivalence. These uploads are sufficient to start that

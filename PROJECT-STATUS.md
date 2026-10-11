@@ -1,5 +1,9 @@
 # SASita project status
 
+## Automatic stratum seeds: candidate derivation and focused probe
+
+The investigation now generates all four recorded stratum seeds from the single main seed 12345 and independently reproduces the default stratified SRS/SYS selections. A separate master stream supplies seeds after stratum 1. Two conversions, floor(U*2^31) and floor(U*(2^31-1)), fit every existing seed but diverge at stratum 5 (1841400342 vs 1841400341). Thus the exact rule is not resolved. examples/surveyselect-validation/stratum-seed-probe.zip contains a self-contained SAS program testing five strata, two sample sizes, SRS/SYS and main seed 24680; no external CSV or folder setup is needed. Actual probe results remain pending. User explicitly prioritizes resolving this gap before app integration.
+
 ## SURVEYSELECT exports received: twelve-case JavaScript replay
 
 All 15 unmodified CSVs and export-result/log hashes are stored in fixtures/sas/surveyselect-9.4m8. The corrected export ran successfully. scripts/check-surveyselect-reference.mjs independently generates both explicit MT32 and candidate older-initialization default streams, matching 400/400 HEX16 values for each. It reproduces selected IDs/hits/order/replicates for all twelve cases; default stratified replay uses SAS-provided InitialSeed columns, not a claimed automatic seed algorithm. Observed expansion retains total NumberHits on each repeated row. Actual Sassy PROC SURVEYSELECT parser/runtime is not integrated. Broader hybrid/seed/boundary/stratum semantics and schema support remain work. Evidence/limits: docs/validation/surveyselect-exported-reference.md. Main/app v0.4.8 unchanged; earlier pending export notes below are superseded.
