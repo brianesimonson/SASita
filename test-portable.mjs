@@ -37,6 +37,14 @@ try{
  const randomCode="data draws; call streaminit('MT32',12345); do i=1 to 100; u=rand('uniform'); hex=put(u,hex16.); output; end; run;";
  const randomFolder=await packageFor(randomCode,{zero:{columns:['x'],rows:[{x:-0}],formats:{}}});const random=python([join(randomFolder,'run.py')]);assert.equal(random.status,0,random.stderr);const randomResult=JSON.parse(random.stdout);
  assert.deepEqual(JSON.parse(randomResult.tables.draws).rows,run(randomCode).datasets.draws.rows);assert.ok(Object.is(JSON.parse(randomResult.tables.zero).rows[0].x,-0));
+ const normalFixture=JSON.parse(await readFile('fixtures/sas/normal-method-probe.json','utf8'));
+ const normalFolder=await packageFor(await readFile('examples/project-demo/normal-demo.sas','utf8'));
+ const normalProcess=python([join(normalFolder,'run.py')]);assert.equal(normalProcess.status,0,normalProcess.stderr);
+ const normalEnvelope=JSON.parse(normalProcess.stdout);
+ for(const context of normalFixture.contexts){
+  const ds=JSON.parse(normalEnvelope.tables['normal_'+context.generator.toLowerCase()+'_'+context.mode.toLowerCase()]);assert.equal(ds.rows.length,512);
+  for(const reference of context.printed_rows){const row=ds.rows[reference.id-1],expected=Buffer.from(reference.z_hex,'hex').readDoubleBE();assert.ok(Math.abs(row.z-expected)<=1e-14*Math.max(1,Math.abs(expected)));if(reference.next_u_hex)assert.equal(row.next_u_hex,reference.next_u_hex);}
+ }
  // LIBNAME and CSV adapters use existing folders, named native tables and final staged writes.
  const project=join(root,'external');await mkdir(join(project,'tables'),{recursive:true});await writeFile(join(project,'input.csv'),'x\n4\n9');
  const externalCode="libname saved 'tables'; proc import datafile='input.csv' out=base dbms=csv; run; data saved.results; set base; squared=x*x; run; proc export data=saved.results outfile='output.csv' dbms=csv replace; run; proc sgplot data=saved.results; scatter x=x y=squared; run;";

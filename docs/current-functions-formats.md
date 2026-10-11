@@ -38,7 +38,7 @@ These are the 35 functions implemented in this app, not a complete SAS catalog. 
 | Date | `DAY(date)` | Extract the UTC day of month. | `day("01JAN2026"d)` | `1` |
 | Conversion | `INPUT(text, informat.)` | Parse text using a supported informat; optional ?/?? controls invalid-input notes and _ERROR_. | `input("2,115,353",comma9.)` | `2115353` |
 | Conversion | `PUT(value, format.)` | Return width-padded character text; optional -L/-C/-R alignment. | `put(1350,z8.)` | `00001350` |
-| Random | `RAND(distribution [, parameter1 [, parameter2]])` | UNIFORM and NORMAL; default CALL STREAMINIT(seed) or explicit MT32. Exact uniform fixtures match; NORMAL sequence differs from SAS. | `rand("uniform")` after seed 5489 | `0.81472369201947` |
+| Random | `RAND(distribution [, parameter1 [, parameter2]])` | UNIFORM and NORMAL; default CALL STREAMINIT(seed) or explicit MT32. Exact uniform fixtures match; NORMAL paired sequences match tested cases within rounding tolerance. | `rand("uniform")` after seed 5489 | `0.81472369201947` |
 
 ## Formats (20 families)
 
@@ -71,7 +71,7 @@ Table display omits alignment padding, while PUT returns padded strings. Width a
 
 Supported: numeric w.d/Fw.d/BESTw., COMMAw.d/DOLLARw.d, PERCENTw.d, DATEw., MMDDYYw., DDMMYYw., YYMMDDw., TIMEw., DATETIMEw., E8601DA10., E8601DTw.d, $w., $CHARw., and $UPCASEw. Width limits source characters. Numeric implied decimals apply when the input has no decimal point/exponent. Impossible dates return missing and set _ERROR_ unless ?? is used; a fixed 1926–2025 window resolves two-digit years. Date/time computations use UTC; dates use days since 1960 and times/datetimes use seconds. Invalid-source diagnostics and supported modifiers are tested. Unlisted informats and INPUT/PUT statements remain unavailable.
 
-## RAND subset (v0.4.9)
+## RAND subset (v0.4.10)
 
 Use CALL STREAMINIT(12345) for the default stream, or select MT32/MT2002,
 MT1998 or MTHYBRID explicitly. Positive integer seeds reproduce runs; omitted
@@ -81,7 +81,7 @@ NORMAL optional mean/sigma; other distributions fail clearly.
 
 Uniform conversion is uint32 * 2.328306436538696e-10. Explicit MT32 matches
 40,000 actual SAS seed-12345 HEX16 values; default RAND matches 400. The normal
-polar sampler is not SAS sequence-identical. See [random-numbers.md](random-numbers.md)
+paired polar sampler matches tested SAS sequences within rounding tolerance; last bits can differ. See [random-numbers.md](random-numbers.md)
 for initialization rules, hybrid exceptions, exact-reference scope and limits.
 
 ## Macro functions are separate

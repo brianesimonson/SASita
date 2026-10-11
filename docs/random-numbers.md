@@ -1,4 +1,4 @@
-# RAND and stream initialization — Sassy v0.4.9
+# RAND and stream initialization — Sassy v0.4.10
 
 You no longer need an explicit MT32 designation to use seeded RAND:
 
@@ -50,11 +50,27 @@ UNIFORM and NORMAL remain the only supported distributions. Existing optional
 UNIFORM bounds and NORMAL mean/sigma parameters remain supported; other
 distributions fail clearly. Uniform HEX16 agreement applies to unbounded draws.
 
-NORMAL uses the existing Marsaglia polar sampler, discarding the second variate.
-It is statistically useful but **does not reproduce SAS's normal sequence**.
-Matching a generator does not establish matching distribution transforms. Do
-not describe all RAND distributions as SAS-identical. The same limitation
-applies to mixed uniform/normal sequences because NORMAL consumes draws.
+NORMAL uses paired Marsaglia polar sampling: return the x value and cache the
+unscaled y value for the next NORMAL call. Intervening UNIFORM calls preserve
+the cached normal; each NORMAL call applies its own mean and sigma. The cache
+is local to a DATA step and resets for a new step/run. This changes normal and
+mixed sequences from v0.4.9, which discarded the second variate.
+
+The user's SAS probe confirms the paired candidate's 512 values per context
+within rounding tolerance for default/MT32 and normal-only/mixed calls, with
+matching uniform-stream witnesses. Integrated JavaScript checks cover all 52
+printed normal values (38 bit-identical, maximum absolute difference
+4.440892098500626e-16) and all 28 printed uniform witnesses exactly, including
+the stream position after 512 normal-only draws. Direct JavaScript comparison
+cannot cover all 2,048 SAS values because the HTML prints only 52. See
+validation/normal-generation-results.md for provenance and the distinction.
+
+**Bit-identical normal results are not guaranteed.** Full normal fixtures,
+additional seeds, mean/sigma/tail reference checks and generator exceptions
+remain outside actual SAS validation. Parameter scaling and cache lifecycle
+have local regression tests. Matching these examples does not certify all RAND
+distributions. Open the included demo-project/normal-demo.sas without a folder
+connection to generate the four reference contexts.
 
 The browser and exported Node/Python-wrapper packages use the identical engine;
 Python invokes Node and does not replace the RNG. Floating-point computations

@@ -1,4 +1,4 @@
-// Research prototype only. Sassy v0.4.9's deployed NORMAL behavior is unchanged.
+// Independent paired-polar reference; integrated runtime checks are in test-normal.mjs.
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createUniformGenerator} from '../dist/random.mjs';
@@ -34,4 +34,4 @@ for(const context of fixture.contexts){
 }
 assert.equal(normals,52);assert.equal(uniforms,28);
 console.log(`JavaScript paired-polar prototype: ${normals} printed normals checked, ${exact} bit-identical, max absolute error ${maxAbs}; ${uniforms}/${uniforms} uniform witnesses exact.`);
-console.log('Full 512-value JavaScript normal fixtures, additional seeds/parameters/tails and app integration remain future work.');
+console.log('Full 512-value JavaScript normal fixtures, additional seeds/parameters/tails remain future work; paired caching is integrated in v0.4.10.');

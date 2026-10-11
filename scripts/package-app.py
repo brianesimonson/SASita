@@ -21,6 +21,7 @@ entries=[('data-step-lab.html',root/'dist/data-step-lab.html'),
          ('demo-project/project-demo.sas',root/'examples/project-demo/project-demo.sas'),
          ('demo-project/library-demo.sas',root/'examples/project-demo/library-demo.sas'),
          ('demo-project/charts-demo.sas',root/'examples/project-demo/charts-demo.sas'),
+         ('demo-project/normal-demo.sas',root/'examples/project-demo/normal-demo.sas'),
          ('demo-project/portable-demo.sas',root/'examples/project-demo/portable-demo.sas'),
          ('demo-project/tables/README.txt',root/'examples/project-demo/tables/README.txt')]
 entries.extend(('example-programs/'+path.name,path) for path in sorted((root/'examples/catalog').glob('*.sas')))

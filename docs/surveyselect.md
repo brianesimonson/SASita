@@ -1,4 +1,4 @@
-# PROC SURVEYSELECT — Sassy v0.4.9
+# PROC SURVEYSELECT — Sassy v0.4.10
 
 Runs locally in the offline browser app and the exported Node runtime (also
 through the Python wrapper). No server or SAS installation is needed.
@@ -69,4 +69,4 @@ This verifies those cases, not every SAS release, seed or option. Default/hybrid
 exceptional seeds, legacy initialization, very long default streams and the
 newly supported character/missing-stratum edge cases lack actual SAS fixtures.
 See random-numbers.md for the distinction between the verified uniform streams
-and approximate NORMAL sampling. The included ninth example needs no folder.
+and paired NORMAL reference checks with last-bit differences. The included ninth example needs no folder.

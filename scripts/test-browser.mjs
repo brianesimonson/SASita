@@ -133,9 +133,10 @@ try {
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
     console.log(`${label}: tabbed workspace, offline SAS colors, rolling output/log, independent clears and snapshot preservation passed`);
     // Export from the REAL browser build, extract, and execute the Python bridge.
-    await evaluate("document.querySelector('#code').value='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run;';document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))");
+    const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8');
+    await evaluate(`document.querySelector('#code').value=${JSON.stringify(portableBrowserProgram)};document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.9.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.10.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
@@ -145,6 +146,12 @@ try {
     const wrapped=spawnSync('python3',[join(packagePath,'run.py')],{encoding:'utf8',maxBuffer:10000000,timeout:35000});assert.equal(wrapped.status,0,wrapped.stderr);
     assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_result).rows,[{x:3,square:9}]);
     assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_sample).rows.map(r=>r.id),[3,5,6,9,12,13,17,19,23,24]);
+    const portableNormalFixture=JSON.parse(await readFile('fixtures/sas/normal-method-probe.json','utf8'));
+    for(const context of portableNormalFixture.contexts){
+      const rows=JSON.parse(JSON.parse(wrapped.stdout).tables['normal_'+context.generator.toLowerCase()+'_'+context.mode.toLowerCase()]).rows;
+      assert.equal(rows.length,512);
+      for(const ref of context.printed_rows){const expected=Buffer.from(ref.z_hex,'hex').readDoubleBE();assert.ok(Math.abs(rows[ref.id-1].z-expected)<=1e-14*Math.max(1,Math.abs(expected)));if(ref.next_u_hex)assert.equal(rows[ref.id-1].next_u_hex,ref.next_u_hex);}
+    }
     assert.ok(await evaluate("document.querySelector('#portablestatus').textContent.includes('Downloaded')"));
     if(process.argv.includes('--screenshots')){const shot=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-portable-'+label+'.png',Buffer.from(shot.data,'base64'));}
     await evaluate("HTMLAnchorElement.prototype.click=window.__portableClick;document.querySelector('#closeportable').click()");
@@ -343,6 +350,18 @@ try {
     assert.equal(await evaluate("document.querySelector('#datasets').textContent"),originalSurveyDatasets);
     assert.match(await evaluate("document.querySelector('#log').textContent"),/Stratified REPS/);
     console.log(`${label}: integrated SURVEYSELECT/default RAND, automatic stratum seeds, reports and rollback passed`);
+    const normalFixture=JSON.parse(await readFile('fixtures/sas/normal-method-probe.json','utf8'));
+    await evaluate(`document.querySelector('#code').value=${JSON.stringify(await readFile('examples/project-demo/normal-demo.sas','utf8'))};document.querySelector('#run').click()`);
+    await waitFor("!document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    for(const context of normalFixture.contexts){
+      const name='normal_'+context.generator.toLowerCase()+'_'+context.mode.toLowerCase();
+      await evaluate(`Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent===${JSON.stringify(name)}).click()`);
+      const text=await evaluate(`(async()=>{let blob;const original=URL.createObjectURL,click=HTMLAnchorElement.prototype.click;URL.createObjectURL=value=>{blob=value;return original(value)};HTMLAnchorElement.prototype.click=function(){};try{document.querySelector('#export').click();return await blob.text();}finally{URL.createObjectURL=original;HTMLAnchorElement.prototype.click=click;}})()`);
+      const rows=(await import('../dist/engine.mjs')).parseCSV(text).rows;assert.equal(rows.length,512);
+      for(const ref of context.printed_rows){const actual=Buffer.from(rows[ref.id-1].z_hex,'hex').readDoubleBE(),expected=Buffer.from(ref.z_hex,'hex').readDoubleBE();assert.ok(Math.abs(actual-expected)<=1e-14*Math.max(1,Math.abs(expected)));if(ref.next_u_hex)assert.equal(rows[ref.id-1].next_u_hex,ref.next_u_hex);}
+    }
+    console.log(`${label}: four NORMAL/mixed contexts match 52 SAS normal references and 28 exact stream witnesses`);
     console.log(`${label}: ten examples, expanded code, CSV import/export, failed-run rollback passed`);
   }
   console.log('Browser checks passed in '+await evaluate('navigator.userAgent'));

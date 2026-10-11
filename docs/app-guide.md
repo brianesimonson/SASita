@@ -1,4 +1,4 @@
-# Sassy v0.4.9
+# Sassy v0.4.10
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -34,4 +34,6 @@ Click **Examples** in the upper-right header. Preview eight programs, download a
 
 PROC MEANS saves overall totals and each CLASS subset by default using _TYPE_ bit flags and _FREQ_. NWAY removes those rows when requested. Inactive character classes are blank; numeric classes are missing. OUTPUT without statistic requests uses five _STAT_ rows. Reports appear in session Output; saved tables appear in Libraries. See means.md for statistics/options, missing values, naming and limits. The included means-validation ZIP contains deterministic SAS programs and Sassy result CSVs for the next actual SAS comparison.
 
-PROC SURVEYSELECT and default RAND are included in v0.4.9. Use the ninth Examples program for self-contained sampling. Read surveyselect.md and random-numbers.md for supported methods and SAS-reference limits. procedure-support.md lists what every procedure can deploy in the browser and Node/Python-wrapper runtime.
+PROC SURVEYSELECT and default RAND are included in v0.4.10. Use the ninth Examples program for self-contained sampling. Read surveyselect.md and random-numbers.md for supported methods and SAS-reference limits. procedure-support.md lists what every procedure can deploy in the browser and Node/Python-wrapper runtime.
+
+In v0.4.10, NORMAL caches the second polar value instead of discarding it. Normal-only and mixed sequences therefore change from older versions. The tested SAS examples match within rounding tolerance, with exact subsequent uniform witnesses. Open demo-project/normal-demo.sas to generate all four reference contexts without choosing a folder.

@@ -505,7 +505,7 @@ QUANTILE,QUANTILE,Quantile CAS See: “CDF Function” on page 458,Not implement
 QUOTE,QUOTE,Character CAS,Not implemented,,Unselected,lefunctionsref.pdf,1411,1401,QUOTE Function
 RANBIN,RANBIN,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1414,1404,RANBIN Function
 RANCAU,RANCAU,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1416,1406,RANCAU Function
-RAND,RAND,Random Number CAS,Partial: UNIFORM/NORMAL with explicit MT32; SAS sequence equivalence unverified,,Unselected,lefunctionsref.pdf,1417,1407,RAND Function
+RAND,RAND,Random Number CAS,"Partial: UNIFORM/NORMAL; default MTHYBRID and explicit MT32/MT1998; paired normal references agree within rounding tolerance, uniform witnesses exact; broader cases unverified",,Unselected,lefunctionsref.pdf,1417,1407,RAND Function
 RANDPERM,RANDPERM,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,1439,1429,RANDPERM Function
 RANEXP,RANEXP,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1440,1430,RANEXP Function
 RANGAM,RANGAM,Random Number,Not implemented,,Unselected,lefunctionsref.pdf,1442,1432,RANGAM Function

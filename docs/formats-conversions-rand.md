@@ -35,7 +35,7 @@ INPUT accepts a character source and a literal supported informat. Width limits 
 
 Format arguments to INPUT/PUT are literal specifications such as comma12.2 or date9.; dynamic INPUTN/PUTN and statements named INPUT/PUT are not implemented. The application requires source/format types to match; it does not add SAS's implicit numeric-to-character conversion.
 
-## Randomness contract and limits (v0.4.9)
+## Randomness contract and limits (v0.4.10)
 
 Default CALL STREAMINIT(seed), explicit MT32/MT2002, MT1998 and MTHYBRID are
 implemented. RAND without initialization and nonpositive seeds choose an
@@ -46,11 +46,11 @@ reference evidence, exceptional-seed limits and deployment behavior.
 Explicit MT32 matches all 40,000 seed-12345 uniform HEX16 values. Default RAND
 matches all 400 new seed-12345 uniform values. Actual SURVEYSELECT sampling
 and automatically derived stratum seeds match the supplied reference cases.
-These results do not establish all seeds/distributions or normal sequences.
+These results do not establish all seeds/distributions. Paired NORMAL now matches the printed reference values and stream witnesses; see random-numbers.md.
 
 UNIFORM with optional bounds and NORMAL with optional mean/sigma remain the
-only distributions. NORMAL uses the existing polar sampler and is not a
-reproduction of SAS's sequence. Uniform conversion retains the exact constant
+only distributions. NORMAL now returns paired polar values and caches the second;
+the tested SAS sequences match within rounding tolerance, with exact subsequent uniforms. Uniform conversion retains the exact constant
 2.328306436538696e-10. The original independent core and format tests remain
 in the baseline suite.
 

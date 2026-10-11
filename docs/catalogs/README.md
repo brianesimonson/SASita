@@ -106,4 +106,4 @@ Before implementing each group, read its cited pages, choose a supported argumen
 
 ## Implementation status update
 
-The feature/formats-conversions-rand branch updates current_support in these CSVs for INPUT, PUT, RAND, STREAMINIT, and common formats/informats. Proposed batches remain historical suggestions; use current_support when selecting remaining work. See ../formats-conversions-rand.md for supported widths/modifiers, aliases, and limits. RAND support is explicit MT32 only, and SAS uniform/normal sequences remain unverified.
+The feature/formats-conversions-rand branch updates current_support in these CSVs for INPUT, PUT, RAND, STREAMINIT, and common formats/informats. Proposed batches remain historical suggestions; use current_support when selecting remaining work. See ../formats-conversions-rand.md for supported widths/modifiers, aliases, and limits. RAND now supports default MTHYBRID and explicit MT32/MT1998. Uniform references match exactly; v0.4.10 paired-normal references match within rounding tolerance with exact uniform witnesses. Broad seed/parameter and bit-identical normal guarantees remain unverified; see ../random-numbers.md.

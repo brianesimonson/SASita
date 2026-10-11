@@ -332,7 +332,7 @@ const syntaxEntries=[
     "label": "RAND",
     "group": "Functions",
     "syntax": "RAND('UNIFORM' [, a [, b]])",
-    "description": "CALL STREAMINIT(seed) selects default MTHYBRID; explicit MT32/MT2002 or MT1998 also available. First initialization wins per DATA step. Without initialization, RAND chooses and logs an automatic seed. Explicit MT32 matches 40,000 SAS uniform draws at seed 12345; default uniform matches 400. Hybrid seeds divisible by 8192 use the 2002 initialization (not SAS-fixture verified). NORMAL uses a polar sampler and is not SAS sequence-identical. Only UNIFORM/NORMAL supported; see random-number documentation for scope.",
+    "description": "CALL STREAMINIT(seed) selects default MTHYBRID; explicit MT32/MT2002 or MT1998 also available. First initialization wins per DATA step. Without initialization, RAND chooses and logs an automatic seed. Explicit MT32 matches 40,000 SAS uniform draws at seed 12345; default uniform matches 400. Hybrid seeds divisible by 8192 use the 2002 initialization (not SAS-fixture verified). NORMAL caches the second polar value, preserving it across UNIFORM calls. The printed SAS normal references match within rounding tolerance, with exact uniform witnesses; bit-identical normals are not guaranteed. Only UNIFORM/NORMAL supported; see random-number documentation for scope.",
     "template": "rand('uniform')"
   },
   {
@@ -532,7 +532,7 @@ const syntaxEntries=[
     "label": "CALL STREAMINIT",
     "group": "Statements",
     "syntax": "CALL STREAMINIT(seed); or CALL STREAMINIT('MT32'|'MT2002'|'MT1998'|'MTHYBRID', seed);",
-    "description": "Default MTHYBRID and explicit generator selection. Positive integer seeds up to 4294967295 are reproducible; nonpositive seeds request an automatically chosen seed, logged for reuse. First initialization wins per DATA step. Exact reference agreement covers uniform examples; NORMAL remains approximate relative to SAS sequences.",
+    "description": "Default MTHYBRID and explicit generator selection. Positive integer seeds up to 4294967295 are reproducible; nonpositive seeds request an automatically chosen seed, logged for reuse. First initialization wins per DATA step. Exact reference agreement covers uniform examples; Paired NORMAL matches tested sequence ordering/stream consumption; normal last bits and broader seed/parameter cases remain unverified.",
     "template": "call streaminit(12345);\n"
   },
   {

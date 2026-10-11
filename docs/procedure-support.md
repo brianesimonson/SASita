@@ -1,4 +1,4 @@
-# Procedure support and deployment — Sassy v0.4.9
+# Procedure support and deployment — Sassy v0.4.10
 
 All supported computation runs locally in the single offline HTML and in the
 exported Node.js 24+ interpreter. The optional Python wrapper invokes Node.
@@ -21,8 +21,8 @@ means.md, surveyselect.md, charts.md, project-files.md and native-tables.md.
 
 DATA steps, macros and RAND are language features rather than procedures.
 Their supported subset is listed in the app's syntax guide. Default and explicit
-MT32 uniform reference agreement is documented in random-numbers.md; NORMAL
-sequence agreement is not established.
+MT32 uniform and paired NORMAL reference agreement is documented in random-numbers.md;
+NORMAL last bits and broader seed/parameter cases are not certified.
 
 Browser LIBNAME points to authorized relative folders containing
 `.sassy-table.json`, not `.sas7bdat`. Node's --project selects the equivalent

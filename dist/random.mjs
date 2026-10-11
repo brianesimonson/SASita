@@ -51,6 +51,7 @@ export function createUniformGenerator(seed, method='MTHYBRID') {
 
 export function createRandomStream(tick, logs) {
   let generator = null;
+  let cachedNormal = null;
   function initialize(args) {
     if (generator) return; // First initialization wins within this DATA step.
     const explicit=args.length===2&&typeof args[0]==='string';
@@ -59,7 +60,7 @@ export function createRandomStream(tick, logs) {
     if (!Number.isInteger(requested) || requested>0xffffffff) throw new Error('STREAMINIT requires an integer seed no greater than 4294967295');
     const seed=requested>0?requested:automaticRandomSeed();
     generator = createUniformGenerator(seed,method);
-    logs.push('NOTE: RAND uses '+method+' with seed '+seed+'. Exact SAS uniform reference checks cover seed 12345; normal sequences are not SAS-identical.');
+    logs.push('NOTE: RAND uses '+method+' with seed '+seed+'. SAS reference checks cover seed-12345 uniform and paired-normal examples; normal last bits can differ.');
   }
   function uniform() {
     tick();
@@ -86,12 +87,21 @@ export function createRandomStream(tick, logs) {
       const mean = parameters[0] ?? 0, sigma = parameters[1] ?? 1;
       if (sigma < 0 || Math.abs(mean) > 1e14 * (sigma || 1))
         throw new Error('RAND normal requires nonnegative sigma and a bounded mean');
-      // Marsaglia polar sampler, no cached second variate. Its stream consumption
-      // and floating-point results are not a reproduction of SAS's normal sampler.
+      // Cache an UNscaled standard normal. Uniform calls leave it intact, and
+      // each subsequent NORMAL call applies its own mean/sigma. Per-step state.
+      if (cachedNormal !== null) {
+        const z = cachedNormal;
+        cachedNormal = null;
+        const result = mean + sigma*z;
+        if (!Number.isFinite(result)) throw new Error('RAND normal result is outside the finite range');
+        return result;
+      }
       for (let tries = 0; tries < 10000; tries++) {
         const x = 2*uniform()-1, y = 2*uniform()-1, s = x*x+y*y;
         if (s > 0 && s < 1) {
-          const result = mean + sigma*x*Math.sqrt(-2*Math.log(s)/s);
+          const factor = Math.sqrt(-2*Math.log(s)/s);
+          cachedNormal = y*factor;
+          const result = mean + sigma*(x*factor);
           if (!Number.isFinite(result)) throw new Error('RAND normal result is outside the finite range');
           return result;
         }
