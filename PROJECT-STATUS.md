@@ -1,5 +1,9 @@
 # SASita project status
 
+## NORMAL generation research (app unchanged)
+
+Branch research/sas-normal-generation reads the user's modern functions manual and official RAND reference. Legacy RANNOR/CALL RANNOR explicitly use Box–Muller; inspected modern RAND NORMAL docs identify the distribution but not the named transform. Do not assume the legacy method or claim Ziggurat without evidence. examples/normal-investigation/normal-method-probe.zip contains a SAS-only experiment comparing ten inverse-CDF/trig Box–Muller/polar variants (cached/discarded pairs), default/MT32 and normal-only/mixed contexts, 512 normals each. It reports exact HEX/tolerance matches and subsequent uniform-stream witnesses; no input files or CSV downloads needed. Actual SAS results are pending. docs/validation/normal-generation-research.md records sources and limits. Sassy v0.4.9, main and existing tags are unchanged.
+
 ## Sassy v0.4.9: SURVEYSELECT and default RAND integrated
 
 Branch feature/sassy-surveyselect adds the bounded equal-probability PROC SURVEYSELECT runtime: SRS/Floyd, URS hits/expanded OUTHITS, SYS fractional N/n, sorted unformatted numeric/character/missing STRATA, automatic seeds from one main seed, STRATUMSEED=NONE, scalar N/SAMPSIZE or SRS/URS RATE/SAMPRATE, unstratified REPS, STATS/OUTSIZE/OUTSEED/NOPRINT. Output types/order/source descriptors are preserved; JSON library reads/staged writes, worker execution, Output report history and portable engine include the procedure. A ninth self-contained example and contextual syntax entry are included. Full options, bounds and unsupported designs: docs/surveyselect.md.
