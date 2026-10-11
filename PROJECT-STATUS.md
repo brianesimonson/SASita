@@ -1,5 +1,9 @@
 # SASita project status
 
+## NORMAL probe received: paired polar method with caching
+
+User's clean SAS log/results identify polar_pair_x as the matching candidate: 512/512 normals within tolerance in each default/MT32 normal/mixed context; exact normal counts 413/417/440/442, max absolute difference 7.6328e-16. All subsequent uniform checks match exactly (normal-only tail 1/1, mixed 512/512). Current app's uncached polar_x diverges after the first value. Independent JavaScript paired-polar research prototype checks all 52 printed normal hex values: 38 exact, all within tolerance, max absolute error 4.4409e-16; all 28 uniform witnesses exact. Evidence/limits: docs/validation/normal-generation-results.md; fixture: fixtures/sas/normal-method-probe.json; run node scripts/check-normal-reference.mjs. The research does not change the app: pair caching/integration, full JavaScript fixtures and broader parameter/seed/tail checks remain future work. Main/v0.4.9 unchanged; prior pending notes are historical.
+
 ## NORMAL generation research (app unchanged)
 
 Branch research/sas-normal-generation reads the user's modern functions manual and official RAND reference. Legacy RANNOR/CALL RANNOR explicitly use Box–Muller; inspected modern RAND NORMAL docs identify the distribution but not the named transform. Do not assume the legacy method or claim Ziggurat without evidence. examples/normal-investigation/normal-method-probe.zip contains a SAS-only experiment comparing ten inverse-CDF/trig Box–Muller/polar variants (cached/discarded pairs), default/MT32 and normal-only/mixed contexts, 512 normals each. It reports exact HEX/tolerance matches and subsequent uniform-stream witnesses; no input files or CSV downloads needed. Actual SAS results are pending. docs/validation/normal-generation-research.md records sources and limits. Sassy v0.4.9, main and existing tags are unchanged.

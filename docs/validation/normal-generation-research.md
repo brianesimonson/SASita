@@ -1,5 +1,12 @@
 # SAS normal generation research
 
+Follow-up results are now available: normal-generation-results.md records
+strong evidence for paired polar sampling returning x first and caching y.
+All 512 candidate values per context match within rounding tolerance, with
+exact subsequent uniform witnesses. Direct JavaScript checks cover all 52
+printed values and 28 uniform witnesses. App integration has not changed.
+The discussion below describes the initial documentary research.
+
 Research uses the user's `lefunctionsref.pdf`, extracted locally as
 /tmp/sas-functions.txt, and the official online RAND reference:
 https://support.sas.com/documentation/cdl/en/lefunctionsref/63354/HTML/default/p0fpeei0opypg8n1b06qe4r040lv.htm

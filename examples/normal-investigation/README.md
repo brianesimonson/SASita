@@ -1,5 +1,12 @@
 # SAS NORMAL generation investigation
 
+Completed initial result: `polar_pair_x` matches all 512 normals within rounding
+tolerance in all four contexts, with exact subsequent uniform checks. The
+JavaScript prototype matches the 52 printed normals (38 bit-identical) and all
+28 printed uniform witnesses. See docs/validation/normal-generation-results.md.
+Sassy v0.4.9 still discards the second polar value; app integration is pending.
+No rerun is needed to inspect this already-received result.
+
 Run `01-normal-method-probe.sas` in SAS Studio and return HTML Results and log.
 No CSVs, folder setup, previous WORK tables or downloads of output files are
 needed. The Sassy app has not changed.
