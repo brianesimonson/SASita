@@ -1,4 +1,5 @@
 import {parseMeans,prepareMeans} from './means.mjs';
+import {parseSurveySelect,prepareSurveySelect} from './surveyselect.mjs';
 import {tokenize,run,parseCSV,csv,datasetReferences} from './engine.mjs';
 import {parsePlot,preparePlot} from './charts.mjs';
 import {readTable,writeTable} from './table-storage.mjs';
@@ -33,6 +34,7 @@ export function filePlan(expanded) {
   if(t.v==='title'){
    let value='';if(tokens[i]?.v!==';'){const title=take();if(title.type!=='str'||title.v.length>200)throw new Error('TITLE requires quoted text of at most 200 characters');value=title.v;}need(';');plan.push({kind:'title',value});continue;
   }
+  if(t.v==='proc'&&tokens[i]?.v==='surveyselect'){const parsed=parseSurveySelect(tokens,start);i=parsed.next;plan.push({kind:'surveyselect',spec:parsed.spec});continue;}
   if(t.v==='proc'&&tokens[i]?.v==='means'){const parsed=parseMeans(tokens,start);i=parsed.next;plan.push({kind:'means',spec:parsed.spec});continue;}
   if(t.v==='proc'&&['sgplot','sgpie'].includes(tokens[i]?.v)){const parsed=parsePlot(tokens,start);i=parsed.next;plan.push({kind:'plot',plot:parsed.plot});continue;}
   if(t.v==='libname'){
@@ -88,6 +90,7 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  let hasFiles=tokens.some(t=>t.type==='id'&&/^[a-z_]\w*\.[a-z_]\w*$/.test(t.v)&&!/^(work|first|last)\./.test(t.v)),inBlock=false;
  for(let i=0;i<tokens.length;i++){const t=tokens[i];if(t.type!=='id')continue;if(inBlock){if(t.v==='run'&&tokens[i-1]?.v===';'&&tokens[i+1]?.v===';')inBlock=false;continue;}if(['libname','filename','title'].includes(t.v))hasFiles=true;if(t.v==='proc'){if(['import','export','sgplot','sgpie','means'].includes(tokens[i+1]?.v))hasFiles=true;inBlock=true;}else if(t.v==='data')inBlock=true;}
 
+ if(tokens.some((t,i)=>t.v==='proc'&&tokens[i+1]?.v==='surveyselect'))hasFiles=true;
  if(!hasFiles){const result=run(macro.code,input,{expanded:true});result.logs.unshift(...macro.logs);return result;}
  const plan=filePlan(macro.code),aliases=new Map(),exports=[],logs=[...macro.logs],written=[],libraries=Object.assign(Object.create(null),options.libraries||{}),fresh=new Set(),libraryWrites=new Set(),plots=[],reports=[];let chartTitle=options.chartTitle||'';
  let datasets=Object.assign(Object.create(null),input),exportBytes=0;
@@ -101,6 +104,13 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  function checkExportLimit(){if(exports.reduce((n,e)=>n+new TextEncoder().encode(e.text).length,0)>50000000)throw new Error('Total program exports are limited to 50 MB');}
  for(const step of plan) {
   if(step.kind==='title'){chartTitle=step.value;continue;}
+  if(step.kind==='surveyselect'){
+   await load(step.spec.source);if(step.spec.out.includes('.'))location(step.spec.out);
+   const result=prepareSurveySelect(step.spec,datasets[step.spec.source]);datasets[step.spec.out]=result.dataset;written.push(step.spec.out);stage(step.spec.out);checkExportLimit();
+   if(result.report)reports.push({title:'PROC SURVEYSELECT · '+step.spec.source,dataset:result.report});
+   if(reports.length>20||reports.reduce((n,r)=>n+r.dataset.rows.length,0)>100000)throw new Error('Procedure report limit exceeded');
+   logs.push('NOTE: PROC SURVEYSELECT '+step.spec.method.toUpperCase()+' used seed '+result.seed+' and wrote '+result.dataset.rows.length+' rows to '+step.spec.out+'.');continue;
+  }
   if(step.kind==='means'){await load(step.spec.source);const result=prepareMeans(step.spec,datasets[step.spec.source]);for(const out of result.outputs){if(out.name.includes('.'))location(out.name);datasets[out.name]=out.dataset;written.push(out.name);stage(out.name);}checkExportLimit();if(result.report)reports.push({title:'PROC MEANS · '+step.spec.source,dataset:result.report});if(reports.length>20||reports.reduce((n,r)=>n+r.dataset.rows.length,0)>100000)throw new Error('PROC MEANS report limit exceeded');logs.push('NOTE: PROC MEANS summarized '+step.spec.source+' and wrote '+result.outputs.map(o=>o.name).join(', ')+'.');continue;}
   if(step.kind==='plot'){if(plots.length>=20)throw new Error('Programs are limited to 20 charts');const source=step.plot.source;await load(source);const chart=preparePlot(step.plot,datasets[source],chartTitle);plots.push(chart);if(plots.reduce((n,p)=>n+p.pointCount,0)>100000)throw new Error('Programs are limited to 100,000 chart points');logs.push(`NOTE: Prepared ${chart.kind} chart from ${chart.source.toUpperCase()}: ${chart.used} used, ${chart.omitted} omitted observations.`);continue;}
   if(step.kind==='libname'){

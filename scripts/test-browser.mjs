@@ -104,7 +104,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#code').value"),'data x; value=substr("abcd",2,2); run;');
     assert.equal(await evaluate("document.querySelector('#programstate').textContent"),'Unsaved changes');
     await evaluate("document.querySelector('#syntaxsearch').value='';document.querySelector('#syntaxsearch').dispatchEvent(new Event('input'))");
-    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),67);
+    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),68);
     await evaluate("document.querySelector('#syntaxclose').click();document.querySelector('#code').value='proc sgplot data=x; histogram x /';document.querySelector('#code').setSelectionRange(32,32);document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{ctrlKey:true,code:'Space',key:' ',bubbles:true}))");
     assert.equal(await evaluate("document.querySelector('#syntaxentry').value"),'sgplot');
     assert.ok(await evaluate("!document.querySelector('#syntaxpanel').hidden && document.querySelector('#syntaxfollow').checked"));
@@ -133,9 +133,9 @@ try {
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
     console.log(`${label}: tabbed workspace, offline SAS colors, rolling output/log, independent clears and snapshot preservation passed`);
     // Export from the REAL browser build, extract, and execute the Python bridge.
-    await evaluate("document.querySelector('#code').value='data portable_result; set snapshot; square=x*x; run;';document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))");
+    await evaluate("document.querySelector('#code').value='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run;';document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))");
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.8.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.9.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
@@ -144,6 +144,7 @@ try {
     assert.equal(extracted.status,0,extracted.stderr);
     const wrapped=spawnSync('python3',[join(packagePath,'run.py')],{encoding:'utf8',maxBuffer:10000000,timeout:35000});assert.equal(wrapped.status,0,wrapped.stderr);
     assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_result).rows,[{x:3,square:9}]);
+    assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_sample).rows.map(r=>r.id),[3,5,6,9,12,13,17,19,23,24]);
     assert.ok(await evaluate("document.querySelector('#portablestatus').textContent.includes('Downloaded')"));
     if(process.argv.includes('--screenshots')){const shot=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-portable-'+label+'.png',Buffer.from(shot.data,'base64'));}
     await evaluate("HTMLAnchorElement.prototype.click=window.__portableClick;document.querySelector('#closeportable').click()");
@@ -304,7 +305,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#workspacelogtab').getAttribute('aria-selected')"),'true');
     // User-facing example catalog and SAS-shaped CLASS totals.
     await evaluate("document.querySelector('#exampleprograms').click()");
-    assert.equal(await evaluate("document.querySelector('#examplechoice').options.length"),8);
+    assert.equal(await evaluate("document.querySelector('#examplechoice').options.length"),9);
     await evaluate("document.querySelector('#examplechoice').value='04-means.sas';document.querySelector('#examplechoice').dispatchEvent(new Event('change'))");
     assert.ok(await evaluate("document.querySelector('#examplesource').textContent.includes('_TYPE_')"));
     const logBeforeExample=await evaluate("document.querySelector('#log').textContent");
@@ -326,6 +327,22 @@ try {
     assert.equal(meansData.rows[0]._freq_,24);assert.equal(meansData.rows[0].amount_n,20);assert.equal(meansData.rows[0].amount_nmiss,4);
     if(process.argv.includes('--screenshots')){const shot=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-means-'+label+'.png',Buffer.from(shot.data,'base64'));}
     console.log(`${label}: example catalog, PROC MEANS reports and exact CLASS type/frequency structure passed`);
+    const surveyCode=await readFile('examples/catalog/09-surveyselect.sas','utf8');
+    await evaluate(`document.querySelector('#code').value=${JSON.stringify(surveyCode)};document.querySelector('#run').click()`);
+    await waitFor("!document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    assert.ok(await evaluate("Array.from(document.querySelector('#outputhistory').options).some(o=>o.textContent.includes('SURVEYSELECT'))"));
+    await evaluate("Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent==='sample_stratified').click()");
+    const surveyCSV=await evaluate(`(async()=>{let blob;const original=URL.createObjectURL,click=HTMLAnchorElement.prototype.click;URL.createObjectURL=value=>{blob=value;return original(value)};HTMLAnchorElement.prototype.click=function(){};try{document.querySelector('#export').click();return await blob.text();}finally{URL.createObjectURL=original;HTMLAnchorElement.prototype.click=click;}})()`);
+    const surveyData=(await import('../dist/engine.mjs')).parseCSV(surveyCSV);
+    assert.deepEqual(surveyData.rows.map(r=>r.id),[3,5,6,9,12,13,17,19,23,24]);
+    assert.equal(surveyData.rows.at(-1).initialseed,1841400341);
+    const originalSurveyDatasets=await evaluate("document.querySelector('#datasets').textContent");
+    await evaluate("document.querySelector('#code').value='proc surveyselect data=sampling_frame out=bad n=2 reps=2; strata stratum; run;';document.querySelector('#run').click()");
+    await waitFor("!document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#datasets').textContent"),originalSurveyDatasets);
+    assert.match(await evaluate("document.querySelector('#log').textContent"),/Stratified REPS/);
+    console.log(`${label}: integrated SURVEYSELECT/default RAND, automatic stratum seeds, reports and rollback passed`);
     console.log(`${label}: ten examples, expanded code, CSV import/export, failed-run rollback passed`);
   }
   console.log('Browser checks passed in '+await evaluate('navigator.userAgent'));

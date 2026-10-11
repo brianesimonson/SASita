@@ -32,4 +32,4 @@ These batches are suggestions, not an approved implementation scope. Adding many
 
 ## Implementation update
 
-The user chose common formats, INPUT/PUT, and RAND before broader text cleaning. The feature/formats-conversions-rand branch implements their first bounded subset; see formats-conversions-rand.md and updated catalog current_support fields. Text cleaning remains deferred. Default MTHYBRID and SAS-identical uniform/normal sequences remain outside the verified feature scope.
+The user chose common formats, INPUT/PUT, and RAND before broader text cleaning. The feature/formats-conversions-rand branch implements their first bounded subset; see formats-conversions-rand.md and updated catalog current_support fields. Text cleaning remains deferred. v0.4.9 adds default MTHYBRID and verified seed-12345 uniform fixtures (400 default draws; 40,000 explicit MT32 draws). Normal sequences and broad hybrid/seed cases remain unverified; see random-numbers.md.

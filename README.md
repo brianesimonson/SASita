@@ -10,7 +10,7 @@ Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the 
 
 ## Current development build
 
-Version 0.4.8 corrects PROC MEANS AUTONAME standard-deviation suffixes and includes an explicitly typed SAS comparison helper. Default CLASS totals/subtotals and the eight-program example catalog are included. Code & export and runnable JavaScript/Python packages remain included. The contextual syntax guide and templates remain included. Chart.js plotting, output history and PNG downloads are included. Download [Sassy-v0.4.8.zip](dist/Sassy-v0.4.8.zip), unzip, and open data-step-lab.html. The SPI logo, JSON table libraries, compact header, tabbed workspace, and SAS syntax colors are included. See [the app guide](docs/app-guide.md), [charts](docs/charts.md), and [native JSON tables](docs/native-tables.md).
+Version 0.4.9 adds PROC SURVEYSELECT (SRS, replacement, fractional systematic and stratified sampling) and default seeded RAND alongside explicit MT32. Automatic stratum seeds and actual selected records match the supplied SAS reference cases. The example catalog now contains nine programs. Download [Sassy-v0.4.9.zip](dist/Sassy-v0.4.9.zip), unzip and open data-step-lab.html. See [procedure/deployment support](docs/procedure-support.md), [SURVEYSELECT](docs/surveyselect.md), [random-number scope](docs/random-numbers.md) and [the app guide](docs/app-guide.md). NORMAL sequences remain approximate; unsupported procedures/options fail clearly. Main and previous milestones are preserved.
 
 The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 
@@ -21,7 +21,7 @@ Width now controls value-changing formatting and PUT padding. Some SAS format se
 
 ## Function and format references
 
-The app’s **Supported syntax** dialog now lists every implemented function and format family with examples. See [current functions and formats](docs/current-functions-formats.md) and [expansion planning](docs/function-format-expansion.md). The [official reference catalogs](docs/catalogs/README.md) now index all dictionary topics in the uploaded SAS manuals, with current-support comparisons and proposed batches. No additional language features have been implemented yet.
+The app’s **Supported syntax** dialog now lists every implemented function and format family with examples. See [current functions and formats](docs/current-functions-formats.md) and [expansion planning](docs/function-format-expansion.md). The [official reference catalogs](docs/catalogs/README.md) now index all dictionary topics in the uploaded SAS manuals, with current-support comparisons and proposed batches. Current procedure limits and deployment behavior are documented in docs/procedure-support.md.
 
 ## New in version 2
 

@@ -2,12 +2,18 @@
 // The core is independently testable; SAS distribution/float sequence equivalence
 // is not implied by matching this core.
 export function createMT32(seed) {
+  return createTwister(seed, false);
+}
+export function createMT1998(seed) {
+  return createTwister(seed, true);
+}
+function createTwister(seed, older) {
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff)
     throw new Error('MT32 seed must be an unsigned 32-bit integer');
   const state = new Uint32Array(624);
   state[0] = seed >>> 0;
   for (let i = 1; i < 624; i++)
-    state[i] = (Math.imul(1812433253, state[i-1] ^ (state[i-1] >>> 30)) + i) >>> 0;
+    state[i] = older ? Math.imul(69069, state[i-1]) >>> 0 : (Math.imul(1812433253, state[i-1] ^ (state[i-1] >>> 30)) + i) >>> 0;
   let index = 624;
   return {
     uint32() {
@@ -28,28 +34,41 @@ export function createMT32(seed) {
   };
 }
 
+export function automaticRandomSeed() {
+  const value = new Uint32Array(1);
+  globalThis.crypto?.getRandomValues(value);
+  return value[0] || (Date.now() >>> 0) || 1;
+}
+export function createUniformGenerator(seed, method='MTHYBRID') {
+  if (!Number.isInteger(seed) || seed < 1 || seed > 0xffffffff)
+    throw new Error('Random seed must be an integer from 1 to 4294967295');
+  method=method.toUpperCase();
+  if (!['MTHYBRID','MT1998','MT32','MT2002'].includes(method))
+    throw new Error('Unsupported RNG '+method+'. Supported: MTHYBRID, MT1998, MT32 / MT2002.');
+  const generator = method==='MT1998'||method==='MTHYBRID'&&seed%8192!==0 ? createMT1998(seed) : createMT32(seed);
+  return () => generator.uint32() * 2.328306436538696e-10;
+}
+
 export function createRandomStream(tick, logs) {
   let generator = null;
   function initialize(args) {
     if (generator) return; // First initialization wins within this DATA step.
-    if (args.length !== 2 || typeof args[0] !== 'string')
-      throw new Error("Use CALL STREAMINIT('MT32', positive_seed). SAS default MTHYBRID is not implemented.");
-    const method = args[0].toUpperCase(), seed = args[1];
-    if (!['MT32','MT2002'].includes(method))
-      throw new Error('Unsupported RNG '+method+'. Supported: MT32 / MT2002.');
-    if (!Number.isInteger(seed) || seed < 1 || seed > 0xffffffff)
-      throw new Error('STREAMINIT requires an integer seed from 1 to 4294967295');
-    generator = createMT32(seed);
-    logs.push('NOTE: RAND uses MT32 (2002 initialization). Uniform conversion matches the SAS seed-12345 fixture; normal sequences and other seeds are unverified.');
+    const explicit=args.length===2&&typeof args[0]==='string';
+    if (!explicit && args.length!==1) throw new Error('Use CALL STREAMINIT(seed) or CALL STREAMINIT(generator, seed).');
+    const method=explicit?args[0].toUpperCase():'MTHYBRID', requested=explicit?args[1]:args[0];
+    if (!Number.isInteger(requested) || requested>0xffffffff) throw new Error('STREAMINIT requires an integer seed no greater than 4294967295');
+    const seed=requested>0?requested:automaticRandomSeed();
+    generator = createUniformGenerator(seed,method);
+    logs.push('NOTE: RAND uses '+method+' with seed '+seed+'. Exact SAS uniform reference checks cover seed 12345; normal sequences are not SAS-identical.');
   }
   function uniform() {
     tick();
     // Preserve this exact double constant: all 40,000 seed-12345 SAS
     // uniform HEX16 values match. Replacing it with 1 / 2**32 changes bits.
-    return generator.uint32() * 2.328306436538696e-10;
+    return generator();
   }
   function sample(args) {
-    if (!generator) throw new Error("Initialize RAND with CALL STREAMINIT('MT32', positive_seed) before use.");
+    if (!generator) initialize([0]);
     if (!args.length || args.length > 3 || typeof args[0] !== 'string')
       throw new Error('RAND expects a distribution name and up to two numeric parameters');
     const distribution = args[0].toLowerCase();

@@ -1,4 +1,4 @@
-# Sassy portable wrapper demo (v0.4.8)
+# Sassy portable wrapper demo (v0.4.9)
 
 This package interprets program.sas with the same JavaScript runtime as Sassy.
 It is not translated standalone JavaScript or the SAS runtime. No npm or pip
@@ -49,3 +49,5 @@ those of the bundled Sassy engine. Python does not reimplement the calculations.
 The Python bridge times out after 30 seconds; local folder writes may have already
 occurred. It can run from any working directory because package paths are resolved
 relative to run.mjs, while --project is relative to the invoking directory.
+
+SURVEYSELECT and default seeded RAND use the same engine as the browser. SURVEYSELECT reports and sampled tables are returned as data. Chart procedures return models, not rendered PNGs. Consult the app package procedure-support.md, surveyselect.md and random-numbers.md for supported syntax, deployment and exact-reference boundaries.

@@ -24,6 +24,14 @@ try{
  const result=JSON.parse(p.stdout),rows=JSON.parse(result.tables.results).rows;
  assert.equal(JSON.parse(result.tables.statistics).rows[0].avg,6.5);assert.equal(result.reports.length,1);
  assert.deepEqual(rows,run(code.split('proc means')[0],inputs).datasets.results.rows);
+ const surveyFolder=await packageFor(`data frame; call streaminit(12345); do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; u=rand('uniform'); output; end; end; run;
+ proc surveyselect data=frame out=sample method=srs seed=12345 n=2 outseed; strata stratum; run;`);
+ const surveyProcess=python([join(surveyFolder,'run.py')]);assert.equal(surveyProcess.status,0,surveyProcess.stderr);
+ const surveyEnvelope=JSON.parse(surveyProcess.stdout),sample=JSON.parse(surveyEnvelope.tables.sample);
+ assert.deepEqual(sample.rows.map(r=>r.id),[3,5,6,9,12,13,17,19,23,24]);
+ assert.equal(sample.rows.at(-1).initialseed,1841400341);
+ assert.equal(surveyEnvelope.reports.length,1);
+ assert.equal(JSON.parse(surveyEnvelope.tables.frame).rows[0].u,(await import('./dist/random.mjs')).createUniformGenerator(12345)());
  const direct=spawnSync('node',[join(folder,'run.mjs')],{encoding:'utf8',cwd:tmpdir()});assert.equal(direct.status,0,direct.stderr);assert.deepEqual(JSON.parse(direct.stdout),result);
  // Exact RAND fixture path and signed-zero table strings survive the wrapper.
  const randomCode="data draws; call streaminit('MT32',12345); do i=1 to 100; u=rand('uniform'); hex=put(u,hex16.); output; end; run;";

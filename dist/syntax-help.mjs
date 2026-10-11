@@ -1,5 +1,13 @@
 const syntaxEntries=[
 {
+  "id": "surveyselect",
+  "label": "PROC SURVEYSELECT",
+  "group": "Procedures",
+  "syntax": "PROC SURVEYSELECT DATA=table OUT=sample METHOD=SRS|URS|SYS SEED=12345 SAMPSIZE=n [STATS OUTSIZE OUTSEED OUTHITS NOPRINT]; STRATA group; RUN;",
+  "description": "Equal-probability observation sampling. SRS selects distinct units; URS supports NumberHits or expanded OUTHITS; SYS supports fractional N/n intervals. One seed derives separate default stratum streams. STRATA input must be sorted and unformatted; blank/missing strata are included. SAMPRATE/RATE supports SRS/URS; scalar sizes/rates only. REPS up to 100 without STRATA. STRATUMSEED=NONE uses one stream; cannot combine with OUTSEED. DATA/OUT required. PPS, clusters, CONTROL, legacy RNGs, formatted strata and stratified REPS are unsupported. Browser and portable engine supported.",
+  "template": "proc surveyselect data=input_table out=sample\n    method=srs seed=12345 sampsize=10 stats outsize;\nrun;\n"
+},
+{
   "id": "means",
   "label": "PROC MEANS",
   "group": "Procedures",
@@ -324,7 +332,7 @@ const syntaxEntries=[
     "label": "RAND",
     "group": "Functions",
     "syntax": "RAND('UNIFORM' [, a [, b]])",
-    "description": "Use CALL STREAMINIT('MT32', positive_seed); first. MT2002 is an alias. First initialization wins within a DATA step. The MT19937 integer core is verified; uniform values match all 40,000 draws in the supplied SAS seed-12345 fixture. Other seeds and the polar normal sampler remain unverified against SAS sequences. Default MTHYBRID and other generators/distributions fail clearly.",
+    "description": "CALL STREAMINIT(seed) selects default MTHYBRID; explicit MT32/MT2002 or MT1998 also available. First initialization wins per DATA step. Without initialization, RAND chooses and logs an automatic seed. Explicit MT32 matches 40,000 SAS uniform draws at seed 12345; default uniform matches 400. Hybrid seeds divisible by 8192 use the 2002 initialization (not SAS-fixture verified). NORMAL uses a polar sampler and is not SAS sequence-identical. Only UNIFORM/NORMAL supported; see random-number documentation for scope.",
     "template": "rand('uniform')"
   },
   {
@@ -523,9 +531,9 @@ const syntaxEntries=[
     "id": "streaminit",
     "label": "CALL STREAMINIT",
     "group": "Statements",
-    "syntax": "CALL STREAMINIT('MT32', seed);",
-    "description": "Explicit MT32 generator. Seed-12345 uniform draws have a 40,000-draw SAS fixture; normal sequences and other seeds have not been validated against SAS.",
-    "template": "call streaminit('MT32', 12345);\n"
+    "syntax": "CALL STREAMINIT(seed); or CALL STREAMINIT('MT32'|'MT2002'|'MT1998'|'MTHYBRID', seed);",
+    "description": "Default MTHYBRID and explicit generator selection. Positive integer seeds up to 4294967295 are reproducible; nonpositive seeds request an automatically chosen seed, logged for reuse. First initialization wins per DATA step. Exact reference agreement covers uniform examples; NORMAL remains approximate relative to SAS sequences.",
+    "template": "call streaminit(12345);\n"
   },
   {
     "id": "macros",
