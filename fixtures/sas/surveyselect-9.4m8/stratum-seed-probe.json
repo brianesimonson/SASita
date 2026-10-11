@@ -1,0 +1,227 @@
+{
+  "source": "Rows extracted from user-supplied SAS PROC PRINT HTML, not generated predictions",
+  "frame": {
+    "strata": 5,
+    "units_per_stratum": 5,
+    "order": "numeric stratum ascending, unit ascending"
+  },
+  "evidence": {
+    "results": {
+      "filename": "03-stratum-seed-probe-results.html",
+      "sha256": "30ce38bfaf5d6fc078fb0d89ccfac14d912c799fcb0fc30f4137e6ad8e8056e1"
+    },
+    "log": {
+      "filename": "03-stratum-seed-probe-log.html",
+      "sha256": "b4f165087b557afb299fdcbdf2541007bb79f860bef54bf0b894a279d39d00a9"
+    }
+  },
+  "cases": [
+    {
+      "name": "ss_seed_probe_srs1",
+      "seed": 12345,
+      "method": "srs",
+      "sample_size": 1,
+      "rows": [
+        {
+          "stratum": 1,
+          "initialseed": 12345,
+          "id": 3
+        },
+        {
+          "stratum": 2,
+          "initialseed": 1252620909,
+          "id": 10
+        },
+        {
+          "stratum": 3,
+          "initialseed": 2133794239,
+          "id": 13
+        },
+        {
+          "stratum": 4,
+          "initialseed": 1262479164,
+          "id": 17
+        },
+        {
+          "stratum": 5,
+          "initialseed": 1841400341,
+          "id": 23
+        }
+      ]
+    },
+    {
+      "name": "ss_seed_probe_srs2",
+      "seed": 12345,
+      "method": "srs",
+      "sample_size": 2,
+      "rows": [
+        {
+          "stratum": 1,
+          "initialseed": 12345,
+          "id": 3
+        },
+        {
+          "stratum": 1,
+          "initialseed": 12345,
+          "id": 5
+        },
+        {
+          "stratum": 2,
+          "initialseed": 1252620909,
+          "id": 6
+        },
+        {
+          "stratum": 2,
+          "initialseed": 1252620909,
+          "id": 9
+        },
+        {
+          "stratum": 3,
+          "initialseed": 2133794239,
+          "id": 12
+        },
+        {
+          "stratum": 3,
+          "initialseed": 2133794239,
+          "id": 13
+        },
+        {
+          "stratum": 4,
+          "initialseed": 1262479164,
+          "id": 17
+        },
+        {
+          "stratum": 4,
+          "initialseed": 1262479164,
+          "id": 19
+        },
+        {
+          "stratum": 5,
+          "initialseed": 1841400341,
+          "id": 23
+        },
+        {
+          "stratum": 5,
+          "initialseed": 1841400341,
+          "id": 24
+        }
+      ]
+    },
+    {
+      "name": "ss_seed_probe_sys2",
+      "seed": 12345,
+      "method": "sys",
+      "sample_size": 2,
+      "rows": [
+        {
+          "stratum": 1,
+          "initialseed": 12345,
+          "id": 2
+        },
+        {
+          "stratum": 1,
+          "initialseed": 12345,
+          "id": 4
+        },
+        {
+          "stratum": 2,
+          "initialseed": 1252620909,
+          "id": 8
+        },
+        {
+          "stratum": 2,
+          "initialseed": 1252620909,
+          "id": 10
+        },
+        {
+          "stratum": 3,
+          "initialseed": 2133794239,
+          "id": 12
+        },
+        {
+          "stratum": 3,
+          "initialseed": 2133794239,
+          "id": 14
+        },
+        {
+          "stratum": 4,
+          "initialseed": 1262479164,
+          "id": 16
+        },
+        {
+          "stratum": 4,
+          "initialseed": 1262479164,
+          "id": 19
+        },
+        {
+          "stratum": 5,
+          "initialseed": 1841400341,
+          "id": 22
+        },
+        {
+          "stratum": 5,
+          "initialseed": 1841400341,
+          "id": 24
+        }
+      ]
+    },
+    {
+      "name": "ss_seed_probe_second",
+      "seed": 24680,
+      "method": "srs",
+      "sample_size": 2,
+      "rows": [
+        {
+          "stratum": 1,
+          "initialseed": 24680,
+          "id": 2
+        },
+        {
+          "stratum": 1,
+          "initialseed": 24680,
+          "id": 4
+        },
+        {
+          "stratum": 2,
+          "initialseed": 2025365895,
+          "id": 6
+        },
+        {
+          "stratum": 2,
+          "initialseed": 2025365895,
+          "id": 9
+        },
+        {
+          "stratum": 3,
+          "initialseed": 503201303,
+          "id": 11
+        },
+        {
+          "stratum": 3,
+          "initialseed": 503201303,
+          "id": 12
+        },
+        {
+          "stratum": 4,
+          "initialseed": 16721855,
+          "id": 17
+        },
+        {
+          "stratum": 4,
+          "initialseed": 16721855,
+          "id": 19
+        },
+        {
+          "stratum": 5,
+          "initialseed": 1994925196,
+          "id": 23
+        },
+        {
+          "stratum": 5,
+          "initialseed": 1994925196,
+          "id": 25
+        }
+      ]
+    }
+  ]
+}

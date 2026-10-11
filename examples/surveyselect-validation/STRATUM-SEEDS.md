@@ -1,5 +1,10 @@
 # Focused stratum-seed investigation
 
+Completed: the user's SAS results select the scale 2^31-1, with fifth seed
+1841400341. All 35 printed seeds/IDs match our automatic JavaScript derivation,
+including main seed 24680. See docs/validation/surveyselect-stratum-seeds.md.
+The instructions below describe the already-completed reference experiment.
+
 Run `03-stratum-seed-probe.sas` in SAS Studio and return its HTML Results and log.
 No input CSVs, folder edits, previous session or CSV downloads are needed. The
 program creates 25 synthetic units in five strata and prints just 35 selected
@@ -17,6 +22,6 @@ Changing sample size (one versus two units) and method (SRS versus SYS) checks
 whether seed derivation is separate from sample selection. A second main seed
 24680 checks that the rule is not an accidental fit to seed 12345.
 
-This remains empirical investigation. Do not claim the full automatic SAS seed
-rule is verified until this result and any contradictory cases are examined.
+This remains empirical investigation for the two tested seeds and cases;
+broader seed/legacy/default-generator exceptions are not yet verified.
 The app still has no PROC SURVEYSELECT implementation.

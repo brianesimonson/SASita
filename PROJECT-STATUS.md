@@ -1,5 +1,9 @@
 # SASita project status
 
+## Automatic stratum seed probe passed
+
+The user returned clean five-stratum probe results/log. SAS chose fifth seed 1841400341, rejecting scale 2^31 and confirming floor(U*(2^31-1)) for these cases. A separate master stream initialized from the main seed supplies seeds for strata 2 onward; stratum 1 retains the main seed. All 35 observed rows match automatic seed derivation and selection in JavaScript, including a second main seed 24680, sample sizes 1/2, and SRS/SYS. No saved InitialSeed is used as algorithm input. Original twelve-case checks still pass. Fixture provenance/rows: fixtures/sas/surveyselect-9.4m8/stratum-seed-probe.json; evidence/limits: docs/validation/surveyselect-stratum-seeds.md. The requested seed ambiguity is resolved for these reference cases. App integration and broader seed/legacy/replicated-strata semantics remain separate work; older pending notes below are superseded. Main/app unchanged.
+
 ## Automatic stratum seeds: candidate derivation and focused probe
 
 The investigation now generates all four recorded stratum seeds from the single main seed 12345 and independently reproduces the default stratified SRS/SYS selections. A separate master stream supplies seeds after stratum 1. Two conversions, floor(U*2^31) and floor(U*(2^31-1)), fit every existing seed but diverge at stratum 5 (1841400342 vs 1841400341). Thus the exact rule is not resolved. examples/surveyselect-validation/stratum-seed-probe.zip contains a self-contained SAS program testing five strata, two sample sizes, SRS/SYS and main seed 24680; no external CSV or folder setup is needed. Actual probe results remain pending. User explicitly prioritizes resolving this gap before app integration.

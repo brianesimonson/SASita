@@ -231,7 +231,7 @@
   "limits": [
     "Small synthetic frame only",
     "400 default RAND draws, one seed",
-    "Four stratum seeds are independently reproduced from the main seed; two conversion scales fit those strata and require the fifth-stratum probe to distinguish",
+    "Automatic stratum seed conversion is verified by the separate five-stratum probe at main seeds 12345 and 24680; broader seed/legacy/hybrid cases remain unverified",
     "CSV decimal output is shorter than full binary precision; use HEX16 for exact random-value comparisons"
   ]
 }

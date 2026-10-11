@@ -1,5 +1,11 @@
 # Exported SURVEYSELECT reference and selection replay
 
+Follow-up completed: the focused five-stratum probe resolves the conversion
+ambiguity described below. Scale 2^31-1 matches all 35 new rows at two main
+seeds without saved seed inputs; see surveyselect-stratum-seeds.md. The current
+check script includes those assertions. The discussion below records the
+earlier investigation stage.
+
 The user supplied all 15 ss_*.csv files, the corrected export log, and HTML
 results. All CSV bytes are preserved under fixtures/sas/surveyselect-9.4m8 with
 SHA-256 hashes, row counts, columns and HTML evidence hashes in manifest.json.

@@ -111,16 +111,16 @@ const singleStream = oldInitialization(12345);
 check('ss_strata_single_stream', [1, 2, 3, 4].flatMap(stratum =>
   srs(5, 2, singleStream).map(id => ({id: id + (stratum - 1) * 5, stratum}))), ['stratum', 'id']);
 
-// Derive candidate seeds from the one procedure seed, independently of the CSV.
-// Both conversion scales fit all four observed strata. They differ at stratum 5,
-// so the four-stratum fixture cannot yet establish which conversion SAS uses.
+// Derive seeds from the procedure seed, independently of reference seed values.
+// The separate five-stratum probe selects the 2^31-1 conversion scale and
+// checks sample-size/method independence and a second main seed.
 function stratumSeeds(seed, count, scale) {
   const master = oldInitialization(seed);
   return Array.from({length: count}, (_, i) => i === 0 ? seed : Math.floor(master() * scale));
 }
 const scale31 = 2 ** 31, scale31minus1 = scale31 - 1;
 assert.deepEqual(stratumSeeds(12345, 4, scale31), stratumSeeds(12345, 4, scale31minus1));
-const derivedSeeds = stratumSeeds(12345, 4, scale31);
+const derivedSeeds = stratumSeeds(12345, 4, scale31minus1);
 for (const [name, sampler] of [['ss_strata_srs', srs], ['ss_strata_sys', sys]]) {
   const rows = [1, 2, 3, 4].flatMap(stratum => {
     const initialseed = derivedSeeds[stratum - 1];
@@ -131,6 +131,22 @@ for (const [name, sampler] of [['ss_strata_srs', srs], ['ss_strata_sys', sys]]) 
 }
 assert.equal(checked, 12);
 console.log('12 sampling cases replayed successfully, including seeds derived from the single procedure seed.');
-console.log('Stratum-5 predictions: scale 2^31 = ' + stratumSeeds(12345, 5, scale31)[4] +
-  '; scale 2^31-1 = ' + stratumSeeds(12345, 5, scale31minus1)[4] + '.');
-console.log('Investigation only: seed conversion remains ambiguous; hybrid/default rules for other seeds and app integration remain unimplemented.');
+const probe = JSON.parse(readFileSync(new URL('stratum-seed-probe.json', home)));
+assert.notEqual(stratumSeeds(12345, 5, scale31)[4], stratumSeeds(12345, 5, scale31minus1)[4]);
+let probeRows = 0;
+for (const test of probe.cases) {
+  const seeds = stratumSeeds(test.seed, probe.frame.strata, scale31minus1);
+  const sampler = test.method === 'sys' ? sys : srs;
+  const actual = seeds.flatMap((initialseed, index) => {
+    const stratum = index + 1;
+    return sampler(probe.frame.units_per_stratum, test.sample_size, oldInitialization(initialseed))
+      .map(id => ({stratum, initialseed, id: id + index * probe.frame.units_per_stratum}));
+  });
+  assert.deepEqual(actual, test.rows, test.name + ': automatic seeds and selected IDs');
+  probeRows += actual.length;
+  console.log(test.name + ': all derived seeds and IDs match.');
+}
+assert.equal(probe.cases.length, 4);
+assert.equal(probeRows, 35);
+console.log('Five-stratum probe: 35/35 rows match, main seeds 12345/24680, SRS n=1/2 and SYS n=2.');
+console.log('Investigation only: broader hybrid/default seed rules and app integration remain unimplemented.');
