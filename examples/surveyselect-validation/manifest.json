@@ -9,16 +9,20 @@
   },
   "files": {
     "01-surveyselect-reference.sas": {
-      "bytes": 5213,
-      "sha256": "6e96f932274f6d63a95b826df5f2124551a45adf95fd34281436775063db2b33"
+      "bytes": 5501,
+      "sha256": "a5407fdac78883a558fa27dff3b6eaed191e6758b3881a7977600cad54a24706"
+    },
+    "02-export-existing-reference.sas": {
+      "bytes": 1705,
+      "sha256": "0f3d2b0ba0b15bbe858365701bdbc8a0d6c749cb1c36d0951dab6bb722056699"
     },
     "sassy_mt32_uniform.csv": {
       "bytes": 8309,
       "sha256": "58373d3b98528b8e85b58da09e4c92095d76664c4ecb5a8fc6894c8b0841a2b1"
     },
     "README.md": {
-      "bytes": 3558,
-      "sha256": "92b6f96a773d7a0ec0e62698e59badbc58a0e43e4a17eb67c080d47ff7817ec7"
+      "bytes": 4332,
+      "sha256": "4d4930e7f7fea621fcb25176894d8518c3499f93fa5652da051d6538336b1962"
     }
   }
 }

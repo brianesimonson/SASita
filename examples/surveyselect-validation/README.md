@@ -21,6 +21,18 @@ exports. It does not import or modify your other datasets. SAS/STAT must be
 available. This kit targets the modern SAS 9.4 environment used for the earlier
 tests; the historical PDF's RANUNI behavior is not the default target.
 
+## Recover the first run's exports
+
+The initial helper used the reserved SAS macro name SAVE. The uploaded log
+confirms all sampling and comparison steps completed, but the final print/export
+section failed. The corrected collector uses `sassy_export_reference` instead.
+
+If your original SAS session still has its WORK SS_* tables, upload and run only
+`02-export-existing-reference.sas`. It prints descriptors and all selected rows
+and exports the existing tables without rerunning sampling or requiring the MT32
+input CSV. Return this program's HTML Results/log and the generated CSVs. If the
+WORK tables are gone, run corrected `01-surveyselect-reference.sas` in full.
+
 ## Cases
 
 All frames contain 20 records, IDs 1–20, in ascending ID order. Four numeric
@@ -61,5 +73,7 @@ sampling parameters alongside any reference. This kit does not test legacy
 RANUNI, STRATUMSEED=RESTORE, PPS, clusters, or allocation algorithms.
 
 Source: [SAS/STAT 14.1 SURVEYSELECT](https://support.sas.com/documentation/cdl/en/statug/68162/HTML/default/statug_surveyselect_details03.htm)
-and the user's readable historical SURVEYSELECT PDF. SAS execution of this new
-kit remains pending; local packaging checks cannot validate SAS procedure syntax.
+and the user's readable historical SURVEYSELECT PDF. The initial sampling and
+comparison sections ran in actual SAS 9.4 M8/SAS/STAT 15.3. The corrected export
+section still needs execution in SAS; local packaging checks cannot validate
+all SAS procedure syntax.

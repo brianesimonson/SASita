@@ -1,5 +1,9 @@
 # SASita project status
 
+## SURVEYSELECT initial SAS run: export-helper correction
+
+Uploaded log/results confirm all twelve sampling cases ran in SAS 9.4 M8/SAS/STAT 15.3, explicit MT32 matches all 400 Sassy hex values, default RAND differs in all 400, and collapsed NumberHits matches OUTHITS counts for 17 selected units/40 draws. This is not a Sassy SURVEYSELECT sample match. The final helper failed because SAVE is a reserved macro name; no print/export steps executed. It now uses sassy_export_reference, and a generated 02-export-existing-reference.sas helper exports the already-created WORK tables without repeating sampling. Corrected ZIP/member hashes are checked locally; new SAS export execution and selected-ID evidence remain pending. See docs/validation/surveyselect-initial-run.md. App/main/milestones unchanged.
+
 ## SURVEYSELECT reference collection and successful MEANS comparison
 
 Branch test/surveyselect-reference-kit prepares a SAS-only investigation ZIP in examples/surveyselect-validation. Twelve sampling cases exercise SRS, a second seed, sample rate/census, collapsed and expanded URS, replicates, integer/fractional SYS, and default/single-stream stratified selection. Two RAND probes distinguish explicit MT32 from default RAND. The actual Sassy engine's first 400 uniform HEX16 values are checked against the existing SAS fixture and packaged for direct comparison. No SURVEYSELECT runtime has been added; actual execution of this new SAS program is pending. Modern SAS 9.4 is the target, not the historical PDF's RANUNI default. ZIP manifests/member bytes/CRC are checked locally. Main and v0.4.8 remain unchanged.
