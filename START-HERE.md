@@ -39,4 +39,4 @@ Previous milestone: Sassy v0.4.6 on feature/sassy-portable-wrapper. Code & expor
 
 Previous milestone: Sassy v0.4.7 on feature/sassy-proc-means. Use Examples in the upper-right header to open PROC MEANS or another snippet without running. See docs/means.md and examples/means-validation.
 
-Latest milestone: Sassy v0.4.8 on fix/sassy-means-autoname. STD= with AUTONAME uses the SAS StdDev suffix. The corrected comparison kit declares CSV types explicitly; actual numeric SAS comparison remains pending.
+Latest app milestone: Sassy v0.4.8 on fix/sassy-means-autoname. The corrected six-table PROC MEANS comparison passed in actual SAS; see docs/validation/means-successful-comparison.md for rounding differences and scope. The new SAS-only SURVEYSELECT investigation ZIP is examples/surveyselect-validation/surveyselect-reference.zip on test/surveyselect-reference-kit; run its program in SAS to collect reference selections. SURVEYSELECT is not yet implemented in the app.

@@ -1,5 +1,11 @@
 # SASita project status
 
+## SURVEYSELECT reference collection and successful MEANS comparison
+
+Branch test/surveyselect-reference-kit prepares a SAS-only investigation ZIP in examples/surveyselect-validation. Twelve sampling cases exercise SRS, a second seed, sample rate/census, collapsed and expanded URS, replicates, integer/fractional SYS, and default/single-stream stratified selection. Two RAND probes distinguish explicit MT32 from default RAND. The actual Sassy engine's first 400 uniform HEX16 values are checked against the existing SAS fixture and packaged for direct comparison. No SURVEYSELECT runtime has been added; actual execution of this new SAS program is pending. Modern SAS 9.4 is the target, not the historical PDF's RANUNI default. ZIP manifests/member bytes/CRC are checked locally. Main and v0.4.8 remain unchanged.
+
+The user's corrected MEANS report now validates all six datasets at relative criterion 1e-12: no unequal compared values, 17 non-bit-identical values, maximum relative criterion 2.5879e-16. NWAY and the large-offset test are exactly equal. Detailed evidence and limits: docs/validation/means-successful-comparison.md. Earlier pending/aborted-run notes below describe the history and are superseded for these six numeric tests.
+
 ## Sassy v0.4.8: PROC MEANS AUTONAME correction
 
 User-supplied initial SAS logs confirm all six base datasets have the same dimensions as Sassy, with clean 01 execution. Original 02 guessed all numeric CSV columns as character and aborted comparisons; first compare also failed because SAS lacks AMOUNT_STD/OTHER_STD. STD AUTONAME uses the canonical StdDev suffix. Branch fix/sassy-means-autoname changes generated STD/STDDEV names to *_stddev, preserves explicit names, tests repeated *_stddev2 requests, updates fixture headers and bundles the typed SAS helper (plus first-table PROC CONTENTS). Numeric CSV values are unchanged. Evidence hashes and exact diagnostic summary: docs/validation/means-initial-logs.md. Actual numerical comparison remains pending.
