@@ -1,0 +1,237 @@
+{
+  "source": "User-uploaded unmodified CSVs exported by 02-export-existing-reference.sas",
+  "sas_version": "9.04.01M8P02222023",
+  "sas_stat": "15.3",
+  "platform": "Linux",
+  "frame": {
+    "size": 20,
+    "order": "id ascending",
+    "strata": 4,
+    "units_per_stratum": 5
+  },
+  "primary_seed": 12345,
+  "additional_seed": 24680,
+  "uniform_hex_authoritative": true,
+  "files": {
+    "ss_frame.csv": {
+      "sha256": "51f8d294d267f2a093d6e0342ab7eb633b8c813223693851d0e4fcf3b005050c",
+      "bytes": 179,
+      "rows": 20,
+      "columns": [
+        "id",
+        "stratum",
+        "value"
+      ]
+    },
+    "ss_srs.csv": {
+      "sha256": "3a71f5d4ff04e09ceb3ee560a024d7985603fb4f0257d29a744d025648363a7c",
+      "bytes": 311,
+      "rows": 7,
+      "columns": [
+        "id",
+        "stratum",
+        "value",
+        "Total",
+        "SampleSize",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_srs_census.csv": {
+      "sha256": "9902c1a41e20d8381450fe395f8ddbd3fddfbf1f3822c3595cd2bbe291b06baa",
+      "bytes": 425,
+      "rows": 20,
+      "columns": [
+        "id",
+        "stratum",
+        "value",
+        "Total",
+        "SampleSize",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_srs_rate.csv": {
+      "sha256": "a04c54d8e8c5a45a239546da2b17dfe480f1f08e582755f86e3bf1c11e3d9f7b",
+      "bytes": 283,
+      "rows": 6,
+      "columns": [
+        "id",
+        "stratum",
+        "value",
+        "Total",
+        "SamplingRate",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_srs_second_seed.csv": {
+      "sha256": "67dedd834c0ac2422fb5ab2bc44bcca74dd5ff12541c16ff199b86f667eddf52",
+      "bytes": 311,
+      "rows": 7,
+      "columns": [
+        "id",
+        "stratum",
+        "value",
+        "Total",
+        "SampleSize",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_strata_single_stream.csv": {
+      "sha256": "7bb2965ff437e527d3098c01f80cfdafe2b7c751b8cb786055f8a0a187c6d9bc",
+      "bytes": 225,
+      "rows": 8,
+      "columns": [
+        "stratum",
+        "id",
+        "value",
+        "Total",
+        "SampleSize",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_strata_srs.csv": {
+      "sha256": "c11ebe35c46a184a3a50a3df19c535eb3d5f44eae4c3d887dc6370a3ae37cadd",
+      "bytes": 313,
+      "rows": 8,
+      "columns": [
+        "stratum",
+        "id",
+        "value",
+        "Total",
+        "SampleSize",
+        "InitialSeed",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_strata_sys.csv": {
+      "sha256": "fa817a8555f17e539327e053d65480d3d7ffd48ac346659acea5c6f16aa4d199",
+      "bytes": 315,
+      "rows": 8,
+      "columns": [
+        "stratum",
+        "id",
+        "value",
+        "Total",
+        "SampleSize",
+        "InitialSeed",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_sys_fractional.csv": {
+      "sha256": "f8964dad98d8ecdb922b5e9ee38f0ede2fc5987eea085364c22a90bd60baaafd",
+      "bytes": 267,
+      "rows": 6,
+      "columns": [
+        "id",
+        "stratum",
+        "value",
+        "Total",
+        "SampleSize",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_sys_integer.csv": {
+      "sha256": "4bb59ab12585e75a4176c8d3485d4d8fda84148339fe8d762515cff74d1d9868",
+      "bytes": 164,
+      "rows": 5,
+      "columns": [
+        "id",
+        "stratum",
+        "value",
+        "Total",
+        "SampleSize",
+        "SelectionProb",
+        "SamplingWeight"
+      ]
+    },
+    "ss_uniform_default.csv": {
+      "sha256": "84c106bab2d26b57257c7461639a602f8b5a86e7d766443d71235cc23bca69c2",
+      "bytes": 15084,
+      "rows": 400,
+      "columns": [
+        "uniform_hex",
+        "draw",
+        "uniform"
+      ]
+    },
+    "ss_uniform_mt32.csv": {
+      "sha256": "dd493cf5914a6c4ad42383b77b99edde32707f67454aefb2f20a7b847356160a",
+      "bytes": 15079,
+      "rows": 400,
+      "columns": [
+        "uniform_hex",
+        "draw",
+        "uniform"
+      ]
+    },
+    "ss_urs_collapsed.csv": {
+      "sha256": "5a2019748f1d68983242920e545fb7a0be0d76e9a5566106497d0ed2d43c4050",
+      "bytes": 450,
+      "rows": 17,
+      "columns": [
+        "id",
+        "stratum",
+        "value",
+        "NumberHits",
+        "Total",
+        "SampleSize",
+        "ExpectedHits",
+        "SamplingWeight"
+      ]
+    },
+    "ss_urs_hits.csv": {
+      "sha256": "806605a30f8245a9630f25df3d54b8b77426d68fbcf6fbc7944c914f2d0d762c",
+      "bytes": 967,
+      "rows": 40,
+      "columns": [
+        "id",
+        "stratum",
+        "value",
+        "NumberHits",
+        "Total",
+        "SampleSize",
+        "ExpectedHits",
+        "SamplingWeight"
+      ]
+    },
+    "ss_urs_reps.csv": {
+      "sha256": "a4faea5e5d06bed01935e2d3e0b344d4e8106acd5a72d27ea691095a35bbf7a5",
+      "bytes": 635,
+      "rows": 14,
+      "columns": [
+        "Replicate",
+        "id",
+        "stratum",
+        "value",
+        "NumberHits",
+        "Total",
+        "SampleSize",
+        "ExpectedHits",
+        "SamplingWeight"
+      ]
+    }
+  },
+  "html_evidence": {
+    "results": {
+      "filename": "02-export-existing-reference-results.html",
+      "sha256": "5326bbbbe5233baaf77db2633d9495cdbde7019cdcfbf4ea411a5b1c2e80c087"
+    },
+    "log": {
+      "filename": "02-export-existing-reference-log.html",
+      "sha256": "6ddb3a0e2f06dbdeb903f61c4b41a91d10fd3f8f3b37b2bce04bf5ad0dc93576"
+    }
+  },
+  "limits": [
+    "Small synthetic frame only",
+    "400 default RAND draws, one seed",
+    "Default stratified stream initialization is not independently reproduced; InitialSeed columns can drive replay",
+    "CSV decimal output is shorter than full binary precision; use HEX16 for exact random-value comparisons"
+  ]
+}

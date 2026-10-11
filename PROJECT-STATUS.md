@@ -1,5 +1,9 @@
 # SASita project status
 
+## SURVEYSELECT exports received: twelve-case JavaScript replay
+
+All 15 unmodified CSVs and export-result/log hashes are stored in fixtures/sas/surveyselect-9.4m8. The corrected export ran successfully. scripts/check-surveyselect-reference.mjs independently generates both explicit MT32 and candidate older-initialization default streams, matching 400/400 HEX16 values for each. It reproduces selected IDs/hits/order/replicates for all twelve cases; default stratified replay uses SAS-provided InitialSeed columns, not a claimed automatic seed algorithm. Observed expansion retains total NumberHits on each repeated row. Actual Sassy PROC SURVEYSELECT parser/runtime is not integrated. Broader hybrid/seed/boundary/stratum semantics and schema support remain work. Evidence/limits: docs/validation/surveyselect-exported-reference.md. Main/app v0.4.8 unchanged; earlier pending export notes below are superseded.
+
 ## SURVEYSELECT initial SAS run: export-helper correction
 
 Uploaded log/results confirm all twelve sampling cases ran in SAS 9.4 M8/SAS/STAT 15.3, explicit MT32 matches all 400 Sassy hex values, default RAND differs in all 400, and collapsed NumberHits matches OUTHITS counts for 17 selected units/40 draws. This is not a Sassy SURVEYSELECT sample match. The final helper failed because SAVE is a reserved macro name; no print/export steps executed. It now uses sassy_export_reference, and a generated 02-export-existing-reference.sas helper exports the already-created WORK tables without repeating sampling. Corrected ZIP/member hashes are checked locally; new SAS export execution and selected-ID evidence remain pending. See docs/validation/surveyselect-initial-run.md. App/main/milestones unchanged.

@@ -1,0 +1,6 @@
+id,stratum,value,Total,SampleSize,SelectionProb,SamplingWeight
+3,1,30,20,5,0.25,4
+7,2,70,20,5,0.25,4
+11,3,110,20,5,0.25,4
+15,3,150,20,5,0.25,4
+19,4,190,20,5,0.25,4
