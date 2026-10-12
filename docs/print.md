@@ -22,4 +22,4 @@ Not implemented: WHERE, BY, ID, SUM, LABEL, FORMAT statements, dataset WHERE/KEE
 
 Open Examples → PROC PRINT for a generated dataset and three short listings. Local checks cover ranges/empty ranges, column order, numbering/NOOBS, inherited formats/titles, untouched source data, native reads, report snapshots and bounds. Browser checks exercise modular and standalone builds; exported wrappers retain PRINT reports. No fresh SAS runtime PRINT comparison has been performed.
 
-WEIGHT remains unsupported in PROC MEANS and PROC GLM. Adding it is a separate statistical change requiring SAS's inclusion, variance and degrees-of-freedom rules and actual SAS validation; it is not equivalent to repeating observations with FREQ.
+WEIGHT is supported in PROC MEANS and PROC GLM starting in v0.4.14; see weights.md for procedure-specific rules and validation.

@@ -26,7 +26,7 @@ r=await runFileProgram("data input; g=1.1; x=2; output; g=1.2; x=4; output; form
 r=await runFileProgram("data input; g=1.1; h=1; x=2; output; g=1.2; h=2; x=4; output; format g 2.0; run; proc means data=input nway; class g h; var x; output out=stats mean=m; run;");assert.ok(r.datasets.stats.rows.every(row=>row.g===1.1));
 r=await run('proc sort data=input out=sorted; by site; run; proc means data=sorted; by site; var x; output out=stats mean=m; run;');assert.equal(r.datasets.stats.rows.length,3);assert.equal(r.datasets.stats.rows[0].site,'');
 await assert.rejects(run('proc means data=input; by site; var x; run;'),/not sorted/);
-for(const option of ['weight x;','freq x;','types site;','ways 1;'])await assert.rejects(run('proc means data=input; '+option+' run;'),/Unsupported/);
+for(const option of ['freq x;','types site;','ways 1;'])await assert.rejects(run('proc means data=input; '+option+' run;'),/Unsupported/);
 await assert.rejects(run('proc means data=input median; run;'),/Unsupported/);
 await assert.rejects(run('proc means data=input vardef=n stderr; run;'),/STDERR/);
 await assert.rejects(run('proc means data=input; var site; run;'),/numeric/);

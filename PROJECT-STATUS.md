@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.14: WEIGHT in MEANS and GLM
+
+Branch feature/weighted-means-glm adds WEIGHT with numeric noninteger weights, preserving SAS procedure-specific inclusion. MEANS excludes missing weights, includes zero/clipped-negative counts unless EXCLNPWGT, adds SUMWGT, VARDEF=DF/N/WDF/WEIGHT/WGT and weighted moments/standard errors. Existing CLASS/BY/totals/output paths remain. GLM uses positive complete observations, weighted mean/SS and normalized weighted QR, count-based DF and weighted Type I/III/SOLUTION. Scaling all weights preserves coefficients/SE/F. Rank/complete-cell/resource bounds remain. FREQ and complex-survey inference remain deferred.
+
+Validation passed: full npm test including independent NumPy/SciPy 33-row weighted CLASS/covariate/interactions reference, Type I/III/predictions, scale invariance, documented MEANS eligibility/counts/divisors/missingness and unweighted actual SAS fixtures. Both browser builds, portable Python/Node and actual browser-export ZIPs pass the weighted example. Twelve examples included; new fifteen-group self-contained weighted SAS kit needs no CSV/path setup. Actual weighted SAS run is pending, including prediction behavior for excluded weights and fit statistics; no statistical/metadata/bit certification beyond tested evidence. Main and earlier milestones preserved.
+
+
 ## Sassy v0.4.13: explicit PROC PRINT
 
 Branch feature/proc-print adds observation reporting via DATA=table(OBS=10 FIRSTOBS=1), VAR, NOOBS, inherited formats and TITLE. Reports preserve original observation indices and independent small snapshots; NOOBS hides the number column. Source datasets remain untouched and no PRINT dataset is written. Native library reads and portable report models use the existing interpreter. Limits are 1,000 observations / 100,000 cells; larger unrestricted requests fail with guidance. WHERE/BY/ID/SUM/LABEL/FORMAT and other options remain unsupported. Eleventh example and ninth procedure syntax entry included. WEIGHT remains deferred in both MEANS/GLM as a separate statistical change.

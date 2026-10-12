@@ -10,7 +10,7 @@ Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the 
 
 ## Current development build
 
-Version 0.4.13 adds explicit PROC PRINT observation reports with DATA=table(OBS=10 FIRSTOBS=1), VAR and NOOBS. Eleven example programs are included. Dataset creation still does not print observations automatically. Download [Sassy-v0.4.13.zip](dist/Sassy-v0.4.13.zip), unzip and open data-step-lab.html. See [PRINT](docs/print.md), [GLM scope](docs/glm.md), [procedure support](docs/procedure-support.md) and [the app guide](docs/app-guide.md). WEIGHT is not yet implemented in MEANS or GLM. Main and earlier milestones remain preserved.
+Version 0.4.14 adds WEIGHT to PROC MEANS and GLM, including SUMWGT, EXCLNPWGT and weighted variance divisors. Twelve example programs and a self-contained fifteen-comparison SAS kit are included. Download [Sassy-v0.4.14.zip](dist/Sassy-v0.4.14.zip), unzip and open data-step-lab.html. See [weights](docs/weights.md), [procedure support](docs/procedure-support.md) and [the app guide](docs/app-guide.md). Independent weighted calculations and browser/wrapper checks pass; actual weighted SAS comparison is pending. Main and earlier milestones remain preserved.
 
 The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 

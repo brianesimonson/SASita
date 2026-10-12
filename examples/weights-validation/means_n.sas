@@ -1,0 +1,10 @@
+data m; length g $1;
+g='A'; x=1; y=2; w=1; output;
+g='A'; x=3; y=.; w=3; output;
+g='A'; x=100; y=7; w=0; output;
+g='A'; x=-100; y=8; w=-2; output;
+g='B'; x=999; y=999; w=.; output;
+g='B'; x=.; y=4; w=2; output;
+g='B'; x=5; y=6; w=.3; output;
+g='B'; x=7; y=9; w=.8; output;
+run;proc means data=m  vardef=n; class g; var x; weight w; output out=means_n n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss; run;

@@ -1,4 +1,4 @@
-# Sassy v0.4.13
+# Sassy v0.4.14
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -32,7 +32,7 @@ To try it, open demo-project/portable-demo.sas and export. Extract the package a
 
 ## PROC MEANS and example programs
 
-Click **Examples** in the upper-right header. Preview eleven programs, download a .sas snippet, or **Open in editor**. Opening never runs code; unsaved edits prompt before replacement. Programs cover generated DATA/SORT/MERGE, MT32 uniform draws, all five charts, PROC MEANS, macros, CSV project files, permanent libraries and formats. The CSV/library examples require the included demo-project folder; the others generate their own inputs.
+Click **Examples** in the upper-right header. Preview twelve programs, download a .sas snippet, or **Open in editor**. Opening never runs code; unsaved edits prompt before replacement. Programs cover generated DATA/SORT/MERGE, MT32 uniform draws, all five charts, PROC MEANS, macros, CSV project files, permanent libraries and formats. The CSV/library examples require the included demo-project folder; the others generate their own inputs.
 
 PROC MEANS saves overall totals and each CLASS subset by default using _TYPE_ bit flags and _FREQ_. NWAY removes those rows when requested. Inactive character classes are blank; numeric classes are missing. OUTPUT without statistic requests uses five _STAT_ rows. Reports appear in session Output; saved tables appear in Libraries. See means.md for statistics/options, missing values, naming and limits. The included means-validation ZIP contains deterministic SAS programs and Sassy result CSVs for the next actual SAS comparison.
 
@@ -46,4 +46,8 @@ The tenth Examples program fits an unbalanced CLASS interaction model. Type I/II
 
 ## Explicit observation output
 
-Run `proc print data=table(obs=10); var id amount; run;` to put a few observations in session Output. Add NOOBS to hide observation numbers. FIRSTOBS=5 OBS=10 lists rows 5–10. DATA= and its parenthesized options select the source range; VAR selects columns. PRINT changes no dataset. Open the eleventh Examples program; see print.md for limits and unsupported statements. WEIGHT remains unsupported in MEANS/GLM.
+Run `proc print data=table(obs=10); var id amount; run;` to put a few observations in session Output. Add NOOBS to hide observation numbers. FIRSTOBS=5 OBS=10 lists rows 5–10. DATA= and its parenthesized options select the source range; VAR selects columns. PRINT changes no dataset. Open the eleventh Examples program; see print.md for limits and unsupported statements. WEIGHT is supported in MEANS/GLM; see weights.md.
+
+## Weighted analysis
+
+Use WEIGHT variable; in MEANS or GLM. The twelfth Examples program demonstrates both and prints five predictions. MEANS adds SUMWGT and EXCLNPWGT; variance divisors and row inclusion differ from GLM. See weights.md. Extract the included weights-validation.zip and upload/run its 01-sas-weight-comparison.sas in SAS Studio; the expected data are embedded. New weighted SAS results are pending.

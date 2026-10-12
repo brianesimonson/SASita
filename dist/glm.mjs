@@ -3,10 +3,13 @@ import {formatValue,parseFormat} from './formats.mjs';
 export function parseGLM(tokens,start){
  let i=start;const take=()=>{if(!tokens[i])throw new Error('Incomplete PROC GLM');return tokens[i++];},need=v=>{if(take().v!==v)throw new Error('Expected '+v+' in PROC GLM');};
  const name=(dataset=false)=>{const t=take();if(t.type!=='id'||!(dataset?/^(?:[a-z_]\w{0,7}\.)?[a-z_]\w{0,31}$/:/^[a-z_]\w{0,31}$/).test(t.v))throw new Error('Invalid GLM name');return dataset?t.v.replace(/^work\./,''):t.v;};
- need('proc');need('glm');const spec={source:null,classes:[],terms:[],response:null,solution:false,ss:[1,3],order:'formatted',outputs:[],noprint:false};const seen=new Set();
+ need('proc');need('glm');const spec={source:null,classes:[],terms:[],response:null,solution:false,ss:[1,3],order:'formatted',outputs:[],noprint:false,weight:null};const seen=new Set();
  while(tokens[i]?.v!==';'){const k=take().v;if(seen.has(k))throw new Error('Repeated PROC GLM option '+k);seen.add(k);if(k==='noprint'){spec.noprint=true;continue;}need('=');if(k==='data')spec.source=name(true);else if(k==='order'){spec.order=take().v;if(!['formatted','internal','data'].includes(spec.order))throw new Error('GLM ORDER supports FORMATTED, INTERNAL or DATA');}else throw new Error('Unsupported PROC GLM option '+k);}
  need(';');if(!spec.source)throw new Error('PROC GLM requires DATA=');
+ const weight=()=>{need('weight');if(spec.weight)throw new Error('Only one GLM WEIGHT statement');spec.weight=name();need(';');};
+ if(tokens[i]?.v==='weight')weight();
  if(tokens[i]?.v==='class'){take();while(tokens[i]?.v!==';'){const v=name();if(spec.classes.includes(v))throw new Error('Repeated CLASS variable');spec.classes.push(v);}need(';');if(!spec.classes.length||spec.classes.length>8)throw new Error('GLM supports 1–8 CLASS variables');}
+ if(tokens[i]?.v==='weight')weight();
  need('model');spec.response=name();need('=');
  const canonical=term=>[...term.filter(v=>spec.classes.includes(v)).sort((a,b)=>spec.classes.indexOf(a)-spec.classes.indexOf(b)),...term.filter(v=>!spec.classes.includes(v)).sort()];
  const add=term=>{term=canonical(term);if(term.length>3)throw new Error('GLM supports effects through degree 3');if(term.some((v,j)=>spec.classes.includes(v)&&term.indexOf(v)!==j))throw new Error('Repeated CLASS variable in effect');if(!spec.terms.some(t=>t.join('*')===term.join('*')))spec.terms.push(term);if(spec.terms.length>20)throw new Error('GLM supports at most 20 effects');};
@@ -19,11 +22,13 @@ export function parseGLM(tokens,start){
  need(';');
  // Sum-contrast partial hypotheses match standard Type III for hierarchical models.
  for(const term of spec.terms)if(term.some(v=>spec.classes.includes(v))&&term.length>1){for(let mask=1;mask<2**term.length-1;mask++){const subset=canonical(term.filter((_,j)=>mask&(1<<j)));if(!spec.terms.some(t=>t.join('*')===subset.join('*')))throw new Error('GLM categorical interactions require their lower-order effects; use A|B or A B A*B');}}
+ if(tokens[i]?.v==='weight')weight();
  if(tokens[i]?.v==='output'){
   take();need('out');need('=');const out={name:name(true)};
   while(tokens[i]?.v!==';'){let k=take().v;k=({predicted:'p',residual:'r'})[k]||k;if(!['p','r'].includes(k)||out[k])throw new Error('OUTPUT supports distinct P= and R= names');need('=');out[k]=name();}
   need(';');if(!out.p&&!out.r)throw new Error('GLM OUTPUT requires P= or R=');if(out.p&&out.p===out.r)throw new Error('Distinct prediction/residual names required');spec.outputs.push(out);
  }
+ if(tokens[i]?.v==='weight')weight();
  need('run');need(';');if(tokens[i]?.v==='quit'){take();need(';');}
  return {spec,next:i};
 }
@@ -62,11 +67,12 @@ function glmCompare(a,b){return a<b?-1:a>b?1:0;}
 export function prepareGLM(spec,ds){
  if(!ds)throw new Error('GLM dataset '+spec.source+' was not found');
  const predictors=[...new Set(spec.terms.flat())],numeric=predictors.filter(v=>!spec.classes.includes(v));
- for(const v of [spec.response,...spec.classes,...predictors])if(!ds.columns.includes(v))throw new Error('GLM variable '+v+' was not found');
+ for(const v of [spec.response,...spec.classes,...predictors,...(spec.weight?[spec.weight]:[])])if(!ds.columns.includes(v))throw new Error('GLM variable '+v+' was not found');
  const types=Object.fromEntries(ds.columns.map(c=>[c,ds.types?.[c]||(ds.rows.some(r=>typeof r[c]==='string')?'char':'num')]));
+ if(spec.weight&&types[spec.weight]!=='num')throw new Error('GLM WEIGHT variable must be numeric');
  if(types[spec.response]!=='num'||numeric.some(v=>types[v]!=='num'))throw new Error('GLM response and non-CLASS predictors must be numeric');
  const complete=row=>[...spec.classes,...numeric].every(v=>!glmMissing(row[v])&&(types[v]==='char'||Number.isFinite(row[v])));
- const used=ds.rows.filter(r=>complete(r)&&typeof r[spec.response]==='number'&&Number.isFinite(r[spec.response]));
+ const used=ds.rows.filter(r=>complete(r)&&typeof r[spec.response]==='number'&&Number.isFinite(r[spec.response])&&(!spec.weight||(typeof r[spec.weight]==='number'&&Number.isFinite(r[spec.weight])&&r[spec.weight]>0)));
  if(!used.length)throw new Error('GLM has no complete observations');
  if(used.length>100000)throw new Error('GLM is limited to 100000 observations');
  const levels={},key=(row,v)=>ds.formats?.[v]?formatValue(row[v],parseFormat(ds.formats[v]),{padded:false}):typeof row[v]==='string'?row[v].trimEnd():row[v];
@@ -87,25 +93,29 @@ export function prepareGLM(spec,ds){
   append(full,raw,index);append(coded,contrast,index);return {name:variables.join('*').toUpperCase(),variables};
  });
  if(full.length>200||coded.length>80||used.length*full.length**2+used.length*coded.length**2>50000000)throw new Error('GLM matrix budget exceeded (200 raw/80 independent columns, 50 million work units)');
- const y=used.map(r=>r[spec.response]),anchor=y[0],mean=anchor+glmSum(y.map(v=>v-anchor))/y.length,centered=y.map(v=>v-mean),sst=glmDot(centered,centered);
- const fit=glmFit(full,centered),contrastFit=glmFit(coded,centered);
+ const y=used.map(r=>r[spec.response]),weights=used.map(r=>spec.weight?r[spec.weight]:1),weightScale=weights.reduce((a,b)=>Math.max(a,b),0),normalized=weights.map(w=>w/weightScale);
+ if(normalized.some(w=>w===0))throw new Error('GLM weights span an unsupported numeric range; rescale weights');
+ const rootWeights=normalized.map(Math.sqrt),sumWeights=glmSum(normalized),anchor=y[0],mean=anchor+glmSum(y.map((v,i)=>(v-anchor)*normalized[i]))/sumWeights,centered=y.map((v,i)=>(v-mean)*rootWeights[i]),sstNormalized=glmDot(centered,centered),sst=sstNormalized*weightScale;
+ const weighted=columns=>spec.weight?columns.map(c=>c.map((v,i)=>v*rootWeights[i])):columns;
+ const fit=glmFit(weighted(full),centered),contrastFit=glmFit(weighted(coded),centered);
  if(contrastFit.chosen.length!==coded.length)throw new Error('GLM model is rank-deficient or poorly conditioned beyond CLASS coding; rescale predictors or simplify the model');
  if(fit.chosen.length!==coded.length)throw new Error('GLM coding rank mismatch; rescale predictors');
- const rank=fit.chosen.length,dfError=y.length-rank,sse=fit.sse,mse=dfError>0?sse/dfError:null,dfModel=rank-1,modelSS=glmSum(fit.contribution.slice(1));
+ const rank=fit.chosen.length,dfError=y.length-rank,sse=fit.sse*weightScale,mse=dfError>0?sse/dfError:null,dfModel=rank-1,modelSS=glmSum(fit.contribution.slice(1))*weightScale;
+ if(![sse,sst,modelSS].every(Number.isFinite))throw new Error('Weighted GLM sums of squares overflow; rescale values/weights');
  const dependent=spec.response.toUpperCase();
  const finite=v=>Number.isFinite(v)?v:null;
  function test(source,df,ss,type){const ms=df>0?ss/df:null,f=df>0&&mse>0?ms/mse:null;return {dependent,source,...(type?{hypothesistype:type}:{}),df,ss,ms,fvalue:finite(f),probf:f===null?null:glmFProbability(f,df,dfError)};}
  const overall=[test('Model',dfModel,modelSS),{dependent,source:'Error',df:dfError,ss:sse,ms:mse,fvalue:null,probf:null},{dependent,source:'Corrected Total',df:y.length-1,ss:sst,ms:null,fvalue:null,probf:null}];
  const tests=[];
  for(let j=0;j<terms.length;j++){
-  if(spec.ss.includes(1)){const indices=owners.flatMap((owner,k)=>owner===j?[k]:[]),df=indices.filter(k=>fit.chosen.includes(k)).length,ss=glmSum(indices.map(k=>fit.contribution[k]));tests.push(test(terms[j].name,df,ss,1));}
-  if(spec.ss.includes(3)){const indices=codedOwners.flatMap((owner,k)=>owner===j?[k]:[]),b=indices.map(k=>contrastFit.beta[k]),cov=indices.map(k=>indices.map(l=>contrastFit.covariance[k][l])),ss=indices.length?Math.max(0,glmDot(b,glmSolvePositive(cov,b))):0;tests.push(test(terms[j].name,indices.length,ss,3));}
+  if(spec.ss.includes(1)){const indices=owners.flatMap((owner,k)=>owner===j?[k]:[]),df=indices.filter(k=>fit.chosen.includes(k)).length,ss=glmSum(indices.map(k=>fit.contribution[k]))*weightScale;tests.push(test(terms[j].name,df,ss,1));}
+  if(spec.ss.includes(3)){const indices=codedOwners.flatMap((owner,k)=>owner===j?[k]:[]),b=indices.map(k=>contrastFit.beta[k]),cov=indices.map(k=>indices.map(l=>contrastFit.covariance[k][l])),ss=indices.length?Math.max(0,glmDot(b,glmSolvePositive(cov,b)))*weightScale:0;tests.push(test(terms[j].name,indices.length,ss,3));}
  }
  // SAS-style g2 convention: preceding independent columns retained; aliases zero.
  const coefficients=Array(full.length).fill(0),parameters=[];for(let j=0;j<rank;j++)coefficients[fit.chosen[j]]=fit.beta[j];coefficients[0]+=mean;
- if(spec.solution)for(let j=0;j<full.length;j++){const pos=fit.chosen.indexOf(j),se=pos>=0&&mse!==null?Math.sqrt(Math.max(0,mse*fit.covariance[pos][pos])):null,t=se>0?coefficients[j]/se:null;parameters.push({dependent,parameter:labels[j],estimate:coefficients[j],stderr:se,tvalue:finite(t),probt:t===null?null:glmTProbability(t,dfError),biased:fit.nonunique[j]?'B':''});}
+ if(spec.solution)for(let j=0;j<full.length;j++){const pos=fit.chosen.indexOf(j),se=pos>=0&&mse!==null?Math.sqrt(Math.max(0,(fit.sse/dfError)*fit.covariance[pos][pos])):null,t=se>0?coefficients[j]/se:null;parameters.push({dependent,parameter:labels[j],estimate:coefficients[j],stderr:se,tvalue:finite(t),probt:t===null?null:glmTProbability(t,dfError),biased:fit.nonunique[j]?'B':''});}
  const asTable=rows=>{const columns=rows.length?Object.keys(rows[0]):[],t={columns,rows,formats:{},types:{},lengths:{}};for(const c of columns){t.types[c]=rows.some(r=>typeof r[c]==='string')?'char':'num';if(t.types[c]==='char')t.lengths[c]=Math.max(1,...rows.map(r=>String(r[c]??'').length));}return t;};
- const tables={overallanova:asTable(overall),modelanova:asTable(tests),fitstatistics:asTable([{dependent,rsquare:sst>0?Math.max(0,Math.min(1,1-sse/sst)):null,coeffvar:mse!==null&&mean!==0?finite(100*Math.sqrt(mse)/mean):null,rootmse:mse===null?null:Math.sqrt(mse),depmean:mean}]),nobs:asTable([{nobsread:ds.rows.length,nobsused:used.length}])};
+ const tables={overallanova:asTable(overall),modelanova:asTable(tests),fitstatistics:asTable([{dependent,rsquare:sst>0?Math.max(0,Math.min(1,1-fit.sse/sstNormalized)):null,coeffvar:mse!==null&&mean!==0?finite(100*Math.sqrt(mse)/mean):null,rootmse:mse===null?null:Math.sqrt(mse),depmean:mean}]),nobs:asTable([{nobsread:ds.rows.length,nobsused:used.length}])};
  if(spec.classes.length)tables.classlevels=asTable(spec.classes.map(v=>({class:v.toUpperCase(),levels:levels[v].length,values:levels[v].join(' ')})));
  if(spec.solution)tables.parameterestimates=asTable(parameters);
  const reportOrder=['classlevels','nobs','overallanova','fitstatistics','modelanova','parameterestimates'],reports=spec.noprint?[]:reportOrder.filter(k=>tables[k]?.rows.length).map(k=>({title:'PROC GLM · '+k,dataset:tables[k]}));

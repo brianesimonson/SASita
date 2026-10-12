@@ -43,6 +43,9 @@ try{
  const printFolder=await packageFor('data f; do id=1 to 20; output; end; run; proc print data=f(firstobs=5 obs=10) noobs; var id; run;');
  const printProcess=python([join(printFolder,'run.py')]);assert.equal(printProcess.status,0,printProcess.stderr);
  const printResult=JSON.parse(printProcess.stdout);assert.equal(printResult.reports[0].showObs,false);assert.deepEqual(printResult.reports[0].dataset.rows.map(r=>r.id),[5,6,7,8,9,10]);assert.equal(JSON.parse(printResult.tables.f).rows.length,20);
+ const weightedFolder=await packageFor(await readFile('examples/catalog/12-weights.sas','utf8'));
+ const weightedProcess=python([join(weightedFolder,'run.py')]);assert.equal(weightedProcess.status,0,weightedProcess.stderr);
+ const weightedResult=JSON.parse(weightedProcess.stdout);assert.equal(JSON.parse(weightedResult.tables.weighted_stats).rows[0].weight_total,18);assert.ok(Number.isFinite(JSON.parse(weightedResult.tables.weighted_parameters).rows[0].stderr));
  // Exact RAND fixture path and signed-zero table strings survive the wrapper.
  const randomCode="data draws; call streaminit('MT32',12345); do i=1 to 100; u=rand('uniform'); hex=put(u,hex16.); output; end; run;";
  const randomFolder=await packageFor(randomCode,{zero:{columns:['x'],rows:[{x:-0}],formats:{}}});const random=python([join(randomFolder,'run.py')]);assert.equal(random.status,0,random.stderr);const randomResult=JSON.parse(random.stdout);

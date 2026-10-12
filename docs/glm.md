@@ -1,6 +1,6 @@
 # PROC GLM — Sassy v0.4.11
 
-This first implementation fits ordinary, unweighted fixed-effects least-squares models with one numeric response and an intercept. It supports numeric predictors, CLASS variables and hierarchical crossed interactions. It is a bounded SAS subset, with the same calculation engine in the offline browser app and portable Node runner.
+This first implementation fits ordinary and weighted fixed-effects least-squares models with one numeric response and an intercept. It supports numeric predictors, CLASS variables and hierarchical crossed interactions. It is a bounded SAS subset, with the same calculation engine in the offline browser app and portable Node runner.
 
 ```sas
 ods output OverallANOVA=anova ModelANOVA=tests
@@ -52,7 +52,7 @@ Models must have full-rank contrast designs and complete categorical interaction
 
 Limits are 100,000 fitting observations, eight CLASS variables, 32 levels per variable, 128 characters per level label, 20 effects, 200 indicator columns and 80 contrast columns. A matrix-work budget of 50 million also applies; not every combination of those limits is allowed.
 
-Not implemented: multiple responses, NOINT, nested effects, `@` interaction expansion, BY, WEIGHT/FREQ, Type II/IV, custom TEST/CONTRAST/ESTIMATE, MEANS/LSMEANS, confidence intervals, selection, RANDOM, REPEATED, MANOVA, ABSORB, missing-cell Type III hypotheses and interactive model continuation. Unsupported syntax fails instead of silently approximating these features.
+Not implemented: multiple responses, NOINT, nested effects, `@` interaction expansion, BY, FREQ, Type II/IV, custom TEST/CONTRAST/ESTIMATE, MEANS/LSMEANS, confidence intervals, selection, RANDOM, REPEATED, MANOVA, ABSORB, missing-cell Type III hypotheses and interactive model continuation. Unsupported syntax fails instead of silently approximating these features.
 
 ## Accuracy and validation
 
@@ -89,3 +89,7 @@ This is actual SAS runtime validation of the numeric results for the seven-row c
 ### v0.4.12 output presentation
 
 Session Output contains GLM reports once, without automatically listing the input, scored or ODS-created datasets as observation snapshots. All written datasets remain accessible in the sidebar for explicit paged inspection/export and subsequent analysis. The v0.4.12 app ZIP includes the corrected revision-2 validation kit whose ten SAS comparisons passed.
+
+### v0.4.14 WEIGHT
+
+WEIGHT variable; now supports positive numeric weighted least squares, Type I/III and SOLUTION. Missing/nonpositive weights are excluded; DF uses the fitted observation count. See weights.md for output edge behavior, scaling, bounds and pending actual weighted SAS validation. The preceding successful two-model SAS checks concern unweighted models.

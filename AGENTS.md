@@ -33,3 +33,5 @@
 - PROC GLM scope is docs/glm.md. Preserve hierarchical complete-cell Type III block hypotheses, ordered CLASS indicator SOLUTION, effect-order Type I tests, staged ODS/P/R outputs, explicit rank/design limits. Run test-glm.mjs, portable and browser checks. Regenerate scripts/package-glm-validation.mjs after statistical changes; published tables and independent numerical fixtures are not a fresh SAS runtime certification.
 
 - PROC PRINT scope is docs/print.md. Keep explicit, bounded observation reports separate from datasets; preserve OBS/FIRSTOBS ranges, VAR order, showObs/original observationNumbers, inherited formats, native reads and no source writes. Run test-print and browser/portable checks after changes.
+
+- MEANS/GLM WEIGHT rules and formulas are docs/weights.md. Preserve different nonpositive-weight inclusion, count-vs-SUMWGT divisors, stable weighted QR/scaling, and unweighted fixture behavior. Run test-weights plus full/browser/portable checks; regenerate scripts/package-weight-validation.mjs after weighted statistical changes. Independent references are not actual weighted SAS fixtures.

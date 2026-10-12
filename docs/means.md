@@ -1,4 +1,4 @@
-# PROC MEANS — v0.4.8 supported subset
+# PROC MEANS — v0.4.14 supported subset
 
 Reference: user-supplied Base SAS 9.2 Procedures Guide (2009), Chapter 33, especially
 pp. 617–621 (NWAY, variance divisor), 628–632 (OUTPUT), 638 (class types), 644–646
@@ -15,9 +15,9 @@ validated this new procedure; examples/means-validation provides that next check
     run;
 
 DATA= required (WORK or named library); VAR defaults to eligible numeric columns,
-excluding CLASS/BY. Explicit variable lists only. STDDEV aliases STD. One VAR,
-CLASS and BY statement; sorted BY with per-variable DESCENDING. Unweighted only.
-Options: NWAY, MISSING, NOPRINT, VARDEF=DF|N and MAXDEC=0–15 (default 7).
+excluding CLASS/BY/WEIGHT. Explicit variable lists only. STDDEV aliases STD. One VAR,
+CLASS and BY statement; sorted BY with per-variable DESCENDING. One numeric WEIGHT statement is supported; see weights.md.
+Options: NWAY, MISSING, NOPRINT, EXCLNPWGT, VARDEF=DF|N|WDF|WEIGHT|WGT and MAXDEC=0–15 (default 7).
 Defaults: displayed N, MEAN, STD, MIN, MAX; sample variance divides by N−1.
 STDERR requires DF. Population variance divides by N. Missing analysis values are
 handled independently per variable, not by deleting whole observations.
@@ -80,9 +80,11 @@ file bounds also apply. Later failure leaves WORK/reports uncommitted and files
 unstaged to disk. Named-library outputs use the existing staged/preflight workflow.
 Portable Node/Python exports bundle means.mjs and return reports alongside tables.
 
-Deferred: WEIGHT/FREQ, quantiles, confidence limits/tests, skewness/kurtosis,
+Deferred: FREQ, quantiles, confidence limits/tests, skewness/kurtosis,
 TYPES/WAYS, CHARTYPE, WHERE/LABEL/FORMAT statements within MEANS, advanced ID/extreme
 selection, PROC SUMMARY alias, anonymous OUTPUT names and SAS dataset options.
 Unsupported syntax fails explicitly.
 
 The initial SAS logs confirm matching dimensions for all six fixtures, but comparisons aborted on CSV character/numeric conflicts and the former *_std naming error. v0.4.8 fixes those blockers; numerical agreement still awaits the corrected SAS run. See docs/validation/means-initial-logs.md.
+
+WEIGHT, SUMWGT and weighted variance/standard-error rules were added in v0.4.14. See weights.md for eligibility differences from GLM, formulas, validation and the self-contained SAS kit. Existing unweighted fixture evidence does not certify the new weighted cases.

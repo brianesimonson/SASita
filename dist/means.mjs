@@ -1,26 +1,28 @@
 import {formatValue,parseFormat} from './formats.mjs';
-// Unweighted PROC MEANS subset. Dataset shape follows SAS OUTPUT, not report layout.
-const meansStats=['n','nmiss','sum','mean','min','max','range','var','std','stderr','css','uss','cv'];
+// PROC MEANS subset with SAS-style reliability weights. Dataset shape follows SAS OUTPUT, not report layout.
+const meansStats=['n','nmiss','sum','mean','min','max','range','var','std','stderr','css','uss','cv','sumwgt'];
 const meansDefault=['n','mean','std','min','max'];
 function meansStat(name){return name==='stddev'?'std':meansStats.includes(name)?name:null;}
 export function parseMeans(tokens,start){
  let i=start;const take=()=>{if(!tokens[i])throw new Error('Incomplete PROC MEANS');return tokens[i++];},need=v=>{const t=take();if(t.v!==v)throw new Error('Expected '+v+' in PROC MEANS');return t;};
  const name=()=>{const t=take();if(t.type!=='id'||!/^(?:[a-z_]\w{0,7}\.)?[a-z_]\w{0,31}$/.test(t.v))throw new Error('Invalid PROC MEANS name');return t.v.replace(/^work\./,'');};
- need('proc');need('means');const spec={source:null,stats:[],classes:[],by:[],variables:null,outputs:[],nway:false,missing:false,noprint:false,vardef:'df',maxdec:7};
+ need('proc');need('means');const spec={source:null,stats:[],classes:[],by:[],variables:null,outputs:[],nway:false,missing:false,noprint:false,vardef:'df',maxdec:7,weight:null,exclnpwgt:false};
  const seen=new Set();
  while(tokens[i]?.v!==';'){
   const t=take().v,s=meansStat(t);if(s){if(spec.stats.includes(s))throw new Error('Repeated statistic '+t);spec.stats.push(s);continue;}
   if(seen.has(t))throw new Error('Repeated PROC MEANS option '+t);seen.add(t);
-  if(['nway','missing','noprint'].includes(t))spec[t]=true;
+  if(t==='exclnpwgts')spec.exclnpwgt=true;
+  else if(['nway','missing','noprint','exclnpwgt'].includes(t))spec[t]=true;
   else if(t==='data'){need('=');spec.source=name();}
-  else if(t==='vardef'){need('=');spec.vardef=take().v;if(!['df','n'].includes(spec.vardef))throw new Error('PROC MEANS supports VARDEF=DF or N');}
+  else if(t==='vardef'){need('=');spec.vardef=take().v;if(!['df','n','wdf','weight','wgt'].includes(spec.vardef))throw new Error('PROC MEANS supports VARDEF=DF, N, WDF, WEIGHT or WGT');}
   else if(t==='maxdec'){need('=');spec.maxdec=take().v;if(!Number.isInteger(spec.maxdec)||spec.maxdec<0||spec.maxdec>15)throw new Error('MAXDEC must be 0–15');}
   else throw new Error('Unsupported PROC MEANS option '+t);
  }
  need(';');if(!spec.source)throw new Error('PROC MEANS requires DATA=');if(!spec.stats.length)spec.stats=[...meansDefault];
  while(tokens[i]?.v!=='run'){
   const statement=take().v;
-  if(['var','class','by'].includes(statement)){
+  if(statement==='weight'){if(spec.weight)throw new Error('Only one MEANS WEIGHT statement is supported');spec.weight=name();if(spec.weight.includes('.'))throw new Error('WEIGHT requires one variable');need(';');}
+  else if(['var','class','by'].includes(statement)){
    if(seen.has(statement))throw new Error('Only one '+statement.toUpperCase()+' statement is supported');seen.add(statement);const values=[];
    while(tokens[i]?.v!==';'){let descending=false;if(statement==='by'&&tokens[i]?.v==='descending'){take();descending=true;}const variable=name();if(variable.includes('.'))throw new Error('Use explicit variable names in PROC MEANS');if(values.some(v=>(v.name||v)===variable))throw new Error('Repeated variable '+variable);values.push(statement==='by'?{name:variable,descending}:variable);}
    need(';');if(!values.length)throw new Error('Empty '+statement.toUpperCase());spec[statement==='var'?'variables':statement==='class'?'classes':'by']=values;
@@ -45,21 +47,36 @@ function meansMissing(v){return v===null||v===undefined||typeof v==='string'&&v.
 // Neumaier accumulation and shifted two-pass second moments avoid subtracting x^2 - mean^2.
 function meansSum(values){let sum=0,correction=0;for(const x of values){const t=sum+x;correction+=Math.abs(sum)>=Math.abs(x)?(sum-t)+x:(x-t)+sum;sum=t;}return sum+correction;}
 function meansMoments(values,total,vardef){
- const n=values.length;const result={n,nmiss:total-n,sum:n?meansSum(values):0,mean:null,min:null,max:null,range:null,var:null,std:null,stderr:null,css:null,uss:0,cv:null};
+ const n=values.length;const result={n,nmiss:total-n,sum:n?meansSum(values):0,sumwgt:n,mean:null,min:null,max:null,range:null,var:null,std:null,stderr:null,css:null,uss:0,cv:null};
  if(!n)return result;
  const anchor=values[0],offset=meansSum(values.map(x=>x-anchor))/n;
  result.mean=Number.isFinite(offset)?anchor+offset:meansSum(values.map(x=>x/n));let min=values[0],max=min;for(const x of values){if(x<min)min=x;if(x>max)max=x;}result.min=min;result.max=max;result.range=max-min;
  result.css=meansSum(values.map(x=>{const d=(x-anchor)-offset;return d*d;}));result.uss=meansSum(values.map(x=>x*x));
- const divisor=vardef==='n'?n:n-1;if(divisor>0){result.var=result.css/divisor;result.std=Math.sqrt(result.var);if(vardef==='df')result.stderr=result.std/Math.sqrt(n);if(result.mean!==0)result.cv=100*result.std/result.mean;}
+ const divisor=['n','weight','wgt'].includes(vardef)?n:n-1;if(divisor>0){result.var=result.css/divisor;result.std=Math.sqrt(result.var);if(vardef==='df')result.stderr=result.std/Math.sqrt(n);if(result.mean!==0)result.cv=100*result.std/result.mean;}
  for(const key of Object.keys(result))if(typeof result[key]==='number'&&!Number.isFinite(result[key]))result[key]=null;
+ return result;
+}
+function meansWeightedMoments(rows,variable,weight,total,vardef){
+ const valid=rows.filter(r=>typeof r[variable]==='number'&&Number.isFinite(r[variable]));
+ const n=valid.length,values=valid.map(r=>r[variable]),weights=valid.map(r=>Math.max(0,r[weight])),positive=valid.filter(r=>r[weight]>0);
+ const sumwgt=meansSum(weights),result={n,nmiss:total-n,sum:meansSum(valid.map((r,i)=>weights[i]*r[variable])),sumwgt,mean:null,min:null,max:null,range:null,var:null,std:null,stderr:null,css:null,uss:meansSum(valid.map((r,i)=>weights[i]*r[variable]*r[variable])),cv:null};
+ if(n){let min=values[0],max=min;for(const x of values){min=Math.min(min,x);max=Math.max(max,x);}result.min=min;result.max=max;result.range=max-min;}
+ if(positive.length&&sumwgt>0&&Number.isFinite(sumwgt)){
+  const anchor=positive[0][variable],offset=meansSum(positive.map(r=>r[weight]*(r[variable]-anchor)))/sumwgt;result.mean=anchor+offset;
+  result.css=meansSum(positive.map(r=>{const d=(r[variable]-anchor)-offset;return r[weight]*d*d;}));
+  const divisor=vardef==='n'?n:vardef==='df'?n-1:vardef==='wdf'?sumwgt-1:sumwgt;
+  if(divisor>0){result.var=result.css/divisor;result.std=Math.sqrt(result.var);if(vardef==='df')result.stderr=result.std/Math.sqrt(sumwgt);if(result.mean!==0)result.cv=100*result.std/result.mean;}
+ }
+ for(const key of Object.keys(result))if(typeof result[key]==='number'&&!Number.isFinite(result[key]))throw new Error('Weighted MEANS numeric overflow; rescale values/weights');
  return result;
 }
 export function prepareMeans(spec,ds){
  if(!ds)throw new Error('PROC MEANS dataset '+spec.source+' was not found');
  const types=Object.fromEntries(ds.columns.map(c=>[c,ds.types?.[c]|| (ds.rows.some(r=>typeof r[c]==='string')?'char':'num')]));
- const vars=spec.variables||ds.columns.filter(c=>types[c]==='num'&&!spec.classes.includes(c)&&!spec.by.some(b=>b.name===c));
+ const vars=spec.variables||ds.columns.filter(c=>types[c]==='num'&&!spec.classes.includes(c)&&!spec.by.some(b=>b.name===c)&&c!==spec.weight);
  if(!vars.length)throw new Error('PROC MEANS requires numeric analysis variables');
- for(const v of [...vars,...spec.classes,...spec.by.map(b=>b.name)])if(!ds.columns.includes(v))throw new Error('PROC MEANS variable '+v+' was not found');
+ for(const v of [...vars,...spec.classes,...spec.by.map(b=>b.name),...(spec.weight?[spec.weight]:[])])if(!ds.columns.includes(v))throw new Error('PROC MEANS variable '+v+' was not found');
+ if(spec.weight&&types[spec.weight]!=='num')throw new Error('MEANS WEIGHT variable must be numeric');
  for(const v of vars)if(types[v]!=='num')throw new Error('VAR requires numeric variables: '+v);
  if([...spec.classes,...spec.by.map(b=>b.name)].some(v=>['_type_','_freq_','_stat_'].includes(v)))throw new Error('CLASS/BY names conflict with reserved summary columns');
  if(spec.classes.some(c=>spec.by.some(b=>b.name===c)))throw new Error('A variable cannot be both CLASS and BY in this subset');
@@ -71,7 +88,7 @@ export function prepareMeans(spec,ds){
  if(!byGroups.length&&!spec.by.length)byGroups.push({last:{},rows:[]});
  const levels=[];
  for(const by of byGroups){
-  const eligible=by.rows.filter(r=>spec.missing||spec.classes.every(c=>!meansMissing(r[c])));
+  const eligible=by.rows.filter(r=>(spec.missing||spec.classes.every(c=>!meansMissing(r[c])))&&(!spec.weight||(typeof r[spec.weight]==='number'&&Number.isFinite(r[spec.weight])&&(!spec.exclnpwgt||r[spec.weight]>0))));
   const classLevels=Object.fromEntries(spec.classes.map(c=>[c,new Map()]));
   const classKey=(row,c)=>{const value=meansMissing(row[c])?(types[c]==='char'?'':null):row[c],f=ds.formats?.[c];return f?formatValue(value,parseFormat(f),{padded:false}):typeof value==='string'?value.trimEnd():value;};
   for(const row of eligible)for(const c of spec.classes){const key=classKey(row,c),value=meansMissing(row[c])?(types[c]==='char'?'':null):row[c];if(!classLevels[c].has(key)||meansCompare(value,classLevels[c].get(key))<0)classLevels[c].set(key,value);}
@@ -81,7 +98,7 @@ export function prepareMeans(spec,ds){
    }
    const ordered=[...groups.values()].sort((a,b)=>{for(const c of spec.classes){const d=meansCompare(a.values[c],b.values[c]);if(d)return d;}return 0;});
    for(const g of ordered){const row={};for(const b of spec.by)row[b.name]=by.last[b.name];for(const c of spec.classes)row[c]=Object.hasOwn(g.values,c)?g.values[c]:types[c]==='char'?'':null;row._type_=type;row._freq_=g.rows.length;
-    const stats=Object.fromEntries(vars.map(v=>[v,meansMoments(g.rows.map(r=>r[v]).filter(x=>typeof x==='number'&&Number.isFinite(x)),g.rows.length,spec.vardef)]));levels.push({row,stats});if(levels.length>100000)throw new Error('PROC MEANS output exceeds 100,000 levels');
+    const stats=Object.fromEntries(vars.map(v=>[v,spec.weight?meansWeightedMoments(g.rows,v,spec.weight,g.rows.length,spec.vardef):meansMoments(g.rows.map(r=>r[v]).filter(x=>typeof x==='number'&&Number.isFinite(x)),g.rows.length,spec.vardef)]));levels.push({row,stats});if(levels.length>100000)throw new Error('PROC MEANS output exceeds 100,000 levels');
    }
   }
  }
@@ -93,7 +110,7 @@ export function prepareMeans(spec,ds){
   if(!out.requests.length){columns.push('_stat_',...vars);for(const v of vars)if(ds.formats?.[v])formats[v]=ds.formats[v];const rows=[];for(const level of levels)for(const stat of ['n','min','max','mean','std'])rows.push({...level.row,_stat_:stat.toUpperCase(),...Object.fromEntries(vars.map(v=>[v,level.stats[v][stat]]))});outputs.push({name:out.name,dataset:dataset(columns,rows,formats)});continue;}
   for(const request of out.requests){if(request.stat==='stderr'&&spec.vardef!=='df')throw new Error('STDERR requires VARDEF=DF');const variables=request.variables||vars;for(const v of variables)if(!vars.includes(v))throw new Error('OUTPUT variable must be in VAR: '+v);
    if(request.names.length>variables.length)throw new Error('Too many OUTPUT names');
-   for(let j=0;j<variables.length;j++){const v=variables[j];if(request.names.length&&j>=request.names.length)break;let name=request.names[j]||v;if(out.autoname&&!request.names[j]){const suffix='_'+(request.stat==='std'?'stddev':request.keyword);name=name.slice(0,32-suffix.length)+suffix;}if(out.autoname&&columns.includes(name)){const baseName=name;let serial=2;while(columns.includes(name)){const suffix=String(serial++);name=baseName.slice(0,32-suffix.length)+suffix;}}if(name.includes('.')||columns.includes(name))throw new Error('Conflicting OUTPUT name '+name);columns.push(name);requests.push({name,v,stat:request.stat});if(ds.formats?.[v]&&!['n','nmiss','css','uss','var','cv'].includes(request.stat))formats[name]=ds.formats[v];}
+   for(let j=0;j<variables.length;j++){const v=variables[j];if(request.names.length&&j>=request.names.length)break;let name=request.names[j]||v;if(out.autoname&&!request.names[j]){const suffix='_'+(request.stat==='std'?'stddev':request.keyword);name=name.slice(0,32-suffix.length)+suffix;}if(out.autoname&&columns.includes(name)){const baseName=name;let serial=2;while(columns.includes(name)){const suffix=String(serial++);name=baseName.slice(0,32-suffix.length)+suffix;}}if(name.includes('.')||columns.includes(name))throw new Error('Conflicting OUTPUT name '+name);columns.push(name);requests.push({name,v,stat:request.stat});if(ds.formats?.[v]&&!['n','nmiss','sumwgt','css','uss','var','cv'].includes(request.stat))formats[name]=ds.formats[v];}
   }
   outputs.push({name:out.name,dataset:dataset(columns,levels.map(level=>({...level.row,...Object.fromEntries(requests.map(r=>[r.name,level.stats[r.v][r.stat]]))})),formats)});
  }
