@@ -33,6 +33,13 @@ try{
  assert.equal(surveyEnvelope.reports.length,1);
  assert.equal(JSON.parse(surveyEnvelope.tables.frame).rows[0].u,(await import('./dist/random.mjs')).createUniformGenerator(12345)());
  const direct=spawnSync('node',[join(folder,'run.mjs')],{encoding:'utf8',cwd:tmpdir()});assert.equal(direct.status,0,direct.stderr);assert.deepEqual(JSON.parse(direct.stdout),result);
+ const glmFolder=await packageFor(await readFile('examples/catalog/10-glm.sas','utf8'));
+ const glmProcess=python([join(glmFolder,'run.py')]);assert.equal(glmProcess.status,0,glmProcess.stderr);
+ const glmEnvelope=JSON.parse(glmProcess.stdout),glmTests=JSON.parse(glmEnvelope.tables.glm_tests).rows;
+ for(const [source,ss] of [['A',67.6],['B',10],['A*B',.4]])assert.ok(Math.abs(glmTests.find(r=>r.source===source&&r.hypothesistype===3).ss-ss)<1e-10);
+ assert.ok(Math.abs(JSON.parse(glmEnvelope.tables.glm_anova).rows[1].ss-6)<1e-10);
+ assert.ok(Math.abs(JSON.parse(glmEnvelope.tables.glm_parameters).rows[0].estimate-17)<1e-10);
+ assert.ok(Math.abs(JSON.parse(glmEnvelope.tables.glm_scored).rows[0].predicted-13)<1e-10);
  // Exact RAND fixture path and signed-zero table strings survive the wrapper.
  const randomCode="data draws; call streaminit('MT32',12345); do i=1 to 100; u=rand('uniform'); hex=put(u,hex16.); output; end; run;";
  const randomFolder=await packageFor(randomCode,{zero:{columns:['x'],rows:[{x:-0}],formats:{}}});const random=python([join(randomFolder,'run.py')]);assert.equal(random.status,0,random.stderr);const randomResult=JSON.parse(random.stdout);

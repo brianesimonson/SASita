@@ -1,5 +1,6 @@
 import {parseMeans,prepareMeans} from './means.mjs';
 import {parseSurveySelect,prepareSurveySelect} from './surveyselect.mjs';
+import {parseGLM,prepareGLM} from './glm.mjs';
 import {tokenize,run,parseCSV,csv,datasetReferences} from './engine.mjs';
 import {parsePlot,preparePlot} from './charts.mjs';
 import {readTable,writeTable} from './table-storage.mjs';
@@ -26,11 +27,17 @@ function serialize(tokens) {
  return code;
 }
 export function filePlan(expanded) {
- const tokens=tokenize(expanded),plan=[];let i=0;
+ const tokens=tokenize(expanded),plan=[];let i=0,glmOds={};
  const need=v=>{const t=tokens[i++];if(t?.v!==v)throw new Error('Expected '+v+' in file procedure');return t};
  const take=()=>{if(!tokens[i])throw new Error('Incomplete file procedure');return tokens[i++]};
  while(i<tokens.length) {
   const start=i,t=take();
+  if(t.v==='ods'){
+   need('output');if(tokens[i]?.v==='close'){take();need(';');glmOds={};continue;}
+   while(tokens[i]?.v!==';'){const table=take().v;if(!['classlevels','nobs','overallanova','fitstatistics','modelanova','parameterestimates'].includes(table))throw new Error('Unsupported ODS OUTPUT table '+table);need('=');const name=datasetName(take());if(Object.hasOwn(glmOds,table))throw new Error('Repeated ODS table binding');glmOds[table]=name;}
+   need(';');continue;
+  }
+  if(t.v==='proc'&&tokens[i]?.v==='glm'){const parsed=parseGLM(tokens,start);i=parsed.next;plan.push({kind:'glm',spec:parsed.spec,ods:{...glmOds}});continue;}
   if(t.v==='title'){
    let value='';if(tokens[i]?.v!==';'){const title=take();if(title.type!=='str'||title.v.length>200)throw new Error('TITLE requires quoted text of at most 200 characters');value=title.v;}need(';');plan.push({kind:'title',value});continue;
   }
@@ -90,7 +97,7 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  let hasFiles=tokens.some(t=>t.type==='id'&&/^[a-z_]\w*\.[a-z_]\w*$/.test(t.v)&&!/^(work|first|last)\./.test(t.v)),inBlock=false;
  for(let i=0;i<tokens.length;i++){const t=tokens[i];if(t.type!=='id')continue;if(inBlock){if(t.v==='run'&&tokens[i-1]?.v===';'&&tokens[i+1]?.v===';')inBlock=false;continue;}if(['libname','filename','title'].includes(t.v))hasFiles=true;if(t.v==='proc'){if(['import','export','sgplot','sgpie','means'].includes(tokens[i+1]?.v))hasFiles=true;inBlock=true;}else if(t.v==='data')inBlock=true;}
 
- if(tokens.some((t,i)=>t.v==='proc'&&tokens[i+1]?.v==='surveyselect'))hasFiles=true;
+ if(tokens.some((t,i)=>t.v==='proc'&&['surveyselect','glm'].includes(tokens[i+1]?.v)||t.v==='ods'))hasFiles=true;
  if(!hasFiles){const result=run(macro.code,input,{expanded:true});result.logs.unshift(...macro.logs);return result;}
  const plan=filePlan(macro.code),aliases=new Map(),exports=[],logs=[...macro.logs],written=[],libraries=Object.assign(Object.create(null),options.libraries||{}),fresh=new Set(),libraryWrites=new Set(),plots=[],reports=[];let chartTitle=options.chartTitle||'';
  let datasets=Object.assign(Object.create(null),input),exportBytes=0;
@@ -104,6 +111,15 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  function checkExportLimit(){if(exports.reduce((n,e)=>n+new TextEncoder().encode(e.text).length,0)>50000000)throw new Error('Total program exports are limited to 50 MB');}
  for(const step of plan) {
   if(step.kind==='title'){chartTitle=step.value;continue;}
+  if(step.kind==='glm'){
+   if(step.spec.noprint&&Object.keys(step.ods).length)throw new Error('GLM NOPRINT disables ODS output; remove NOPRINT when capturing tables');
+   await load(step.spec.source);const result=prepareGLM(step.spec,datasets[step.spec.source]);
+   const outputs=[...result.outputs];for(const [table,name] of Object.entries(step.ods)){if(!result.tables[table]?.columns.length)throw new Error('GLM ODS table '+table+' is unavailable; ParameterEstimates requires MODEL / SOLUTION');outputs.push({name,dataset:result.tables[table]});}
+   if(new Set(outputs.map(o=>o.name)).size!==outputs.length)throw new Error('Duplicate GLM output dataset names');
+   for(const out of outputs)if(out.name.includes('.'))location(out.name);
+   for(const out of outputs){datasets[out.name]=out.dataset;written.push(out.name);stage(out.name);}checkExportLimit();reports.push(...result.reports);
+   if(reports.length>20||reports.reduce((n,r)=>n+r.dataset.rows.length,0)>100000)throw new Error('Procedure report limit exceeded');logs.push(...result.logs);continue;
+  }
   if(step.kind==='surveyselect'){
    await load(step.spec.source);if(step.spec.out.includes('.'))location(step.spec.out);
    const result=prepareSurveySelect(step.spec,datasets[step.spec.source]);datasets[step.spec.out]=result.dataset;written.push(step.spec.out);stage(step.spec.out);checkExportLimit();

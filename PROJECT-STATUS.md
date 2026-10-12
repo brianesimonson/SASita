@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.11: first fixed-effects PROC GLM
+
+Branch feature/sassy-glm implements one-response OLS with CLASS, hierarchical crossed interactions through degree three, Type I sequential and Type III block tests, MODEL / SOLUTION, predicted/residual outputs and six scoped ODS OUTPUT names. The tenth catalog example reproduces the published unbalanced two-factor SAS example. See docs/glm.md for exact boundaries and output fields. Empty interaction cells, nonhierarchical categorical interactions and additional rank deficiency fail explicitly; random/repeated effects and broad PROC GLM syntax remain deferred.
+
+Validation: complete npm test and modular/standalone Chromium checks passed, including actual browser-export ZIP execution through Python/Node. Published SAS SS and F tests agree to displayed precision; independent NumPy/SciPy checks cover an unbalanced 33-row CLASS/covariate/interactions model and F/t distributions. SOLUTION, formatted levels, missing-response prediction, native output and failed-run rollback are checked. A fresh SAS runtime comparison and exact ODS metadata parity are pending; no bit-identical guarantee. examples/glm-validation/glm-validation.zip embeds Sassy expected values in one SAS-only program without folder edits/CSV imports. Main and all earlier tags are preserved.
+
+
 ## Sassy v0.4.10: cached NORMAL pairs integrated
 
 Branch feature/sassy-normal-cache changes RAND NORMAL to return x and cache the unscaled y value from each accepted polar pair. UNIFORM and ignored reinitialization calls preserve the cache; each NORMAL call applies its own mean/sigma, and each DATA step starts fresh. Normal and mixed sequences intentionally change from v0.4.9. Default/MT32 uniform-only streams and SURVEYSELECT remain unchanged. Updated syntax help, reference catalogs, random/deployment docs and an included demo-project/normal-demo.sas explain scope and the migration.

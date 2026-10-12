@@ -1,5 +1,13 @@
 const syntaxEntries=[
 {
+  "id": "glm",
+  "label": "PROC GLM",
+  "group": "Procedures",
+  "syntax": "PROC GLM DATA=table; CLASS A B; MODEL y=A|B x / SOLUTION; OUTPUT OUT=scored P=predicted R=residual; RUN; QUIT;",
+  "description": "One numeric response, intercept, fixed CLASS/numeric effects and hierarchical crossed interactions through degree 3. A|B expands A B A*B. Default Type I sequential and Type III adjusted tests; SS1/SS3 selects tests. /SOLUTION provides estimates, standard errors, signed t and two-sided p-values; redundant CLASS coefficients carry B flags. Type III uses sum-contrast hypotheses, not reference-category term deletion. Sorted/formatted/data class ordering supported. OUTPUT P/R and scoped ODS OUTPUT capture analysis tables. Empty interaction cells, extra rank deficiency, nested/random/repeated effects, weights, LSMEANS and multiple responses are unsupported. Published SAS/independent tests pass; fresh SAS runtime validation remains pending.",
+  "template": "proc glm data=input_table;\n    class group;\n    model response=group predictor group*predictor / solution;\n    output out=scored p=predicted r=residual;\nrun;\nquit;\n"
+},
+{
   "id": "surveyselect",
   "label": "PROC SURVEYSELECT",
   "group": "Procedures",

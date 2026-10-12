@@ -6,7 +6,7 @@ const entries=syntaxCatalog();
 assert.equal(new Set(entries.map(e=>e.id)).size,entries.length);
 assert.equal(entries.filter(e=>e.group==='Functions').length,35);
 assert.equal(entries.filter(e=>e.group==='Formats').length,20);
-assert.deepEqual(entries.filter(e=>e.group==='Procedures').map(e=>e.id),['surveyselect','means','sort','import','export','sgplot','sgpie']);
+assert.deepEqual(entries.filter(e=>e.group==='Procedures').map(e=>e.id),['glm','surveyselect','means','sort','import','export','sgplot','sgpie']);
 const source=readFileSync('dist/engine.mjs','utf8');
 const functions=[...source.split('const funcs=')[1].split('function cmp')[0].matchAll(/(?:^|[,\n])\s*([a-z]+):/g)].map(m=>m[1]);
 for(const name of [...functions,'input','put','rand'])assert.ok(entries.some(e=>e.id==='fn-'+name),name+' missing');
@@ -30,3 +30,5 @@ for(const e of entries.filter(e=>e.group==='Functions'))assert.doesNotThrow(()=>
 console.log('Syntax catalog coverage, templates and tolerant cursor contexts passed.');
 
 assert.equal(syntaxContext("proc surveyselect data=x n=3; strata g;"),"surveyselect");
+
+assert.equal(syntaxContext("proc glm data=x; class a b; model y=a|b / solution"),"glm");

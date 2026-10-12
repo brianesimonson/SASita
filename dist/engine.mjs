@@ -13,7 +13,7 @@ export function tokenize(code){
  let m=code.slice(i).match(/^(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?/i);if(m){ts.push({v:+m[0],raw:m[0],type:'num',line:l});i+=m[0].length;continue}
  m=code.slice(i).match(/^[a-z_]\w*(?:\.[a-z_]\w*)?/i);if(m){ts.push({v:m[0].toLowerCase(),type:'id',line:l});i+=m[0].length;continue}
  let two=code.slice(i,i+2);if(['>=','<=','^=','~=','ne','**','||'].includes(two)){ts.push({v:two,type:'op',line:l});i+=2;continue}
- if(';(),=+-*/<>.^~$?'.includes(c)){ts.push({v:c,type:'op',line:l});i++;continue}fail(`Unsupported character ${c}`,{line:l});
+ if(';(),=+-*/<>.^~$?|'.includes(c)){ts.push({v:c,type:'op',line:l});i++;continue}fail(`Unsupported character ${c}`,{line:l});
  }return ts;
 }
 class Parser{
