@@ -1,5 +1,11 @@
 # SASita project status
 
+## GLM comparison log received; helper revision 2
+
+Branch fix/glm-validation-kit: the uploaded log explicitly reports missing coeffvar in both SAS FitStatistics tables. Thus both missing comparisons were stopped by the guard, not statistical failures. The log does not expose the replacement column name. Revised helper maps CV to coeffvar if present and otherwise fails visibly with PROC CONTENTS. It also maps A*X to X*A in the fixture keys, normalizes special numeric missing codes for value checks, and uses absolute 1e-12 for the modest-scale prediction/residual fixtures while other statistics retain relative 1e-10. Original SAS tables and embedded expected numbers are not altered; no app/engine label or metadata parity claim. Both parameter and fit descriptors are now printed. Models and expected CSVs remain unchanged.
+
+Regenerated standalone examples/glm-validation/glm-validation.zip, saved as tag glm-validation-v2. Existing GLM regressions/reference checks and ZIP integrity pass locally. The revised SAS-only helper still needs execution in SAS; local generation checks are not SAS execution. The app package/tag v0.4.11 still contains the original kit, so use the separate revision-2 ZIP. Main remains unchanged.
+
 ## Actual two-model SAS GLM comparison received
 
 On test/sas-glm-two-models, the actual uploaded comparison Results confirm full-precision agreement at relative 1e-10 for all six published effect-test rows and nine parameter rows, eight matched ANCOVA test rows, 13 matched ANCOVA parameter rows and all 33 ANCOVA prediction/residual rows. Largest reported relative difference criterion among these groups is 3.2567e-13. This is not an unconditional pass: two ANCOVA test rows and three parameter rows do not match keys because SAS names the mixed interaction X*A while Sassy uses A*X. Both OverallANOVA comparisons have five `._` versus `.` special-missing differences. Published residual id=7 is 3.553e-15 in SAS versus zero in Sassy and fails the purely relative criterion near zero. Both FitStatistics PROC COMPARE groups are absent; the log is needed to diagnose them. CONTENTS also shows SAS Biased is numeric, whereas the app currently uses character B flags. Labels/attributes/metadata are not fully compatible.

@@ -3,10 +3,12 @@
     "source": "User-uploaded actual SAS two-model comparison results",
     "filename": "01-sas-glm-comparison-results.html",
     "sha256": "31b9abb0c10356f73f1f76f7255053e7bd8d29ed9d0f1477cdcdfc935e51c46a",
-    "log_received": false,
+    "log_received": true,
     "app_version": "0.4.11",
     "criterion": "relative 1e-10",
-    "limitations": "Eight comparison groups are present; both FitStatistics comparison groups are absent. Five special-missing differences per OverallANOVA; near-zero residual difference in published case; mixed interaction label mismatch excludes two test and three parameter rows in ANCOVA."
+    "limitations": "Eight comparison groups are present; both FitStatistics comparison groups are absent. Five special-missing differences per OverallANOVA; near-zero residual difference in published case; mixed interaction label mismatch excludes two test and three parameter rows in ANCOVA.",
+    "log_filename": "01-sas-glm-comparison-log.html",
+    "log_sha256": "c12a1ca159187c9187127e05e9dc1614dd2fb931d19c10e745edb16e8b9c5367"
   },
   "comparisons": {
     "published_glm_anova vs app_published_anova": {
@@ -651,5 +653,12 @@
         ]
       ]
     }
-  ]
+  ],
+  "log_findings": {
+    "fit_check_errors": [
+      "ERROR: Missing column coeffvar in published_glm_fit Return the log and results.",
+      "ERROR: Missing column coeffvar in ancova_glm_fit Return the log and results."
+    ],
+    "diagnosis": "Both fit checks stopped at the column guard because coeffvar was absent. The log does not show the actual alternate column name. Revised helper handles CV when present and prints descriptors if fields remain unknown."
+  }
 }

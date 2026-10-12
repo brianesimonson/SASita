@@ -1,37 +1,60 @@
 /* SAS ONLY: run this entire program in SAS Studio. No folder, CSV uploads,
    or edits needed. Expected numbers were computed by Sassy v0.4.11.
-   This compares values and key labels; it does not certify full ODS metadata. */
-%macro glm_check(base,expected,keys,variables);
-  %local ds k field absent rc;
+   Validation helper revision 2: maps A*X to X*A for these models only;
+   normalizes SAS special missing values to ordinary missing for value checks;
+   scored P/R use absolute 1e-12, other checks relative 1e-10.
+   This does not certify full ODS metadata or exact source-label compatibility. */
+%macro glm_check(base,expected,keys,variables,absolute=0);
+  %local ds k field absent rc cv_option;
+  %let cv_option=;
   %let absent=0;
   %let ds=%sysfunc(open(&base));
   %if &ds=0 %then %do;
     %put ERROR: Missing SAS table &base. This comparison did not run.;
     %return;
   %end;
+  /* Some PROC GLM versions call coefficient of variation CV in ODS. */
+  %if %index(%str( &variables ),coeffvar) %then %do;
+    %if %sysfunc(varnum(&ds,coeffvar))=0 and %sysfunc(varnum(&ds,CV))>0 %then %do;
+      %let cv_option=(rename=(CV=coeffvar));
+      %put NOTE: GLM validation maps SAS CV to app coeffvar.;
+    %end;
+  %end;
   %do k=1 %to %sysfunc(countw(&keys &variables));
     %let field=%scan(&keys &variables,&k);
     %if %sysfunc(varnum(&ds,&field))=0 %then %do;
-      %put ERROR: Missing column &field in &base. Return the log and results.;
-      %let absent=1;
+      %if &field=coeffvar and %length(&cv_option) %then %do; %end;
+      %else %do;
+        %put ERROR: Missing column &field in &base. Return the log and results.;
+        %let absent=1;
+      %end;
     %end;
   %end;
   %let rc=%sysfunc(close(&ds));
-  %if &absent %then %return;
-  data sas_check; set &base;
-    %if %index(%str( &keys ),source) %then %do; source=upcase(compbl(source)); %end;
-    %if %index(%str( &keys ),parameter) %then %do; parameter=upcase(compbl(parameter)); %end;
+  %if &absent %then %do;
+    title "GLM comparison did not run: &base — inspect columns";
+    proc contents data=&base varnum; run;
+    %return;
+  %end;
+  data sas_check; set &base &cv_option;
+    %if %index(%str( &keys ),source) %then %do; source=tranwrd(upcase(compbl(source)),'A*X','X*A'); %end;
+    %if %index(%str( &keys ),parameter) %then %do; parameter=tranwrd(upcase(compbl(parameter)),'A*X','X*A'); %end;
+    array check_numbers _numeric_;
+    do over check_numbers; if missing(check_numbers) then check_numbers=.; end;
   run;
   data app_check; set &expected;
-    %if %index(%str( &keys ),source) %then %do; source=upcase(compbl(source)); %end;
-    %if %index(%str( &keys ),parameter) %then %do; parameter=upcase(compbl(parameter)); %end;
+    %if %index(%str( &keys ),source) %then %do; source=tranwrd(upcase(compbl(source)),'A*X','X*A'); %end;
+    %if %index(%str( &keys ),parameter) %then %do; parameter=tranwrd(upcase(compbl(parameter)),'A*X','X*A'); %end;
   run;
   %if %length(&keys) %then %do;
     proc sort data=sas_check; by &keys; run;
     proc sort data=app_check; by &keys; run;
   %end;
   title "GLM values: &base vs &expected";
-  proc compare base=sas_check compare=app_check method=relative criterion=1e-10;
+  proc compare base=sas_check compare=app_check
+    %if &absolute %then %do; method=absolute criterion=1e-12 %end;
+    %else %do; method=relative criterion=1e-10 %end;
+    ;
     %if %length(&keys) %then %do; id &keys; %end;
     var &variables;
   run;
@@ -71,7 +94,7 @@ datalines4;
 "Corrected Total","6","97.71428571428572","","",""
 ;;;;
 run;
-%glm_check(published_glm_anova,app_published_anova,source,df ss ms fvalue probf);
+%glm_check(published_glm_anova,app_published_anova,source,df ss ms fvalue probf,absolute=0);
 data app_published_tests; length source $128 hypothesistype 8 df 8 ss 8 ms 8 fvalue 8 probf 8; infile datalines4 dsd dlm=',' truncover; input source :$128. hypothesistype :best32. df :best32. ss :best32. ms :best32. fvalue :best32. probf :best32.;
 datalines4;
 "A","1","1","80.04761904761904","80.04761904761904","40.02380952380952","0.007984480683235953"
@@ -82,7 +105,7 @@ datalines4;
 "A*B","3","1","0.3999999999999991","0.3999999999999991","0.19999999999999954","0.6850376424742928"
 ;;;;
 run;
-%glm_check(published_glm_tests,app_published_tests,source hypothesistype,df ss ms fvalue probf);
+%glm_check(published_glm_tests,app_published_tests,source hypothesistype,df ss ms fvalue probf,absolute=0);
 data app_published_parameters; length parameter $128 estimate 8 stderr 8 tvalue 8 probt 8; infile datalines4 dsd dlm=',' truncover; input parameter :$128. estimate :best32. stderr :best32. tvalue :best32. probt :best32.;
 datalines4;
 "Intercept","17","1.4142135623730954","12.020815280171306","0.001238664461222031"
@@ -96,13 +119,13 @@ datalines4;
 "A*B A2 B2","0","","",""
 ;;;;
 run;
-%glm_check(published_glm_parameters,app_published_parameters,parameter,estimate stderr tvalue probt);
+%glm_check(published_glm_parameters,app_published_parameters,parameter,estimate stderr tvalue probt,absolute=0);
 data app_published_fit; length rsquare 8 coeffvar 8 rootmse 8 depmean 8; infile datalines4 dsd dlm=',' truncover; input rsquare :best32. coeffvar :best32. rootmse :best32. depmean :best32.;
 datalines4;
 "0.9385964912280702","9.801480135259075","1.4142135623730951","14.428571428571429"
 ;;;;
 run;
-%glm_check(published_glm_fit,app_published_fit,,rsquare coeffvar rootmse depmean);
+%glm_check(published_glm_fit,app_published_fit,,rsquare coeffvar rootmse depmean,absolute=0);
 data app_published_scored; length id 8 predicted 8 residual 8; infile datalines4 dsd dlm=',' truncover; input id :best32. predicted :best32. residual :best32.;
 datalines4;
 "1","13.000000000000002","-1.0000000000000018"
@@ -114,8 +137,8 @@ datalines4;
 "7","17","0"
 ;;;;
 run;
-%glm_check(published_glm_scored,app_published_scored,id,predicted residual);
-title "published: actual SAS ODS descriptors"; proc contents data=published_glm_parameters varnum; run; title;
+%glm_check(published_glm_scored,app_published_scored,id,predicted residual,absolute=1);
+title "published: actual SAS ODS descriptors"; proc contents data=published_glm_parameters varnum; run; proc contents data=published_glm_fit varnum; run; title;
 
 /* ancova */
 proc datasets lib=work nolist; delete ancova_glm_anova ancova_glm_tests ancova_glm_parameters ancova_glm_fit ancova_glm_scored; quit;
@@ -163,7 +186,7 @@ datalines4;
 "Corrected Total","32","376.1227636363636","","",""
 ;;;;
 run;
-%glm_check(ancova_glm_anova,app_ancova_anova,source,df ss ms fvalue probf);
+%glm_check(ancova_glm_anova,app_ancova_anova,source,df ss ms fvalue probf,absolute=0);
 data app_ancova_tests; length source $128 hypothesistype 8 df 8 ss 8 ms 8 fvalue 8 probf 8; infile datalines4 dsd dlm=',' truncover; input source :$128. hypothesistype :best32. df :best32. ss :best32. ms :best32. fvalue :best32. probf :best32.;
 datalines4;
 "A","1","2","165.97591297591296","82.98795648795648","493.5080237130404","3.202125228979035e-20"
@@ -178,7 +201,7 @@ datalines4;
 "A*X","3","2","8.725930402930402","4.362965201465201","25.945431424333638","0.0000010006011858277057"
 ;;;;
 run;
-%glm_check(ancova_glm_tests,app_ancova_tests,source hypothesistype,df ss ms fvalue probf);
+%glm_check(ancova_glm_tests,app_ancova_tests,source hypothesistype,df ss ms fvalue probf,absolute=0);
 data app_ancova_parameters; length parameter $128 estimate 8 stderr 8 tvalue 8 probt 8; infile datalines4 dsd dlm=',' truncover; input parameter :$128. estimate :best32. stderr :best32. tvalue :best32. probt :best32.;
 datalines4;
 "Intercept","8.82032967032967","0.19329931086671437","45.63042481000644","7.767959389640742e-25"
@@ -199,13 +222,13 @@ datalines4;
 "A*X A3","0","","",""
 ;;;;
 run;
-%glm_check(ancova_glm_parameters,app_ancova_parameters,parameter,estimate stderr tvalue probt);
+%glm_check(ancova_glm_parameters,app_ancova_parameters,parameter,estimate stderr tvalue probt,absolute=0);
 data app_ancova_fit; length rsquare 8 coeffvar 8 rootmse 8 depmean 8; infile datalines4 dsd dlm=',' truncover; input rsquare :best32. coeffvar :best32. rootmse :best32. depmean :best32.;
 datalines4;
 "0.9892699319636907","4.5031398808168985","0.41007229260129885","9.106363636363636"
 ;;;;
 run;
-%glm_check(ancova_glm_fit,app_ancova_fit,,rsquare coeffvar rootmse depmean);
+%glm_check(ancova_glm_fit,app_ancova_fit,,rsquare coeffvar rootmse depmean,absolute=0);
 data app_ancova_scored; length id 8 predicted 8 residual 8; infile datalines4 dsd dlm=',' truncover; input id :best32. predicted :best32. residual :best32.;
 datalines4;
 "1","4.959999999999999","-0.4599999999999991"
@@ -243,6 +266,6 @@ datalines4;
 "33","17.392637362637366","0.23736263736263297"
 ;;;;
 run;
-%glm_check(ancova_glm_scored,app_ancova_scored,id,predicted residual);
-title "ancova: actual SAS ODS descriptors"; proc contents data=ancova_glm_parameters varnum; run; title;
+%glm_check(ancova_glm_scored,app_ancova_scored,id,predicted residual,absolute=1);
+title "ancova: actual SAS ODS descriptors"; proc contents data=ancova_glm_parameters varnum; run; proc contents data=ancova_glm_fit varnum; run; title;
 title;
