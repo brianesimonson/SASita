@@ -1,0 +1,86 @@
+{
+  "provenance": {
+    "source": "User-uploaded actual SAS Studio execution of glm-validation-v2",
+    "files": {
+      "results": {
+        "filename": "01-sas-glm-comparison-results (1).html",
+        "sha256": "443002a2a4e1e08678f36fca9074c571ef49ddeb7cd1f92df15e360f6a0b9738"
+      },
+      "log": {
+        "filename": "01-sas-glm-comparison-log (1).html",
+        "sha256": "99cdf93a98970c25c17e9b070253d3f2677651fed482cb6928e89cd9fdb9dd9a"
+      }
+    },
+    "program_sha256": "a5b9ee44c57c7c7c431fbb9425e2fe13a72e241369921e3569b516df23f4b2dd",
+    "app_version": "0.4.11",
+    "validation_tag": "glm-validation-v2"
+  },
+  "outcome": {
+    "comparison_groups": 10,
+    "matched_records": 89,
+    "values_unequal_under_criteria": 0,
+    "errors": 0,
+    "warnings": 0,
+    "fit_cv_mapping_confirmed": true
+  },
+  "criteria": {
+    "statistics_relative": 1e-10,
+    "scored_absolute": 1e-12,
+    "normalizations": [
+      "Fixture A*X labels mapped to X*A",
+      "SAS special numeric missing codes normalized to ordinary missing",
+      "CV renamed to coeffvar in temporary fit comparison"
+    ]
+  },
+  "limits": "Numeric values in these two models pass; original label/case/format/length/special-missing/Biased metadata parity and bit identity are not certified. No extrapolation to unsupported models.",
+  "comparisons": {
+    "published_glm_anova vs app_published_anova": {
+      "Number of Observations in Common": "3",
+      "Total Number of Values which Compare Unequal": "0",
+      "Maximum Difference Criterion Value": "4.3796E-15"
+    },
+    "published_glm_tests vs app_published_tests": {
+      "Number of Observations in Common": "6",
+      "Total Number of Values which Compare Unequal": "0",
+      "Maximum Difference Criterion Value": "1.0963E-14"
+    },
+    "published_glm_parameters vs app_published_parameters": {
+      "Number of Observations in Common": "9",
+      "Total Number of Values which Compare Unequal": "0",
+      "Maximum Difference Criterion Value": "5.0892E-15"
+    },
+    "published_glm_fit vs app_published_fit": {
+      "Number of Observations in Common": "1",
+      "Total Number of Values which Compare Unequal": "0",
+      "Maximum Difference Criterion Value": "1.4499E-15"
+    },
+    "published_glm_scored vs app_published_scored": {
+      "Number of Observations in Common": "7",
+      "Total Number of Values which Compare Unequal": "0"
+    },
+    "ancova_glm_anova vs app_ancova_anova": {
+      "Number of Observations in Common": "3",
+      "Total Number of Values which Compare Unequal": "0",
+      "Maximum Difference Criterion Value": "8.6665E-14"
+    },
+    "ancova_glm_tests vs app_ancova_tests": {
+      "Number of Observations in Common": "10",
+      "Total Number of Values which Compare Unequal": "0",
+      "Maximum Difference Criterion Value": "9.6233E-14"
+    },
+    "ancova_glm_parameters vs app_ancova_parameters": {
+      "Number of Observations in Common": "16",
+      "Total Number of Values which Compare Unequal": "0",
+      "Maximum Difference Criterion Value": "8.293E-14"
+    },
+    "ancova_glm_fit vs app_ancova_fit": {
+      "Number of Observations in Common": "1",
+      "Total Number of Values which Compare Unequal": "0",
+      "Maximum Difference Criterion Value": "3.7903E-15"
+    },
+    "ancova_glm_scored vs app_ancova_scored": {
+      "Number of Observations in Common": "33",
+      "Total Number of Values which Compare Unequal": "0"
+    }
+  }
+}

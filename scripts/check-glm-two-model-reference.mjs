@@ -27,3 +27,19 @@ assert.equal(Object.keys(fixture.comparisons).length,8);
 assert.equal(fixture.comparisons['ancova_glm_scored vs app_ancova_scored']['Number of Observations in Common'],'33');
 assert.equal(fixture.comparisons['ancova_glm_scored vs app_ancova_scored']['Total Number of Values which Compare Unequal'],'0');
 console.log(`Actual two-model SAS HTML: ${numeric} printed numeric cells, ${missing} missing cells and ${flags} displayed flags agree after explicitly mapping ${labelDifferences} mixed-interaction labels. Recorded full-precision comparison summaries retain failures/unmatched rows and absent fit checks.`);
+// Preserve the subsequent actual full-precision SAS pass and its exact helper provenance.
+const passed=JSON.parse(await readFile(new URL('../fixtures/sas/glm-validation-v2-pass.json',import.meta.url),'utf8'));
+const {createHash}=await import('node:crypto');
+const helper=await readFile(new URL('../examples/glm-validation/01-sas-glm-comparison.sas',import.meta.url),'utf8');
+assert.equal(createHash('sha256').update(helper).digest('hex'),passed.provenance.program_sha256);
+assert.equal(Object.keys(passed.comparisons).length,10);
+const counts={published:{anova:3,tests:6,parameters:9,fit:1,scored:7},ancova:{anova:3,tests:10,parameters:16,fit:1,scored:33}};
+for(const [model,tables] of Object.entries(counts))for(const [table,count] of Object.entries(tables)){
+ const group=passed.comparisons[`${model}_glm_${table} vs app_${model}_${table}`];assert.ok(group);
+ assert.equal(Number(group['Number of Observations in Common']),count);
+ assert.equal(group['Total Number of Values which Compare Unequal'],'0');
+ assert.ok(!group['Number of Observations in WORK.SAS_CHECK but not in WORK.APP_CHECK']);
+ assert.ok(!group['Number of Observations in WORK.APP_CHECK but not in WORK.SAS_CHECK']);
+}
+assert.equal(passed.outcome.errors,0);assert.equal(passed.outcome.warnings,0);
+console.log('Actual revision-2 SAS comparison: all ten groups / 89 matched records pass their documented tolerances; no SAS errors or warnings. Original metadata/bit identity remain outside this certification.');

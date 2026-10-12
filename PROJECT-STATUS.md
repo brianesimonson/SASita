@@ -1,5 +1,11 @@
 # SASita project status
 
+## GLM validation revision 2: all ten SAS comparisons pass
+
+Branch test/sas-glm-validation-pass preserves the user's actual revision-2 Results and Log evidence via SHA256 hashes and parsed summaries in fixtures/sas/glm-validation-v2-pass.json. All ten comparisons ran: OverallANOVA, Type I/III ModelANOVA, ParameterEstimates, FitStatistics and P/R output for both the seven-row and 33-row ANCOVA models. All 89 matched records have zero compared values unequal under the stated tolerances. SAS log has no ERROR or WARNING lines and confirms CV mappings for both fit checks. Largest statistical relative criterion is 9.6233e-14 (criterion 1e-10); P/R use absolute 1e-12. The previously unmatched interaction rows and absent fit checks are now included.
+
+This validates numeric results for these two supported models, using the explicitly documented label/special-missing/CV mappings. It does not certify original app ODS descriptors, special missing codes, numeric Biased metadata, interaction-label parity or bit identity. No app calculations were changed to obtain this pass. App v0.4.11, validation tag glm-validation-v2, main and previous tags remain intact. Earlier pending notes below are historical.
+
 ## GLM comparison log received; helper revision 2
 
 Branch fix/glm-validation-kit: the uploaded log explicitly reports missing coeffvar in both SAS FitStatistics tables. Thus both missing comparisons were stopped by the guard, not statistical failures. The log does not expose the replacement column name. Revised helper maps CV to coeffvar if present and otherwise fails visibly with PROC CONTENTS. It also maps A*X to X*A in the fixture keys, normalizes special numeric missing codes for value checks, and uses absolute 1e-12 for the modest-scale prediction/residual fixtures while other statistics retain relative 1e-10. Original SAS tables and embedded expected numbers are not altered; no app/engine label or metadata parity claim. Both parameter and fit descriptors are now printed. Models and expected CSVs remain unchanged.
