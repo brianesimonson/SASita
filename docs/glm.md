@@ -85,3 +85,7 @@ For these two fixtures the helper maps A*X to X*A in comparison keys, converts s
 The user's new Results and Log confirm all ten comparison groups ran successfully for both models, including the previously absent fit checks and unmatched interaction rows. All 89 matched records have zero compared values unequal under relative 1e-10 for statistics and absolute 1e-12 for predictions/residuals. The largest reported statistical relative criterion is 9.6233e-14. The log contains no errors or warnings and confirms both CV-to-coeffvar mappings.
 
 This is actual SAS runtime validation of the numeric results for the seven-row crossed model and the 33-row CLASS/covariate/interactions model. Label/special-missing/CV mappings remain part of the comparison, so this does not certify original metadata or bit identity. No app calculations changed to obtain the pass. Evidence summaries and source/program SHA256 hashes are retained in fixtures/sas/glm-validation-v2-pass.json. The preceding pending notes describe earlier stages.
+
+### v0.4.12 output presentation
+
+Session Output contains GLM reports once, without automatically listing the input, scored or ODS-created datasets as observation snapshots. All written datasets remain accessible in the sidebar for explicit paged inspection/export and subsequent analysis. The v0.4.12 app ZIP includes the corrected revision-2 validation kit whose ten SAS comparisons passed.

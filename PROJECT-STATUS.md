@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.12: reports/charts only in session Output
+
+Branch feature/report-only-output removes automatic dataset observation snapshots from output history. DATA/SORT results, GLM input/prediction tables and ODS-created tables remain in WORK/native libraries; viewing/exporting requires explicit sidebar selection. Only procedure reports/charts accumulate in history. GLM's six reports remain; its six written datasets no longer create six extra history entries. DATA-only runs return to Program and leave report history intact. A replaced WORK dataset has current contents only; users must explicitly save/export observations they want to retain. The paged dataset viewer still renders 50 rows at a time.
+
+Validation passed: full npm test; modular and standalone Chromium including GLM report-only entries and retained datasets, a 50,000-row DATA-only run with unchanged report history and explicit 50-row viewing, immutable PROC MEANS report history, clear controls, failed-run rollback, CSV exports, native library reopening and actual browser-exported Python/Node packages. No statistical engine changes. The new app ZIP includes the corrected GLM helper already validated in SAS (ten groups / 89 records under documented tolerances). App/wrapper archives verified. Main and earlier tags preserved.
+
+
 ## GLM validation revision 2: all ten SAS comparisons pass
 
 Branch test/sas-glm-validation-pass preserves the user's actual revision-2 Results and Log evidence via SHA256 hashes and parsed summaries in fixtures/sas/glm-validation-v2-pass.json. All ten comparisons ran: OverallANOVA, Type I/III ModelANOVA, ParameterEstimates, FitStatistics and P/R output for both the seven-row and 33-row ANCOVA models. All 89 matched records have zero compared values unequal under the stated tolerances. SAS log has no ERROR or WARNING lines and confirms CV mappings for both fit checks. Largest statistical relative criterion is 9.6233e-14 (criterion 1e-10); P/R use absolute 1e-12. The previously unmatched interaction rows and absent fit checks are now included.

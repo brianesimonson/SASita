@@ -74,6 +74,7 @@ try {
     for(const [example,[dataset,rows]] of Object.entries(expected)) {
       await evaluate(`document.querySelector('#code').value=${JSON.stringify(samples[example])};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
       await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+      await evaluate(`Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent===${JSON.stringify(dataset)}).click()`);
       const result=await evaluate("({name:document.querySelector('#resulttitle').textContent,count:document.querySelector('#rowcount').textContent,log:document.querySelector('#log').textContent})");
       assert.equal(result.name,dataset,`${label} ${example}: ${result.log}`);
       assert.ok(result.count.startsWith(`${rows} observations`),`${label} ${example}: ${result.count}`);
@@ -84,7 +85,7 @@ try {
     assert.equal(await evaluate("document.querySelectorAll('.workspacepane:not([hidden])').length"),1);
     assert.equal(await evaluate("document.querySelector('#workspaceoutputtab').getAttribute('aria-selected')"),'true');
     assert.ok((await evaluate("document.querySelector('#log').textContent")).includes('Run 1'));
-    assert.ok(await evaluate("document.querySelector('#outputhistory').options.length>10"));
+    assert.ok(await evaluate("document.querySelector('#outputhistory').options.length===1"));
     await evaluate("document.querySelector('#workspaceprogramtab').click();document.querySelector('#programtab').click();document.querySelector('#code').value=\"data color; /* note */ text='<img src=x onerror=alert(1)>'; x=12; run;\";document.querySelector('#code').dispatchEvent(new Event('input'))");
     assert.ok(await evaluate("document.querySelector('#highlight .token.keyword')!==null && document.querySelector('#highlight .token.string')!==null && document.querySelector('#highlight .token.comment')!==null"));
     assert.equal(await evaluate("document.querySelector('#highlight img')!==null"),false);
@@ -112,10 +113,10 @@ try {
     await evaluate("document.querySelector('#syntaxclose').click()");
     assert.ok(await evaluate("document.querySelector('#syntaxpanel').hidden && document.querySelector('#code').getBoundingClientRect().width>900"));
     if(process.argv.includes('--screenshots')){await send('Emulation.setDeviceMetricsOverride',{width:1400,height:900,deviceScaleFactor:1,mobile:false});const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-'+label+'.png',Buffer.from(capture.data,'base64'));}
-    await evaluate("document.querySelector('#code').value='data snapshot; x=1; run;';document.querySelector('#run').click()");
+    await evaluate("document.querySelector('#code').value='data snapshot; x=1; run; proc means data=snapshot; var x; run;';document.querySelector('#run').click()");
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     const firstSnapshot=await evaluate("document.querySelector('#outputhistory').value");
-    await evaluate("document.querySelector('#code').value='data snapshot; x=2; run;';document.querySelector('#run').click()");
+    await evaluate("document.querySelector('#code').value='data snapshot; x=2; run; proc means data=snapshot; var x; run;';document.querySelector('#run').click()");
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     await evaluate(`document.querySelector('#outputhistory').value=${JSON.stringify(firstSnapshot)};document.querySelector('#outputhistory').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#table tbody td:nth-child(2)').textContent"),'1');
@@ -127,7 +128,7 @@ try {
     await evaluate("document.querySelector('#workspaceoutputtab').click();document.querySelector('#clearoutput').click()");
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),1);
     assert.equal(await evaluate("document.querySelector('#datasets').textContent"),workBeforeClear);
-    await evaluate("document.querySelector('#code').value='data snapshot; x=3; run;';document.querySelector('#run').click()");
+    await evaluate("document.querySelector('#code').value='data snapshot; x=3; run; proc means data=snapshot; var x; run;';document.querySelector('#run').click()");
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
@@ -136,7 +137,7 @@ try {
     const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(portableBrowserProgram)};document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.11.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.12.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
@@ -165,12 +166,25 @@ try {
     assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
     assert.ok(await evaluate("document.querySelector('#outputhistory').textContent.toLowerCase().includes('glm')"));
     assert.ok(await evaluate("document.querySelector('#datasets').textContent.includes('glm_tests')"));
+    const glmOptions=await evaluate("Array.from(document.querySelector('#outputhistory').options).filter(o=>o.textContent.includes('10-glm.sas')||o.textContent.includes('PROC GLM')).map(o=>o.textContent)");
+    assert.ok(glmOptions.every(o=>o.includes('PROC GLM')),'Only procedure reports belong in GLM history');
+    for(const table of ['glm_study','glm_scored','glm_tests','glm_parameters'])assert.ok(await evaluate(`Array.from(document.querySelectorAll('#datasets strong')).some(n=>n.textContent===${JSON.stringify(table)})`));
     const glmHistory=await evaluate("document.querySelector('#outputhistory').options.length");
     await evaluate("document.querySelector('#code').value='data badglm; x=1; y=2; run; proc glm data=badglm; model y=x / noint; run;';document.querySelector('#run').click()");
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),glmHistory);
     assert.ok(await evaluate("!document.querySelector('#datasets').textContent.includes('badglm')"));
     console.log(`${label}: GLM reports, tables, Type III/SOLUTION portable values and failed-run rollback passed`);
+    const reportsBeforeData=await evaluate("document.querySelector('#outputhistory').options.length");
+    await evaluate("document.querySelector('#code').value='data many_rows; do id=1 to 50000; x=id; output; end; run;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),reportsBeforeData);
+    assert.equal(await evaluate("document.querySelector('#workspaceprogramtab').getAttribute('aria-selected')"),'true');
+    await evaluate("Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent==='many_rows').click()");
+    assert.ok((await evaluate("document.querySelector('#rowcount').textContent")).startsWith('50,000 observations'));
+    assert.equal(await evaluate("document.querySelectorAll('#table tbody tr').length"),50);
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),reportsBeforeData);
+    console.log(`${label}: report-only history, dataset availability and explicit 50,000-row paged viewing passed`);
     // Chart.js renders all five types; history keeps data snapshots and PNG export.
     const chartCode=await readFile('examples/project-demo/charts-demo.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(chartCode)};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
@@ -291,6 +305,7 @@ try {
     assert.ok(await evaluate("document.querySelector('.brandlogo').complete && document.querySelector('.brandlogo').naturalWidth>0"));
     await evaluate("document.querySelector('#code').value='data restored_native;set saved.persist;run;';document.querySelector('#run').click()");
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    await evaluate("Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent==='restored_native').click()");
     assert.equal(await evaluate("document.querySelector('#resulttitle').textContent"),'restored_native');
     assert.ok((await evaluate("document.querySelector('#table').textContent")).includes('abcd'));
     // A failure after a native table has been prepared leaves its old disk file intact.
@@ -305,6 +320,7 @@ try {
     assert.ok((await evaluate("document.querySelector('#code').value")).includes('unsupported'));
     await evaluate("document.querySelector('#code').value=\"libname saved 'tables';data from_new_session;set saved.persist;run;\";document.querySelector('#run').click()");
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    await evaluate("Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent==='from_new_session').click()");
     assert.equal(await evaluate("document.querySelector('#resulttitle').textContent"),'from_new_session');
     assert.ok((await evaluate("document.querySelector('#table').textContent")).includes('abcd'));
     await evaluate("document.querySelector('#forgetproject').click()");
