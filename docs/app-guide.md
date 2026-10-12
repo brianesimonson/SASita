@@ -1,4 +1,4 @@
-# Sassy v0.4.12
+# Sassy v0.4.13
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -20,7 +20,7 @@ This patch adds Chart.js plots, titles, and PNG downloads. Open charts-demo.sas 
 
 On the Program tab, click **Syntax guide**, or press **Ctrl+Space** in Source. The right panel follows the cursor inside a supported procedure or function and shows implemented syntax, options and limits. Close it to restore the full editor width. Tab still indents; this release does not provide a completion popup.
 
-The catalog has eight procedures (GLM, SURVEYSELECT, MEANS, SORT, IMPORT, EXPORT, SGPLOT, SGPIE), all 35 DATA step functions, 20 format families, and DATA/LIBNAME/FILENAME/TITLE/CALL STREAMINIT/macro references. Search or select an entry to browse independently; check **Follow cursor** to resume contextual help. **Insert template at cursor** inserts a procedure skeleton or function example, replacing only an explicitly selected range. Surrounding source remains. Edit example names before Run; insertion never runs code or accesses files. Format entries are reference-only.
+The catalog has nine procedures (PRINT, GLM, SURVEYSELECT, MEANS, SORT, IMPORT, EXPORT, SGPLOT, SGPIE), all 35 DATA step functions, 20 format families, and DATA/LIBNAME/FILENAME/TITLE/CALL STREAMINIT/macro references. Search or select an entry to browse independently; check **Follow cursor** to resume contextual help. **Insert template at cursor** inserts a procedure skeleton or function example, replacing only an explicitly selected range. Surrounding source remains. Edit example names before Run; insertion never runs code or accesses files. Format entries are reference-only.
 
 The tolerant scanner skips comments and quoted strings. It examines source before the caret, without expanding macros or validating the whole program; macro-generated procedures and incomplete/ambiguous syntax may need manual catalog selection. This is the supported Sassy subset, not the complete SAS documentation. Source catalog: dist/syntax-help.mjs, embedded in the standalone build. Added HTML size is approximately 24 KB (1.6%); no runtime dependencies or network calls.
 
@@ -32,7 +32,7 @@ To try it, open demo-project/portable-demo.sas and export. Extract the package a
 
 ## PROC MEANS and example programs
 
-Click **Examples** in the upper-right header. Preview ten programs, download a .sas snippet, or **Open in editor**. Opening never runs code; unsaved edits prompt before replacement. Programs cover generated DATA/SORT/MERGE, MT32 uniform draws, all five charts, PROC MEANS, macros, CSV project files, permanent libraries and formats. The CSV/library examples require the included demo-project folder; the others generate their own inputs.
+Click **Examples** in the upper-right header. Preview eleven programs, download a .sas snippet, or **Open in editor**. Opening never runs code; unsaved edits prompt before replacement. Programs cover generated DATA/SORT/MERGE, MT32 uniform draws, all five charts, PROC MEANS, macros, CSV project files, permanent libraries and formats. The CSV/library examples require the included demo-project folder; the others generate their own inputs.
 
 PROC MEANS saves overall totals and each CLASS subset by default using _TYPE_ bit flags and _FREQ_. NWAY removes those rows when requested. Inactive character classes are blank; numeric classes are missing. OUTPUT without statistic requests uses five _STAT_ rows. Reports appear in session Output; saved tables appear in Libraries. See means.md for statistics/options, missing values, naming and limits. The included means-validation ZIP contains deterministic SAS programs and Sassy result CSVs for the next actual SAS comparison.
 
@@ -43,3 +43,7 @@ In v0.4.10, NORMAL caches the second polar value instead of discarding it. Norma
 ## PROC GLM
 
 The tenth Examples program fits an unbalanced CLASS interaction model. Type I/III tests and MODEL / SOLUTION estimates, standard errors, t values and p values appear in Output. ODS OUTPUT captures reusable tables; OUTPUT P=/R= saves predictions/residuals. Read glm.md for the first fixed-effects subset, design limits and accuracy evidence. To compare in SAS Studio, extract the included glm-validation.zip and upload/run only 01-sas-glm-comparison.sas; expected results are embedded, with no CSV uploads or folder edits. Return the SAS Results and Log. Fresh SAS runtime validation is pending.
+
+## Explicit observation output
+
+Run `proc print data=table(obs=10); var id amount; run;` to put a few observations in session Output. Add NOOBS to hide observation numbers. FIRSTOBS=5 OBS=10 lists rows 5–10. DATA= and its parenthesized options select the source range; VAR selects columns. PRINT changes no dataset. Open the eleventh Examples program; see print.md for limits and unsupported statements. WEIGHT remains unsupported in MEANS/GLM.

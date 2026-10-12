@@ -105,7 +105,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#code').value"),'data x; value=substr("abcd",2,2); run;');
     assert.equal(await evaluate("document.querySelector('#programstate').textContent"),'Unsaved changes');
     await evaluate("document.querySelector('#syntaxsearch').value='';document.querySelector('#syntaxsearch').dispatchEvent(new Event('input'))");
-    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),69);
+    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),70);
     await evaluate("document.querySelector('#syntaxclose').click();document.querySelector('#code').value='proc sgplot data=x; histogram x /';document.querySelector('#code').setSelectionRange(32,32);document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{ctrlKey:true,code:'Space',key:' ',bubbles:true}))");
     assert.equal(await evaluate("document.querySelector('#syntaxentry').value"),'sgplot');
     assert.ok(await evaluate("!document.querySelector('#syntaxpanel').hidden && document.querySelector('#syntaxfollow').checked"));
@@ -134,10 +134,10 @@ try {
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
     console.log(`${label}: tabbed workspace, offline SAS colors, rolling output/log, independent clears and snapshot preservation passed`);
     // Export from the REAL browser build, extract, and execute the Python bridge.
-    const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8');
+    const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8')+' proc print data=glm_scored(obs=3) noobs; var predicted residual; run;';
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(portableBrowserProgram)};document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.12.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.13.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
@@ -185,6 +185,19 @@ try {
     assert.equal(await evaluate("document.querySelectorAll('#table tbody tr').length"),50);
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),reportsBeforeData);
     console.log(`${label}: report-only history, dataset availability and explicit 50,000-row paged viewing passed`);
+    await evaluate("document.querySelector('#code').value='proc print data=many_rows(firstobs=5 obs=10); var x id; run;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    assert.ok(await evaluate("document.querySelector('#resulttitle').textContent.includes('PROC PRINT')"));
+    assert.equal(await evaluate("document.querySelectorAll('#table tbody tr').length"),6);
+    assert.equal(await evaluate("document.querySelector('#table tbody td').textContent"),'5');
+    assert.equal(await evaluate("document.querySelector('#table thead th:nth-child(2)').textContent"),'x');
+    await evaluate("document.querySelector('#code').value='proc print data=many_rows(obs=3) noobs; var id; run;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelectorAll('#table thead th').length"),1);
+    assert.equal(await evaluate("document.querySelectorAll('#table tbody tr').length"),3);
+    assert.equal(await evaluate("document.querySelector('#table thead th').textContent"),'id');
+    console.log(`${label}: explicit PRINT observations, FIRSTOBS numbering, VAR order and NOOBS rendering passed`);
     // Chart.js renders all five types; history keeps data snapshots and PNG export.
     const chartCode=await readFile('examples/project-demo/charts-demo.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(chartCode)};document.querySelector('#code').dispatchEvent(new Event('input'));document.querySelector('#run').click()`);
@@ -343,7 +356,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#workspacelogtab').getAttribute('aria-selected')"),'true');
     // User-facing example catalog and SAS-shaped CLASS totals.
     await evaluate("document.querySelector('#exampleprograms').click()");
-    assert.equal(await evaluate("document.querySelector('#examplechoice').options.length"),10);
+    assert.equal(await evaluate("document.querySelector('#examplechoice').options.length"),11);
     await evaluate("document.querySelector('#examplechoice').value='04-means.sas';document.querySelector('#examplechoice').dispatchEvent(new Event('change'))");
     assert.ok(await evaluate("document.querySelector('#examplesource').textContent.includes('_TYPE_')"));
     const logBeforeExample=await evaluate("document.querySelector('#log').textContent");

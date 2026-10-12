@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.13: explicit PROC PRINT
+
+Branch feature/proc-print adds observation reporting via DATA=table(OBS=10 FIRSTOBS=1), VAR, NOOBS, inherited formats and TITLE. Reports preserve original observation indices and independent small snapshots; NOOBS hides the number column. Source datasets remain untouched and no PRINT dataset is written. Native library reads and portable report models use the existing interpreter. Limits are 1,000 observations / 100,000 cells; larger unrestricted requests fail with guidance. WHERE/BY/ID/SUM/LABEL/FORMAT and other options remain unsupported. Eleventh example and ninth procedure syntax entry included. WEIGHT remains deferred in both MEANS/GLM as a separate statistical change.
+
+Validation: full npm test passes including new range/column/empty-range/title/format/native/snapshot/no-write/limit checks and all actual statistical fixtures. Browser checks verify FIRSTOBS numbering, VAR order and NOOBS in both builds; portable Python/Node and actual browser-export ZIPs include PRINT. App/wrapper ZIP CRC/manifests verified. No fresh SAS PRINT runtime/layout certification. Main and prior tags preserved.
+
+
 ## Sassy v0.4.12: reports/charts only in session Output
 
 Branch feature/report-only-output removes automatic dataset observation snapshots from output history. DATA/SORT results, GLM input/prediction tables and ODS-created tables remain in WORK/native libraries; viewing/exporting requires explicit sidebar selection. Only procedure reports/charts accumulate in history. GLM's six reports remain; its six written datasets no longer create six extra history entries. DATA-only runs return to Program and leave report history intact. A replaced WORK dataset has current contents only; users must explicitly save/export observations they want to retain. The paged dataset viewer still renders 50 rows at a time.

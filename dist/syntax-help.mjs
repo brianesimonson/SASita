@@ -1,4 +1,5 @@
 const syntaxEntries=[
+{ id:'print',label:'PROC PRINT',group:'Procedures',syntax:'PROC PRINT DATA=table(FIRSTOBS=1 OBS=10) NOOBS; VAR id amount; RUN;',description:'Explicitly lists observations in session Output without creating or modifying a dataset. OBS is the last observation index, FIRSTOBS is the first; options belong inside DATA=table(...). NOOBS hides observation numbers; VAR selects and orders columns. Inherits formats and the current TITLE. At most 1,000 observations / 100,000 cells; unrestricted larger listings fail with guidance. WHERE, BY, ID, SUM, LABEL, FORMAT and other dataset options are not implemented.',template:'proc print data=table(obs=10);\n    var id amount;\nrun;' },
 {
   "id": "glm",
   "label": "PROC GLM",

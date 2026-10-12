@@ -13,4 +13,4 @@ assert.equal(run(examples.formats).datasets.format_gallery.rows[0].padded_id,'00
 assert.deepEqual(run(examples.random).datasets.random_sample.rows,run(examples.random).datasets.random_sample.rows);
 assert.equal(run(examples.random).datasets.random_sample.rows.length,8);
 let html=fs.readFileSync('dist/index.html','utf8');for(let id of s.matchAll(/\$\('([^']+)'\)/g))assert.ok(html.includes(`id="${id[1]}"`),'Missing DOM element '+id[1]);
-console.log('All ten UI examples and DOM element references checked.');
+console.log('Built-in UI examples and DOM element references checked.');

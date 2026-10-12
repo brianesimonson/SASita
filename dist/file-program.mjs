@@ -1,3 +1,4 @@
+import {parsePrint,preparePrint} from './print.mjs';
 import {parseMeans,prepareMeans} from './means.mjs';
 import {parseSurveySelect,prepareSurveySelect} from './surveyselect.mjs';
 import {parseGLM,prepareGLM} from './glm.mjs';
@@ -42,6 +43,7 @@ export function filePlan(expanded) {
    let value='';if(tokens[i]?.v!==';'){const title=take();if(title.type!=='str'||title.v.length>200)throw new Error('TITLE requires quoted text of at most 200 characters');value=title.v;}need(';');plan.push({kind:'title',value});continue;
   }
   if(t.v==='proc'&&tokens[i]?.v==='surveyselect'){const parsed=parseSurveySelect(tokens,start);i=parsed.next;plan.push({kind:'surveyselect',spec:parsed.spec});continue;}
+  if(t.v==='proc'&&tokens[i]?.v==='print'){const parsed=parsePrint(tokens,start);i=parsed.next;plan.push({kind:'print',spec:parsed.spec});continue;}
   if(t.v==='proc'&&tokens[i]?.v==='means'){const parsed=parseMeans(tokens,start);i=parsed.next;plan.push({kind:'means',spec:parsed.spec});continue;}
   if(t.v==='proc'&&['sgplot','sgpie'].includes(tokens[i]?.v)){const parsed=parsePlot(tokens,start);i=parsed.next;plan.push({kind:'plot',plot:parsed.plot});continue;}
   if(t.v==='libname'){
@@ -95,7 +97,7 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  // Keep the original synchronous engine and global execution limit for ordinary programs.
  const tokens=tokenize(macro.code);
  let hasFiles=tokens.some(t=>t.type==='id'&&/^[a-z_]\w*\.[a-z_]\w*$/.test(t.v)&&!/^(work|first|last)\./.test(t.v)),inBlock=false;
- for(let i=0;i<tokens.length;i++){const t=tokens[i];if(t.type!=='id')continue;if(inBlock){if(t.v==='run'&&tokens[i-1]?.v===';'&&tokens[i+1]?.v===';')inBlock=false;continue;}if(['libname','filename','title'].includes(t.v))hasFiles=true;if(t.v==='proc'){if(['import','export','sgplot','sgpie','means'].includes(tokens[i+1]?.v))hasFiles=true;inBlock=true;}else if(t.v==='data')inBlock=true;}
+ for(let i=0;i<tokens.length;i++){const t=tokens[i];if(t.type!=='id')continue;if(inBlock){if(t.v==='run'&&tokens[i-1]?.v===';'&&tokens[i+1]?.v===';')inBlock=false;continue;}if(['libname','filename','title'].includes(t.v))hasFiles=true;if(t.v==='proc'){if(['import','export','sgplot','sgpie','means','print'].includes(tokens[i+1]?.v))hasFiles=true;inBlock=true;}else if(t.v==='data')inBlock=true;}
 
  if(tokens.some((t,i)=>t.v==='proc'&&['surveyselect','glm'].includes(tokens[i+1]?.v)||t.v==='ods'))hasFiles=true;
  if(!hasFiles){const result=run(macro.code,input,{expanded:true});result.logs.unshift(...macro.logs);return result;}
@@ -111,6 +113,10 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  function checkExportLimit(){if(exports.reduce((n,e)=>n+new TextEncoder().encode(e.text).length,0)>50000000)throw new Error('Total program exports are limited to 50 MB');}
  for(const step of plan) {
   if(step.kind==='title'){chartTitle=step.value;continue;}
+  if(step.kind==='print'){
+   await load(step.spec.source);const result=preparePrint(step.spec,datasets[step.spec.source],chartTitle);
+   reports.push(result.report);if(reports.length>20||reports.reduce((n,r)=>n+r.dataset.rows.length,0)>100000)throw new Error('Procedure report limit exceeded');logs.push(...result.logs);continue;
+  }
   if(step.kind==='glm'){
    if(step.spec.noprint&&Object.keys(step.ods).length)throw new Error('GLM NOPRINT disables ODS output; remove NOPRINT when capturing tables');
    await load(step.spec.source);const result=prepareGLM(step.spec,datasets[step.spec.source]);

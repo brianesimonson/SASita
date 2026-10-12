@@ -40,6 +40,9 @@ try{
  assert.ok(Math.abs(JSON.parse(glmEnvelope.tables.glm_anova).rows[1].ss-6)<1e-10);
  assert.ok(Math.abs(JSON.parse(glmEnvelope.tables.glm_parameters).rows[0].estimate-17)<1e-10);
  assert.ok(Math.abs(JSON.parse(glmEnvelope.tables.glm_scored).rows[0].predicted-13)<1e-10);
+ const printFolder=await packageFor('data f; do id=1 to 20; output; end; run; proc print data=f(firstobs=5 obs=10) noobs; var id; run;');
+ const printProcess=python([join(printFolder,'run.py')]);assert.equal(printProcess.status,0,printProcess.stderr);
+ const printResult=JSON.parse(printProcess.stdout);assert.equal(printResult.reports[0].showObs,false);assert.deepEqual(printResult.reports[0].dataset.rows.map(r=>r.id),[5,6,7,8,9,10]);assert.equal(JSON.parse(printResult.tables.f).rows.length,20);
  // Exact RAND fixture path and signed-zero table strings survive the wrapper.
  const randomCode="data draws; call streaminit('MT32',12345); do i=1 to 100; u=rand('uniform'); hex=put(u,hex16.); output; end; run;";
  const randomFolder=await packageFor(randomCode,{zero:{columns:['x'],rows:[{x:-0}],formats:{}}});const random=python([join(randomFolder,'run.py')]);assert.equal(random.status,0,random.stderr);const randomResult=JSON.parse(random.stdout);

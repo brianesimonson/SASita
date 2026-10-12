@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {runFileProgram} from './dist/file-program.mjs';
+import {writeTable} from './dist/table-storage.mjs';
+const source='data study; do id=1 to 20; amount=id/3; output; end; format amount 8.2; run;';
+let r=await runFileProgram(source+'proc print data=study(firstobs=5 obs=10); var amount id; run;');
+assert.deepEqual(r.written,['study']);assert.equal(r.datasets.study.rows.length,20);
+assert.deepEqual(r.reports[0].dataset.columns,['amount','id']);assert.deepEqual(r.reports[0].dataset.rows.map(row=>row.id),[5,6,7,8,9,10]);
+assert.deepEqual(r.reports[0].observationNumbers,[5,6,7,8,9,10]);assert.equal(r.reports[0].showObs,true);assert.equal(r.reports[0].dataset.formats.amount,'8.2');
+const input=r.datasets.study;
+r=await runFileProgram('title "Small inspection"; proc print data=work.study(obs=3) noobs; var id; run;',{study:input});
+assert.deepEqual(r.written,[]);assert.equal(r.reports[0].showObs,false);assert.match(r.reports[0].title,/Small inspection/);assert.equal(input.rows.length,20);
+r=await runFileProgram(source+'proc print data=study(obs=1); run; data study; id=999; run;');assert.equal(r.reports[0].dataset.rows[0].id,1);assert.equal(r.datasets.study.rows[0].id,999);
+r=await runFileProgram('proc print data=study(obs=0); run; proc print data=study(firstobs=30 obs=max); run;',{study:input});assert.ok(r.reports.every(report=>report.dataset.rows.length===0));
+r=await runFileProgram("libname saved 'tables'; proc print data=saved.study(obs=2); run;",{},async path=>{assert.equal(path,'tables/study.sassy-table.json');return writeTable(input,'study');},{checkDirectory:async()=>true});assert.equal(r.reports[0].dataset.rows.length,2);assert.deepEqual(r.exports,[]);assert.deepEqual(r.written,[]);
+for(const code of ['proc print data=study; where id>2; run;','proc print data=study(obs=10 obs=5); run;','proc print data=study(firstobs=0); run;','proc print data=study(obs=-1); run;','proc print data=study; var absent; run;','proc print data=study; var id id; run;','proc print data=study; var; run;','proc print data=study label; run;','proc print data=study(obs=10 keep=id); run;','proc print; run;'])await assert.rejects(runFileProgram(code,{study:input}));
+await assert.rejects(runFileProgram('data big; do id=1 to 1001; output; end; run; proc print data=big; run;'),/limited.*1,000/);
+await assert.rejects(runFileProgram(source+'%macro prints; %do k=1 %to 21; proc print data=study(obs=1); run; %end; %mend; %prints;'),/report limit/);
+console.log('PROC PRINT: OBS/FIRSTOBS bounds, VAR ordering, NOOBS, titles/formats, report snapshots, unchanged datasets/native reads, empty listings and explicit unsupported/oversized requests passed.');

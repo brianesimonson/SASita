@@ -10,7 +10,7 @@ Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the 
 
 ## Current development build
 
-Version 0.4.12 separates procedure output from stored datasets. Reports and charts retain session history; input tables, DATA/SORT results, GLM predictions and ODS datasets stay in the sidebar without automatically printing observations. Click a dataset to inspect/export its current values. Download [Sassy-v0.4.12.zip](dist/Sassy-v0.4.12.zip), unzip and open data-step-lab.html. All ten actual SAS GLM validation comparisons passed their documented tolerances; the corrected validation kit is included. See [GLM scope](docs/glm.md), [procedure support](docs/procedure-support.md) and [the app guide](docs/app-guide.md). Main and earlier milestones remain preserved.
+Version 0.4.13 adds explicit PROC PRINT observation reports with DATA=table(OBS=10 FIRSTOBS=1), VAR and NOOBS. Eleven example programs are included. Dataset creation still does not print observations automatically. Download [Sassy-v0.4.13.zip](dist/Sassy-v0.4.13.zip), unzip and open data-step-lab.html. See [PRINT](docs/print.md), [GLM scope](docs/glm.md), [procedure support](docs/procedure-support.md) and [the app guide](docs/app-guide.md). WEIGHT is not yet implemented in MEANS or GLM. Main and earlier milestones remain preserved.
 
 The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 
