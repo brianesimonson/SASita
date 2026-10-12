@@ -42,7 +42,7 @@ Output history includes ClassLevels, NObs, OverallANOVA, FitStatistics, ModelANO
 | ModelANOVA | dependent, source, hypothesistype, df, ss, ms, fvalue, probf |
 | ParameterEstimates | dependent, parameter, estimate, stderr, tvalue, probt, biased |
 
-ModelANOVA contains separate rows identified by HypothesisType 1 or 3. Source names use uppercase effect names; parameter labels include formatted levels. Exact SAS ODS descriptors, character lengths, row order, display layout and B-flag metadata have not yet been verified against a fresh SAS run. Do not assume complete metadata compatibility from agreement on numeric values.
+ModelANOVA contains separate rows identified by HypothesisType 1 or 3. Source names use uppercase effect names; parameter labels include formatted levels. The actual seven-row SAS run confirms displayed parameter labels (after case/space normalization) and all nine B flags. Exact ODS descriptors, character lengths, row order and display layout have not been certified. Do not assume complete metadata compatibility from agreement on numeric values.
 
 GLM reports, datasets and native writes use the existing session history and staged-write workflow. A failed run does not commit partial results to the app. The portable runner returns report models and native table strings, rather than reproducing SAS's HTML rendering.
 
@@ -60,6 +60,8 @@ Calculations use JavaScript double precision, compensated sums and twice-reortho
 
 The seven-row unbalanced two-factor example in the supplied GLM manual (printed pages 2989–2990) matches the published Type I sums of squares 80.047619, 11.266667 and 0.4, and Type III values 67.6, 10 and 0.4. A separate 33-row unbalanced CLASS/interaction/covariate fixture agrees with independently calculated NumPy least-squares values and SciPy F/t probabilities. Tests also cover three-way expansion, effect order, prediction, missing responses, formatted levels, native outputs, rejected designs, both browser builds and actual exported wrappers.
 
-These checks establish initial numerical confidence. They do not certify full PROC GLM equivalence or bit identity. In particular, the mixed CLASS/covariate Type III hypotheses and SOLUTION parameterization still need comparison against actual SAS output.
+The user also supplied actual SAS Studio results and a clean log for the seven-row example (`10-glm-results.html`, `10-glm-log.html`). An automated comparison checks 69 numeric cells at their printed precision, 20 missing cells and nine B flags, all matching. The log confirms the expected output dataset row/column counts and seven scored observations; scored values are not displayed. The singular-matrix/generalized-inverse note is expected for full CLASS coding, not an execution error. This was the example program, not the self-contained two-model PROC COMPARE program. Printed HTML cannot establish full double precision or validate the larger ANCOVA case. The extracted actual values and original file hashes are preserved in fixtures/sas/glm-seven-row-printed.json.
+
+These checks establish initial numerical confidence. They do not certify full PROC GLM equivalence or bit identity. In particular, the mixed CLASS/covariate Type III hypotheses and full-precision output values still need the two-model SAS comparison.
 
 Download `examples/glm-validation/glm-validation.zip`, extract it and upload only `01-sas-glm-comparison.sas` to SAS Studio. Run the entire file and return the HTML Results and Log. It embeds Sassy's typed expected results for two deterministic models; no folder edits or CSV uploads are needed. This newly generated SAS comparison has not yet been executed in SAS. Missing tables or columns are reported as errors, not treated as passes.

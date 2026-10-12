@@ -46,3 +46,5 @@ await assert.rejects(runFileProgram('proc glm data=f; class a b; model y=a|b; ru
 await assert.rejects(runFileProgram('data f; do x=1 to 10; z=2*x; y=x+.1; output; end; run; proc glm data=f; model y=x z / solution; run;'),/rank-deficient/);
 await assert.rejects(runFileProgram('data f; do a=1 to 32; do b=1 to 32; do c=1 to 2; y=a+b+c; output; end; end; end; run; proc glm data=f; class a b c; model y=a|b|c; run;'),/matrix budget/);
 console.log('GLM: published unbalanced SAS Type I/III example, independent interaction/ANCOVA numerics, SOLUTION, F/t tails, three-way expansion, prediction/missing rows, formats, native outputs and unsupported-design checks passed.');
+
+await import('./scripts/check-glm-reference.mjs');

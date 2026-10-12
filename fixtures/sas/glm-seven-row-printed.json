@@ -1,0 +1,269 @@
+{
+  "provenance": {
+    "source": "User-uploaded actual SAS Studio run of examples/catalog/10-glm.sas",
+    "files": {
+      "log": {
+        "name": "10-glm-log.html",
+        "sha256": "97f9d1a2e5a9827a9089f3a463e1b96454c7d2f88997cd8ca634f392928d648b"
+      },
+      "results": {
+        "name": "10-glm-results.html",
+        "sha256": "5360cf79e0953129615f559fc9bce8df832f4e566210f442207fe6274c586ffa"
+      }
+    },
+    "program_sha256": "0b166b24134c608d0fd77e3e43f7196b4df4117ee7b24230f836eb4ca3b7d4f8",
+    "precision": "HTML display precision only, not full-precision ODS values",
+    "limitations": "No PROC COMPARE run, no displayed scored rows, no larger ANCOVA model; ODS descriptors not exported"
+  },
+  "tables": [
+    {
+      "label": "Class Levels",
+      "rows": [
+        [
+          "Class Level Information"
+        ],
+        [
+          "Class",
+          "Levels",
+          "Values"
+        ],
+        [
+          "a",
+          "2",
+          "A1 A2"
+        ],
+        [
+          "b",
+          "2",
+          "B1 B2"
+        ]
+      ]
+    },
+    {
+      "label": "Number of Observations",
+      "rows": [
+        [
+          "Number of Observations Read",
+          "7"
+        ],
+        [
+          "Number of Observations Used",
+          "7"
+        ]
+      ]
+    },
+    {
+      "label": "Overall ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Sum of Squares",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "Model",
+          "3",
+          "91.71428571",
+          "30.57142857",
+          "15.29",
+          "0.0253"
+        ],
+        [
+          "Error",
+          "3",
+          "6.00000000",
+          "2.00000000",
+          "",
+          ""
+        ],
+        [
+          "Corrected Total",
+          "6",
+          "97.71428571",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "label": "Fit Statistics",
+      "rows": [
+        [
+          "R-Square",
+          "Coeff Var",
+          "Root MSE",
+          "y Mean"
+        ],
+        [
+          "0.938596",
+          "9.801480",
+          "1.414214",
+          "14.42857"
+        ]
+      ]
+    },
+    {
+      "label": "Type I Model ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Type I SS",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "a",
+          "1",
+          "80.04761905",
+          "80.04761905",
+          "40.02",
+          "0.0080"
+        ],
+        [
+          "b",
+          "1",
+          "11.26666667",
+          "11.26666667",
+          "5.63",
+          "0.0982"
+        ],
+        [
+          "a*b",
+          "1",
+          "0.40000000",
+          "0.40000000",
+          "0.20",
+          "0.6850"
+        ]
+      ]
+    },
+    {
+      "label": "Type III Model ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Type III SS",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "a",
+          "1",
+          "67.60000000",
+          "67.60000000",
+          "33.80",
+          "0.0101"
+        ],
+        [
+          "b",
+          "1",
+          "10.00000000",
+          "10.00000000",
+          "5.00",
+          "0.1114"
+        ],
+        [
+          "a*b",
+          "1",
+          "0.40000000",
+          "0.40000000",
+          "0.20",
+          "0.6850"
+        ]
+      ]
+    },
+    {
+      "label": "Solution",
+      "rows": [
+        [
+          "Parameter",
+          "Estimate",
+          "",
+          "StandardError",
+          "t Value",
+          "Pr > |t|"
+        ],
+        [
+          "Intercept",
+          "17.00000000",
+          "B",
+          "1.41421356",
+          "12.02",
+          "0.0012"
+        ],
+        [
+          "a A1",
+          "-7.00000000",
+          "B",
+          "1.73205081",
+          "-4.04",
+          "0.0273"
+        ],
+        [
+          "a A2",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "b B1",
+          "2.00000000",
+          "B",
+          "1.73205081",
+          "1.15",
+          "0.3318"
+        ],
+        [
+          "b B2",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A1 B1",
+          "1.00000000",
+          "B",
+          "2.23606798",
+          "0.45",
+          "0.6850"
+        ],
+        [
+          "a*b A1 B2",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A2 B1",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A2 B2",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ]
+      ]
+    }
+  ]
+}

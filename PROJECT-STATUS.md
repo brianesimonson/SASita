@@ -1,10 +1,14 @@
 # SASita project status
 
+## Actual SAS GLM seven-row results received
+
+On branch test/sas-glm-reference, the uploaded 10-glm log/results establish a clean actual SAS run of the catalog example. Automated comparison against current Sassy checks 69 numeric cells at printed precision, 20 missing cells and nine B flags: all match. Type I/III, overall ANOVA, SOLUTION, fit statistics, CLASS levels and observation counts agree. The SAS singular-matrix note is expected for redundant CLASS indicators. Output row/column counts match; the seven scored values themselves are not displayed. This upload is not a run of the two-model comparison kit. Full-precision values, ANCOVA and exact ODS metadata remain pending. Original file hashes/printed tables are in fixtures/sas/glm-seven-row-printed.json and are checked by scripts/check-glm-reference.mjs via test-glm. No runtime/app package change; v0.4.11 and main remain unchanged.
+
 ## Sassy v0.4.11: first fixed-effects PROC GLM
 
 Branch feature/sassy-glm implements one-response OLS with CLASS, hierarchical crossed interactions through degree three, Type I sequential and Type III block tests, MODEL / SOLUTION, predicted/residual outputs and six scoped ODS OUTPUT names. The tenth catalog example reproduces the published unbalanced two-factor SAS example. See docs/glm.md for exact boundaries and output fields. Empty interaction cells, nonhierarchical categorical interactions and additional rank deficiency fail explicitly; random/repeated effects and broad PROC GLM syntax remain deferred.
 
-Validation: complete npm test and modular/standalone Chromium checks passed, including actual browser-export ZIP execution through Python/Node. Published SAS SS and F tests agree to displayed precision; independent NumPy/SciPy checks cover an unbalanced 33-row CLASS/covariate/interactions model and F/t distributions. SOLUTION, formatted levels, missing-response prediction, native output and failed-run rollback are checked. A fresh SAS runtime comparison and exact ODS metadata parity are pending; no bit-identical guarantee. examples/glm-validation/glm-validation.zip embeds Sassy expected values in one SAS-only program without folder edits/CSV imports. Main and all earlier tags are preserved.
+Validation: complete npm test and modular/standalone Chromium checks passed, including actual browser-export ZIP execution through Python/Node. Published SAS SS and F tests agree to displayed precision; independent NumPy/SciPy checks cover an unbalanced 33-row CLASS/covariate/interactions model and F/t distributions. SOLUTION, formatted levels, missing-response prediction, native output and failed-run rollback are checked. The actual seven-row SAS run now passes at printed precision (see above). Full-precision two-model comparison and exact ODS metadata parity remain pending; no bit-identical guarantee. examples/glm-validation/glm-validation.zip embeds Sassy expected values in one SAS-only program without folder edits/CSV imports. Main and all earlier tags are preserved.
 
 
 ## Sassy v0.4.10: cached NORMAL pairs integrated
