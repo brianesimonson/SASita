@@ -48,3 +48,4 @@ await assert.rejects(runFileProgram('data f; do a=1 to 32; do b=1 to 32; do c=1 
 console.log('GLM: published unbalanced SAS Type I/III example, independent interaction/ANCOVA numerics, SOLUTION, F/t tails, three-way expansion, prediction/missing rows, formats, native outputs and unsupported-design checks passed.');
 
 await import('./scripts/check-glm-reference.mjs');
+await import('./scripts/check-glm-two-model-reference.mjs');

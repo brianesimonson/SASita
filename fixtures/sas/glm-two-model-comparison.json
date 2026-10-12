@@ -1,0 +1,655 @@
+{
+  "provenance": {
+    "source": "User-uploaded actual SAS two-model comparison results",
+    "filename": "01-sas-glm-comparison-results.html",
+    "sha256": "31b9abb0c10356f73f1f76f7255053e7bd8d29ed9d0f1477cdcdfc935e51c46a",
+    "log_received": false,
+    "app_version": "0.4.11",
+    "criterion": "relative 1e-10",
+    "limitations": "Eight comparison groups are present; both FitStatistics comparison groups are absent. Five special-missing differences per OverallANOVA; near-zero residual difference in published case; mixed interaction label mismatch excludes two test and three parameter rows in ANCOVA."
+  },
+  "comparisons": {
+    "published_glm_anova vs app_published_anova": {
+      "Number of Observations in Common": "3",
+      "Total Number of Values which Compare Unequal": "5",
+      "Total Number of Values not EXACTLY Equal": "9",
+      "Maximum Difference Criterion Value": "4.3796E-15"
+    },
+    "published_glm_tests vs app_published_tests": {
+      "Number of Observations in Common": "6",
+      "Total Number of Values which Compare Unequal": "0",
+      "Total Number of Values not EXACTLY Equal": "22",
+      "Maximum Difference Criterion Value": "1.0963E-14"
+    },
+    "published_glm_parameters vs app_published_parameters": {
+      "Number of Observations in Common": "9",
+      "Total Number of Values which Compare Unequal": "0",
+      "Total Number of Values not EXACTLY Equal": "16",
+      "Maximum Difference Criterion Value": "5.0892E-15"
+    },
+    "published_glm_scored vs app_published_scored": {
+      "Number of Observations in Common": "7",
+      "Total Number of Values which Compare Unequal": "1",
+      "Total Number of Values not EXACTLY Equal": "6",
+      "Maximum Difference Criterion Value": "2"
+    },
+    "ancova_glm_anova vs app_ancova_anova": {
+      "Number of Observations in Common": "3",
+      "Total Number of Values which Compare Unequal": "5",
+      "Total Number of Values not EXACTLY Equal": "12",
+      "Maximum Difference Criterion Value": "8.6665E-14"
+    },
+    "ancova_glm_tests vs app_ancova_tests": {
+      "Number of Observations in Common": "8",
+      "Number of Observations in WORK.SAS_CHECK but not in WORK.APP_CHECK": "2",
+      "Number of Observations in WORK.APP_CHECK but not in WORK.SAS_CHECK": "2",
+      "Total Number of Values which Compare Unequal": "0",
+      "Total Number of Values not EXACTLY Equal": "32",
+      "Maximum Difference Criterion Value": "9.6233E-14"
+    },
+    "ancova_glm_parameters vs app_ancova_parameters": {
+      "Number of Observations in Common": "13",
+      "Number of Observations in WORK.SAS_CHECK but not in WORK.APP_CHECK": "3",
+      "Number of Observations in WORK.APP_CHECK but not in WORK.SAS_CHECK": "3",
+      "Total Number of Values which Compare Unequal": "0",
+      "Total Number of Values not EXACTLY Equal": "27",
+      "Maximum Difference Criterion Value": "8.293E-14"
+    },
+    "ancova_glm_scored vs app_ancova_scored": {
+      "Number of Observations in Common": "33",
+      "Total Number of Values which Compare Unequal": "0",
+      "Total Number of Values not EXACTLY Equal": "52",
+      "Maximum Difference Criterion Value": "3.2567E-13"
+    }
+  },
+  "published_tables": [
+    {
+      "label": "Class Levels",
+      "rows": [
+        [
+          "Class Level Information"
+        ],
+        [
+          "Class",
+          "Levels",
+          "Values"
+        ],
+        [
+          "a",
+          "2",
+          "A1 A2"
+        ],
+        [
+          "b",
+          "2",
+          "B1 B2"
+        ]
+      ]
+    },
+    {
+      "label": "Number of Observations",
+      "rows": [
+        [
+          "Number of Observations Read",
+          "7"
+        ],
+        [
+          "Number of Observations Used",
+          "7"
+        ]
+      ]
+    },
+    {
+      "label": "Overall ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Sum of Squares",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "Model",
+          "3",
+          "91.71428571",
+          "30.57142857",
+          "15.29",
+          "0.0253"
+        ],
+        [
+          "Error",
+          "3",
+          "6.00000000",
+          "2.00000000",
+          "",
+          ""
+        ],
+        [
+          "Corrected Total",
+          "6",
+          "97.71428571",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "label": "Fit Statistics",
+      "rows": [
+        [
+          "R-Square",
+          "Coeff Var",
+          "Root MSE",
+          "y Mean"
+        ],
+        [
+          "0.938596",
+          "9.801480",
+          "1.414214",
+          "14.42857"
+        ]
+      ]
+    },
+    {
+      "label": "Type I Model ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Type I SS",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "a",
+          "1",
+          "80.04761905",
+          "80.04761905",
+          "40.02",
+          "0.0080"
+        ],
+        [
+          "b",
+          "1",
+          "11.26666667",
+          "11.26666667",
+          "5.63",
+          "0.0982"
+        ],
+        [
+          "a*b",
+          "1",
+          "0.40000000",
+          "0.40000000",
+          "0.20",
+          "0.6850"
+        ]
+      ]
+    },
+    {
+      "label": "Type III Model ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Type III SS",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "a",
+          "1",
+          "67.60000000",
+          "67.60000000",
+          "33.80",
+          "0.0101"
+        ],
+        [
+          "b",
+          "1",
+          "10.00000000",
+          "10.00000000",
+          "5.00",
+          "0.1114"
+        ],
+        [
+          "a*b",
+          "1",
+          "0.40000000",
+          "0.40000000",
+          "0.20",
+          "0.6850"
+        ]
+      ]
+    },
+    {
+      "label": "Solution",
+      "rows": [
+        [
+          "Parameter",
+          "Estimate",
+          "",
+          "StandardError",
+          "t Value",
+          "Pr > |t|"
+        ],
+        [
+          "Intercept",
+          "17.00000000",
+          "B",
+          "1.41421356",
+          "12.02",
+          "0.0012"
+        ],
+        [
+          "a A1",
+          "-7.00000000",
+          "B",
+          "1.73205081",
+          "-4.04",
+          "0.0273"
+        ],
+        [
+          "a A2",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "b B1",
+          "2.00000000",
+          "B",
+          "1.73205081",
+          "1.15",
+          "0.3318"
+        ],
+        [
+          "b B2",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A1 B1",
+          "1.00000000",
+          "B",
+          "2.23606798",
+          "0.45",
+          "0.6850"
+        ],
+        [
+          "a*b A1 B2",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A2 B1",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A2 B2",
+          "0.00000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ]
+      ]
+    }
+  ],
+  "ancova_tables": [
+    {
+      "label": "Class Levels",
+      "rows": [
+        [
+          "Class Level Information"
+        ],
+        [
+          "Class",
+          "Levels",
+          "Values"
+        ],
+        [
+          "a",
+          "3",
+          "A1 A2 A3"
+        ],
+        [
+          "b",
+          "2",
+          "B1 B2"
+        ]
+      ]
+    },
+    {
+      "label": "Number of Observations",
+      "rows": [
+        [
+          "Number of Observations Read",
+          "33"
+        ],
+        [
+          "Number of Observations Used",
+          "33"
+        ]
+      ]
+    },
+    {
+      "label": "Overall ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Sum of Squares",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "Model",
+          "8",
+          "372.0869408",
+          "46.5108676",
+          "276.59",
+          "<.0001"
+        ],
+        [
+          "Error",
+          "24",
+          "4.0358228",
+          "0.1681593",
+          "",
+          ""
+        ],
+        [
+          "Corrected Total",
+          "32",
+          "376.1227636",
+          "",
+          "",
+          ""
+        ]
+      ]
+    },
+    {
+      "label": "Fit Statistics",
+      "rows": [
+        [
+          "R-Square",
+          "Coeff Var",
+          "Root MSE",
+          "y Mean"
+        ],
+        [
+          "0.989270",
+          "4.503140",
+          "0.410072",
+          "9.106364"
+        ]
+      ]
+    },
+    {
+      "label": "Type I Model ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Type I SS",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "a",
+          "2",
+          "165.9759130",
+          "82.9879565",
+          "493.51",
+          "<.0001"
+        ],
+        [
+          "b",
+          "1",
+          "1.7941303",
+          "1.7941303",
+          "10.67",
+          "0.0033"
+        ],
+        [
+          "x",
+          "1",
+          "190.2768182",
+          "190.2768182",
+          "1131.53",
+          "<.0001"
+        ],
+        [
+          "a*b",
+          "2",
+          "5.3141489",
+          "2.6570745",
+          "15.80",
+          "<.0001"
+        ],
+        [
+          "x*a",
+          "2",
+          "8.7259304",
+          "4.3629652",
+          "25.95",
+          "<.0001"
+        ]
+      ]
+    },
+    {
+      "label": "Type III Model ANOVA",
+      "rows": [
+        [
+          "Source",
+          "DF",
+          "Type III SS",
+          "Mean Square",
+          "F Value",
+          "Pr > F"
+        ],
+        [
+          "a",
+          "2",
+          "48.2291925",
+          "24.1145963",
+          "143.40",
+          "<.0001"
+        ],
+        [
+          "b",
+          "1",
+          "3.8357613",
+          "3.8357613",
+          "22.81",
+          "<.0001"
+        ],
+        [
+          "x",
+          "1",
+          "126.8148637",
+          "126.8148637",
+          "754.14",
+          "<.0001"
+        ],
+        [
+          "a*b",
+          "2",
+          "2.2232686",
+          "1.1116343",
+          "6.61",
+          "0.0052"
+        ],
+        [
+          "x*a",
+          "2",
+          "8.7259304",
+          "4.3629652",
+          "25.95",
+          "<.0001"
+        ]
+      ]
+    },
+    {
+      "label": "Solution",
+      "rows": [
+        [
+          "Parameter",
+          "Estimate",
+          "",
+          "StandardError",
+          "t Value",
+          "Pr > |t|"
+        ],
+        [
+          "Intercept",
+          "8.820329670",
+          "B",
+          "0.19329931",
+          "45.63",
+          "<.0001"
+        ],
+        [
+          "a A1",
+          "-5.281663004",
+          "B",
+          "0.36097182",
+          "-14.63",
+          "<.0001"
+        ],
+        [
+          "a A2",
+          "-2.581784216",
+          "B",
+          "0.30390427",
+          "-8.50",
+          "<.0001"
+        ],
+        [
+          "a A3",
+          "0.000000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "b B1",
+          "0.075274725",
+          "B",
+          "0.23326941",
+          "0.32",
+          "0.7497"
+        ],
+        [
+          "b B2",
+          "0.000000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "x",
+          "1.749450549",
+          "B",
+          "0.06079316",
+          "28.78",
+          "<.0001"
+        ],
+        [
+          "a*b A1 B1",
+          "1.346058608",
+          "B",
+          "0.37048764",
+          "3.63",
+          "0.0013"
+        ],
+        [
+          "a*b A1 B2",
+          "0.000000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A2 B1",
+          "0.579088911",
+          "B",
+          "0.34639075",
+          "1.67",
+          "0.1076"
+        ],
+        [
+          "a*b A2 B2",
+          "0.000000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A3 B1",
+          "0.000000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "a*b A3 B2",
+          "0.000000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ],
+        [
+          "x*a A1",
+          "-0.822783883",
+          "B",
+          "0.12209188",
+          "-6.74",
+          "<.0001"
+        ],
+        [
+          "x*a A2",
+          "-0.443996004",
+          "B",
+          "0.09904894",
+          "-4.48",
+          "0.0002"
+        ],
+        [
+          "x*a A3",
+          "0.000000000",
+          "B",
+          ".",
+          ".",
+          "."
+        ]
+      ]
+    }
+  ]
+}

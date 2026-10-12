@@ -65,3 +65,11 @@ The user also supplied actual SAS Studio results and a clean log for the seven-r
 These checks establish initial numerical confidence. They do not certify full PROC GLM equivalence or bit identity. In particular, the mixed CLASS/covariate Type III hypotheses and full-precision output values still need the two-model SAS comparison.
 
 Download `examples/glm-validation/glm-validation.zip`, extract it and upload only `01-sas-glm-comparison.sas` to SAS Studio. Run the entire file and return the HTML Results and Log. It embeds Sassy's typed expected results for two deterministic models; no folder edits or CSV uploads are needed. This newly generated SAS comparison has not yet been executed in SAS. Missing tables or columns are reported as errors, not treated as passes.
+
+### Actual two-model SAS comparison received
+
+The user's `01-sas-glm-comparison-results.html` contains eight comparison groups. At the relative criterion 1e-10, all six seven-row effect-test rows and all nine parameter rows pass. In the 33-row ANCOVA model, eight matched effect-test rows, 13 matched parameter rows and all 33 predictions/residuals pass; the largest reported relative criterion across those groups is 3.2567e-13.
+
+This is a partial validation, not a complete pass. SAS labels the numeric-by-CLASS effect `X*A`, while Sassy currently labels it `A*X`; two effect-test rows and three parameter rows are therefore unmatched. Their printed numbers also agree when those labels are explicitly mapped. SAS uses special missing `._` in some OverallANOVA cells, while Sassy's null imports as ordinary `.`; five missing-value comparisons per model fail for that reason. One seven-row residual is 3.553e-15 in SAS versus zero in Sassy; a purely relative test fails at zero despite the tiny absolute difference. Both full-precision FitStatistics comparison sections are absent; the log is still needed to diagnose why. Their printed values agree. CONTENTS identifies SAS's Biased column as numeric, whereas Sassy currently stores the displayed B flag as character.
+
+The actual summaries and printed tables are retained in fixtures/sas/glm-two-model-comparison.json. No blanket full-precision, metadata, label or bit-identity certification follows from this evidence. The comparison kit needs follow-up corrections; the downloadable v0.4.11 package is unchanged.
