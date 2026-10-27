@@ -1,3 +1,4 @@
+import {createCompletionView} from './completion.mjs';
 import {createExamplesView} from './examples-view.mjs';
 import {createPortableView} from './portable-view.mjs';
 import {createSyntaxHelp} from './syntax-help.mjs';
@@ -9,6 +10,7 @@ import {projectCSV} from './file-program.mjs';
 const $=id=>document.getElementById(id);
 const project=createProjectFiles();
 createSyntaxHelp();
+let completionView=null;
 let programHandle=null,programBaseline='',programDirty=false,projectFolderPath='';
 const examples={
 conversions:`/* INPUT reads text; PUT produces a character result. */
@@ -83,7 +85,7 @@ function render(){let list=$('datasets');list.replaceChildren();$('datasetcount'
 }
 function log(msg,error=false){const pane=$('log'),bottom=pane.scrollHeight-pane.scrollTop-pane.clientHeight<40;const entry=el('span',`[${new Date().toLocaleTimeString()}] ${msg}\n\n`,error?'error':'logentry');pane.append(entry);if(pane.textContent.length>1000000){while(pane.childNodes.length>1&&pane.textContent.length>1000000)pane.firstChild.remove();}if(bottom)pane.scrollTop=pane.scrollHeight;$('status').textContent=error?'Error':'Ready';$('status').style.color=error?'#b33c47':'#137e72'}
 function lockWorkspace(value) {
- busy=value;
+ completionView?.close();busy=value;
  for(const id of ['run','newprogram','openprogram','saveprogram','saveasprogram','import','chooseproject','programname','code'])$(id).disabled=value;
  updateProjectUI();render();
 }
@@ -122,7 +124,7 @@ function execute(code=$('code').value){
 }
 function view(expanded){$('codeview').hidden=expanded;$('expandedview').hidden=!expanded;$('programtab').setAttribute('aria-selected',String(!expanded));$('expandedtab').setAttribute('aria-selected',String(expanded));$('programtab').tabIndex=expanded?-1:0;$('expandedtab').tabIndex=expanded?0:-1;}
 $('programtab').onclick=()=>view(false);$('expandedtab').onclick=()=>view(true);for(let id of ['programtab','expandedtab'])$(id).onkeydown=e=>{if(['ArrowLeft','ArrowRight'].includes(e.key)){e.preventDefault();let expanded=id==='programtab';view(expanded);$(expanded?'expandedtab':'programtab').focus()}};
-$('run').onclick=()=>execute().catch(()=>{});$('code').oninput=()=>{lines();programDirty=$('code').value!==programBaseline;updateProgramUI();rememberDraft()};$('code').onscroll=syncEditor;$('code').onkeydown=e=>{if(e.key==='Tab'){e.preventDefault();let a=e.target.selectionStart,b=e.target.selectionEnd;e.target.setRangeText('    ',a,b,'end');e.target.dispatchEvent(new Event('input'))}};document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();execute().catch(()=>{})}});
+$('run').onclick=()=>execute().catch(()=>{});$('code').oninput=()=>{lines();programDirty=$('code').value!==programBaseline;updateProgramUI();rememberDraft()};$('code').onscroll=syncEditor;$('code').onkeydown=e=>{if(e.defaultPrevented)return;if(e.key==='Tab'){e.preventDefault();let a=e.target.selectionStart,b=e.target.selectionEnd;e.target.setRangeText('    ',a,b,'end');e.target.dispatchEvent(new Event('input'))}};document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter'){e.preventDefault();execute().catch(()=>{})}});
 $('prev').onclick=()=>{page--;render()};$('next').onclick=()=>{page++;render()};$('formatted').onchange=render;
 $('help').onclick=()=>$('helpdialog').showModal();$('closehelp').onclick=()=>$('helpdialog').close();$('import').onclick=()=>$('file').click();$('file').onchange=()=>{let file=$('file').files[0];if(!file)return;pendingFile=file;$('filename').textContent=file.name;$('importname').value=file.name.replace(/\.csv$/i,'').replace(/[^a-z0-9_]/gi,'_').replace(/^(?=\d)/,'_').toLowerCase()||'imported';$('importdialog').showModal();$('file').value=''};$('closeimport').onclick=()=>$('importdialog').close();$('importform').onsubmit=async e=>{e.preventDefault();if(busy){log('ERROR: Wait for the program to finish before importing.',true);return}try{if(pendingFile.size>20000000)throw new Error('CSV import limit is 20 MB');let name=$('importname').value.toLowerCase();if(!/^[a-z_]\w*$/.test(name))throw new Error('Use a valid SAS dataset name');let ds=parseCSV(await pendingFile.text());datasets[name]=ds;selected=name;outputSnapshot=null;page=0;renderHistory();render();showWorkspace('output');$('importdialog').close();log(`NOTE: Imported WORK.${name.toUpperCase()}: ${ds.rows.length} observations, ${ds.columns.length} variables.`)}catch(e){log('ERROR: '+e.message,true)}};
 function downloadLocalFile(name,text,type='text/plain;charset=utf-8') {
@@ -137,7 +139,7 @@ function programFilename() {
 }
 function updateProgramUI(){ $('programstate').textContent=programDirty?'Unsaved changes':programHandle?'Saved file':'Editor draft'; }
 function rememberDraft(){try{localStorage.setItem('sasita-program-draft',JSON.stringify({name:$('programname').value,code:$('code').value}));}catch{}}
-function setProgram(code,name='untitled.sas',handle=null){$('code').value=code;$('programname').value=name;programHandle=handle;programBaseline=code;programDirty=false;lines();view(false);updateProgramUI();rememberDraft();showWorkspace('program');}
+function setProgram(code,name='untitled.sas',handle=null){completionView?.close();$('code').value=code;$('programname').value=name;programHandle=handle;programBaseline=code;programDirty=false;lines();view(false);updateProgramUI();rememberDraft();showWorkspace('program');}
 function canReplaceProgram(){return !programDirty||confirm('This program has unsaved edits. Replace them? Your recovery draft will also be replaced.');}
 async function openProgramFile(file,handle=null){
  if(file.size>1000000)throw new Error('Program files are limited to 1 MB');
@@ -212,3 +214,5 @@ if(document.modelContext?.registerTool){try{Promise.resolve(document.modelContex
 createPortableView(()=>({code:$('code').value,datasets,libraries,chartTitle,busy}),log);
 
 createExamplesView((code,name)=>{if(busy){log('Wait for the current operation to finish.',true);return false;}if(!canReplaceProgram())return false;setProgram(code,name);programBaseline='';programDirty=!!code;updateProgramUI();rememberDraft();return true;},downloadLocalFile);
+
+completionView=createCompletionView($('code'),()=>({datasets,libraries,members:libraryMembers}));

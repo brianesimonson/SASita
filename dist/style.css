@@ -33,3 +33,6 @@ main{width:100%;margin:0}header .filebar{color:#203049}
 #portabledialog{width:min(1000px,94vw)}#portablefile{margin:8px 0;width:100%}#portablesource{height:42vh;overflow:auto;background:#14243a;color:#d9e8f8;padding:14px;white-space:pre;font:12px/1.7 Consolas,monospace}#portablestatus{font-size:.8rem;color:#62748c}
 
 #examplesdialog{width:min(900px,94vw)}#examplechoice{width:100%;margin:10px 0}#examplesource{height:42vh;overflow:auto;white-space:pre;background:#14243a;color:#d9e8f8;padding:14px;font:13px/1.7 Consolas,monospace}
+
+.codecompletion{position:fixed;z-index:1000;width:min(390px,calc(100vw - 16px));max-height:260px;overflow:auto;background:#fff;color:#172e49;border:1px solid #8fa9bf;border-radius:6px;box-shadow:0 6px 22px #142b4540;padding:4px;font-size:13px}
+.codecompletion[hidden]{display:none}.completionoption{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 8px;cursor:pointer;border-radius:3px}.completionoption[aria-selected="true"]{background:#e1edf8;outline:1px solid #99b8d4}.completionoption strong{font-family:monospace;overflow-wrap:anywhere}.completionoption small{color:#50677b;font-size:11px}.completionhint{display:block;position:sticky;bottom:-4px;background:#f3f6f9;padding:6px;font-size:11px;color:#475e71}

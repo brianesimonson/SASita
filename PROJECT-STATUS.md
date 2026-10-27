@@ -1,5 +1,14 @@
 # SASita project status
 
+## Sassy v0.4.15: metadata completion and persistent validation checklist
+
+Branch feature/editor-dataset-completion implements dot-triggered editor suggestions: WORK/known library member names insert after the library dot; variable shortcuts such as temp.pa or work.claims.pa replace the entire qualifier with a bare variable. Simple DATA SET/MERGE output schemas are inferred from metadata before execution, with bounded KEEP/DROP/RENAME/assignment handling. Suggestions are filtered, keyboard/mouse selectable, dismissed by Escape, and limited to 200 matches / programs up to 100k characters. Existing Tab indentation and Ctrl+Space help remain. Strings/comments/macros/unknown schemas are guarded; no observations/files are read and no code runs for completion. Runtime SAS syntax and calculations are unchanged.
+
+VALIDATION-STATUS.md now records outstanding and completed reference/manual tests. AGENTS/START-HERE direct future sessions to it, especially for questions about pending tests. WEIGHT-SAS is explicitly deferred at the user's request; this editor release does not turn local weighted tests into actual SAS certification. The ledger and completion guide are included in the app ZIP.
+
+Validation: full npm test, new pure metadata/replacement/inference/comment/string/macro/bounds tests (including an observation-access trap), and both browser builds for WORK/native variables, unrun targets, Tab/arrows/Enter/Escape/mouse, dirty state and execution of resulting SAS. Browser-exported Node/Python packages and previous statistical/file/chart/history checks pass. Archives/source fidelity verified. Inference is lightweight rather than a full SAS compiler; unsupported schema transformations need loaded runtime metadata. Main and prior tags preserved.
+
+
 ## Sassy v0.4.14: WEIGHT in MEANS and GLM
 
 Branch feature/weighted-means-glm adds WEIGHT with numeric noninteger weights, preserving SAS procedure-specific inclusion. MEANS excludes missing weights, includes zero/clipped-negative counts unless EXCLNPWGT, adds SUMWGT, VARDEF=DF/N/WDF/WEIGHT/WGT and weighted moments/standard errors. Existing CLASS/BY/totals/output paths remain. GLM uses positive complete observations, weighted mean/SS and normalized weighted QR, count-based DF and weighted Type I/III/SOLUTION. Scaling all weights preserves coefficients/SE/F. Rank/complete-cell/resource bounds remain. FREQ and complex-survey inference remain deferred.

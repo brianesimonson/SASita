@@ -1,4 +1,4 @@
-# Sassy v0.4.14
+# Sassy v0.4.15
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -18,7 +18,7 @@ This patch adds Chart.js plots, titles, and PNG downloads. Open charts-demo.sas 
 
 ## Contextual syntax guide
 
-On the Program tab, click **Syntax guide**, or press **Ctrl+Space** in Source. The right panel follows the cursor inside a supported procedure or function and shows implemented syntax, options and limits. Close it to restore the full editor width. Tab still indents; this release does not provide a completion popup.
+On the Program tab, click **Syntax guide**, or press **Ctrl+Space** in Source. The right panel follows the cursor inside a supported procedure or function and shows implemented syntax, options and limits. Close it to restore the full editor width. Tab accepts an active dataset/variable suggestion; otherwise it indents. Ctrl+Space remains the syntax-guide shortcut.
 
 The catalog has nine procedures (PRINT, GLM, SURVEYSELECT, MEANS, SORT, IMPORT, EXPORT, SGPLOT, SGPIE), all 35 DATA step functions, 20 format families, and DATA/LIBNAME/FILENAME/TITLE/CALL STREAMINIT/macro references. Search or select an entry to browse independently; check **Follow cursor** to resume contextual help. **Insert template at cursor** inserts a procedure skeleton or function example, replacing only an explicitly selected range. Surrounding source remains. Edit example names before Run; insertion never runs code or accesses files. Format entries are reference-only.
 
@@ -51,3 +51,9 @@ Run `proc print data=table(obs=10); var id amount; run;` to put a few observatio
 ## Weighted analysis
 
 Use WEIGHT variable; in MEANS or GLM. The twelfth Examples program demonstrates both and prints five predictions. MEANS adds SUMWGT and EXCLNPWGT; variance divisors and row inclusion differ from GLM. See weights.md. Extract the included weights-validation.zip and upload/run its 01-sas-weight-comparison.sas in SAS Studio; the expected data are embedded. New weighted SAS results are pending.
+
+## Dataset and variable completion
+
+Type `work.` for dataset suggestions. Use Up/Down and Tab/Enter, or click a choice. After `data temp; set work.claims;`, type `temp.` to browse inferred variables before running. Choosing paid_amount inserts only `paid_amount`, removing the qualifier so the program stays ordinary SAS. `work.claims.pa` and loaded named libraries also work. Escape dismisses. Suggestions use column metadata only and never run code or open files. See editor-completion.md for inference boundaries.
+
+Outstanding reference/manual tests are tracked in VALIDATION-STATUS.md. Weighted SAS validation is deliberately deferred; editor development does not mark it passed.

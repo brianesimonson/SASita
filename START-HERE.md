@@ -4,13 +4,13 @@ SASita starts from the supplied DATA Step Lab v0.2.0 prototype. The application 
 
 ## Use the app
 
-Download `dist/Sassy-v0.4.14.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for CSV/permission behavior and docs/native-tables.md for LIBNAME. The demo-project also contains library-demo.sas and its existing tables folder, plus charts-demo.sas for all five chart types without a folder connection. See docs/charts.md. Use the Program, Output, and Log tabs. Open a saved program or type your own, then click **Run**. See docs/app-guide.md. The app requires no Python, server, account, API key, or internet connection to compute results.
+Download `dist/Sassy-v0.4.15.zip`, unzip it, and open `data-step-lab.html` in a modern desktop Chrome or Edge browser. The ZIP avoids a raw HTML link displaying source code. For the folder workflow, choose the included demo-project folder, Browse files, open project-demo.sas, and Run. See docs/project-files.md for CSV/permission behavior and docs/native-tables.md for LIBNAME. The demo-project also contains library-demo.sas and its existing tables folder, plus charts-demo.sas for all five chart types without a folder connection. See docs/charts.md. Use the Program, Output, and Log tabs. Open a saved program or type your own, then click **Run**. See docs/app-guide.md. The app requires no Python, server, account, API key, or internet connection to compute results.
 
 Start with the supplied synthetic data. Inspect the rolling Log, session Output snapshots, and Expanded code, import `examples/claims.csv` or `examples/providers.csv`, and export results. Programs support file open/save and a browser-local recovery draft; datasets remain in tab memory until explicitly exported. Remembered project-folder permissions may need reconnecting. Save or export before closing. Macro definitions reset on each Run.
 
 ## Develop in Codex or locally
 
-Use the existing SASita checkout. Cloud tasks already have isolated environments; do not create another worktree unless explicitly requested. Read `AGENTS.md`, `PROJECT-STATUS.md`, and `HANDOFF.md` before changing the application.
+Use the existing SASita checkout. Cloud tasks already have isolated environments; do not create another worktree unless explicitly requested. Read `AGENTS.md`, `VALIDATION-STATUS.md`, `PROJECT-STATUS.md`, and `HANDOFF.md` before changing the application.
 
 Development uses Node.js 24 and Python 3.12. There are no third-party npm dependencies to install. Python is only a build tool and an optional development server.
 
@@ -48,3 +48,5 @@ Latest app milestone: Sassy v0.4.12 on feature/report-only-output. Only reports/
 Latest app milestone: Sassy v0.4.13 on feature/proc-print. PROC PRINT explicitly lists selected observations via OBS/FIRSTOBS, VAR and NOOBS without changing the source. Eleventh Examples program and print.md describe it. WEIGHT remains a separate future change for MEANS/GLM.
 
 Latest app milestone: Sassy v0.4.14 on feature/weighted-means-glm. WEIGHT now works in both procedures; read weights.md and the twelfth example. The included weights-validation.zip needs only its 01-sas-weight-comparison.sas uploaded/run in SAS Studio. Actual weighted SAS validation remains pending.
+
+Latest app milestone: Sassy v0.4.15 on feature/editor-dataset-completion. WORK/library datasets and variables have dot-triggered suggestions; variable shorthand inserts a bare SAS name. See docs/editor-completion.md. Read VALIDATION-STATUS.md whenever asked about outstanding tests; the weighted SAS run remains explicitly deferred.

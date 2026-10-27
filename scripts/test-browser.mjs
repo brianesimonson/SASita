@@ -133,11 +133,43 @@ try {
     assert.match(await evaluate("document.querySelector('#log').textContent"),/Completed/);
     assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),2);
     console.log(`${label}: tabbed workspace, offline SAS colors, rolling output/log, independent clears and snapshot preservation passed`);
+    // Completion reads descriptors, infers an unrun target and inserts ordinary SAS.
+    await evaluate("document.querySelector('#workspaceprogramtab').click();document.querySelector('#code').value='data temp; set work.cl';document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(document.querySelector('#code').value.length,document.querySelector('#code').value.length);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("document.querySelector('#codecompletion') && !document.querySelector('#codecompletion').hidden");
+    assert.ok(await evaluate("document.querySelector('#codecompletion').textContent.includes('claims')"));
+    if(process.argv.includes('--screenshots')){const shot=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-completion-'+label+'.png',Buffer.from(shot.data,'base64'));}
+    await evaluate("document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}))");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'data temp; set work.claims');
+    await evaluate("document.querySelector('#code').value='data temp; set work.claims; amount=temp.pa';document.querySelector('#code').setSelectionRange(document.querySelector('#code').value.length,document.querySelector('#code').value.length);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('paid_amount')");
+    await evaluate("document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}))");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'data temp; set work.claims; amount=paid_amount');
+    assert.equal(await evaluate("document.querySelector('#programstate').textContent"),'Unsaved changes');
+    await evaluate("document.querySelector('#code').value='data temp; set work.claims; amount=paid_amount; run;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    await evaluate("document.querySelector('#code').value='work.claims.pa';document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(14,14);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden");
+    await evaluate("document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}))");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'work.claims.pa');
+    assert.ok(await evaluate("document.querySelector('#codecompletion').hidden"));
+    await evaluate("document.querySelector('#code').value='work.cl';document.querySelector('#code').setSelectionRange(7,7);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden");
+    await evaluate("document.querySelector('#codecompletion [role=option]').dispatchEvent(new MouseEvent('mousedown',{bubbles:true,cancelable:true}))");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'work.claims');
+    await evaluate("document.querySelector('#code').value='work.';document.querySelector('#code').setSelectionRange(5,5);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden");
+    const secondCompletion=await evaluate("document.querySelectorAll('#codecompletion [role=option] strong')[1].textContent");
+    await evaluate("document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true}))");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'work.'+secondCompletion);
+    await evaluate("document.querySelector('#code').value='/* work.';document.querySelector('#code').setSelectionRange(8,8);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("document.querySelector('#codecompletion').hidden");
+    console.log(`${label}: dataset/variable completion, unrun SET inference, Tab/Escape/mouse, dirty state and resulting executable SAS passed`);
     // Export from the REAL browser build, extract, and execute the Python bridge.
     const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8')+' proc print data=glm_scored(obs=3) noobs; var predicted residual; run; '+await readFile('examples/catalog/12-weights.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(portableBrowserProgram)};document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.14.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.15.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
@@ -324,6 +356,11 @@ try {
     const nativeText=await evaluate("(async()=>await (await (await (await window.__projectTest.getDirectoryHandle('tables')).getFileHandle('persist.sassy-table.json')).getFile()).text())()");
     const native=JSON.parse(nativeText);assert.equal(native.format,'sassy-table');assert.equal(native.version,1);assert.equal(native.rows[0].amount,1/3);assert.equal(native.rows[0].label,'abcd');assert.equal(native.columns.find(c=>c.name==='label').length,4);assert.equal(native.columns.find(c=>c.name==='amount').format,'comma12.2');
     assert.ok(await evaluate("Array.from(document.querySelectorAll('#datasets strong')).some(n=>n.textContent==='saved.persist')"));
+    await evaluate("document.querySelector('#code').value='saved.persist.am';document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(16,16);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden");
+    await evaluate("document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}))");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'amount');
+
     if(process.argv.includes('--screenshots')){const capture=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-libraries-'+label+'.png',Buffer.from(capture.data,'base64'));}
     assert.ok(await evaluate("document.querySelector('.brandlogo').complete && document.querySelector('.brandlogo').naturalWidth>0"));
     await evaluate("document.querySelector('#code').value='data restored_native;set saved.persist;run;';document.querySelector('#run').click()");
