@@ -1,4 +1,4 @@
-# Sassy v0.4.16
+# Sassy v0.4.17
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -61,3 +61,7 @@ Outstanding reference/manual tests are tracked in VALIDATION-STATUS.md. Weighted
 ## Small procedure starter menu
 
 Inside MEANS, SORT, GLM or SGPLOT, type `??` after the previous semicolon. Select a line with arrows and Tab/Enter or the mouse. The marker is replaced with a supported SAS starter and its first placeholder is selected for editing. MEANS includes CLASS/VAR/WEIGHT/BY/OUTPUT; SORT includes BY and DESCENDING. GLM/SGPLOT have their applicable lines. Existing statement/order rules keep this first menu small. Accept or delete the editor marker before Run. See editor-completion.md; no new documentation pane is required.
+
+## Automatic procedure assistance
+
+Type a supported PROC name to see unused header options. DATA= offers known datasets; variable lists use that source’s metadata; MODEL, plots and OUTPUT offer applicable remaining pieces. All nine supported procedures use the same dropdown. Tab accepts; plain Enter makes a newline until you navigate with arrows. Esc dismisses. The ?? trigger still inserts full starter lines. Sample paths/names/numbers remain editable; actual validation happens at Run. See editor-completion.md. No network or ChatGPT calls are made while typing.

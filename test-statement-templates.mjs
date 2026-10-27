@@ -15,7 +15,7 @@ assert.deepEqual(context('proc glm data=t; ??').items.map(i=>i.keyword),['class'
 assert.deepEqual(context('proc glm data=t; class g; model y=x; ??').items.map(i=>i.keyword),['weight','output','run']);
 assert.deepEqual(context('proc glm data=t; model y=x; output out=s p=p; weight w;\n    ??').items.map(i=>i.insert),['run;\n    quit;']);
 assert.deepEqual(context('proc sgplot data=t; scatter x=x y=y; xaxis label="x"; ??').items.map(i=>i.keyword),['yaxis','run']);
-for(const code of ['??','data t; ??','proc means data=t ??','proc sql; ??','proc print data=t; ??','proc means data=t; run; ??','proc means data=t; data next; ??','proc means data=t; proc unknown; ??','proc constructor; ??','proc __proto__; ??','proc means data=t; x=input(y, ??','proc means data=t; var ??','proc means data=t; /* ??','proc means data=t; * ??','proc means data=t; %* ??',`proc means data=t; x='??`])assert.equal(context(code),null,code);
+for(const code of ['??','data t; ??','proc means data=t ??','proc sql; ??','proc means data=t; run; ??','proc means data=t; data next; ??','proc means data=t; proc unknown; ??','proc constructor; ??','proc __proto__; ??','proc means data=t; x=input(y, ??','proc means data=t; var ??','proc means data=t; /* ??','proc means data=t; * ??','proc means data=t; %* ??',`proc means data=t; x='??`])assert.equal(context(code),null,code);
 assert.equal(context('proc means data=t; /* comment; */\n??').kind,'statements');
 assert.equal(context('proc means data=t; run; proc sort data=t; ??').qualifier,'sort');
 // Execute every starter, filling the documented placeholder identifiers with actual columns.

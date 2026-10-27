@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.17: automatic incremental assistance across supported procedures
+
+Same update branch feature/editor-dataset-completion. A shared header/catalog mechanism covers MEANS, SORT, GLM, SGPLOT, SGPIE, PRINT, SURVEYSELECT, IMPORT and EXPORT. It offers unused header options, source datasets, enum/sample values, typed source fields, MODEL/plot/output pieces and PRINT ranges. Singletons/aliases/listed fields/statistics and basic future-statement duplication are suppressed. Metadata-only source inference is reused. Free-form values remain editable. Automatic fragment menus preserve plain Enter as newline until arrow navigation; Tab/mouse accept and may chain to the next slot. Existing dots and ?? whole-line menus remain. Unknown/macro/unloaded/advanced syntax is conservative, not a full compiler.
+
+Validation: full npm test; pure checks for all nine procedures, types, aliases, middle-of-line/future edits, comments/strings, bounds and no observation access. Programs assembled from fragments execute all nine procedures, including scoped CSV adapters. Modular/standalone Chromium exercises all nine headers, chained MEANS DATA/VAR/OUTPUT choices, duplicate/character-field suppression, Enter behavior, existing metadata/??/history/file/chart checks and actual exported Node/Python ZIPs. Popup visually inspected. Archives verified. Engine statistics and deferred SAS validation remain unchanged; main/prior tags preserved.
+
+
 ## Sassy v0.4.16: small in-context procedure starters
 
 Continuing on feature/editor-dataset-completion, so the user's local checkout can update via Fetch/Pull. Type ?? at a new statement boundary within MEANS, SORT, GLM or SGPLOT for a short supported-line menu. Existing popup/keys are reused; selecting replaces ?? and highlights the first placeholder. Prefix filtering (??cl/??out), used-singleton suppression and basic GLM/SGPLOT order rules keep it small. MEANS OUTPUT offers common/all supported statistics; non-DF headers omit STDERR. SORT uses valid BY DESCENDING syntax. The data catalog lives beside syntax-help, with no runtime/compiler changes or new dependencies.

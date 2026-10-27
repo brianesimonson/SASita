@@ -187,11 +187,39 @@ try {
     assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
     assert.ok(await evaluate("document.querySelector('#datasets').textContent.includes('descending_claims')"));
     console.log(`${label}: scoped ?? menu, editable placeholders, variable completion inside starters and resulting MEANS/SORT execution passed`);
+    // Shared incremental pattern for all supported procedures, without a manual trigger.
+    const typeAssist=async text=>{await evaluate(`document.querySelector('#workspaceprogramtab').click();document.querySelector('#code').value=${JSON.stringify(text)};document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(document.querySelector('#code').value.length,document.querySelector('#code').value.length);document.querySelector('#code').dispatchEvent(new Event('input'))`);};
+    const pickAssist=async label=>{await waitFor(`!document.querySelector('#codecompletion').hidden && Array.from(document.querySelectorAll('#codecompletion [role=option] strong')).some(n=>n.textContent===${JSON.stringify(label)})`);await evaluate(`Array.from(document.querySelectorAll('#codecompletion [role=option]')).find(o=>o.querySelector('strong').textContent===${JSON.stringify(label)}).dispatchEvent(new MouseEvent('mousedown',{bubbles:true,cancelable:true}))`);};
+    const appendAssist=async text=>{await evaluate(`document.querySelector('#code').setRangeText(${JSON.stringify(text)},document.querySelector('#code').selectionStart,document.querySelector('#code').selectionEnd,'end');document.querySelector('#code').dispatchEvent(new Event('input'))`);};
+    for(const proc of ['means','sort','glm','sgplot','sgpie','print','surveyselect','import','export']){await typeAssist('proc '+proc);await waitFor(`!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('PROC '+${JSON.stringify(proc.toUpperCase())})`);}
+    await typeAssist('proc means');
+    await pickAssist('DATA=');await pickAssist('work.claims');await pickAssist('MEAN');
+    await waitFor("!document.querySelector('#codecompletion').hidden");
+    assert.ok(await evaluate("!Array.from(document.querySelectorAll('#codecompletion [role=option] strong')).some(n=>n.textContent==='DATA='||n.textContent==='MEAN')"));
+    if(process.argv.includes('--screenshots')){const shot=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-incremental-'+label+'.png',Buffer.from(shot.data,'base64'));}
+    await pickAssist('; — begin statements');
+    await waitFor("!document.querySelector('#codecompletion').hidden");
+    assert.equal(await evaluate("(()=>{const e=new KeyboardEvent('keydown',{key:'Enter',bubbles:true,cancelable:true});document.querySelector('#code').dispatchEvent(e);return e.defaultPrevented})()"),false,'Automatic menus preserve plain Enter');
+    await appendAssist('\n');
+    await pickAssist('VAR');
+    await waitFor("!document.querySelector('#codecompletion').hidden");
+    assert.ok(await evaluate("!Array.from(document.querySelectorAll('#codecompletion [role=option] strong')).some(n=>n.textContent==='provider')"));
+    await pickAssist('paid_amount');await pickAssist('; — finish VAR');await pickAssist('OUTPUT');await pickAssist('OUT=');await pickAssist('summary');await pickAssist('MEAN=');
+    await appendAssist('average ');
+    await waitFor("!document.querySelector('#codecompletion').hidden");
+    assert.ok(await evaluate("!Array.from(document.querySelectorAll('#codecompletion [role=option] strong')).some(n=>n.textContent==='MEAN=')"));
+    await pickAssist('STD=');await appendAssist('deviation ');await pickAssist('; — finish OUTPUT');await pickAssist('RUN;');
+    assert.ok(await evaluate("!document.querySelector('#code').value.includes('??')"));
+    await evaluate("document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    assert.ok(await evaluate("document.querySelector('#datasets').textContent.includes('summary')"));
+    console.log(`${label}: all nine automatic procedure headers, chained DATA/VAR/OUTPUT pieces, duplicate/typed-field suppression, plain Enter and completed MEANS execution passed`);
     // Export from the REAL browser build, extract, and execute the Python bridge.
     const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8')+' proc print data=glm_scored(obs=3) noobs; var predicted residual; run; '+await readFile('examples/catalog/12-weights.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(portableBrowserProgram)};document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.16.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.17.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);

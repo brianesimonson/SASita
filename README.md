@@ -10,7 +10,7 @@ Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the 
 
 ## Current development build
 
-Version 0.4.16 adds a small `??` statement menu inside MEANS, SORT, GLM and SGPLOT, using the existing completion popup. Select a starter and replace its highlighted placeholder. To update your local app, Fetch/Pull branch `feature/editor-dataset-completion` and refresh `dist/data-step-lab.html`; no build is needed. [ZIP fallback](dist/Sassy-v0.4.16.zip). See [editor assistance](docs/editor-completion.md) and [outstanding validation](VALIDATION-STATUS.md). Weighted SAS validation remains deferred; main and prior tags are preserved.
+Version 0.4.17 adds automatic incremental suggestions across all nine supported procedures: unused header options, datasets, typed variables, model/plot options and remaining OUTPUT statistics. The existing popup and ?? starters are reused; selected pieces preserve surrounding code. Fetch/Pull branch `feature/editor-dataset-completion` and refresh `dist/data-step-lab.html`; no build is needed. [ZIP fallback](dist/Sassy-v0.4.17.zip). See [editor assistance](docs/editor-completion.md) and [outstanding validation](VALIDATION-STATUS.md). Statistical engines and deferred weighted SAS validation are unchanged; main and prior tags are preserved.
 
 The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 

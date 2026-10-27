@@ -1,4 +1,4 @@
-# Sassy portable wrapper demo (v0.4.16)
+# Sassy portable wrapper demo (v0.4.17)
 
 This package interprets program.sas with the same JavaScript runtime as Sassy.
 It is not translated standalone JavaScript or the SAS runtime. No npm or pip
@@ -52,4 +52,4 @@ relative to run.mjs, while --project is relative to the invoking directory.
 
 SURVEYSELECT and default seeded RAND use the same engine as the browser. SURVEYSELECT reports and sampled tables are returned as data. Chart procedures return models, not rendered PNGs. Consult the app package procedure-support.md, surveyselect.md and random-numbers.md for supported syntax, deployment and exact-reference boundaries.
 
-NORMAL in v0.4.16 caches the unscaled second polar value for the next normal call, including across uniform calls. The tested SAS normal/mixed examples agree within rounding tolerance, with exact subsequent uniform witnesses; normal last bits and broader seeds/parameters are not certified.
+NORMAL in v0.4.17 caches the unscaled second polar value for the next normal call, including across uniform calls. The tested SAS normal/mixed examples agree within rounding tolerance, with exact subsequent uniform witnesses; normal last bits and broader seeds/parameters are not certified.

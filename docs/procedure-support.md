@@ -1,4 +1,4 @@
-# Procedure support and deployment — Sassy v0.4.16
+# Procedure support and deployment — Sassy v0.4.17
 
 All supported computation runs locally in the single offline HTML and in the
 exported Node.js 24+ interpreter. The optional Python wrapper invokes Node.

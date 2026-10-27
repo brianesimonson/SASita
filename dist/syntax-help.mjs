@@ -604,6 +604,11 @@ export function createSyntaxHelp(){
 
 // Small statement catalog shared with the editor menu; no runtime parsing/execution.
 const procedureStarters={
+ print:[['var','VAR variables;','var variable;','variable'],['run','RUN;','run;']],
+ sgpie:[['pie','PIE category;','pie category;','category'],['run','RUN;','run;']],
+ surveyselect:[['strata','STRATA variables;','strata variable;','variable'],['run','RUN;','run;']],
+ import:[['getnames','GETNAMES=YES;','getnames=yes;'],['guessingrows','GUESSINGROWS=MAX;','guessingrows=max;'],['run','RUN;','run;']],
+ export:[['run','RUN;','run;']],
  means:[
   ['class','CLASS variables;','class variable;','variable'],
   ['var','VAR variables;','var variable;','variable'],
@@ -639,10 +644,34 @@ export function procedureStatementTemplates(procedure,statements=[],header=''){
  const keywords=statements.map(s=>s.trim().toLowerCase().match(/^([a-z_]\w*)/)?.[1]),used=new Set(keywords),plots=['scatter','hbar','vbar','histogram'];
  return (Object.hasOwn(procedureStarters,procedure)?procedureStarters[procedure]:[]).filter(([keyword])=>{
   if(keyword!=='run'&&keyword!=='output'&&used.has(keyword))return false;
+  if(['print','import','export'].includes(procedure))return true;
+  if(procedure==='surveyselect')return keyword!=='strata'||!(/\breps\s*=\s*(?:[2-9]|[1-9]\d+)/i.test(header));
+  if(procedure==='sgpie')return keyword!=='run'||used.has('pie');
   if(procedure==='means')return keyword!=='output'||keywords.filter(k=>k==='output').length<10;
   if(procedure==='sort')return keyword!=='run'||used.has('by');
   if(procedure==='glm')return keyword==='class'?!used.has('model'):keyword==='output'?used.has('model')&&!used.has('output'):keyword==='run'?used.has('model'):true;
   if(procedure==='sgplot'){const plotted=plots.some(k=>used.has(k));return plots.includes(keyword)?!plotted:keyword==='run'?plotted:true;}
   return false;
  }).map(([keyword,label,insert,selectText])=>({label,insert:procedure==='means'&&/\bvardef\s*=\s*(?:n|wdf|weight|wgt)\b/i.test(header)?insert.replace(' stderr=',''):insert,selectText,detail:'PROC '+procedure.toUpperCase(),keyword}));
+}
+
+// Incremental MEANS editor assistance uses the same implemented subset.
+export function meansEditorOptions(){return {
+ statistics:['n','nmiss','sum','mean','min','max','range','var','std','stderr','css','uss','cv','sumwgt'],
+ flags:['nway','missing','noprint','exclnpwgt'],
+ assignments:['data','vardef','maxdec']
+};}
+
+export function procedureEditorOptions(procedure){
+ const common={statistics:[],flags:[],input:['data'],output:['out'],quoted:[],required:['data'],values:{}};
+ const catalogs={
+  means:{assignments:['data','vardef','maxdec'],flags:meansEditorOptions().flags,statistics:meansEditorOptions().statistics,values:{vardef:['df','n','wdf','wgt','weight'],maxdec:[7,0,1,2,3,4,5,6,8,9,10,11,12,13,14,15]}},
+  sort:{assignments:['data','out'],flags:['nodupkey','equals']},
+  glm:{assignments:['data','order'],flags:['noprint'],values:{order:['formatted','internal','data']}},
+  sgplot:{assignments:['data']},sgpie:{assignments:['data']},print:{assignments:['data'],flags:['noobs']},
+  surveyselect:{assignments:['data','out','method','seed','sampsize','samprate','reps','stratumseed'],flags:['outhits','outseed','outsize','stats','noprint'],required:['data','out'],values:{method:['srs','urs','sys'],seed:[12345],sampsize:[10],samprate:[0.1],reps:[1],stratumseed:['default','none']}},
+  import:{assignments:['datafile','out','dbms'],flags:['replace'],input:[],quoted:['datafile'],required:['datafile','out','dbms'],values:{dbms:['csv']}},
+  export:{assignments:['data','outfile','dbms'],flags:['replace'],quoted:['outfile'],required:['data','outfile','dbms'],values:{dbms:['csv']}}
+ };
+ return Object.hasOwn(catalogs,procedure)?{...common,...catalogs[procedure]}:null;
 }

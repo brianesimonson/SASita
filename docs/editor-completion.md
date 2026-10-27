@@ -42,4 +42,25 @@ For example, after `proc means data=work.temp;`, choose VAR to insert `var varia
 
 The menu suppresses already-used single statements and applies basic supported ordering: GLM CLASS precedes MODEL; OUTPUT follows MODEL; SGPLOT offers one plot, then axes/RUN. It does not validate the whole program. SORT uses `by descending variable;`, with ascending as default. Options use a forward slash `/` where supported; PROC header options are still edited in the header or looked up in the syntax guide.
 
-This first pass covers only those four procedures and literal source before the caret. A completed RUN/QUIT, a DATA step or a new PROC changes/ends the context. No menu is offered in comments, strings, a partly typed PROC header or expressions such as INPUT's `??` modifier. Macro expansion, automatic analysis selection and other procedures are outside this small menu. The catalog is a short data table next to the supported syntax reference, not another runtime/compiler or a separate documentation panel. Accept or delete `??` before running/saving a program intended for SAS; it is an editor trigger, not added SAS syntax.
+The original v0.4.16 menu covered those four procedures; v0.4.17 extends the shared starter catalog to all nine supported procedures. The ?? marker still requires a new statement boundary. A completed RUN/QUIT, a DATA step or a new PROC changes/ends the context. No menu is offered in comments, strings, a partly typed PROC header or expressions such as INPUT's `??` modifier. Macro expansion, automatic analysis selection and unsupported procedures remain outside the menu. The catalog is a short data table next to the supported syntax reference, not another runtime/compiler or a separate documentation panel. Accept or delete `??` before running/saving a program intended for SAS; it is an editor trigger, not added SAS syntax.
+
+## Automatic incremental suggestions — v0.4.17
+
+The existing popup now follows all nine implemented procedures while typing: MEANS, SORT, GLM, SGPLOT, SGPIE, PRINT, SURVEYSELECT, IMPORT and EXPORT. Type a complete `proc means` (or another supported procedure name) to start. The editor inserts only the selected fragment, preserving text already written. Option names, common aliases and already-listed fields/statistics are tracked so duplicates are suppressed. Basic look-ahead also avoids repeating single statements already present later in the same procedure.
+
+| Location | Suggestions |
+| --- | --- |
+| Procedure header | Supported unused flags/options and statistics; available values after `=`; DATA= choices from known metadata |
+| MEANS | Numeric VAR/WEIGHT fields, CLASS/BY fields, remaining OUTPUT statistics and AUTONAME |
+| SORT | BY fields and DESCENDING, plus DATA/OUT/NODUPKEY/EQUALS in the header |
+| GLM | CLASS/WEIGHT fields, response and predictor fields in MODEL, SOLUTION/SS1/SS3, OUTPUT P/R |
+| SGPLOT/SGPIE | Applicable variables, X/Y/RESPONSE/GROUP and supported enum values, histogram/bar/pie options and axis labels |
+| PRINT | VAR fields, NOOBS, and OBS/FIRSTOBS inside DATA=table(...) |
+| SURVEYSELECT | Supported size/rate/method/seed options, valid common values, STRATA fields; incompatible size/rate and some other combinations suppressed |
+| IMPORT/EXPORT | CSV options, sample quoted relative paths, output dataset names and supported import settings |
+
+For example: choose DATA=, then a dataset; choose VAR, then one or more numeric fields; finish that statement; choose OUTPUT and remaining statistics. DATA= and existing VAR/CLASS/WEIGHT/BY statements are not inserted again. On an OUTPUT right-hand side, type your new result variable name, then a space to see the remaining statistics. Values such as paths, sample sizes, seeds and output names are editable examples, not guesses about the data or filesystem. Some free-form values have no suggestions; type them normally.
+
+Tab accepts a suggestion. Arrow keys followed by Enter also accept it. **Plain Enter continues to make a new line in automatic menus until you navigate a choice with the arrow keys.** Escape closes the popup until a subsequent edit. This keeps line breaks available while typing multi-line SAS statements. Dataset dots and `??` continue to work; `??` retains whole-line starters, now also for the other implemented procedures. Ctrl+Space still opens the reference guide.
+
+Suggestions are metadata/source-driven local JavaScript, not model calls or runtime execution. Known numeric/character roles are filtered; unknown inferred types cannot be fully checked before execution. Macros are not expanded, unloaded files are not inspected, and advanced expressions, dataset options or transformations may need manual entry. This is bounded assistance, not a complete SAS compiler or semantic validator. The interpreter still checks actual values, statement order, resource limits, output-name collisions and unsupported combinations when you click Run. Accepted pieces are ordinary SAS; no completion module is needed by exported wrappers.
