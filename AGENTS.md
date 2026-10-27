@@ -38,3 +38,6 @@
 
 - VALIDATION-STATUS.md is the current pending/completed test registry. Read it when asked about outstanding validation; WEIGHT-SAS is deliberately deferred by the user and must not be mistaken for a pass. Update statuses only from actual evidence.
 - Editor completion is docs/editor-completion.md and dist/completion.mjs. It is authoring assistance, not runtime syntax: datasets complete after a library dot, variable shortcuts replace the whole qualifier with a bare variable. Use metadata only, never rows/files/permissions or program execution. Keep normal Tab and Ctrl+Space behavior, comments/strings/macros guards, dirty state and offline builds verified.
+
+- Continue normal user-facing updates on feature/editor-dataset-completion so the user can Fetch/Pull into their local app folder. Preserve main and milestone tags; do not silently move routine updates to another branch.
+- The ?? starter menu deliberately covers only MEANS/SORT/GLM/SGPLOT for now. Keep it a small data catalog alongside syntax-help, using the existing popup; no runtime syntax change. Test statement boundaries, comment/string guards, used/order rules and executable filled templates in test-statement-templates.mjs.

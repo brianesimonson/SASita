@@ -1,5 +1,12 @@
 # SASita project status
 
+## Sassy v0.4.16: small in-context procedure starters
+
+Continuing on feature/editor-dataset-completion, so the user's local checkout can update via Fetch/Pull. Type ?? at a new statement boundary within MEANS, SORT, GLM or SGPLOT for a short supported-line menu. Existing popup/keys are reused; selecting replaces ?? and highlights the first placeholder. Prefix filtering (??cl/??out), used-singleton suppression and basic GLM/SGPLOT order rules keep it small. MEANS OUTPUT offers common/all supported statistics; non-DF headers omit STDERR. SORT uses valid BY DESCENDING syntax. The data catalog lives beside syntax-help, with no runtime/compiler changes or new dependencies.
+
+Validation: full npm test plus context/comment/string/INPUT-modifier/boundary/order/indentation checks. Every filled starter executed against the interpreter. Modular/standalone browser checks cover menus, placeholder selection, metadata completion inside inserted VAR, resulting MEANS/SORT execution, and existing regressions/exported wrappers. Popup visually reviewed; app/wrapper archives verified. Weighted SAS and other pending tests remain unchanged in VALIDATION-STATUS.md. Main and earlier tags preserved.
+
+
 ## Sassy v0.4.15: metadata completion and persistent validation checklist
 
 Branch feature/editor-dataset-completion implements dot-triggered editor suggestions: WORK/known library member names insert after the library dot; variable shortcuts such as temp.pa or work.claims.pa replace the entire qualifier with a bare variable. Simple DATA SET/MERGE output schemas are inferred from metadata before execution, with bounded KEEP/DROP/RENAME/assignment handling. Suggestions are filtered, keyboard/mouse selectable, dismissed by Escape, and limited to 200 matches / programs up to 100k characters. Existing Tab indentation and Ctrl+Space help remain. Strings/comments/macros/unknown schemas are guarded; no observations/files are read and no code runs for completion. Runtime SAS syntax and calculations are unchanged.

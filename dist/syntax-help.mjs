@@ -601,3 +601,48 @@ export function createSyntaxHelp(){
  code.addEventListener('keydown',e=>{if(e.ctrlKey&&e.code==='Space'){e.preventDefault();panel.hidden=false;toggle.setAttribute('aria-expanded','true');following=true;get('syntaxfollow').checked=true;update();}});
  filter();
 }
+
+// Small statement catalog shared with the editor menu; no runtime parsing/execution.
+const procedureStarters={
+ means:[
+  ['class','CLASS variables;','class variable;','variable'],
+  ['var','VAR variables;','var variable;','variable'],
+  ['weight','WEIGHT variable;','weight variable;','variable'],
+  ['by','BY variables;','by variable;','variable'],
+  ['output','OUTPUT — common statistics','output out=summary n= mean= std= min= max= / autoname;','summary'],
+  ['output','OUTPUT — all supported statistics','output out=summary n= nmiss= sum= mean= min= max= range= var= std= stderr= css= uss= cv= sumwgt= / autoname;','summary'],
+  ['run','RUN;','run;']
+ ],
+ sort:[
+  ['by','BY variables; (ascending)','by variable;','variable'],
+  ['by','BY DESCENDING variables;','by descending variable;','variable'],
+  ['run','RUN;','run;']
+ ],
+ glm:[
+  ['class','CLASS variables;','class variable;','variable'],
+  ['weight','WEIGHT variable;','weight variable;','variable'],
+  ['model','MODEL response = predictors / SOLUTION;','model response = predictor / solution;','response'],
+  ['output','OUTPUT — predictions and residuals','output out=scored p=predicted r=residual;','scored'],
+  ['run','RUN; QUIT;','run;\nquit;']
+ ],
+ sgplot:[
+  ['scatter','SCATTER X= Y=;','scatter x=x_variable y=y_variable;','x_variable'],
+  ['hbar','HBAR category / RESPONSE= STAT=SUM;','hbar category / response=response stat=sum;','category'],
+  ['vbar','VBAR category / RESPONSE= STAT=SUM;','vbar category / response=response stat=sum;','category'],
+  ['histogram','HISTOGRAM variable / NBINS=;','histogram variable / nbins=10;','variable'],
+  ['xaxis',"XAXIS LABEL='text';","xaxis label='X axis';",'X axis'],
+  ['yaxis',"YAXIS LABEL='text';","yaxis label='Y axis';",'Y axis'],
+  ['run','RUN;','run;']
+ ]
+};
+export function procedureStatementTemplates(procedure,statements=[],header=''){
+ const keywords=statements.map(s=>s.trim().toLowerCase().match(/^([a-z_]\w*)/)?.[1]),used=new Set(keywords),plots=['scatter','hbar','vbar','histogram'];
+ return (Object.hasOwn(procedureStarters,procedure)?procedureStarters[procedure]:[]).filter(([keyword])=>{
+  if(keyword!=='run'&&keyword!=='output'&&used.has(keyword))return false;
+  if(procedure==='means')return keyword!=='output'||keywords.filter(k=>k==='output').length<10;
+  if(procedure==='sort')return keyword!=='run'||used.has('by');
+  if(procedure==='glm')return keyword==='class'?!used.has('model'):keyword==='output'?used.has('model')&&!used.has('output'):keyword==='run'?used.has('model'):true;
+  if(procedure==='sgplot'){const plotted=plots.some(k=>used.has(k));return plots.includes(keyword)?!plotted:keyword==='run'?plotted:true;}
+  return false;
+ }).map(([keyword,label,insert,selectText])=>({label,insert:procedure==='means'&&/\bvardef\s*=\s*(?:n|wdf|weight|wgt)\b/i.test(header)?insert.replace(' stderr=',''):insert,selectText,detail:'PROC '+procedure.toUpperCase(),keyword}));
+}

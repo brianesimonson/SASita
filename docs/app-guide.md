@@ -1,4 +1,4 @@
-# Sassy v0.4.15
+# Sassy v0.4.16
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -57,3 +57,7 @@ Use WEIGHT variable; in MEANS or GLM. The twelfth Examples program demonstrates 
 Type `work.` for dataset suggestions. Use Up/Down and Tab/Enter, or click a choice. After `data temp; set work.claims;`, type `temp.` to browse inferred variables before running. Choosing paid_amount inserts only `paid_amount`, removing the qualifier so the program stays ordinary SAS. `work.claims.pa` and loaded named libraries also work. Escape dismisses. Suggestions use column metadata only and never run code or open files. See editor-completion.md for inference boundaries.
 
 Outstanding reference/manual tests are tracked in VALIDATION-STATUS.md. Weighted SAS validation is deliberately deferred; editor development does not mark it passed.
+
+## Small procedure starter menu
+
+Inside MEANS, SORT, GLM or SGPLOT, type `??` after the previous semicolon. Select a line with arrows and Tab/Enter or the mouse. The marker is replaced with a supported SAS starter and its first placeholder is selected for editing. MEANS includes CLASS/VAR/WEIGHT/BY/OUTPUT; SORT includes BY and DESCENDING. GLM/SGPLOT have their applicable lines. Existing statement/order rules keep this first menu small. Accept or delete the editor marker before Run. See editor-completion.md; no new documentation pane is required.

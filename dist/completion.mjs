@@ -1,3 +1,4 @@
+import {procedureStatementTemplates} from './syntax-help.mjs';
 // Editor metadata only: never execute a program, inspect observations or open files.
 function completionLex(source){
  let mask='',i=0,start=true,inside=false;
@@ -45,6 +46,13 @@ function completionSchemas(mask,state){
 export function completionContext(code,caret,state={}){
  if(typeof code!=='string'||code.length>100000||!Number.isInteger(caret)||caret<0||caret>code.length)return null;
  const before=code.slice(0,caret),lex=completionLex(before);if(lex.inside)return null;
+ const statementStart=lex.mask.lastIndexOf(';')+1,tail=lex.mask.slice(statementStart),marker=tail.match(/^\s*\?\?([a-z_]\w*)?$/i);
+ if(marker){
+  const start=statementStart+tail.indexOf('??'),prefix=(marker[1]||'').toLowerCase();let procedure=null,header='',statements=[];
+  for(const part of lex.mask.slice(0,statementStart).split(';')){const text=part.trim(),proc=text.match(/^proc\s+([a-z_]\w*)\b/i);if(proc){procedure=proc[1].toLowerCase();header=text;statements=[];}else if(/^(?:data|run|quit)\b|^%mend\b/i.test(text)){procedure=null;header='';statements=[];}else if(procedure&&text)statements.push(text);}
+  const indent=before.slice(before.lastIndexOf('\n')+1,start).match(/^[ \t]*/)?.[0]||'',items=procedureStatementTemplates(procedure,statements,header).filter(item=>item.keyword.startsWith(prefix)).map(item=>({...item,insert:item.insert.replaceAll('\n','\n'+indent)}));
+  return items.length?{start,end:caret+(code.slice(caret).match(/^\w*/)?.[0].length||0),kind:'statements',qualifier:procedure,items,total:items.length}:null;
+ }
  const match=lex.mask.match(/(?<![\w.&%])([a-z_]\w*(?:\.[a-z_]\w*)?)\.([a-z_]\w*|)$/i);if(!match)return null;
  const qualifier=match[1].toLowerCase(),prefix=match[2].toLowerCase(),{schemas,libraries}=completionSchemas(lex.mask.slice(0,match.index),state),end=caret+(code.slice(caret).match(/^\w*/)?.[0].length||0);
  let items=[],start=match.index,kind='variables';
@@ -61,7 +69,7 @@ export function completionContext(code,caret,state={}){
  return items.length?{start,end,kind,qualifier,items:items.slice(0,200),total:items.length}:null;
 }
 export function createCompletionView(editor,getState){
- const popup=document.createElement('div');popup.id='codecompletion';popup.className='codecompletion';popup.hidden=true;popup.setAttribute('role','listbox');popup.setAttribute('aria-label','Dataset and variable suggestions');document.body.append(popup);
+ const popup=document.createElement('div');popup.id='codecompletion';popup.className='codecompletion';popup.hidden=true;popup.setAttribute('role','listbox');popup.setAttribute('aria-label','Dataset, variable and statement suggestions');document.body.append(popup);
  editor.setAttribute('aria-autocomplete','list');editor.setAttribute('aria-controls',popup.id);
  let context=null,index=0,composing=false,timer;
  const hide=()=>{clearTimeout(timer);context=null;popup.hidden=true;editor.removeAttribute('aria-activedescendant');};
@@ -73,8 +81,8 @@ export function createCompletionView(editor,getState){
   const top=caret.top-editor.scrollTop,left=caret.left-editor.scrollLeft;if(top<rect.top||top>rect.bottom){hide();return;}
   popup.style.left=Math.max(8,Math.min(left,innerWidth-popup.offsetWidth-8))+'px';popup.style.top=Math.max(8,Math.min(top+(parseFloat(style.lineHeight)||20),innerHeight-popup.offsetHeight-8))+'px';
  }
- function select(){if(!context||index>=context.items.length)return;const label=context.items[index].label,fresh=completionContext(editor.value,editor.selectionStart,getState());if(!fresh||editor.selectionStart!==editor.selectionEnd){hide();return;}const item=fresh.items.find(item=>item.label===label)||fresh.items[0],start=fresh.start,end=fresh.end;hide();editor.setRangeText(item.insert,start,end,'end');editor.dispatchEvent(new Event('input',{bubbles:true}));editor.focus();hide();}
- function paint(){popup.replaceChildren();context.items.forEach((item,i)=>{const option=document.createElement('div');option.id='completion-option-'+i;option.className='completionoption';option.setAttribute('role','option');option.setAttribute('aria-selected',String(i===index));const label=document.createElement('strong'),detail=document.createElement('small');label.textContent=item.label;detail.textContent=item.detail;option.append(label,detail);option.onmousedown=e=>{e.preventDefault();index=i;select();};popup.append(option);});const hint=document.createElement('small');hint.className='completionhint';hint.textContent=(context.kind==='variables'?'Inserts variable name only. ':'')+'↑↓ select · Tab/Enter insert · Esc close'+(context.total>200?' · Type more to filter':'');popup.append(hint);editor.setAttribute('aria-activedescendant','completion-option-'+index);}
+ function select(){if(!context||index>=context.items.length)return;const label=context.items[index].label,fresh=completionContext(editor.value,editor.selectionStart,getState());if(!fresh||editor.selectionStart!==editor.selectionEnd){hide();return;}const item=fresh.items.find(item=>item.label===label)||fresh.items[0],start=fresh.start,end=fresh.end;hide();editor.setRangeText(item.insert,start,end,'end');if(item.selectText){const offset=item.insert.indexOf(item.selectText);if(offset>=0)editor.setSelectionRange(start+offset,start+offset+item.selectText.length);}editor.dispatchEvent(new Event('input',{bubbles:true}));editor.focus();hide();}
+ function paint(){popup.replaceChildren();context.items.forEach((item,i)=>{const option=document.createElement('div');option.id='completion-option-'+i;option.className='completionoption';option.title=item.insert;option.setAttribute('role','option');option.setAttribute('aria-selected',String(i===index));const label=document.createElement('strong'),detail=document.createElement('small');label.textContent=item.label;detail.textContent=item.detail;option.append(label,detail);option.onmousedown=e=>{e.preventDefault();index=i;select();};popup.append(option);});const hint=document.createElement('small');hint.className='completionhint';hint.textContent=(context.kind==='statements'?'Edit the selected placeholder after insertion. ':context.kind==='variables'?'Inserts variable name only. ':'')+'↑↓ select · Tab/Enter insert · Esc close'+(context.total>200?' · Type more to filter':'');popup.append(hint);editor.setAttribute('aria-activedescendant','completion-option-'+index);}
  function update(){clearTimeout(timer);if(composing||editor.disabled||document.activeElement!==editor||editor.selectionStart!==editor.selectionEnd){hide();return;}const next=completionContext(editor.value,editor.selectionStart,getState());if(!next){hide();return;}context=next;index=0;paint();popup.hidden=false;position();}
  editor.addEventListener('input',e=>{if(e.isComposing)return;clearTimeout(timer);timer=setTimeout(update,50);});
  editor.addEventListener('keydown',e=>{if(composing||e.isComposing||!context||popup.hidden||e.ctrlKey||e.metaKey||e.altKey)return;if(['ArrowDown','ArrowUp','Tab','Enter','Escape'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();if(e.key==='Escape')hide();else if(e.key==='Tab'||e.key==='Enter')select();else{index=(index+(e.key==='ArrowDown'?1:-1)+context.items.length)%context.items.length;paint();popup.querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'});}}else if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key))hide();},true);

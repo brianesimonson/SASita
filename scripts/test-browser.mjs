@@ -165,11 +165,33 @@ try {
     await evaluate("document.querySelector('#code').value='/* work.';document.querySelector('#code').setSelectionRange(8,8);document.querySelector('#code').dispatchEvent(new Event('input'))");
     await waitFor("document.querySelector('#codecompletion').hidden");
     console.log(`${label}: dataset/variable completion, unrun SET inference, Tab/Escape/mouse, dirty state and resulting executable SAS passed`);
+    // ?? at a procedure statement boundary offers short editable SAS starters.
+    await evaluate("document.querySelector('#code').value='proc means data=work.claims;\\n??';document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(document.querySelector('#code').value.length,document.querySelector('#code').value.length);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('CLASS')");
+    if(process.argv.includes('--screenshots')){const shot=await send('Page.captureScreenshot');await writeFile('/tmp/sassy-statements-'+label+'.png',Buffer.from(shot.data,'base64'));}
+    await evaluate("Array.from(document.querySelectorAll('#codecompletion [role=option]')).find(o=>o.querySelector('strong').textContent.startsWith('VAR ')).dispatchEvent(new MouseEvent('mousedown',{bubbles:true,cancelable:true}))");
+    assert.equal(await evaluate("document.querySelector('#code').value"),'proc means data=work.claims;\nvar variable;');
+    assert.equal(await evaluate("document.querySelector('#code').value.slice(document.querySelector('#code').selectionStart,document.querySelector('#code').selectionEnd)"),'variable');
+    await evaluate("document.querySelector('#code').setRangeText('claims.pa',document.querySelector('#code').selectionStart,document.querySelector('#code').selectionEnd,'end');document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('paid_amount')");
+    await evaluate("document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}));document.querySelector('#code').value+='\\nrun;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    assert.ok(await evaluate("document.querySelector('#resulttitle').textContent.includes('PROC MEANS')"));
+    await evaluate("document.querySelector('#workspaceprogramtab').click();document.querySelector('#code').value='proc sort data=claims out=descending_claims;\\n??';document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(document.querySelector('#code').value.length,document.querySelector('#code').value.length);document.querySelector('#code').dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('DESCENDING')");
+    await evaluate("document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true,cancelable:true}));document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',bubbles:true,cancelable:true}))");
+    assert.ok(await evaluate("document.querySelector('#code').value.endsWith('by descending variable;')"));
+    await evaluate("document.querySelector('#code').setRangeText('provider',document.querySelector('#code').selectionStart,document.querySelector('#code').selectionEnd,'end');document.querySelector('#code').value+='\\nrun;';document.querySelector('#run').click()");
+    await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
+    assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    assert.ok(await evaluate("document.querySelector('#datasets').textContent.includes('descending_claims')"));
+    console.log(`${label}: scoped ?? menu, editable placeholders, variable completion inside starters and resulting MEANS/SORT execution passed`);
     // Export from the REAL browser build, extract, and execute the Python bridge.
     const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8')+' proc print data=glm_scored(obs=3) noobs; var predicted residual; run; '+await readFile('examples/catalog/12-weights.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(portableBrowserProgram)};document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.15.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.16.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
