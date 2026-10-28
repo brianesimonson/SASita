@@ -50,7 +50,7 @@ Run `proc print data=table(obs=10); var id amount; run;` to put a few observatio
 
 ## Weighted analysis
 
-Use WEIGHT variable; in MEANS or GLM. The twelfth Examples program demonstrates both and prints five predictions. MEANS adds SUMWGT and EXCLNPWGT; variance divisors and row inclusion differ from GLM. See weights.md. Extract the included weights-validation.zip and upload/run its 01-sas-weight-comparison.sas in SAS Studio; the expected data are embedded. All ten weighted GLM comparisons passed actual SAS; the five MEANS groups differed only in _FREQ_, corrected in v0.4.18. A fresh corrected SAS run is pending; see VALIDATION-STATUS.md.
+Use WEIGHT variable; in MEANS or GLM. The twelfth Examples program demonstrates both and prints five predictions. MEANS adds SUMWGT and EXCLNPWGT; variance divisors and row inclusion differ from GLM. See weights.md. Extract the included weights-validation.zip and upload/run its 01-sas-weight-comparison.sas in SAS Studio; the expected data are embedded. All fifteen corrected weighted MEANS/GLM SAS comparisons pass in v0.4.18, including _FREQ_; no further weight-kit rerun is outstanding. See VALIDATION-STATUS.md.
 
 ## Dataset and variable completion
 

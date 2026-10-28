@@ -13,6 +13,10 @@ r=await runFileProgram('data f; x=2; w=1; output; x=4; w=3; output; run; proc me
 const ref=JSON.parse(readFileSync('fixtures/weighted-glm-independent.json'));
 // Original comparison expectations passed every requested statistic in SAS;
 // only _FREQ_ below is taken directly from SAS's reported difference tables.
+const sasPass=JSON.parse(readFileSync('fixtures/sas/weights-validation-v2-pass.json'));
+assert.equal(sasPass.outcome.comparison_groups,15);assert.equal(sasPass.outcome.matched_records,96);
+assert.equal(sasPass.outcome.values_unequal_under_criteria,0);
+assert.ok(sasPass.outcome.groups.every(g=>g.values_unequal_under_criteria===0));
 const sasWeights=JSON.parse(readFileSync('fixtures/sas/weights-validation-v1.json'));
 for(const c of sasWeights.means){
  const actual=await runFileProgram(c.program),rows=actual.datasets[c.name].rows;
@@ -45,4 +49,4 @@ r=await runFileProgram('data f; do x=1 to 5; y=2+3*x; w=x; output; end; x=99; y=
 for(const c of ['proc means data=f; var y; weight absent; run;','proc means data=f; weight w; weight w; run;','proc glm data=f; model y=x; weight w; weight w; run;','proc means data=f; var y; weight w / normalize; run;'])await assert.rejects(runFileProgram(c,{f:ds}));
 await assert.rejects(runFileProgram('data f; x=1; y=2; w="bad"; run; proc glm data=f; model y=x; weight w; run;'),/numeric/);
 await assert.rejects(runFileProgram('data f; x=1; y=2; w=0; run; proc glm data=f; model y=x; weight w; run;'),/no complete/);
-console.log('WEIGHT: documented MEANS counts/missingness, EXCLNPWGT, SUMWGT/divisors/standard errors, CLASS totals, independent weighted GLM Type I/III/SOLUTION/predictions, scale invariance and exclusions passed. Actual SAS: ten GLM groups passed; five MEANS groups differed only in _FREQ_, corrected and locally replayed against recorded SAS counts. Fresh corrected SAS run pending.');
+console.log('WEIGHT: documented MEANS counts/missingness, EXCLNPWGT, SUMWGT/divisors/standard errors, CLASS totals, independent weighted GLM Type I/III/SOLUTION/predictions, scale invariance and exclusions passed. Actual corrected SAS rerun: all fifteen groups / 96 matched records pass, including _FREQ_, under documented tolerances.');

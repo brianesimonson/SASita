@@ -10,7 +10,7 @@ Open or type a program and click Run (Ctrl+Enter). Import CSV datasets into the 
 
 ## Current development build
 
-Version 0.4.18 corrects weighted MEANS _FREQ_/N Obs to count source observations independently of weight exclusions, following actual SAS validation. All ten weighted GLM comparisons passed; the five MEANS groups differed only in _FREQ_, now corrected and locally replayed. Fresh corrected SAS execution remains pending. Fetch/Pull `feature/editor-dataset-completion` and refresh `dist/data-step-lab.html`; no build needed. [ZIP fallback](dist/Sassy-v0.4.18.zip). [Evidence](docs/validation/weights-sas-2026-10-28.md) and [outstanding checks](VALIDATION-STATUS.md). Main and prior tags remain preserved.
+Version 0.4.18 corrects weighted MEANS _FREQ_/N Obs to count source observations independently of weight exclusions, following actual SAS validation. The corrected actual SAS rerun passes all fifteen weighted MEANS/GLM comparisons and all 96 matched records. This completes the weight-kit validation for the tested cases. Fetch/Pull `feature/editor-dataset-completion` and refresh `dist/data-step-lab.html`; no build needed. [ZIP fallback](dist/Sassy-v0.4.18.zip). [Evidence](docs/validation/weights-sas-2026-10-28.md) and [outstanding checks](VALIDATION-STATUS.md). Main and prior tags remain preserved.
 
 The v0.4.0 program open/save, editor recovery, and remembered project folder workflow are included. Choose the demo folder, Browse files, open its program and Run to test CSV import/export. See [project files and permissions](docs/project-files.md). Other browsers retain manual upload/download fallbacks. Data remains local; no installed desktop app or backend is required.
 

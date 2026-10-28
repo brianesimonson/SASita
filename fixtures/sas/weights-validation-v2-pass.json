@@ -1,0 +1,115 @@
+{
+  "provenance": {
+    "source": "Actual user-uploaded SAS Studio rerun received 2026-10-28",
+    "files": {
+      "results": {
+        "filename": "01-sas-weight-comparison-results (1).html",
+        "sha256": "dc81c2cfc4d8fbc146c08c606c5ad246dbc362ca236d0206fa33a6c59881f0d5"
+      },
+      "log": {
+        "filename": "01-sas-weight-comparison-log (1).html",
+        "sha256": "28355f3f74b8ef2f9c1172cf1468ce10eb7510872542db309b00de1068c7c76b"
+      }
+    },
+    "program_sha256": "b3b9a9ec3c2b3e311a039e519221036e67106272fcb138fe8b8d0b23d08957cf",
+    "app_version": "0.4.18"
+  },
+  "criteria": {
+    "statistics_relative": 1e-10,
+    "scored_absolute": 1e-12,
+    "normalizations": [
+      "CV/coeffvar mapping",
+      "A*X/X*A fixture labels",
+      "Special numeric missing codes"
+    ]
+  },
+  "outcome": {
+    "comparison_groups": 15,
+    "matched_records": 96,
+    "values_unequal_under_criteria": 0,
+    "executed_errors": 0,
+    "executed_warnings": 0,
+    "groups": [
+      {
+        "name": "means_df",
+        "matched_records": 3,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "means_exclude",
+        "matched_records": 3,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "means_n",
+        "matched_records": 3,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "means_wdf",
+        "matched_records": 3,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "means_wgt",
+        "matched_records": 3,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weighted_anova",
+        "matched_records": 3,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weighted_tests",
+        "matched_records": 10,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weighted_params",
+        "matched_records": 16,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weighted_fit",
+        "matched_records": 1,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weighted_scored",
+        "matched_records": 33,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weight_edges_anova",
+        "matched_records": 3,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weight_edges_tests",
+        "matched_records": 2,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weight_edges_params",
+        "matched_records": 2,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weight_edges_fit",
+        "matched_records": 1,
+        "values_unequal_under_criteria": 0
+      },
+      {
+        "name": "glm_weight_edges_scored",
+        "matched_records": 10,
+        "values_unequal_under_criteria": 0
+      }
+    ]
+  },
+  "limits": [
+    "Summary evidence confirms tolerance agreement for tested cases, not bit identity.",
+    "Exact ODS metadata/layout not certified.",
+    "Additional BY/missing CLASS/all-invalid-weight groups have local regression coverage only."
+  ]
+}

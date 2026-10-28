@@ -55,4 +55,4 @@ Latest app milestone: Sassy v0.4.16 stays on feature/editor-dataset-completion s
 
 Latest app milestone: Sassy v0.4.17 on the same feature/editor-dataset-completion branch adds automatic incremental help for all nine supported procedures. Start typing a known PROC header; choose unused pieces with Tab. Plain Enter remains a newline unless you first navigate a choice. ?? whole-line starters remain available. Read docs/editor-completion.md for bounds. Deferred validation is unchanged.
 
-Latest app milestone: Sassy v0.4.18 corrects weighted MEANS source counts from actual SAS evidence. All ten weighted GLM comparisons passed. Revised weight kit needs only its single comparison program run; MEANS counts need a fresh SAS rerun. See VALIDATION-STATUS.md.
+Latest app milestone: Sassy v0.4.18 corrects weighted MEANS source counts from actual SAS evidence. The corrected actual SAS rerun now passes all fifteen weighted MEANS/GLM groups / 96 records; no further weight-kit rerun is outstanding. See VALIDATION-STATUS.md.

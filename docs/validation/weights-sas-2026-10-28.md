@@ -1,4 +1,10 @@
-# Weighted SAS comparison received 2026-10-28
+# Weighted SAS comparisons received 2026-10-28
+
+## Corrected rerun: all fifteen groups passed
+
+The second uploaded Results and Log confirm all fifteen v0.4.18 comparisons / 96 matched records pass, with zero unequal values under the stated criteria and no executed SAS errors or warnings. This includes all five corrected MEANS groups and all ten GLM groups. WEIGHT-SAS is complete for these cases. Structured provenance and each group outcome are in `fixtures/sas/weights-validation-v2-pass.json`. This is tolerance agreement, not full metadata or bit-identity certification.
+
+## Original run and correction history
 
 The user supplied actual SAS Studio Results and Log for the original self-contained weight kit (Sassy v0.4.14 expectations). All fifteen comparisons ran, with 96 matched records and no executed SAS errors or warnings. `ERROR:` text in the log occurs in unexecuted macro definitions, not emitted errors.
 
@@ -16,10 +22,10 @@ The eight-row source has four observations each in classes A and B. SAS reports 
 
 Version 0.4.18 groups/counts source rows first, retaining the existing CLASS missing-value policy. Weight exclusions then affect analysis N, NMISS and calculations separately. N Obs uses the same source count. All requested statistical calculations remain unchanged for the submitted cases. Local replay checks all five confirmed MEANS expectations and the observed SAS counts; additional BY, missing-CLASS and empty-analysis cases are local regression checks, not additional SAS fixtures.
 
-The revised `examples/weights-validation/weights-validation.zip` embeds corrected expectations. Upload/run only `01-sas-weight-comparison.sas`; no CSV uploads or paths are needed. A fresh SAS run is still pending. The original five MEANS groups must not be recorded as complete passes.
+The revised `examples/weights-validation/weights-validation.zip` embeds corrected expectations. Upload/run only `01-sas-weight-comparison.sas`; no CSV uploads or paths are needed. The subsequent corrected SAS rerun now passes all fifteen groups. The original five MEANS groups remain recorded as failures in the original evidence.
 
 ## Preserved evidence
 
 `fixtures/sas/weights-validation-v1.json` records original uploaded filenames/SHA-256 hashes, original comparison-program hash, all fifteen comparison outcomes, tolerances and frozen MEANS expectations. The statistic values in that fixture are the original app expectations confirmed within tolerance, not full-precision raw SAS exports. Only `_FREQ_` is replaced with the actual SAS values from the difference tables.
 
-`fixtures/sas/weights-validation-v1-original.zip` preserves the exact original kit before regeneration, so the user's uploaded Results/Log remain attributable to the program they ran. `VALIDATION-STATUS.md` tracks the narrower remaining rerun and unrelated pending checks.
+`fixtures/sas/weights-validation-v1-original.zip` preserves the exact original kit before regeneration, so the user's uploaded Results/Log remain attributable to the program they ran. `VALIDATION-STATUS.md` records the completed weighted rerun and unrelated pending checks.
