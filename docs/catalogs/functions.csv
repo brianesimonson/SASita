@@ -157,7 +157,7 @@ ERF,ERF,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,671,661,
 ERFC,ERFC,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,672,662,ERFC Function
 EUCLID,EUCLID,Descriptive Statistics,Not implemented,,Unselected,lefunctionsref.pdf,673,663,EUCLID Function
 EXIST,EXIST,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,674,664,EXIST Function
-EXP,EXP,Mathematical CAS,Not implemented,3,Unselected,lefunctionsref.pdf,677,667,EXP Function
+EXP,EXP,Mathematical CAS,Implemented subset; see current-functions-formats.md,3,Unselected,lefunctionsref.pdf,677,667,EXP Function
 EXPM1,EXPM1,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,678,668,EXPM1 Function
 FACT,FACT,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,680,670,FACT Function
 FAPPEND,FAPPEND,External Files,Not implemented,,Unselected,lefunctionsref.pdf,681,671,FAPPEND Function
@@ -389,7 +389,7 @@ JSONPP,JSONPP,"Date and Time CAS See: “About SAS Date, Time, and Datetime Valu
 JULDATE,JULDATE,"Date and Time CAS See: “About SAS Date, Time, and Datetime Values” in SAS Formats and Informats: Reference",Not implemented,,Unselected,lefunctionsref.pdf,1140,1130,JULDATE Function
 JULDATE7,JULDATE7,"Date and Time CAS See: “About SAS Date, Time, and Datetime Values” in SAS Formats and Informats: Reference",Not implemented,,Unselected,lefunctionsref.pdf,1141,1131,JULDATE7 Function
 KURTOSIS,KURTOSIS,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1142,1132,KURTOSIS Function
-LAG,LAG,Special,Not implemented,,Unselected,lefunctionsref.pdf,1144,1134,LAG Function
+LAG,LAG,Special,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1144,1134,LAG Function
 LARGEST,LARGEST,Descriptive Statistics CAS,Not implemented,,Unselected,lefunctionsref.pdf,1152,1142,LARGEST Function
 LBOUND,LBOUND,Array CAS,Not implemented,,Unselected,lefunctionsref.pdf,1154,1144,LBOUND Function
 LCM,LCM,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1157,1147,LCM Function
@@ -407,10 +407,10 @@ LFACT,LFACT,Combinatorial CAS,Not implemented,,Unselected,lefunctionsref.pdf,117
 LGAMMA,LGAMMA,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1180,1170,LGAMMA Function
 LIBNAME,LIBNAME,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1181,1171,LIBNAME Function
 LIBREF,LIBREF,SAS File I/O,Not implemented,,Unselected,lefunctionsref.pdf,1185,1175,LIBREF Function
-LOG,LOG,Mathematical CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1187,1177,LOG Function
-LOG10,LOG10,Mathematical CAS,Not implemented,3,Unselected,lefunctionsref.pdf,1187,1177,LOG10 Function
+LOG,LOG,Mathematical CAS,Implemented subset; see current-functions-formats.md,3,Unselected,lefunctionsref.pdf,1187,1177,LOG Function
+LOG10,LOG10,Mathematical CAS,Implemented subset; see current-functions-formats.md,3,Unselected,lefunctionsref.pdf,1187,1177,LOG10 Function
 LOG1PX,LOG1PX,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1188,1178,LOG1PX Function
-LOG2,LOG2,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1190,1180,LOG2 Function
+LOG2,LOG2,Mathematical CAS,Implemented subset; see current-functions-formats.md,,Unselected,lefunctionsref.pdf,1190,1180,LOG2 Function
 LOGBETA,LOGBETA,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1191,1181,LOGBETA Function
 LOGCDF,LOGCDF,Probability CAS See: “CDF Function” on page 458,Not implemented,,Unselected,lefunctionsref.pdf,1192,1182,LOGCDF Function
 LOGISTIC,LOGISTIC,Mathematical CAS,Not implemented,,Unselected,lefunctionsref.pdf,1194,1184,LOGISTIC Function

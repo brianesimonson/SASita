@@ -1,9 +1,14 @@
 # Current DATA step functions and formats
 
-These are the 35 functions implemented in this app, not a complete SAS catalog. Names are case-insensitive. Brackets mean optional arguments, and … means repeated explicit arguments; OF variable lists and arrays are not supported. String handling, argument validation, type conversion, missing values, rounding, and date edge cases are a practical subset, not certified SAS behavior.
+These are the 40 function entries (including the LAGn family) implemented in this app, not a complete SAS catalog. Names are case-insensitive. Brackets mean optional arguments, and … means repeated explicit arguments; OF variable lists and arrays are not supported. String handling, argument validation, type conversion, missing values, rounding, and date edge cases are a practical subset, not certified SAS behavior.
 
 | Category | Function signature | Behavior | Example | Current result |
 |---|---|---|---|---|
+| Numeric | `EXP(x)` | e raised to x; overflow/missing returns missing. | `exp(0)` | `1` |
+| Numeric | `LOG(x)` | Natural logarithm; nonpositive/missing returns missing. | `log(1)` | `0` |
+| Numeric | `LOG10(x)` | Base-10 logarithm. | `log10(100)` | `2` |
+| Numeric | `LOG2(x)` | Base-2 logarithm. | `log2(8)` | `3` |
+| Queue | `LAG(value)` / `LAGn(value)` | Independent queue per call site; n=1–1000. Advances only when executed, not reset by BY groups. Numeric/character supported; use LENGTH for character results. | `lag2(x)` | Value from two prior executions of that call, initially missing. |
 | Numeric | `ABS(x)` | Absolute value. | `abs(-5)` | `5` |
 | Numeric | `SQRT(x)` | Square root; negative input returns numeric missing. | `sqrt(9)` | `3` |
 | Numeric | `CEIL(x)` | Round upward to an integer. | `ceil(2.1)` | `3` |

@@ -1,4 +1,5 @@
 import {projectPath} from './file-program.mjs';
+import {tableHeaderDescriptor} from './table-storage.mjs';
 async function storedHandle(mode,handle) {
  const db=await new Promise((resolve,reject)=>{const request=indexedDB.open('sasita-projects',1);request.onupgradeneeded=()=>request.result.createObjectStore('handles');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});
  try{return await new Promise((resolve,reject)=>{const transaction=db.transaction('handles',mode==='get'?'readonly':'readwrite'),store=transaction.objectStore('handles');const request=mode==='get'?store.get('project'):mode==='delete'?store.delete('project'):store.put(handle,'project');transaction.oncomplete=()=>resolve(request.result);transaction.onerror=()=>reject(transaction.error);transaction.onabort=()=>reject(transaction.error||new Error('Project storage unavailable'));});}finally{db.close();}
@@ -33,6 +34,15 @@ export function createProjectFiles() {
   const {folder,name}=await parent(path),handle=await folder.getFileHandle(name),file=await handle.getFile();
   if(file.size>20000000)throw new Error('File read limit is 20 MB');return file.text();
  }
+ async function readDescriptor(path){
+  const {folder,name}=await parent(path),handle=await folder.getFileHandle(name),file=await handle.getFile();
+  if(file.size>20000000)throw new Error('File read limit is 20 MB');
+  for(let size=16384;size<=524288;size*=2){
+   const descriptor=tableHeaderDescriptor(await file.slice(0,Math.min(size,file.size)).text());
+   if(descriptor)return descriptor;if(size>=file.size)break;
+  }
+  throw new Error('Native descriptors must precede rows within the first 512 KB');
+ }
  async function list(path='') {
   await permission(directory);let folder=directory;
   if(path)for(const part of projectPath(path))folder=await folder.getDirectoryHandle(part);
@@ -59,5 +69,5 @@ export function createProjectFiles() {
   } catch(e){throw new Error(e.message+'\nDisk files possibly changed: '+touched.join(', ')+'. File saves cannot be rolled back as a group.');}
   return touched;
  }
- return {supported,connect,restore,reconnect,forget,read,list,open,checkDirectory,saveExports,get directory(){return directory},get remembered(){return remembered},get notice(){return notice}};
+ return {supported,connect,restore,reconnect,forget,read,readDescriptor,list,open,checkDirectory,saveExports,get directory(){return directory},get remembered(){return remembered},get notice(){return notice}};
 }

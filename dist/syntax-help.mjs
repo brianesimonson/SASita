@@ -344,6 +344,11 @@ const syntaxEntries=[
     "description": "CALL STREAMINIT(seed) selects default MTHYBRID; explicit MT32/MT2002 or MT1998 also available. First initialization wins per DATA step. Without initialization, RAND chooses and logs an automatic seed. Explicit MT32 matches 40,000 SAS uniform draws at seed 12345; default uniform matches 400. Hybrid seeds divisible by 8192 use the 2002 initialization (not SAS-fixture verified). NORMAL caches the second polar value, preserving it across UNIFORM calls. The printed SAS normal references match within rounding tolerance, with exact uniform witnesses; bit-identical normals are not guaranteed. Only UNIFORM/NORMAL supported; see random-number documentation for scope.",
     "template": "rand('uniform')"
   },
+{"id": "fn-exp", "label": "EXP", "group": "Functions", "syntax": "EXP(x)", "description": "e raised to x; overflow returns numeric missing.", "template": "exp(1)"},
+{"id": "fn-log", "label": "LOG", "group": "Functions", "syntax": "LOG(x)", "description": "Natural logarithm; nonpositive or missing arguments return numeric missing.", "template": "log(2.718281828459045)"},
+{"id": "fn-log10", "label": "LOG10", "group": "Functions", "syntax": "LOG10(x)", "description": "Base-10 logarithm; positive numeric argument required.", "template": "log10(100)"},
+{"id": "fn-log2", "label": "LOG2", "group": "Functions", "syntax": "LOG2(x)", "description": "Base-2 logarithm; positive numeric argument required.", "template": "log2(8)"},
+{"id": "fn-lag", "label": "LAG / LAGn", "group": "Functions", "syntax": "LAG(value) / LAGn(value)", "description": "LAG is LAG1. Use lag2(x), lag3(x), etc., up to 1000. Every syntactic call owns an independent queue, advancing only when executed; initial entries are missing, BY groups do not reset queues, and each DATA step starts fresh. Numeric and character values supported within existing character subset; declare LENGTH for character results. Not lag(x,n). Fresh actual SAS validation pending.", "template": "lag(1)"},
   {
     "id": "fmt-0",
     "label": "w.d / Fw.d",
@@ -569,7 +574,8 @@ export function syntaxContext(source, cursor=source.length){
   if(statement[0]==='%mend')macroActive=false;
   if(t===';'){if(['run','quit'].includes(statement[0]))block=null;statement=[];stack=[];}
  }
- const current=tokens.at(-1),fn=syntaxEntries.find(e=>e.id==='fn-'+current)||[...stack].reverse().map(n=>syntaxEntries.find(e=>e.id==='fn-'+n)).find(Boolean);
+ const lookup=name=>syntaxEntries.find(e=>e.id==='fn-'+(/^lag[1-9]\d*$/.test(name||'')?'lag':name));
+ const current=tokens.at(-1),fn=lookup(current)||[...stack].reverse().map(lookup).find(Boolean);
  if(fn)return fn.id;
  if(statement[0]==='call'&&statement[1]==='streaminit')return 'streaminit';
  if(['libname','filename','title'].includes(statement[0]))return statement[0];

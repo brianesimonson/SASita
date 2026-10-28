@@ -105,7 +105,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#code').value"),'data x; value=substr("abcd",2,2); run;');
     assert.equal(await evaluate("document.querySelector('#programstate').textContent"),'Unsaved changes');
     await evaluate("document.querySelector('#syntaxsearch').value='';document.querySelector('#syntaxsearch').dispatchEvent(new Event('input'))");
-    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),70);
+    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),75);
     await evaluate("document.querySelector('#syntaxclose').click();document.querySelector('#code').value='proc sgplot data=x; histogram x /';document.querySelector('#code').setSelectionRange(32,32);document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{ctrlKey:true,code:'Space',key:' ',bubbles:true}))");
     assert.equal(await evaluate("document.querySelector('#syntaxentry').value"),'sgplot');
     assert.ok(await evaluate("!document.querySelector('#syntaxpanel').hidden && document.querySelector('#syntaxfollow').checked"));
@@ -216,10 +216,10 @@ try {
     assert.ok(await evaluate("document.querySelector('#datasets').textContent.includes('summary')"));
     console.log(`${label}: all nine automatic procedure headers, chained DATA/VAR/OUTPUT pieces, duplicate/typed-field suppression, plain Enter and completed MEANS execution passed`);
     // Export from the REAL browser build, extract, and execute the Python bridge.
-    const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8')+' proc print data=glm_scored(obs=3) noobs; var predicted residual; run; '+await readFile('examples/catalog/12-weights.sas','utf8');
+    const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8')+' proc print data=glm_scored(obs=3) noobs; var predicted residual; run; '+await readFile('examples/catalog/12-weights.sas','utf8')+' '+await readFile('examples/catalog/13-lag-math-conversions.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(portableBrowserProgram)};document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.18.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.19.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
@@ -228,6 +228,7 @@ try {
     assert.equal(extracted.status,0,extracted.stderr);
     const wrapped=spawnSync('python3',[join(packagePath,'run.py')],{encoding:'utf8',maxBuffer:10000000,timeout:35000});assert.equal(wrapped.status,0,wrapped.stderr);
     assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_result).rows,[{x:3,square:9}]);
+    const lagMath=JSON.parse(JSON.parse(wrapped.stdout).tables.calculations).rows;assert.deepEqual(lagMath.slice(0,4).map(r=>r.two_back),[null,null,1,2]);assert.ok(Math.abs(lagMath[9].restored-10)<1e-12);assert.equal(lagMath[9].as_text,'0010');
     assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_sample).rows.map(r=>r.id),[3,5,6,9,12,13,17,19,23,24]);
     const browserGlm=JSON.parse(JSON.parse(wrapped.stdout).tables.glm_tests).rows;
     for(const [source,ss] of [['A',67.6],['B',10],['A*B',.4]])assert.ok(Math.abs(browserGlm.find(r=>r.source===source&&r.hypothesistype===3).ss-ss)<1e-10);
@@ -418,6 +419,23 @@ try {
     await evaluate("Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent==='restored_native').click()");
     assert.equal(await evaluate("document.querySelector('#resulttitle').textContent"),'restored_native');
     assert.ok((await evaluate("document.querySelector('#table').textContent")).includes('abcd'));
+    // A disk-only table has never been run or clicked: fields load from its header.
+    await evaluate("(async()=>{const folder=await window.__projectTest.getDirectoryHandle('tables');const handle=await folder.getFileHandle('external.sassy-table.json',{create:true});const stream=await handle.createWritable();await stream.write(JSON.stringify({format:'sassy-table',version:1,name:'external',columns:[{name:'external_value',type:'numeric',length:8,format:null}],rows:[{external_value:7}]}));await stream.close();document.querySelector('#refreshlibraries').click()})()");
+    await waitFor("Array.from(document.querySelectorAll('#datasets strong')).some(n=>n.textContent==='saved.external')");
+    await evaluate("document.querySelector('#workspaceprogramtab').click();const e=document.querySelector('#code');e.value='proc means data=saved.external; var ';e.focus();e.setSelectionRange(e.value.length,e.value.length);e.dispatchEvent(new Event('input'))");
+    await waitFor("!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('external_value')");
+    assert.equal(await evaluate("Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent==='saved.external').querySelector('small').textContent"),'Saved table');
+    await send('Input.dispatchKeyEvent',{type:'keyDown',key:'Tab',code:'Tab',windowsVirtualKeyCode:9});
+    assert.ok((await evaluate("document.querySelector('#code').value")).includes('var external_value'));
+    for(const snippet of ['saved.external.','data not_yet_run;set saved.external;value=not_yet_run.']){
+      await evaluate(`(()=>{const e=document.querySelector('#code');e.value=${JSON.stringify(snippet)};e.focus();e.setSelectionRange(e.value.length,e.value.length);e.dispatchEvent(new Event('input'))})()`);
+      await waitFor("!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('external_value')");
+    }
+    await evaluate("document.querySelector('#code').value='proc means data=saved.external;var external_value;output out=external_summary mean=m;run;';document.querySelector('#run').click()");
+    await waitFor("!document.querySelector('#run').disabled && document.querySelector('#status').textContent==='Ready'");
+    await evaluate("Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent==='external_summary').click()");
+    assert.ok((await evaluate("document.querySelector('#table').textContent")).includes('7'));
+    console.log(`${label}: disk-only library PROC fields, SET inference and qualified variable suggestions without sidebar loading passed`);
     // A failure after a native table has been prepared leaves its old disk file intact.
     await evaluate("document.querySelector('#code').value='data saved.persist;amount=999;run;data bad;unsupported;run;';document.querySelector('#run').click()");
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
@@ -453,7 +471,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#workspacelogtab').getAttribute('aria-selected')"),'true');
     // User-facing example catalog and SAS-shaped CLASS totals.
     await evaluate("document.querySelector('#exampleprograms').click()");
-    assert.equal(await evaluate("document.querySelector('#examplechoice').options.length"),12);
+    assert.equal(await evaluate("document.querySelector('#examplechoice').options.length"),13);
     await evaluate("document.querySelector('#examplechoice').value='04-means.sas';document.querySelector('#examplechoice').dispatchEvent(new Event('change'))");
     assert.ok(await evaluate("document.querySelector('#examplesource').textContent.includes('_TYPE_')"));
     const logBeforeExample=await evaluate("document.querySelector('#log').textContent");

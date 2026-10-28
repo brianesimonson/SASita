@@ -1,4 +1,4 @@
-# Procedure support and deployment — Sassy v0.4.18
+# Procedure support and deployment — Sassy v0.4.19
 
 All supported computation runs locally in the single offline HTML and in the
 exported Node.js 24+ interpreter. The optional Python wrapper invokes Node.
@@ -38,3 +38,5 @@ it does not automatically copy external project files or recover the inputs
 from before earlier runs. Normal resource limits and unsupported syntax checks
 still apply. Exact reference matches concern the tested values/selections, not
 complete SAS language, metadata or graphical equivalence.
+
+PROC IMPORT is currently DBMS=CSV only (comma delimiter, GETNAMES=YES, GUESSINGROWS=MAX). TSV, custom delimiters, JSON, Excel/Access and SAS binary files are not supported by this procedure. Native .sassy-table.json is read through LIBNAME/SET, not PROC IMPORT.

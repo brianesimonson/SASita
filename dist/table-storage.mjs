@@ -33,3 +33,21 @@ export function writeTable(ds,name) {
  const header=JSON.stringify(document,null,2).trimEnd().slice(0,-1);
  const text=header+',\n  \"rows\": [\n'+rows.map(row=>'    {'+ds.columns.map(c=>JSON.stringify(c)+': '+(Object.is(row[c],-0)?'-0':JSON.stringify(row[c]))).join(', ')+'}').join(',\n')+'\n  ]\n}\n';readTable(text);return text;
 }
+
+// Inspect a bounded native-file prefix, stopping before the top-level rows value.
+// Never JSON.parse observations; canonical Sassy files put descriptors first.
+export function tableHeaderDescriptor(prefix){
+ let depth=0,quoted=false,escaped=false,start=-1;
+ for(let i=0;i<prefix.length;i++){
+  const c=prefix[i];
+  if(quoted){if(escaped){escaped=false;continue;}if(c==='\\'){escaped=true;continue;}if(c==='"'){quoted=false;
+    if(depth===1&&prefix.slice(i+1).match(/^\s*:/)&&JSON.parse(prefix.slice(start,i+1))==='rows'){
+     const header=prefix.slice(0,start).replace(/,\s*$/,'');
+     let document;try{document=JSON.parse(header+'}');}catch{throw new Error('Invalid native table header');}
+     const ds=readTable(JSON.stringify({...document,rows:[]}));delete ds.rows;return ds;
+    }
+   }continue;}
+  if(c==='"'){quoted=true;start=i;}else if(c==='{'||c==='[')depth++;else if(c==='}'||c===']')depth--;
+ }
+ return null;
+}

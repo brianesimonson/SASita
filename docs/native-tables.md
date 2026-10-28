@@ -56,3 +56,5 @@ console.log(table.columns);    // ordered type/length/format metadata
 CSV remains the preferred simple interchange with SAS. Native JSON files cannot be directly opened as SAS7BDAT tables. Keep the format/version marker when producing files externally; Sassy validates the current schema on load.
 
 The ZIP includes library-demo.sas and an existing tables folder in demo-project. Choose demo-project, Browse files, open library-demo.sas, and Run; it writes a reviewed native table and reads it back.
+
+Since v0.4.19, editor assistance reads a referenced saved table's column header automatically after LIBNAME assignment, without loading observations into the sidebar. PROC field menus, qualified-variable shortcuts and simple SET target inference share that metadata. Refresh libraries after external changes. Headers must precede rows within the first 512 KB; ordinary table execution retains full file validation. See docs/editor-completion.md.

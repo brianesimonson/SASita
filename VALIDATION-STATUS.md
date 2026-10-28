@@ -6,6 +6,7 @@ Updated 2026-10-28. This is the current checklist for questions such as “what 
 
 | ID | Status | What remains | How to complete |
 | --- | --- | --- | --- |
+| DATA-LAG-MATH | Pending actual SAS reference | v0.4.19 LAG/LAGn queue lifecycle, conditional calls, character/missing values, BY continuity and EXP/LOG/LOG10/LOG2 edge/precision behavior. Local semantic, analytic and portable tests pass; no new actual SAS results for these functions. | Focused SAS reference run when desired; no need to rerun the completed weight kit. |
 | PRINT-SAS | Pending, lower priority | Fresh actual SAS comparison of PRINT OBS/FIRSTOBS/VAR/NOOBS, especially display/layout. Local semantic/browser/wrapper checks pass. | Run the PRINT example in SAS and compare the selected observations/numbering. Exact SAS styling is not a current promise. |
 | GLM-METADATA | Pending compatibility scope | Original interaction names A*X versus X*A, special missing codes, Biased column type, exact ODS descriptor lengths/formats/order. Numeric comparisons normalize these distinctions. | Collect relevant SAS descriptors/raw outputs; implement and validate metadata separately if required by an integration. |
 | WINDOWS-FILES | Pending manual validation | Real Windows file:// use, OS folder/file dialogs, remembered permissions/reconnection and Node rename/path behavior. Chromium cloud tests cover the app via HTTP and sandbox directory handles. | Exercise the downloaded standalone app and wrapper on Windows. |

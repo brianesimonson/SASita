@@ -1,6 +1,6 @@
 import {procedureStatementTemplates,procedureEditorOptions} from './syntax-help.mjs';
 // Editor metadata only: never execute a program, inspect observations or open files.
-function completionLex(source){
+export function completionLex(source){
  let mask='',i=0,start=true,inside=false;
  const blank=s=>s.replace(/[^\n]/g,' ');
  while(i<source.length){const c=source[i];
@@ -15,7 +15,7 @@ function completionTable(name){return name.toLowerCase().replace(/^work\./,'');}
 function completionSchemas(mask,state){
  const schemas=new Map(),libraries=new Set(['work',...Object.keys(state.libraries||{}),...Object.keys(state.members||{})]);
  const describe=(ds,inferred=false)=>({columns:(ds.columns||[]).filter(c=>completionName.test(c)),types:ds.types||{},inferred});
- for(const [name,ds] of Object.entries(state.datasets||{}))schemas.set(completionTable(name),describe(ds));
+ for(const [name,ds] of Object.entries({...state.datasets,...state.descriptors}))schemas.set(completionTable(name),describe(ds));
  for(const m of mask.matchAll(/\blibname\s+([a-z_]\w{0,7})\b/gi))libraries.add(m[1].toLowerCase());
  let targets=[],columns=null,types={},valid=false;
  function publish(){if(valid&&columns)for(const target of targets)schemas.set(target,{columns:[...columns],types:{...types},inferred:true});}
@@ -189,11 +189,11 @@ export function completionContext(code,caret,state={}){
  items.sort((a,b)=>a.label.toLowerCase().localeCompare(b.label.toLowerCase()));
  return items.length?{start,end,kind,qualifier,items:items.slice(0,200),total:items.length}:null;
 }
-export function createCompletionView(editor,getState){
+export function createCompletionView(editor,getState,prepareMetadata=null){
  const popup=document.createElement('div');popup.id='codecompletion';popup.className='codecompletion';popup.hidden=true;popup.setAttribute('role','listbox');popup.setAttribute('aria-label','Dataset, variable and statement suggestions');document.body.append(popup);
  editor.setAttribute('aria-autocomplete','list');editor.setAttribute('aria-controls',popup.id);
- let context=null,index=0,composing=false,navigated=false,timer;
- const hide=()=>{clearTimeout(timer);context=null;popup.hidden=true;editor.removeAttribute('aria-activedescendant');};
+ let context=null,index=0,composing=false,navigated=false,timer,revision=0;
+ const hide=()=>{revision++;clearTimeout(timer);context=null;popup.hidden=true;editor.removeAttribute('aria-activedescendant');};
  function position(){
   const rect=editor.getBoundingClientRect(),style=getComputedStyle(editor),mirror=document.createElement('div');
   for(const property of ['font','lineHeight','letterSpacing','padding','border','boxSizing','tabSize'])mirror.style[property]=style[property];
@@ -204,7 +204,12 @@ export function createCompletionView(editor,getState){
  }
  function select(){if(!context||index>=context.items.length)return;const label=context.items[index].label,fresh=completionContext(editor.value,editor.selectionStart,getState());if(!fresh||editor.selectionStart!==editor.selectionEnd){hide();return;}const item=fresh.items.find(item=>item.label===label)||fresh.items[0],start=fresh.start,end=fresh.end;hide();editor.setRangeText(item.insert,start,end,'end');if(item.selectText){const offset=item.insert.indexOf(item.selectText);if(offset>=0)editor.setSelectionRange(start+offset,start+offset+item.selectText.length);}editor.dispatchEvent(new Event('input',{bubbles:true}));editor.focus();hide();if(item.followUp)timer=setTimeout(update,0);}
  function paint(){popup.replaceChildren();context.items.forEach((item,i)=>{const option=document.createElement('div');option.id='completion-option-'+i;option.className='completionoption';option.title=item.insert;option.setAttribute('role','option');option.setAttribute('aria-selected',String(i===index));const label=document.createElement('strong'),detail=document.createElement('small');label.textContent=item.label;detail.textContent=item.detail;option.append(label,detail);option.onmousedown=e=>{e.preventDefault();index=i;select();};popup.append(option);});const hint=document.createElement('small');hint.className='completionhint';hint.textContent=(context.automatic?'Insert only this piece. ':context.kind==='statements'?'Edit the selected placeholder after insertion. ':context.kind==='variables'?'Inserts variable name only. ':'')+(context.automatic?'↑↓ select · Tab insert · Esc close':'↑↓ select · Tab/Enter insert · Esc close')+(context.total>200?' · Type more to filter':'');popup.append(hint);editor.setAttribute('aria-activedescendant','completion-option-'+index);}
- function update(){clearTimeout(timer);if(composing||editor.disabled||document.activeElement!==editor||editor.selectionStart!==editor.selectionEnd){hide();return;}const next=completionContext(editor.value,editor.selectionStart,getState());if(!next){hide();return;}context=next;index=0;navigated=false;paint();popup.hidden=false;position();}
+ function update(){clearTimeout(timer);if(composing||editor.disabled||document.activeElement!==editor||editor.selectionStart!==editor.selectionEnd){hide();return;}
+  const code=editor.value,caret=editor.selectionStart,next=completionContext(code,caret,getState());
+  if(!next)hide();else{context=next;index=0;navigated=false;paint();popup.hidden=false;position();}
+  const request=++revision;
+  if(prepareMetadata)Promise.resolve(prepareMetadata(code,caret)).then(changed=>{if(changed&&request===revision&&editor.value===code&&editor.selectionStart===caret&&document.activeElement===editor)update();}).catch(()=>{});
+ }
  editor.addEventListener('input',e=>{if(e.isComposing)return;clearTimeout(timer);timer=setTimeout(update,50);});
  editor.addEventListener('keydown',e=>{if(composing||e.isComposing||!context||popup.hidden||e.ctrlKey||e.metaKey||e.altKey)return;if(e.key==='Enter'&&context.automatic&&!navigated){hide();return;}if(['ArrowDown','ArrowUp','Tab','Enter','Escape'].includes(e.key)){e.preventDefault();e.stopImmediatePropagation();if(e.key==='Escape')hide();else if(e.key==='Tab'||e.key==='Enter')select();else{navigated=true;index=(index+(e.key==='ArrowDown'?1:-1)+context.items.length)%context.items.length;paint();popup.querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'});}}else if(['ArrowLeft','ArrowRight','Home','End'].includes(e.key))hide();},true);
  editor.addEventListener('compositionstart',()=>{composing=true;hide();});editor.addEventListener('compositionend',()=>{composing=false;update();});

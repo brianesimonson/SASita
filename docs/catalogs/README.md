@@ -4,7 +4,7 @@ These catalogs were extracted from the official SAS PDFs uploaded for this proje
 
 | Catalog | Dictionary topics | Current app support | Source edition |
 |---|---:|---|---|
-| [Functions](functions.csv) | 655 | 35 topics implemented as a subset | Functions and CALL Routines, September 14, 2026; version range 2020.1–2026.09 |
+| [Functions](functions.csv) | 655 | 40 topics implemented as a subset | Functions and CALL Routines, September 14, 2026; version range 2020.1–2026.09 |
 | [CALL routines](call-routines.csv) | 65 | STREAMINIT subset | Same functions reference |
 | [Formats](formats.csv) | 289 | 20 families with explicit subset limits | Formats and Informats, April 8, 2026; version range 2020.1–2026.04 |
 | [Informats](informats.csv) | 109 | Common INPUT subset | Same formats/informats reference |

@@ -19,9 +19,10 @@ async function packageFor(code,datasets={},libraries={}){
  return packageRoot;
 }
 try{
- const code="data results; set inputs; cube=x**3; root=sqrt(x); run; proc sort data=results; by descending x; run; proc means data=results; var x; output out=statistics n=count mean=avg var=variance; run;",inputs={inputs:parseCSV('x\n4\n9')};
+ const code="data results; set inputs; cube=x**3; root=sqrt(x); previous=lag(x); restored=exp(log(x)); run; proc sort data=results; by descending x; run; proc means data=results; var x; output out=statistics n=count mean=avg var=variance; run;",inputs={inputs:parseCSV('x\n4\n9')};
  const folder=await packageFor(code,inputs),p=python([join(folder,'run.py')]);assert.equal(p.status,0,p.stderr);
  const result=JSON.parse(p.stdout),rows=JSON.parse(result.tables.results).rows;
+ assert.deepEqual(rows.map(r=>r.previous),[4,null]);assert.ok(Math.abs(rows[0].restored-9)<1e-12);
  assert.equal(JSON.parse(result.tables.statistics).rows[0].avg,6.5);assert.equal(result.reports.length,1);
  assert.deepEqual(rows,run(code.split('proc means')[0],inputs).datasets.results.rows);
  const surveyFolder=await packageFor(`data frame; call streaminit(12345); do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; u=rand('uniform'); output; end; end; run;

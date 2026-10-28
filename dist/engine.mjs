@@ -46,7 +46,9 @@ class Parser{
   if(t.v==='input'){while(this.eat('?'))quiet++;if(quiet>2)fail('INPUT accepts ? or ??',t)}
   let format=this.formatSpec(t.v==='input'?'informat':'format',t.v==='put');this.need(')');
   a={k:'convert',name:t.v,source,format,quiet};
- }else{let args=[];if(!this.peek(')')){do{args.push(this.expr())}while(this.eat(','))}this.need(')');if(t.v!=='rand'&&!Object.hasOwn(funcs,t.v))fail(`Unsupported function ${t.v}`,t);a={k:'call',name:t.v,args}}
+ }else{let args=[];if(!this.peek(')')){do{args.push(this.expr())}while(this.eat(','))}this.need(')');
+ if(/^lag(?:[1-9]\d*)?$/.test(t.v)){const depth=t.v==='lag'?1:Number(t.v.slice(3));if(depth>1000||args.length!==1)fail('LAG/LAGn requires one argument and a lag of 1–1000',t);a={k:'lag',depth,arg:args[0]};}
+ else{if(t.v!=='rand'&&!Object.hasOwn(funcs,t.v))fail(`Unsupported function ${t.v}`,t);if(['exp','log','log10','log2'].includes(t.v)&&args.length!==1)fail(t.v.toUpperCase()+' requires one numeric argument',t);a={k:'call',name:t.v,args}}}
  }else a={k:'var',name:t.v}}else fail('Expected an expression',t);
  const prec={or:1,and:2,'=':3,eq:3,ne:3,'^=':3,'~=':3,'>':3,gt:3,'<':3,lt:3,'>=':3,ge:3,'<=':3,le:3,in:3,'||':4,'+':5,'-':5,'*':6,'/':6,'**':8};
  while(this.peek()&&prec[this.peek().v]>=min){let op=this.take().v,p=prec[op];if(op==='in'){this.need('(');let args=[];do{args.push(this.expr(4))}while(this.eat(','));this.need(')');a={k:'in',a,args};continue}let b=this.expr(p+(op==='**'?0:1));a={k:'bin',op,a,b}}
@@ -77,6 +79,7 @@ const truth=v=>!miss(v)&&v!==0;
 const numeric=f=>(...a)=>a.some(x=>num(x)===null)?null:f(...a);
 const text=v=>miss(v)?'':String(v);
 const funcs=Object.assign(Object.create(null),{
+ exp:numeric(x=>{const value=Math.exp(x);return Number.isFinite(value)?value:null;}),log:numeric(x=>x>0?Math.log(x):null),log10:numeric(x=>x>0?Math.log10(x):null),log2:numeric(x=>x>0?Math.log2(x):null),
  abs:numeric(Math.abs),sqrt:numeric(x=>x<0?null:Math.sqrt(x)),ceil:numeric(Math.ceil),floor:numeric(Math.floor),int:numeric(Math.trunc),round:(x,u=1)=>miss(x)||!u?null:Math.round(x/u)*u,
  sum:(...a)=>{let n=a.filter(x=>num(x)!==null);return n.length?n.reduce((s,v)=>s+v,0):null},mean:(...a)=>{let n=a.filter(x=>num(x)!==null);return n.length?n.reduce((s,v)=>s+v,0)/n.length:null},min:(...a)=>{let n=a.filter(x=>num(x)!==null);return n.length?Math.min(...n):null},max:(...a)=>{let n=a.filter(x=>num(x)!==null);return n.length?Math.max(...n):null},
  missing:x=>+miss(x),n:(...a)=>a.filter(x=>num(x)!==null).length,nmiss:(...a)=>a.filter(miss).length,coalesce:(...a)=>a.find(x=>!miss(x))??null,coalescec:(...a)=>a.find(x=>!miss(x))??'',
@@ -85,7 +88,13 @@ const funcs=Object.assign(Object.create(null),{
  mod:numeric((a,b)=>b===0?null:a%b),today:()=>Math.floor((Date.now()-epoch)/day),mdy:(m,d,y)=>{let v=new Date(Date.UTC(y,m-1,d));return v.getUTCMonth()===m-1&&v.getUTCDate()===d?(+v-epoch)/day:null},year:x=>miss(x)?null:new Date(epoch+x*day).getUTCFullYear(),month:x=>miss(x)?null:new Date(epoch+x*day).getUTCMonth()+1,day:x=>miss(x)?null:new Date(epoch+x*day).getUTCDate()
 });
 function cmp(a,b){if(typeof a==='string'&&typeof b==='string'){a=a.trimEnd();b=b.trimEnd()}if(miss(a)&&miss(b))return 0;if(miss(a))return-1;if(miss(b))return 1;return a<b?-1:a>b?1:0}
-function evaluate(e,p,context){if(e.k==='lit')return e.v;if(e.k==='var')return Object.hasOwn(p,e.name)?p[e.name]:null;if(e.k==='convert'){
+function evaluate(e,p,context){if(e.k==='lit')return e.v;if(e.k==='var')return Object.hasOwn(p,e.name)?p[e.name]:null;
+ if(e.k==='lag'){
+  const value=evaluate(e.arg,p,context);let queue=context.lags.get(e);
+  if(!queue){context.lagSlots+=e.depth;if(context.lagSlots>100000)fail('LAG queues exceed 100,000 slots per DATA step');const character=typeof value==='string'||e.arg.k==='var'&&(context.sourceTypes[e.arg.name]==='char'||Object.hasOwn(context.lengths,e.arg.name));queue={values:Array(e.depth).fill(character?'':null),index:0};context.lags.set(e,queue);}
+  const previous=queue.values[queue.index];queue.values[queue.index]=value;queue.index=(queue.index+1)%e.depth;return previous;
+ }
+ if(e.k==='convert'){
  const source=evaluate(e.source,p,context);
  if(e.name==='put')return formatValue(source,e.format.parsed,{padded:true,alignment:e.format.alignment});
  const result=readFormatted(source,e.format.parsed);
@@ -126,8 +135,8 @@ export function run(code,input={},options={}){
  for(let step of steps){
  if(step.k==='sort'){let ds=datasets[key(step.data)];if(!ds)fail('Dataset '+step.data+' was not found');for(let k of step.keys)if(!ds.columns.includes(k.name))fail('Sort variable '+k.name+' was not found');let rows=ds.rows.map(r=>({...r}));rows.sort((a,b)=>{tick();return compareKeys(a,b,step.keys)});let removed=0;if(step.nodupkey){let all=rows;rows=[];for(let r of all){tick();if(!rows.length||compareKeys(rows.at(-1),r,step.keys)!==0)rows.push(r);else removed++}}let name=key(step.out);datasets[name]={...ds,rows,columns:[...ds.columns],formats:{...ds.formats}};written.push(name);logs.push('NOTE: PROC SORT wrote '+datasetLabel(name)+': '+rows.length+' observations'+(step.nodupkey?', '+removed+' duplicate keys removed':'')+'.');continue}
  let readers=step.body.filter(s=>s.k==='set'||s.k==='merge');if(readers.length>1)fail('Use one SET or MERGE statement per DATA step');let reader=readers[0],merge=reader?.k==='merge',inputs=reader?reader.inputs.map(s=>inputView(s,datasets)):[];
- const context={logs,random:createRandomStream(tick,logs)};
- const retained=Object.create(null),lengths=Object.create(null),formats=Object.create(null),sourceTypes=Object.create(null);let keep=null,drop=[],by=[],explicit=false,columns=[],auto=new Set(['_n_','_error_']);
+ const context={logs,random:createRandomStream(tick,logs),lags:new Map(),lagSlots:0};
+ const retained=Object.create(null),lengths=Object.create(null),formats=Object.create(null),sourceTypes=Object.create(null);Object.assign(context,{lengths,sourceTypes});let keep=null,drop=[],by=[],explicit=false,columns=[],auto=new Set(['_n_','_error_']);
  for(let ds of inputs){for(let c of ds.columns){if(!columns.includes(c))columns.push(c);if(sourceTypes[c]&&sourceTypes[c]!==ds.types[c])fail('MERGE variable '+c+' is character in one input and numeric in another');sourceTypes[c]=ds.types[c];if(!Object.hasOwn(lengths,c)&&ds.lengths?.[c])lengths[c]=ds.lengths[c];if(!Object.hasOwn(formats,c)&&ds.formats[c])formats[c]=ds.formats[c]}if(ds.indicator){if(auto.has(ds.indicator))fail('IN= indicators must have unique names');auto.add(ds.indicator)}}
  for(let ds of inputs)if(ds.indicator&&columns.includes(ds.indicator))fail('IN= indicator '+ds.indicator+' conflicts with an input variable');
  for(let s of step.body){if(s.k==='keep')keep=s.items.map(x=>x.name);if(s.k==='drop')drop.push(...s.items.map(x=>x.name));if(s.k==='by'){if(by.length)fail('Use one BY statement per step');by=s.keys}if(s.k==='retain')for(let x of s.items)retained[x.name]=x.init;if(s.k==='length')for(let x of s.items)lengths[x.name]=x.n;if(s.k==='format')for(let x of s.items)formats[x.name]=x.fmt}

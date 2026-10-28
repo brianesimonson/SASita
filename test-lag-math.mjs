@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {run} from './dist/engine.mjs';
+import {runFileProgram} from './dist/file-program.mjs';
+let r=run('data sample;do x=1 to 5;a=lag(x);b=lag2(x);c=lag(x*10);if mod(x,2)=1 then conditional=lag(x);output;end;run;');
+const rows=r.datasets.sample.rows;
+assert.deepEqual(rows.map(v=>v.a),[null,1,2,3,4]);assert.deepEqual(rows.map(v=>v.b),[null,null,1,2,3]);
+assert.deepEqual(rows.map(v=>v.c),[null,10,20,30,40]);
+assert.deepEqual(rows.filter(v=>v.x%2).map(v=>v.conditional),[null,1,3]);
+r=run('data f;do x=1 to 4;g=ceil(x/2);output;end;run;data out;set f;by g;previous=lag(x);if first.g then reset=.;else reset=previous;run;data again;set f;previous=lag(x);run;');
+assert.deepEqual(r.datasets.out.rows.map(v=>v.previous),[null,1,2,3]);assert.deepEqual(r.datasets.out.rows.map(v=>v.reset),[null,1,null,3]);
+assert.deepEqual(r.datasets.again.rows.map(v=>v.previous),[null,1,2,3]);
+r=run("data f;length word $8;word='Alpha';output;word='Beta';output;run;data out;set f;length previous $8;previous=lag(word);run;");
+assert.deepEqual(r.datasets.out.rows.map(v=>v.previous),['','Alpha']);assert.equal(r.datasets.out.types.previous,'char');
+r=run('data f;x=.;output;x=2;output;x=3;output;run;data out;set f;y=lag(x);run;');assert.deepEqual(r.datasets.out.rows.map(v=>v.y),[null,null,2]);
+r=run('data input;do x=1 to 3;output;end;run;data f;set input;y=lag(x);if x>1;run;');assert.deepEqual(r.datasets.f.rows.map(v=>v.y),[1,2]);
+const code='data test;do x=1 to 20;natural=log(x);base10=log10(x);base2=log2(x);restored=exp(natural);previous=lag2(x);output;end;run;';
+r=await runFileProgram(code);for(const row of r.datasets.test.rows){assert.ok(Math.abs(row.restored-row.x)<1e-12);assert.ok(Math.abs(row.base10-Math.log(row.x)/Math.LN10)<1e-14);assert.ok(Math.abs(row.base2-Math.log(row.x)/Math.LN2)<1e-14);}
+r=run('data limits;a=log(0);b=log(-1);c=exp(1000);d=log(.);e=exp(.);f=exp(0);g=log10(100);h=log2(8);run;');assert.deepEqual(r.datasets.limits.rows[0],{a:null,b:null,c:null,d:null,e:null,f:1,g:2,h:3});
+for(const value of ['lag()','lag(x,2)','lag0(x)','lag1001(x)','log()','exp(1,2)'])assert.throws(()=>run('data f;x=1;y='+value+';run;'));
+assert.throws(()=>run('data f;x=1;'+Array.from({length:101},(_,i)=>`v${i}=lag1000(x);`).join('')+'run;'),/100,000 slots/);
+console.log('LAG/LAGn: independent call-site queues, conditional execution, missing/character values, BY continuity, step reset and bounds; EXP/LOG/LOG10/LOG2 domains and inverse checks passed. Fresh SAS validation pending.');

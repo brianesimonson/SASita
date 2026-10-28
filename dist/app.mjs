@@ -1,4 +1,5 @@
 import {createCompletionView} from './completion.mjs';
+import {createLibraryCompletion} from './library-completion.mjs';
 import {createExamplesView} from './examples-view.mjs';
 import {createPortableView} from './portable-view.mjs';
 import {createSyntaxHelp} from './syntax-help.mjs';
@@ -63,8 +64,9 @@ function syncEditor(){$('lines').scrollTop=$('code').scrollTop;$('highlight').st
 function lines(){highlight();let n=$('code').value.split('\n').length;$('lines').textContent=Array.from({length:n},(_,i)=>i+1).join('\n');$('linecount').textContent=n+' lines'}
 const chartView=createChartView($('chartcanvas'),$('chartsummary'));
 let outputHistory=[],outputSnapshot=null,chartTitle='',runNumber=0,libraries=Object.create(null),libraryMembers=Object.create(null);
-async function refreshLibraries(){libraryMembers=Object.create(null);for(const [alias,path] of Object.entries(libraries)){try{libraryMembers[alias]=(await project.list(path==='.'?'':path)).filter(e=>e.kind==='file'&&/^[a-z_]\w{0,31}\.sassy-table\.json$/.test(e.name)).map(e=>e.name.replace(/\.sassy-table\.json$/,''));}catch(e){log('WARNING: Could not list '+alias.toUpperCase()+': '+e.message,true);}}render();}
-function resetLibraries(){libraries=Object.create(null);libraryMembers=Object.create(null);for(const name of Object.keys(datasets))if(name.includes('.'))delete datasets[name];if(selected.includes('.'))selected='';outputSnapshot=null;renderHistory();render();}
+const libraryCompletion=createLibraryCompletion(path=>project.readDescriptor(path).finally(updateProjectUI),()=>({libraries,members:libraryMembers,enabled:!busy&&!!project.directory}));
+async function refreshLibraries(){libraryCompletion.clear();libraryMembers=Object.create(null);for(const [alias,path] of Object.entries(libraries)){try{libraryMembers[alias]=(await project.list(path==='.'?'':path)).filter(e=>e.kind==='file'&&/^[a-z_]\w{0,31}\.sassy-table\.json$/.test(e.name)).map(e=>e.name.replace(/\.sassy-table\.json$/,''));}catch(e){log('WARNING: Could not list '+alias.toUpperCase()+': '+e.message,true);}}render();}
+function resetLibraries(){libraryCompletion.clear();libraries=Object.create(null);libraryMembers=Object.create(null);for(const name of Object.keys(datasets))if(name.includes('.'))delete datasets[name];if(selected.includes('.'))selected='';outputSnapshot=null;renderHistory();render();}
 $('refreshlibraries').onclick=()=>userAction(refreshLibraries);
 function shownDataset(){return outputSnapshot?.chart?null:outputSnapshot?.dataset||datasets[selected]}
 function showWorkspace(name){for(const pane of ['program','output','log']){const active=pane===name;$(pane+'pane').hidden=!active;$('workspace'+pane+'tab').setAttribute('aria-selected',String(active));$('workspace'+pane+'tab').tabIndex=active?0:-1;}if(name==='program')syncEditor();if(name==='output')requestAnimationFrame(()=>chartView.resize());}
@@ -85,7 +87,7 @@ function render(){let list=$('datasets');list.replaceChildren();$('datasetcount'
 }
 function log(msg,error=false){const pane=$('log'),bottom=pane.scrollHeight-pane.scrollTop-pane.clientHeight<40;const entry=el('span',`[${new Date().toLocaleTimeString()}] ${msg}\n\n`,error?'error':'logentry');pane.append(entry);if(pane.textContent.length>1000000){while(pane.childNodes.length>1&&pane.textContent.length>1000000)pane.firstChild.remove();}if(bottom)pane.scrollTop=pane.scrollHeight;$('status').textContent=error?'Error':'Ready';$('status').style.color=error?'#b33c47':'#137e72'}
 function lockWorkspace(value) {
- completionView?.close();busy=value;
+ completionView?.close();if(value)libraryCompletion.clear();busy=value;
  for(const id of ['run','newprogram','openprogram','saveprogram','saveasprogram','import','chooseproject','programname','code'])$(id).disabled=value;
  updateProjectUI();render();
 }
@@ -180,7 +182,7 @@ function updateProjectUI(){
  $('savecsvproject').disabled=busy||!project.directory||!shownDataset();$('refreshlibraries').disabled=busy||!project.directory||!Object.keys(libraries).length;
 }
 $('chooseproject').onclick=()=>userAction(async()=>{await project.connect();resetLibraries();projectFolderPath='';updateProjectUI();log('Project folder connected: '+project.directory.name+'. Relative CSV paths now use this folder.')});
-$('reconnectproject').onclick=()=>userAction(async()=>{await project.reconnect();updateProjectUI();log('Project folder reconnected.')});
+$('reconnectproject').onclick=()=>userAction(async()=>{await project.reconnect();libraryCompletion.clear();updateProjectUI();log('Project folder reconnected.')});
 $('forgetproject').onclick=()=>userAction(async()=>{await project.forget();resetLibraries();$('projectdialog').close();updateProjectUI();log(project.notice||'Project disconnected and forgotten. Browser permissions can also be revoked in browser settings.')});
 async function browseProject(){
  const entries=await project.list(projectFolderPath);$('projectentries').replaceChildren();$('projectpath').textContent=project.directory.name+(projectFolderPath?'/'+projectFolderPath:'');$('projectup').disabled=!projectFolderPath;
@@ -215,4 +217,4 @@ createPortableView(()=>({code:$('code').value,datasets,libraries,chartTitle,busy
 
 createExamplesView((code,name)=>{if(busy){log('Wait for the current operation to finish.',true);return false;}if(!canReplaceProgram())return false;setProgram(code,name);programBaseline='';programDirty=!!code;updateProgramUI();rememberDraft();return true;},downloadLocalFile);
 
-completionView=createCompletionView($('code'),()=>({datasets,libraries,members:libraryMembers}));
+completionView=createCompletionView($('code'),()=>({datasets,libraries,members:libraryMembers,descriptors:libraryCompletion.descriptors()}),(code,caret)=>libraryCompletion.ensure(code,caret));

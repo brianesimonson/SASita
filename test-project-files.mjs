@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {writeTable} from './dist/table-storage.mjs';
 import {createProjectFiles} from './dist/project-files.mjs';
 let permission='granted',requests=0;
 const missing=()=>Object.assign(new Error('Not found'),{name:'NotFoundError'});
@@ -24,6 +25,11 @@ const previous=globalThis.showDirectoryPicker;globalThis.showDirectoryPicker=asy
 try {
  const project=createProjectFiles();await project.connect();
  assert.equal(await project.read('inputs/source.csv'),'id,x\n1,2');
+ const native=writeTable({columns:['x'],types:{x:'num'},rows:[{x:2}]},'native');
+ let headerBytes=0;inputs.entriesMap.set('native.sassy-table.json',{kind:'file',async getFile(){return {size:1000000,text(){throw new Error('Must not read whole table');},slice(start,end){headerBytes=end-start;return new Blob([native.slice(start,end)]);}};}});
+ assert.deepEqual((await project.readDescriptor('inputs/native.sassy-table.json')).columns,['x']);
+ assert.equal(headerBytes,16384);
+ await assert.rejects(project.readDescriptor('../outside.sassy-table.json'),/Invalid project path/);
  await assert.rejects(project.read('../outside.csv'),/Invalid project path/);
  await assert.rejects(project.saveExports([{path:'outputs/new.csv',text:'new',replace:false},{path:'outputs/existing.csv',text:'overwrite',replace:false}]),/already exists/);
  assert.equal(outputs.entriesMap.has('new.csv'),false,'all paths checked before writes');
@@ -33,7 +39,7 @@ try {
  outputs.entriesMap.set('broken.csv',file('broken.csv','unchanged',true));
  await assert.rejects(project.saveExports([{path:'outputs/new.csv',text:'saved',replace:false},{path:'outputs/broken.csv',text:'fail',replace:true}]),/possibly changed: outputs\/new.csv, outputs\/broken.csv/);
  assert.equal(outputs.entriesMap.get('new.csv').text,'saved');assert.equal(outputs.entriesMap.get('broken.csv').text,'unchanged');
- permission='prompt';await assert.rejects(project.read('inputs/source.csv'),/Reconnect/);
+ permission='prompt';await assert.rejects(project.readDescriptor('inputs/native.sassy-table.json'),/Reconnect/);await assert.rejects(project.read('inputs/source.csv'),/Choose a project folder/);
  assert.equal(requests,0,'program IO never prompts');assert.equal(project.directory,null,'expired access exposes Reconnect');
  assert.equal(project.remembered,root);await project.reconnect();assert.equal(requests,1);
  assert.equal(await project.read('inputs/source.csv'),'id,x\n1,2');
