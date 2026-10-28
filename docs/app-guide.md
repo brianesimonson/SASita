@@ -1,4 +1,4 @@
-# Sassy v0.4.17
+# Sassy v0.4.18
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -50,7 +50,7 @@ Run `proc print data=table(obs=10); var id amount; run;` to put a few observatio
 
 ## Weighted analysis
 
-Use WEIGHT variable; in MEANS or GLM. The twelfth Examples program demonstrates both and prints five predictions. MEANS adds SUMWGT and EXCLNPWGT; variance divisors and row inclusion differ from GLM. See weights.md. Extract the included weights-validation.zip and upload/run its 01-sas-weight-comparison.sas in SAS Studio; the expected data are embedded. New weighted SAS results are pending.
+Use WEIGHT variable; in MEANS or GLM. The twelfth Examples program demonstrates both and prints five predictions. MEANS adds SUMWGT and EXCLNPWGT; variance divisors and row inclusion differ from GLM. See weights.md. Extract the included weights-validation.zip and upload/run its 01-sas-weight-comparison.sas in SAS Studio; the expected data are embedded. All ten weighted GLM comparisons passed actual SAS; the five MEANS groups differed only in _FREQ_, corrected in v0.4.18. A fresh corrected SAS run is pending; see VALIDATION-STATUS.md.
 
 ## Dataset and variable completion
 

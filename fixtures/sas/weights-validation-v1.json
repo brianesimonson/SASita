@@ -1,0 +1,414 @@
+{
+  "provenance": {
+    "source": "Actual user-uploaded SAS Studio Results and Log received 2026-10-28",
+    "files": {
+      "results": {
+        "filename": "01-sas-weight-comparison-results.html",
+        "sha256": "cf651ac371615eb6eaae4ec7d7be479e72a81b35f382ddd580f566b4fa89cf49"
+      },
+      "log": {
+        "filename": "01-sas-weight-comparison-log.html",
+        "sha256": "bf711f8cf47d1772687435e2aee394253b25ad71126597d29590544a762e8638"
+      }
+    },
+    "program_sha256": "c462adb6c164b8561149f084b7323fb40ff728bc09d7cafc80118713083e4d95",
+    "app_baseline": "v0.4.14",
+    "means_values_note": "Statistics below are original Sassy expectations confirmed within relative 1e-10 by SAS PROC COMPARE, not raw full-precision SAS exports. Only _freq_ is replaced with observed SAS values (8 overall, 4 each class)."
+  },
+  "criteria": {
+    "statistics_relative": 1e-10,
+    "scored_absolute": 1e-12,
+    "normalizations": [
+      "CV/coeffvar mapping",
+      "A*X/X*A labels",
+      "Special numeric missing codes"
+    ]
+  },
+  "outcome": {
+    "groups": [
+      {
+        "name": "means_df",
+        "matched_records": 3,
+        "unequal_values": 2,
+        "differing_variables": [
+          "_FREQ_"
+        ]
+      },
+      {
+        "name": "means_exclude",
+        "matched_records": 3,
+        "unequal_values": 3,
+        "differing_variables": [
+          "_FREQ_"
+        ]
+      },
+      {
+        "name": "means_n",
+        "matched_records": 3,
+        "unequal_values": 2,
+        "differing_variables": [
+          "_FREQ_"
+        ]
+      },
+      {
+        "name": "means_wdf",
+        "matched_records": 3,
+        "unequal_values": 2,
+        "differing_variables": [
+          "_FREQ_"
+        ]
+      },
+      {
+        "name": "means_wgt",
+        "matched_records": 3,
+        "unequal_values": 2,
+        "differing_variables": [
+          "_FREQ_"
+        ]
+      },
+      {
+        "name": "glm_weighted_anova",
+        "matched_records": 3,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weighted_tests",
+        "matched_records": 10,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weighted_params",
+        "matched_records": 16,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weighted_fit",
+        "matched_records": 1,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weighted_scored",
+        "matched_records": 33,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weight_edges_anova",
+        "matched_records": 3,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weight_edges_tests",
+        "matched_records": 2,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weight_edges_params",
+        "matched_records": 2,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weight_edges_fit",
+        "matched_records": 1,
+        "unequal_values": 0,
+        "differing_variables": []
+      },
+      {
+        "name": "glm_weight_edges_scored",
+        "matched_records": 10,
+        "unequal_values": 0,
+        "differing_variables": []
+      }
+    ],
+    "comparison_groups": 15,
+    "matched_records": 96,
+    "unequal_values": 11,
+    "executed_errors": 0,
+    "executed_warnings": 0
+  },
+  "means": [
+    {
+      "name": "means_df",
+      "program": "data m; length g $1;\ng='A'; x=1; y=2; w=1; output;\ng='A'; x=3; y=.; w=3; output;\ng='A'; x=100; y=7; w=0; output;\ng='A'; x=-100; y=8; w=-2; output;\ng='B'; x=999; y=999; w=.; output;\ng='B'; x=.; y=4; w=2; output;\ng='B'; x=5; y=6; w=.3; output;\ng='B'; x=7; y=9; w=.8; output;\nrun;proc means data=m  vardef=df; class g; var x; weight w; output out=means_df n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss stderr=se; run;\n",
+      "expected": [
+        {
+          "g": "",
+          "_type_": 0.0,
+          "_freq_": 8,
+          "count": 6.0,
+          "missing_count": 1.0,
+          "total": 17.1,
+          "weights": 5.1,
+          "average": 3.3529411764705883,
+          "lo": -100.0,
+          "hi": 100.0,
+          "variance": 3.472941176470589,
+          "sd": 1.863582886933283,
+          "css": 17.364705882352943,
+          "uss": 74.7,
+          "se": 0.8252083725529499
+        },
+        {
+          "g": "A",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 4.0,
+          "missing_count": 0.0,
+          "total": 10.0,
+          "weights": 4.0,
+          "average": 2.5,
+          "lo": -100.0,
+          "hi": 100.0,
+          "variance": 1.0,
+          "sd": 1.0,
+          "css": 3.0,
+          "uss": 28.0,
+          "se": 0.5
+        },
+        {
+          "g": "B",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 2.0,
+          "missing_count": 1.0,
+          "total": 7.1000000000000005,
+          "weights": 1.1,
+          "average": 6.454545454545455,
+          "lo": 5.0,
+          "hi": 7.0,
+          "variance": 0.8727272727272728,
+          "sd": 0.9341987329938276,
+          "css": 0.8727272727272728,
+          "uss": 46.7,
+          "se": 0.8907235428302466
+        }
+      ]
+    },
+    {
+      "name": "means_exclude",
+      "program": "data m; length g $1;\ng='A'; x=1; y=2; w=1; output;\ng='A'; x=3; y=.; w=3; output;\ng='A'; x=100; y=7; w=0; output;\ng='A'; x=-100; y=8; w=-2; output;\ng='B'; x=999; y=999; w=.; output;\ng='B'; x=.; y=4; w=2; output;\ng='B'; x=5; y=6; w=.3; output;\ng='B'; x=7; y=9; w=.8; output;\nrun;proc means data=m exclnpwgt vardef=df; class g; var x; weight w; output out=means_exclude n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss stderr=se; run;\n",
+      "expected": [
+        {
+          "g": "",
+          "_type_": 0.0,
+          "_freq_": 8,
+          "count": 4.0,
+          "missing_count": 1.0,
+          "total": 17.1,
+          "weights": 5.1,
+          "average": 3.3529411764705883,
+          "lo": 1.0,
+          "hi": 7.0,
+          "variance": 5.788235294117648,
+          "sd": 2.405875161789915,
+          "css": 17.364705882352943,
+          "uss": 74.7,
+          "se": 1.065339428016167
+        },
+        {
+          "g": "A",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 2.0,
+          "missing_count": 0.0,
+          "total": 10.0,
+          "weights": 4.0,
+          "average": 2.5,
+          "lo": 1.0,
+          "hi": 3.0,
+          "variance": 3.0,
+          "sd": 1.7320508075688772,
+          "css": 3.0,
+          "uss": 28.0,
+          "se": 0.8660254037844386
+        },
+        {
+          "g": "B",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 2.0,
+          "missing_count": 1.0,
+          "total": 7.1000000000000005,
+          "weights": 1.1,
+          "average": 6.454545454545455,
+          "lo": 5.0,
+          "hi": 7.0,
+          "variance": 0.8727272727272728,
+          "sd": 0.9341987329938276,
+          "css": 0.8727272727272728,
+          "uss": 46.7,
+          "se": 0.8907235428302466
+        }
+      ]
+    },
+    {
+      "name": "means_n",
+      "program": "data m; length g $1;\ng='A'; x=1; y=2; w=1; output;\ng='A'; x=3; y=.; w=3; output;\ng='A'; x=100; y=7; w=0; output;\ng='A'; x=-100; y=8; w=-2; output;\ng='B'; x=999; y=999; w=.; output;\ng='B'; x=.; y=4; w=2; output;\ng='B'; x=5; y=6; w=.3; output;\ng='B'; x=7; y=9; w=.8; output;\nrun;proc means data=m  vardef=n; class g; var x; weight w; output out=means_n n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss; run;\n",
+      "expected": [
+        {
+          "g": "",
+          "_type_": 0.0,
+          "_freq_": 8,
+          "count": 6.0,
+          "missing_count": 1.0,
+          "total": 17.1,
+          "weights": 5.1,
+          "average": 3.3529411764705883,
+          "lo": -100.0,
+          "hi": 100.0,
+          "variance": 2.894117647058824,
+          "sd": 1.7012106415899308,
+          "css": 17.364705882352943,
+          "uss": 74.7
+        },
+        {
+          "g": "A",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 4.0,
+          "missing_count": 0.0,
+          "total": 10.0,
+          "weights": 4.0,
+          "average": 2.5,
+          "lo": -100.0,
+          "hi": 100.0,
+          "variance": 0.75,
+          "sd": 0.8660254037844386,
+          "css": 3.0,
+          "uss": 28.0
+        },
+        {
+          "g": "B",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 2.0,
+          "missing_count": 1.0,
+          "total": 7.1000000000000005,
+          "weights": 1.1,
+          "average": 6.454545454545455,
+          "lo": 5.0,
+          "hi": 7.0,
+          "variance": 0.4363636363636364,
+          "sd": 0.6605782590758164,
+          "css": 0.8727272727272728,
+          "uss": 46.7
+        }
+      ]
+    },
+    {
+      "name": "means_wdf",
+      "program": "data m; length g $1;\ng='A'; x=1; y=2; w=1; output;\ng='A'; x=3; y=.; w=3; output;\ng='A'; x=100; y=7; w=0; output;\ng='A'; x=-100; y=8; w=-2; output;\ng='B'; x=999; y=999; w=.; output;\ng='B'; x=.; y=4; w=2; output;\ng='B'; x=5; y=6; w=.3; output;\ng='B'; x=7; y=9; w=.8; output;\nrun;proc means data=m  vardef=wdf; class g; var x; weight w; output out=means_wdf n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss; run;\n",
+      "expected": [
+        {
+          "g": "",
+          "_type_": 0.0,
+          "_freq_": 8,
+          "count": 6.0,
+          "missing_count": 1.0,
+          "total": 17.1,
+          "weights": 5.1,
+          "average": 3.3529411764705883,
+          "lo": -100.0,
+          "hi": 100.0,
+          "variance": 4.23529411764706,
+          "sd": 2.0579830217101063,
+          "css": 17.364705882352943,
+          "uss": 74.7
+        },
+        {
+          "g": "A",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 4.0,
+          "missing_count": 0.0,
+          "total": 10.0,
+          "weights": 4.0,
+          "average": 2.5,
+          "lo": -100.0,
+          "hi": 100.0,
+          "variance": 1.0,
+          "sd": 1.0,
+          "css": 3.0,
+          "uss": 28.0
+        },
+        {
+          "g": "B",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 2.0,
+          "missing_count": 1.0,
+          "total": 7.1000000000000005,
+          "weights": 1.1,
+          "average": 6.454545454545455,
+          "lo": 5.0,
+          "hi": 7.0,
+          "variance": 8.72727272727272,
+          "sd": 2.9541957835039843,
+          "css": 0.8727272727272728,
+          "uss": 46.7
+        }
+      ]
+    },
+    {
+      "name": "means_wgt",
+      "program": "data m; length g $1;\ng='A'; x=1; y=2; w=1; output;\ng='A'; x=3; y=.; w=3; output;\ng='A'; x=100; y=7; w=0; output;\ng='A'; x=-100; y=8; w=-2; output;\ng='B'; x=999; y=999; w=.; output;\ng='B'; x=.; y=4; w=2; output;\ng='B'; x=5; y=6; w=.3; output;\ng='B'; x=7; y=9; w=.8; output;\nrun;proc means data=m  vardef=wgt; class g; var x; weight w; output out=means_wgt n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss; run;\n",
+      "expected": [
+        {
+          "g": "",
+          "_type_": 0.0,
+          "_freq_": 8,
+          "count": 6.0,
+          "missing_count": 1.0,
+          "total": 17.1,
+          "weights": 5.1,
+          "average": 3.3529411764705883,
+          "lo": -100.0,
+          "hi": 100.0,
+          "variance": 3.40484429065744,
+          "sd": 1.8452220166303674,
+          "css": 17.364705882352943,
+          "uss": 74.7
+        },
+        {
+          "g": "A",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 4.0,
+          "missing_count": 0.0,
+          "total": 10.0,
+          "weights": 4.0,
+          "average": 2.5,
+          "lo": -100.0,
+          "hi": 100.0,
+          "variance": 0.75,
+          "sd": 0.8660254037844386,
+          "css": 3.0,
+          "uss": 28.0
+        },
+        {
+          "g": "B",
+          "_type_": 1.0,
+          "_freq_": 4,
+          "count": 2.0,
+          "missing_count": 1.0,
+          "total": 7.1000000000000005,
+          "weights": 1.1,
+          "average": 6.454545454545455,
+          "lo": 5.0,
+          "hi": 7.0,
+          "variance": 0.7933884297520661,
+          "sd": 0.8907235428302466,
+          "css": 0.8727272727272728,
+          "uss": 46.7
+        }
+      ]
+    }
+  ]
+}

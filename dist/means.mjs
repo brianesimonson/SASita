@@ -88,7 +88,8 @@ export function prepareMeans(spec,ds){
  if(!byGroups.length&&!spec.by.length)byGroups.push({last:{},rows:[]});
  const levels=[];
  for(const by of byGroups){
-  const eligible=by.rows.filter(r=>(spec.missing||spec.classes.every(c=>!meansMissing(r[c])))&&(!spec.weight||(typeof r[spec.weight]==='number'&&Number.isFinite(r[spec.weight])&&(!spec.exclnpwgt||r[spec.weight]>0))));
+  // SAS _FREQ_/N Obs count class-eligible source rows, independently of WEIGHT exclusions.
+  const eligible=by.rows.filter(r=>spec.missing||spec.classes.every(c=>!meansMissing(r[c])));
   const classLevels=Object.fromEntries(spec.classes.map(c=>[c,new Map()]));
   const classKey=(row,c)=>{const value=meansMissing(row[c])?(types[c]==='char'?'':null):row[c],f=ds.formats?.[c];return f?formatValue(value,parseFormat(f),{padded:false}):typeof value==='string'?value.trimEnd():value;};
   for(const row of eligible)for(const c of spec.classes){const key=classKey(row,c),value=meansMissing(row[c])?(types[c]==='char'?'':null):row[c];if(!classLevels[c].has(key)||meansCompare(value,classLevels[c].get(key))<0)classLevels[c].set(key,value);}
@@ -98,7 +99,8 @@ export function prepareMeans(spec,ds){
    }
    const ordered=[...groups.values()].sort((a,b)=>{for(const c of spec.classes){const d=meansCompare(a.values[c],b.values[c]);if(d)return d;}return 0;});
    for(const g of ordered){const row={};for(const b of spec.by)row[b.name]=by.last[b.name];for(const c of spec.classes)row[c]=Object.hasOwn(g.values,c)?g.values[c]:types[c]==='char'?'':null;row._type_=type;row._freq_=g.rows.length;
-    const stats=Object.fromEntries(vars.map(v=>[v,spec.weight?meansWeightedMoments(g.rows,v,spec.weight,g.rows.length,spec.vardef):meansMoments(g.rows.map(r=>r[v]).filter(x=>typeof x==='number'&&Number.isFinite(x)),g.rows.length,spec.vardef)]));levels.push({row,stats});if(levels.length>100000)throw new Error('PROC MEANS output exceeds 100,000 levels');
+    const analysisRows=spec.weight?g.rows.filter(r=>typeof r[spec.weight]==='number'&&Number.isFinite(r[spec.weight])&&(!spec.exclnpwgt||r[spec.weight]>0)):g.rows;
+    const stats=Object.fromEntries(vars.map(v=>[v,spec.weight?meansWeightedMoments(analysisRows,v,spec.weight,analysisRows.length,spec.vardef):meansMoments(g.rows.map(r=>r[v]).filter(x=>typeof x==='number'&&Number.isFinite(x)),g.rows.length,spec.vardef)]));levels.push({row,stats});if(levels.length>100000)throw new Error('PROC MEANS output exceeds 100,000 levels');
    }
   }
  }

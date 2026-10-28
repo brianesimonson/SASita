@@ -1,4 +1,4 @@
-# WEIGHT in MEANS and GLM — Sassy v0.4.14
+# WEIGHT in MEANS and GLM — Sassy v0.4.18
 
 Both procedures accept `WEIGHT variable;` with a numeric variable and noninteger weights. These are the respective SAS procedure rules, not FREQ replication or complex-survey variance estimates.
 
@@ -20,7 +20,7 @@ quit;
 
 ## MEANS
 
-Missing weights exclude the row before counts, missing-value counts and grouping. By default, negative weights become zero and zero-weight rows still contribute to N, NMISS, N Obs/_FREQ_, and eligible MIN/MAX/RANGE. Add PROC option EXCLNPWGT (alias EXCLNPWGTS) to exclude nonpositive weights too. Each analysis variable handles its own missing values. An omitted VAR excludes the WEIGHT variable along with CLASS/BY variables.
+Source observations contribute to N Obs and _FREQ_ regardless of missing, zero or negative weights, after CLASS/BY grouping and the usual missing-CLASS exclusion. Weight exclusions apply separately to analysis statistics: missing weights exclude rows from N, NMISS and calculations. By default, negative weights become zero and zero-weight rows still contribute to N, NMISS and eligible MIN/MAX/RANGE. Add PROC option EXCLNPWGT (alias EXCLNPWGTS) to exclude nonpositive weights from analysis too. These weight exclusions do not reduce _FREQ_. Each analysis variable handles its own missing values. An omitted VAR excludes the WEIGHT variable along with CLASS/BY variables.
 
 For nonmissing analysis values, SUMWGT is the sum of effective weights, SUM is sum(w*x), MEAN is SUM/SUMWGT, CSS is sum(w*(x−mean)^2), and USS is sum(w*x*x). N counts eligible observations, not the sum of weights. VAR divides CSS by:
 
@@ -41,7 +41,7 @@ Only complete fitting rows with finite, strictly positive weights are used. Miss
 
 Weights are normalized internally for numerical stability; sums of squares are restored to the original scale. Multiplying every positive weight by a constant preserves coefficients, standard errors and F tests while scaling sums of squares. Extreme weight ratios that underflow the working representation, or overflowing final sums of squares, fail with rescaling guidance. Hierarchy, rank, complete interaction-cell and matrix limits remain in force after fitting-row exclusion.
 
-WEIGHT is accepted before CLASS/MODEL, between CLASS and MODEL, after MODEL or after OUTPUT, always before RUN. OUTPUT keeps all source rows and ordinary unweighted-unit P/R values. Current prediction code can predict excluded-weight rows if their predictors/known levels are complete; this edge behavior is specifically included in the SAS comparison kit and remains unconfirmed by a weighted SAS fixture. Missing-response rows can receive predictions; their residuals are missing. Other GLM restrictions are unchanged; no FREQ, RANDOM/REPEATED or survey-design inference is implied.
+WEIGHT is accepted before CLASS/MODEL, between CLASS and MODEL, after MODEL or after OUTPUT, always before RUN. OUTPUT keeps all source rows and ordinary unweighted-unit P/R values. Current prediction code can predict excluded-weight rows if their predictors/known levels are complete; this behavior passed the supplied weighted SAS comparison, including zero, negative and missing weights. Missing-response rows can receive predictions; their residuals are missing. Other GLM restrictions are unchanged; no FREQ, RANDOM/REPEATED or survey-design inference is implied.
 
 ## Evidence and next SAS check
 
@@ -49,4 +49,4 @@ Rules come from the supplied Base SAS Procedures Guide: WEIGHT pp. 41–43 and 6
 
 Local checks cover MEANS counts and formulas, missing/nonpositive weights, exclusion options, divisors, CLASS totals and standard errors; GLM agrees with an independent NumPy/SciPy weighted CLASS/covariate/interactions fixture, including Type I/III F tests, predictions and scaling invariance. Full regressions, both browser builds and exported Node/Python packages pass. Prior unweighted actual SAS fixtures continue to pass.
 
-Actual weighted SAS validation is pending. Extract weights-validation.zip, upload only `01-sas-weight-comparison.sas` to SAS Studio and run it all. Return the Results and Log. Fifteen comparisons cover both procedures; the kit embeds typed full-precision app expectations. No CSV uploads/path edits are needed. The helper explicitly normalizes fixture interaction labels and special missing codes, and maps SAS CV to coeffvar when present. Descriptor/layout parity and bit identity are not certified. Open the twelfth Examples program for a smaller demo.
+Actual SAS Results and Log received 2026-10-28 ran all fifteen comparisons: all ten weighted GLM groups passed; all requested MEANS statistics passed, but the five MEANS groups exposed eleven incorrect _FREQ_ values. Version 0.4.18 corrects _FREQ_ and N Obs to count source rows independently of weight exclusions. Local replay matches the recorded SAS counts; a fresh run of the revised kit remains pending. See [recorded evidence](validation/weights-sas-2026-10-28.md). Extract weights-validation.zip, upload only `01-sas-weight-comparison.sas` to SAS Studio and run it all. Return the Results and Log. Fifteen comparisons cover both procedures; the kit embeds typed full-precision app expectations. No CSV uploads/path edits are needed. The helper explicitly normalizes fixture interaction labels and special missing codes, and maps SAS CV to coeffvar when present. Descriptor/layout parity and bit identity are not certified. Open the twelfth Examples program for a smaller demo.

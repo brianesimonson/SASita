@@ -1,5 +1,5 @@
 /* SAS ONLY: run this entire program in SAS Studio. No folder, CSV uploads,
-   or edits needed. Expected numbers were computed by Sassy v0.4.14.
+   or edits needed. Expected numbers were computed by Sassy v0.4.18.
    Validation helper revision 2: maps A*X to X*A for these models only;
    normalizes SAS special missing values to ordinary missing for value checks;
    scored P/R use absolute 1e-12, other checks relative 1e-10.
@@ -78,9 +78,9 @@ g='B'; x=7; y=9; w=.8; output;
 run;proc means data=m  vardef=df; class g; var x; weight w; output out=means_df n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss stderr=se; run;
 data app_means_df; length g $128 _type_ 8 _freq_ 8 count 8 missing_count 8 total 8 weights 8 average 8 lo 8 hi 8 variance 8 sd 8 css 8 uss 8 se 8; infile datalines4 dsd dlm=',' truncover; input g :$128. _type_ :best32. _freq_ :best32. count :best32. missing_count :best32. total :best32. weights :best32. average :best32. lo :best32. hi :best32. variance :best32. sd :best32. css :best32. uss :best32. se :best32.;
 datalines4;
-"","0","7","6","1","17.1","5.1","3.3529411764705883","-100","100","3.472941176470589","1.863582886933283","17.364705882352943","74.7","0.8252083725529499"
+"","0","8","6","1","17.1","5.1","3.3529411764705883","-100","100","3.472941176470589","1.863582886933283","17.364705882352943","74.7","0.8252083725529499"
 "A","1","4","4","0","10","4","2.5","-100","100","1","1","3","28","0.5"
-"B","1","3","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","0.8727272727272728","0.9341987329938276","0.8727272727272728","46.7","0.8907235428302466"
+"B","1","4","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","0.8727272727272728","0.9341987329938276","0.8727272727272728","46.7","0.8907235428302466"
 ;;;;
 run;
 %glm_check(means_df,app_means_df,g _type_,_freq_ count missing_count total weights average lo hi variance sd css uss se,absolute=0);
@@ -100,9 +100,9 @@ g='B'; x=7; y=9; w=.8; output;
 run;proc means data=m exclnpwgt vardef=df; class g; var x; weight w; output out=means_exclude n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss stderr=se; run;
 data app_means_exclude; length g $128 _type_ 8 _freq_ 8 count 8 missing_count 8 total 8 weights 8 average 8 lo 8 hi 8 variance 8 sd 8 css 8 uss 8 se 8; infile datalines4 dsd dlm=',' truncover; input g :$128. _type_ :best32. _freq_ :best32. count :best32. missing_count :best32. total :best32. weights :best32. average :best32. lo :best32. hi :best32. variance :best32. sd :best32. css :best32. uss :best32. se :best32.;
 datalines4;
-"","0","5","4","1","17.1","5.1","3.3529411764705883","1","7","5.788235294117648","2.405875161789915","17.364705882352943","74.7","1.065339428016167"
-"A","1","2","2","0","10","4","2.5","1","3","3","1.7320508075688772","3","28","0.8660254037844386"
-"B","1","3","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","0.8727272727272728","0.9341987329938276","0.8727272727272728","46.7","0.8907235428302466"
+"","0","8","4","1","17.1","5.1","3.3529411764705883","1","7","5.788235294117648","2.405875161789915","17.364705882352943","74.7","1.065339428016167"
+"A","1","4","2","0","10","4","2.5","1","3","3","1.7320508075688772","3","28","0.8660254037844386"
+"B","1","4","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","0.8727272727272728","0.9341987329938276","0.8727272727272728","46.7","0.8907235428302466"
 ;;;;
 run;
 %glm_check(means_exclude,app_means_exclude,g _type_,_freq_ count missing_count total weights average lo hi variance sd css uss se,absolute=0);
@@ -122,9 +122,9 @@ g='B'; x=7; y=9; w=.8; output;
 run;proc means data=m  vardef=n; class g; var x; weight w; output out=means_n n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss; run;
 data app_means_n; length g $128 _type_ 8 _freq_ 8 count 8 missing_count 8 total 8 weights 8 average 8 lo 8 hi 8 variance 8 sd 8 css 8 uss 8; infile datalines4 dsd dlm=',' truncover; input g :$128. _type_ :best32. _freq_ :best32. count :best32. missing_count :best32. total :best32. weights :best32. average :best32. lo :best32. hi :best32. variance :best32. sd :best32. css :best32. uss :best32.;
 datalines4;
-"","0","7","6","1","17.1","5.1","3.3529411764705883","-100","100","2.894117647058824","1.7012106415899308","17.364705882352943","74.7"
+"","0","8","6","1","17.1","5.1","3.3529411764705883","-100","100","2.894117647058824","1.7012106415899308","17.364705882352943","74.7"
 "A","1","4","4","0","10","4","2.5","-100","100","0.75","0.8660254037844386","3","28"
-"B","1","3","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","0.4363636363636364","0.6605782590758164","0.8727272727272728","46.7"
+"B","1","4","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","0.4363636363636364","0.6605782590758164","0.8727272727272728","46.7"
 ;;;;
 run;
 %glm_check(means_n,app_means_n,g _type_,_freq_ count missing_count total weights average lo hi variance sd css uss,absolute=0);
@@ -144,9 +144,9 @@ g='B'; x=7; y=9; w=.8; output;
 run;proc means data=m  vardef=wdf; class g; var x; weight w; output out=means_wdf n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss; run;
 data app_means_wdf; length g $128 _type_ 8 _freq_ 8 count 8 missing_count 8 total 8 weights 8 average 8 lo 8 hi 8 variance 8 sd 8 css 8 uss 8; infile datalines4 dsd dlm=',' truncover; input g :$128. _type_ :best32. _freq_ :best32. count :best32. missing_count :best32. total :best32. weights :best32. average :best32. lo :best32. hi :best32. variance :best32. sd :best32. css :best32. uss :best32.;
 datalines4;
-"","0","7","6","1","17.1","5.1","3.3529411764705883","-100","100","4.23529411764706","2.0579830217101063","17.364705882352943","74.7"
+"","0","8","6","1","17.1","5.1","3.3529411764705883","-100","100","4.23529411764706","2.0579830217101063","17.364705882352943","74.7"
 "A","1","4","4","0","10","4","2.5","-100","100","1","1","3","28"
-"B","1","3","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","8.72727272727272","2.9541957835039843","0.8727272727272728","46.7"
+"B","1","4","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","8.72727272727272","2.9541957835039843","0.8727272727272728","46.7"
 ;;;;
 run;
 %glm_check(means_wdf,app_means_wdf,g _type_,_freq_ count missing_count total weights average lo hi variance sd css uss,absolute=0);
@@ -166,9 +166,9 @@ g='B'; x=7; y=9; w=.8; output;
 run;proc means data=m  vardef=wgt; class g; var x; weight w; output out=means_wgt n=count nmiss=missing_count sum=total sumwgt=weights mean=average min=lo max=hi var=variance std=sd css=css uss=uss; run;
 data app_means_wgt; length g $128 _type_ 8 _freq_ 8 count 8 missing_count 8 total 8 weights 8 average 8 lo 8 hi 8 variance 8 sd 8 css 8 uss 8; infile datalines4 dsd dlm=',' truncover; input g :$128. _type_ :best32. _freq_ :best32. count :best32. missing_count :best32. total :best32. weights :best32. average :best32. lo :best32. hi :best32. variance :best32. sd :best32. css :best32. uss :best32.;
 datalines4;
-"","0","7","6","1","17.1","5.1","3.3529411764705883","-100","100","3.40484429065744","1.8452220166303674","17.364705882352943","74.7"
+"","0","8","6","1","17.1","5.1","3.3529411764705883","-100","100","3.40484429065744","1.8452220166303674","17.364705882352943","74.7"
 "A","1","4","4","0","10","4","2.5","-100","100","0.75","0.8660254037844386","3","28"
-"B","1","3","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","0.7933884297520661","0.8907235428302466","0.8727272727272728","46.7"
+"B","1","4","2","1","7.1000000000000005","1.1","6.454545454545455","5","7","0.7933884297520661","0.8907235428302466","0.8727272727272728","46.7"
 ;;;;
 run;
 %glm_check(means_wgt,app_means_wgt,g _type_,_freq_ count missing_count total weights average lo hi variance sd css uss,absolute=0);

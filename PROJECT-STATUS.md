@@ -1,3 +1,5 @@
+Latest app v0.4.18 corrects weighted MEANS _FREQ_/N Obs source counts independently of analysis weight exclusions. Actual user SAS Results/Log received 2026-10-28 ran all15 groups: weighted GLM all10/81 records pass; MEANS all5 differed only in eleven _FREQ_ values, all requested statistics passed. Original kit preserved in fixtures/sas/weights-validation-v1-original.zip; structured provenance/results and frozen confirmed expectations in weights-validation-v1.json. Corrected local replay passes recorded counts; regenerated kit requires fresh SAS rerun, not yet a full weighted MEANS SAS pass. Read docs/validation/weights-sas-2026-10-28.md and VALIDATION-STATUS. Full npm test and both Chromium browser builds passed, including exported Python/Node packages. Stable update branch and main preserved. Earlier notes historical.
+
 # SASita project status
 
 ## Sassy v0.4.17: automatic incremental assistance across supported procedures

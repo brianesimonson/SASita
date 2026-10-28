@@ -36,7 +36,7 @@
 
 - MEANS/GLM WEIGHT rules and formulas are docs/weights.md. Preserve different nonpositive-weight inclusion, count-vs-SUMWGT divisors, stable weighted QR/scaling, and unweighted fixture behavior. Run test-weights plus full/browser/portable checks; regenerate scripts/package-weight-validation.mjs after weighted statistical changes. Independent references are not actual weighted SAS fixtures.
 
-- VALIDATION-STATUS.md is the current pending/completed test registry. Read it when asked about outstanding validation; WEIGHT-SAS is deliberately deferred by the user and must not be mistaken for a pass. Update statuses only from actual evidence.
+- VALIDATION-STATUS.md is the current pending/completed test registry. Read it when asked about outstanding validation; WEIGHT-SAS received actual results on 2026-10-28: ten GLM groups pass; five MEANS groups exposed only _FREQ_ differences, fixed locally in v0.4.18, awaiting corrected SAS rerun. Preserve this partial status and the original kit/evidence. Update statuses only from actual evidence.
 - Editor completion is docs/editor-completion.md and dist/completion.mjs. It is authoring assistance, not runtime syntax: datasets complete after a library dot, variable shortcuts replace the whole qualifier with a bare variable. Use metadata only, never rows/files/permissions or program execution. Keep normal Tab and Ctrl+Space behavior, comments/strings/macros guards, dirty state and offline builds verified.
 
 - Continue normal user-facing updates on feature/editor-dataset-completion so the user can Fetch/Pull into their local app folder. Preserve main and milestone tags; do not silently move routine updates to another branch.
