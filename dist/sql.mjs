@@ -3,7 +3,7 @@ import {meansMoments} from './means.mjs';
 import {parseFormat,formatValue,readFormatted} from './formats.mjs';
 
 // A deliberately bounded SAS-style SELECT engine, with no eval or external SQL service.
-const sqlSummaries=new Set(['count','n','nmiss','sum','mean','avg','min','max','std','stddev','var']);
+const sqlSummaries=new Set(['count','n','nmiss','sum','mean','avg','min','max','std','var']);
 const sqlScalars=new Set(dataStepFunctionNames());
 const sqlCharFunctions=new Set(['upcase','lowcase','strip','trim','left','substr','cats','catx','coalescec']);
 const sqlReserved=new Set('from where group having order inner left right full outer cross join on as quit run union intersect except into create select when then else end asc desc'.split(' '));
@@ -111,6 +111,7 @@ export function prepareSQL(query,datasets,options={}){
    else{if(columns.length!==1)throw new Error(columns.length?'Ambiguous SQL column '+e.name:'Unknown SQL column '+e.name);e.column=columns[0];e.type=e.column.type;}
   }else if(e.k==='calculated'){if(!calculated.has(e.name))throw new Error('CALCULATED requires an earlier SELECT alias: '+e.name);e.target=calculated.get(e.name);e.type=e.target.type;}
   else if(e.k==='call'){
+   if(e.name==='stddev')throw new Error('PROC SQL standard deviation uses STD(x); STDDEV(x) is not supported');
    e.aggregate=sqlSummaries.has(e.name)&&(e.star||e.args.length===1);if(e.aggregate&&insideAggregate)throw new Error('Nested SQL summary functions are unsupported');
    if(e.star&&(e.name!=='count'||e.distinct))throw new Error('Only COUNT(*) supports *');
    if(e.distinct&&(!e.aggregate||e.args.length!==1))throw new Error('DISTINCT requires a single summary-function argument');
@@ -126,7 +127,7 @@ export function prepareSQL(query,datasets,options={}){
     if(e.name==='coalesce'||e.name==='coalescec')for(const a of e.args)compatible(e.type,a.type);
     if(['abs','sqrt','ceil','floor','int','round','mod','exp','log','log10','log2','mdy','year','month','day'].includes(e.name)&&e.args.some(a=>a.type==='char'))throw new Error('SQL '+e.name+' requires numeric arguments');
     if(['sum','mean','min','max'].includes(e.name)&&e.args.some(a=>a.type==='char'))throw new Error('SQL row statistic requires numeric arguments');
-    if(['count','avg','std','stddev','var'].includes(e.name))throw new Error('SQL '+e.name+' requires a single column/expression');
+    if(['count','avg','std','var'].includes(e.name))throw new Error('SQL '+e.name+' requires a single column/expression');
    }
   }else if(e.k==='case'){
    if(e.base)bind(e.base,allowAliases,insideAggregate);for(const b of e.branches){bind(b.test,allowAliases,insideAggregate);bind(b.value,allowAliases,insideAggregate);if(e.base)compatible(e.base.type,b.test.type);else if(b.test.type==='char')throw new Error('SQL WHEN requires a numeric condition');}
@@ -176,7 +177,7 @@ export function prepareSQL(query,datasets,options={}){
    let value;if(['count','n','nmiss'].includes(e.name))value=e.star?rows.length:e.name==='nmiss'?rows.length-values.length:values.length;
    else if(!values.length)value=null;
    else if(['min','max'].includes(e.name)){value=values[0];for(const v of values)if(sqlCompare(v,value)*(e.name==='min'?1:-1)<0)value=v;}
-   else{const stats=meansMoments(values,values.length,'df');value=stats[{avg:'mean',stddev:'std'}[e.name]||e.name];}
+   else{const stats=meansMoments(values,values.length,'df');value=stats[e.name==='avg'?'mean':e.name];}
    if(typeof value==='number'&&!Number.isFinite(value))throw new Error('SQL summary overflow; rescale values');cache.set(e,value);return value;
   }
   const val=a=>evaluate(a,row,rows,cache);

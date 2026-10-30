@@ -107,9 +107,9 @@ function completionProcedureAssist(code,caret,lex,state){
   if(qualified&&sqlAliases.has(qualified[1].toLowerCase())){
    const ds=sqlAliases.get(qualified[1].toLowerCase());return result(ds.columns.filter(c=>c.startsWith(qualified[2].toLowerCase())).map(c=>fragment(c,c,'SQL alias '+qualified[1]+(ds.types[c]==='num'?' · numeric':' · character'),false)),caret-qualified[2].length,end,'variables');
   }
-  const fieldSlot=tail.match(/(?:\bselect(?:\s+distinct)?|\bwhere|\bon|\bgroup\s+by|\bhaving|\border\s+by|[,=+*/<>-]|\b(?:count|sum|mean|avg|std|stddev|var|min|max)\(\s*(?:distinct\s+)?)\s*([a-z_]\w*|)$/i);
+  const fieldSlot=tail.match(/(?:\bselect(?:\s+distinct)?|\bwhere|\bon|\bgroup\s+by|\bhaving|\border\s+by|[,=+*/<>-]|\b(?:count|sum|mean|avg|std|var|min|max)\(\s*(?:distinct\s+)?)\s*([a-z_]\w*|)$/i);
   if(fieldSlot&&sqlAliases.size){
-   const prefix=fieldSlot[1].toLowerCase(),numeric=/\b(?:sum|mean|avg|std|stddev|var)\(\s*[a-z_]*$/i.test(tail),items=[];
+   const prefix=fieldSlot[1].toLowerCase(),numeric=/\b(?:sum|mean|avg|std|var)\(\s*[a-z_]*$/i.test(tail),items=[];
    for(const [alias,ds] of sqlAliases)for(const c of ds.columns)if(c.startsWith(prefix)&&(!numeric||ds.types[c]!=='char')){const name=sqlAliases.size>1?alias+'.'+c:c;items.push(fragment(name,name,'SQL '+alias+' field',false));}
    return result(items.sort((a,b)=>a.label.localeCompare(b.label)),caret-prefix.length,end,'variables');
   }

@@ -1,6 +1,6 @@
-# PROC SQL — Sassy v0.4.20
+# PROC SQL — Sassy v0.4.21
 
-Sassy parses a defined SAS-style SQL subset in JavaScript and operates on its existing datasets. No SQL package, server, connection or internet access is required. This milestone adds about 87 KB (4.82%) to the standalone HTML, including repeated embedded worker/export sources; the SQL engine source itself is about 25 KB. Summary moments reuse the same unweighted formulas as PROC MEANS. Browser and exported Node/Python execution use the same source. This first version has local and independent SQL checks; fresh actual SAS comparison is pending.
+Sassy parses a defined SAS-style SQL subset in JavaScript and operates on its existing datasets. No SQL package, server, connection or internet access is required. This milestone adds about 87 KB (4.82%) to the standalone HTML, including repeated embedded worker/export sources; the SQL engine source itself is about 25 KB. Summary moments reuse the same unweighted formulas as PROC MEANS. Browser and exported Node/Python execution use the same source. The first actual SAS run passed fifteen groups / 68 matched records exactly; the grouped-statistics comparison did not run because SAS rejected STDDEV. Version 0.4.21 uses STD and awaits only that focused rerun.
 
 ```sas
 proc sql;
@@ -36,9 +36,11 @@ quit;
 | `COUNT(DISTINCT x)` | Distinct nonmissing values |
 | `NMISS(x)` | Missing values |
 | `SUM(x)`, `MEAN(x)` / `AVG(x)` | Across eligible nonmissing numeric rows |
-| `STD(x)` / `STDDEV(x)`, `VAR(x)` | Sample standard deviation/variance using N−1; missing for fewer than two nonmissing values |
+| `STD(x)`, `VAR(x)` | Sample standard deviation/variance using N−1; missing for fewer than two nonmissing values |
 | `MIN(x)`, `MAX(x)` | Across nonmissing numeric or character values |
 | `SUM(x,y)`, `MEAN(x,y)`, `MIN(x,y)`, `MAX(x,y)` | DATA-step-style numeric calculation within each row, not a grouped summary |
+
+Use `STD(x)` in PROC SQL. The tested SAS environment does not recognize `STDDEV(x)` there, so Sassy now rejects it with guidance to use STD. PROC MEANS continues to support its own STDDEV alias.
 
 Single-argument summaries also accept DISTINCT, except COUNT(*). An empty ungrouped summary produces one row: zero counts and missing SUM/MEAN/STD/etc. Empty grouped input produces no groups. There is no SQL WEIGHT statement; an explicit expression such as `sum(w*x)/sum(w)` has the inclusion policy expressed by your query.
 
@@ -58,4 +60,6 @@ Limits: eight sources per query, 256 explicit SELECT expressions (star expansion
 
 The syntax guide includes PROC SQL and a complete template. Automatic header help offers OUTOBS/NOPRINT; query starters are available automatically at a statement boundary and through `??`. Known FROM/JOIN tables and SQL alias-qualified fields have suggestions; accepting `c.amount` preserves the SQL qualifier. Simple SELECT/WHERE/ON/GROUP/HAVING/ORDER and summary argument slots use known metadata, including authorized native headers. For SELECT fields before FROM, only source references later in the same query statement are considered; future statements are not scanned for file reads. Parsing advanced/unfinished query text remains conservative; SQL output-schema inference before execution and complete clause autocomplete are not promised.
 
-Open Examples → **PROC SQL: joins and grouped statistics** for a self-contained demonstration. Extract `examples/sql-validation/sql-validation.zip`, upload/run only `01-sas-sql-comparison.sas` in SAS Studio and return Results and Log. No CSV imports/path edits are needed. Sixteen app-generated reference groups / 71 rows cover joins, missing/duplicate keys, grouped statistics, row functions, CALCULATED, CASE, DISTINCT/UNIQUE, GROUP BY transformation, HAVING and empty results. The comparison sorts by all output columns and uses relative numeric tolerance 1e-10, comparing character values too; original query order and full ODS metadata/layout are outside that comparison. One GROUP BY-without-summary query may produce SAS's expected transformation warning. Actual SAS execution is pending; a generated expectation is not a SAS fixture.
+Open Examples → **PROC SQL: joins and grouped statistics** for a self-contained demonstration. The first actual SAS run passed fifteen groups / 68 records with exact equality reported. The sixteenth group did not run because STDDEV could not be located; that was function-name resolution, so its grouped numeric results were not compared. Version 0.4.21 removes the alias and redundant sd2 column; STD/VAR formulas are unchanged. See [first-run evidence](validation/sql-sas-2026-10-29.md).
+
+Extract `examples/sql-validation/sql-grouped-retest.zip` and upload/run only **`02-sas-grouped-comparison.sas`** for the remaining three-row comparison. No CSV uploads/path edits are needed; return Results and Log. `01-sas-sql-comparison.sas` remains available for a full sixteen-group / 71-row regression run. Comparisons sort all output columns and use relative numeric tolerance 1e-10; character values are compared too. Original query order and exact descriptors/layout remain outside certification. The first full run had two emitted errors for the unexecuted group plus its missing-table guard, and one expected GROUP BY transformation warning; the focused retest contains no transformation query. A generated grouped expectation is not a SAS fixture until its rerun succeeds.

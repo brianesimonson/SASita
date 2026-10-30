@@ -1,4 +1,4 @@
-# Sassy v0.4.20
+# Sassy v0.4.21
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -75,3 +75,5 @@ The thirteenth Examples program shows LAG/LAG2, EXP, natural LOG, LOG10, LOG2 an
 ## PROC SQL
 
 Open the fourteenth Examples program for SQL joins and grouped statistics. CREATE TABLE saves a WORK/native table; a standalone SELECT explicitly produces a report. End PROC SQL with QUIT. OUTOBS restricts results and NOPRINT suppresses reports. The implemented SQL subset includes means, counts, sample STD/VAR, DISTINCT, CASE and CALCULATED. No external SQL package or connection is needed. See sql.md for SAS-specific missing/grouping behavior, resource limits, unsupported remerging/subqueries and the self-contained validation kit.
+
+Actual SQL validation: fifteen first-run groups / 68 matched records passed exactly. The grouped test stopped at STDDEV name resolution; v0.4.21 removes that alias and uses STD. Only 02-sas-grouped-comparison.sas from the SQL kit needs a rerun. No formulas changed. See VALIDATION-STATUS.md.

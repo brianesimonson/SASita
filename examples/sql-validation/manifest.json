@@ -1,6 +1,10 @@
 {
-  "appVersion": "0.4.20",
-  "actualSASValidation": "pending",
+  "appVersion": "0.4.21",
+  "actualSASValidation": "partial",
+  "pending": [
+    "sql_grouped"
+  ],
+  "evidence": "fixtures/sas/sql-validation-v1-results.json",
   "criterion": {
     "relative": 1e-10
   },
@@ -97,7 +101,6 @@
         "average",
         "average2",
         "sd",
-        "sd2",
         "variance",
         "lo",
         "hi"
@@ -111,7 +114,6 @@
         "average": "num",
         "average2": "num",
         "sd": "num",
-        "sd2": "num",
         "variance": "num",
         "lo": "num",
         "hi": "num"

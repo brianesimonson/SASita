@@ -1,0 +1,600 @@
+{
+  "provenance": {
+    "source": "Actual user-uploaded SAS Studio Results and Log received 2026-10-29",
+    "app_version": "0.4.20",
+    "files": {
+      "log": {
+        "filename": "01-sas-sql-comparison-log.html",
+        "sha256": "49637a371f6778d34ff77831403456585679b2a00e04fe284252249043d08624"
+      },
+      "results": {
+        "filename": "01-sas-sql-comparison-results.html",
+        "sha256": "63dd9c84630ea3ffabf5417df3551cf1317760fc313910311afcf7a873168b06"
+      }
+    },
+    "program_sha256": "f6c0d6e180ff8ae5449c304e83082ceac92edf82e263068cd215fa60c5eb4574"
+  },
+  "criterion": {
+    "relative": 1e-10,
+    "sort_before_compare": "All output columns; original query row order/metadata are not certified"
+  },
+  "outcome": {
+    "comparison_groups_expected": 16,
+    "comparison_groups_run": 15,
+    "matched_records": 68,
+    "observations_unequal": 0,
+    "exact_equality_groups": 15,
+    "executed_errors": [
+      "Function STDDEV could not be located.",
+      "SQL comparison did not run because sql_grouped or app_sql_grouped is missing."
+    ],
+    "executed_warnings": [
+      "A GROUP BY clause has been transformed into an ORDER BY clause because neither SELECT nor HAVING references a summary function (expected for sql_group_order)."
+    ],
+    "groups": [
+      {
+        "name": "sql_inner",
+        "matched_records": 5,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_left",
+        "matched_records": 6,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_right",
+        "matched_records": 6,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_full",
+        "matched_records": 7,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_cross",
+        "matched_records": 16,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_row_functions",
+        "matched_records": 4,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_calculated",
+        "matched_records": 2,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_distinct",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_unique",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_group_order",
+        "matched_records": 4,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_having",
+        "matched_records": 1,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_case_group",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_empty",
+        "matched_records": 1,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_missing",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_composite",
+        "matched_records": 4,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      }
+    ],
+    "not_run": [
+      {
+        "name": "sql_grouped",
+        "expected_records": 3,
+        "reason": "SAS rejected STDDEV(x); use STD(x). No grouped numeric comparison ran."
+      }
+    ]
+  },
+  "confirmed_cases": [
+    {
+      "name": "sql_inner",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_inner as select a.id as left_id,b.id as right_id,a.x,b.y from sql_a as a inner join sql_b as b on a.id=b.id order by left_id,x,y;quit;\n",
+      "expected": [
+        {
+          "left_id": null,
+          "right_id": null,
+          "x": null,
+          "y": 9.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 2.0,
+          "y": 3.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 2.0,
+          "y": 6.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 4.0,
+          "y": 3.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 4.0,
+          "y": 6.0
+        }
+      ]
+    },
+    {
+      "name": "sql_left",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_left as select a.id as left_id,b.id as right_id,a.x,b.y from sql_a as a left join sql_b as b on a.id=b.id order by left_id,x,y;quit;\n",
+      "expected": [
+        {
+          "left_id": null,
+          "right_id": null,
+          "x": null,
+          "y": 9.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 2.0,
+          "y": 3.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 2.0,
+          "y": 6.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 4.0,
+          "y": 3.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 4.0,
+          "y": 6.0
+        },
+        {
+          "left_id": 2.0,
+          "right_id": null,
+          "x": 8.0,
+          "y": null
+        }
+      ]
+    },
+    {
+      "name": "sql_right",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_right as select a.id as left_id,b.id as right_id,a.x,b.y from sql_a as a right join sql_b as b on a.id=b.id order by left_id,x,y;quit;\n",
+      "expected": [
+        {
+          "left_id": null,
+          "right_id": null,
+          "x": null,
+          "y": 9.0
+        },
+        {
+          "left_id": null,
+          "right_id": 3.0,
+          "x": null,
+          "y": 12.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 2.0,
+          "y": 3.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 2.0,
+          "y": 6.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 4.0,
+          "y": 3.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 4.0,
+          "y": 6.0
+        }
+      ]
+    },
+    {
+      "name": "sql_full",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_full as select a.id as left_id,b.id as right_id,a.x,b.y from sql_a as a full join sql_b as b on a.id=b.id order by left_id,x,y;quit;\n",
+      "expected": [
+        {
+          "left_id": null,
+          "right_id": null,
+          "x": null,
+          "y": 9.0
+        },
+        {
+          "left_id": null,
+          "right_id": 3.0,
+          "x": null,
+          "y": 12.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 2.0,
+          "y": 3.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 2.0,
+          "y": 6.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 4.0,
+          "y": 3.0
+        },
+        {
+          "left_id": 1.0,
+          "right_id": 1.0,
+          "x": 4.0,
+          "y": 6.0
+        },
+        {
+          "left_id": 2.0,
+          "right_id": null,
+          "x": 8.0,
+          "y": null
+        }
+      ]
+    },
+    {
+      "name": "sql_cross",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_cross as select a.id as aid,b.id as bid,a.x,b.y from sql_a as a cross join sql_b as b order by aid,bid,x,y;quit;\n",
+      "expected": [
+        {
+          "aid": null,
+          "bid": null,
+          "x": null,
+          "y": 9.0
+        },
+        {
+          "aid": null,
+          "bid": 1.0,
+          "x": null,
+          "y": 3.0
+        },
+        {
+          "aid": null,
+          "bid": 1.0,
+          "x": null,
+          "y": 6.0
+        },
+        {
+          "aid": null,
+          "bid": 3.0,
+          "x": null,
+          "y": 12.0
+        },
+        {
+          "aid": 1.0,
+          "bid": null,
+          "x": 2.0,
+          "y": 9.0
+        },
+        {
+          "aid": 1.0,
+          "bid": null,
+          "x": 4.0,
+          "y": 9.0
+        },
+        {
+          "aid": 1.0,
+          "bid": 1.0,
+          "x": 2.0,
+          "y": 3.0
+        },
+        {
+          "aid": 1.0,
+          "bid": 1.0,
+          "x": 2.0,
+          "y": 6.0
+        },
+        {
+          "aid": 1.0,
+          "bid": 1.0,
+          "x": 4.0,
+          "y": 3.0
+        },
+        {
+          "aid": 1.0,
+          "bid": 1.0,
+          "x": 4.0,
+          "y": 6.0
+        },
+        {
+          "aid": 1.0,
+          "bid": 3.0,
+          "x": 2.0,
+          "y": 12.0
+        },
+        {
+          "aid": 1.0,
+          "bid": 3.0,
+          "x": 4.0,
+          "y": 12.0
+        },
+        {
+          "aid": 2.0,
+          "bid": null,
+          "x": 8.0,
+          "y": 9.0
+        },
+        {
+          "aid": 2.0,
+          "bid": 1.0,
+          "x": 8.0,
+          "y": 3.0
+        },
+        {
+          "aid": 2.0,
+          "bid": 1.0,
+          "x": 8.0,
+          "y": 6.0
+        },
+        {
+          "aid": 2.0,
+          "bid": 3.0,
+          "x": 8.0,
+          "y": 12.0
+        }
+      ]
+    },
+    {
+      "name": "sql_row_functions",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_row_functions as select id,x,mean(x,10) as row_mean,sum(x,10) as row_sum,put(coalesce(x,0),z4.) as text,input('0042',4.) as parsed from sql_a order by id,x;quit;\n",
+      "expected": [
+        {
+          "id": null,
+          "x": null,
+          "row_mean": 10.0,
+          "row_sum": 10.0,
+          "text": "0000",
+          "parsed": 42.0
+        },
+        {
+          "id": 1.0,
+          "x": 2.0,
+          "row_mean": 6.0,
+          "row_sum": 12.0,
+          "text": "0002",
+          "parsed": 42.0
+        },
+        {
+          "id": 1.0,
+          "x": 4.0,
+          "row_mean": 7.0,
+          "row_sum": 14.0,
+          "text": "0004",
+          "parsed": 42.0
+        },
+        {
+          "id": 2.0,
+          "x": 8.0,
+          "row_mean": 9.0,
+          "row_sum": 18.0,
+          "text": "0008",
+          "parsed": 42.0
+        }
+      ]
+    },
+    {
+      "name": "sql_calculated",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_calculated as select id,x*2 as doubled,calculated doubled+1 as adjusted,case g when 'A' then 'alpha' else 'other' end as label from sql_a where calculated doubled>=8 order by adjusted desc;quit;\n",
+      "expected": [
+        {
+          "id": 2.0,
+          "doubled": 16.0,
+          "adjusted": 17.0,
+          "label": "other"
+        },
+        {
+          "id": 1.0,
+          "doubled": 8.0,
+          "adjusted": 9.0,
+          "label": "alpha"
+        }
+      ]
+    },
+    {
+      "name": "sql_distinct",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_distinct as select distinct g from sql_a order by g;quit;\n",
+      "expected": [
+        {
+          "g": ""
+        },
+        {
+          "g": "A"
+        },
+        {
+          "g": "B"
+        }
+      ]
+    },
+    {
+      "name": "sql_unique",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_unique as select unique g from sql_a order by g desc;quit;\n",
+      "expected": [
+        {
+          "g": "B"
+        },
+        {
+          "g": "A"
+        },
+        {
+          "g": ""
+        }
+      ]
+    },
+    {
+      "name": "sql_group_order",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_group_order as select g,x from sql_a group by g,x;quit;\n",
+      "expected": [
+        {
+          "g": "",
+          "x": null
+        },
+        {
+          "g": "A",
+          "x": 2.0
+        },
+        {
+          "g": "A",
+          "x": 4.0
+        },
+        {
+          "g": "B",
+          "x": 8.0
+        }
+      ]
+    },
+    {
+      "name": "sql_having",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_having as select g,count(*) as rows_count,mean(x) as average from sql_a group by g having calculated rows_count>1 order by g;quit;\n",
+      "expected": [
+        {
+          "g": "A",
+          "rows_count": 2.0,
+          "average": 3.0
+        }
+      ]
+    },
+    {
+      "name": "sql_case_group",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_case_group as select case when x is missing then 0 when x>3 then 1 else 2 end as bin,count(*) as rows_count from sql_a group by calculated bin order by bin;quit;\n",
+      "expected": [
+        {
+          "bin": 0.0,
+          "rows_count": 1.0
+        },
+        {
+          "bin": 1.0,
+          "rows_count": 2.0
+        },
+        {
+          "bin": 2.0,
+          "rows_count": 1.0
+        }
+      ]
+    },
+    {
+      "name": "sql_empty",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_empty as select count(*) as rows_count,sum(x) as total,mean(x) as average,std(x) as sd from sql_a where id=99;quit;\n",
+      "expected": [
+        {
+          "rows_count": 0.0,
+          "total": null,
+          "average": null,
+          "sd": null
+        }
+      ]
+    },
+    {
+      "name": "sql_missing",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_missing as select id,x from sql_a where id in (1,.) and x between . and 4 order by id,x;quit;\n",
+      "expected": [
+        {
+          "id": null,
+          "x": null
+        },
+        {
+          "id": 1.0,
+          "x": 2.0
+        },
+        {
+          "id": 1.0,
+          "x": 4.0
+        }
+      ]
+    },
+    {
+      "name": "sql_composite",
+      "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_composite as select a.id as aid,a.x,b.y from sql_a as a left join sql_b as b on a.id=b.id and b.y>3 order by aid,x,y;quit;\n",
+      "expected": [
+        {
+          "aid": null,
+          "x": null,
+          "y": 9.0
+        },
+        {
+          "aid": 1.0,
+          "x": 2.0,
+          "y": 6.0
+        },
+        {
+          "aid": 1.0,
+          "x": 4.0,
+          "y": 6.0
+        },
+        {
+          "aid": 2.0,
+          "x": 8.0,
+          "y": null
+        }
+      ]
+    }
+  ],
+  "confirmed_values_note": "Rows are frozen original Sassy expectations. Actual SAS PROC COMPARE reported all compared values exactly equal in each of these fifteen groups; these are not separate raw SAS CSV exports."
+}

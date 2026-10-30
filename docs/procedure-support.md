@@ -1,4 +1,4 @@
-# Procedure support and deployment — Sassy v0.4.20
+# Procedure support and deployment — Sassy v0.4.21
 
 All supported computation runs locally in the single offline HTML and in the
 exported Node.js 24+ interpreter. The optional Python wrapper invokes Node.
@@ -7,7 +7,7 @@ translation is produced. External data files must be supplied separately.
 
 | Procedure | Implemented | Unsupported / compatibility boundary | Portable deployment |
 | --- | --- | --- | --- |
-| SQL | SELECT/CREATE TABLE AS, aliases, INNER/LEFT/RIGHT/FULL/CROSS joins, WHERE/GROUP/HAVING/ORDER, DISTINCT, CASE/CALCULATED, counts/means/sample STD/VAR and supported scalar functions | Automatic remerging, subqueries, set operations, views, DML/DDL beyond CREATE TABLE AS, INTO macros, pass-through and full descriptor parity; see sql.md | Same offline browser/Node/Python engine; native library reads/staged saves; bare SELECT reports, CREATE TABLE stores without printing. Fresh actual SAS validation pending |
+| SQL | SELECT/CREATE TABLE AS, aliases, INNER/LEFT/RIGHT/FULL/CROSS joins, WHERE/GROUP/HAVING/ORDER, DISTINCT, CASE/CALCULATED, counts/means/sample STD/VAR and supported scalar functions | Automatic remerging, subqueries, set operations, views, DML/DDL beyond CREATE TABLE AS, INTO macros, pass-through and full descriptor parity; see sql.md | Same offline browser/Node/Python engine; native library reads/staged saves; bare SELECT reports, CREATE TABLE stores without printing. Fifteen actual SAS groups / 68 records pass exactly; corrected grouped STD/VAR comparison awaits focused retest (use STD, not STDDEV) |
 | SORT | DATA/OUT, ascending/DESCENDING BY, EQUALS, NODUPKEY | Other options, locale-specific collation, complete SAS descriptors | Browser and Node tables; JSON libraries supported |
 | IMPORT | DBMS=CSV, DATAFILE, OUT, REPLACE, GETNAMES=YES, GUESSINGROWS=MAX | Excel/SAS7BDAT/other engines, per-field schema options; CSV typing is inferred | Browser requires an authorized project folder; Node requires --project or packaged project inputs |
 | EXPORT | DBMS=CSV, DATA, OUTFILE, REPLACE | Other file formats/options | Same project-path model; staged writes and preflight retained |
