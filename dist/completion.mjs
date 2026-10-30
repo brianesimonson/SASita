@@ -94,6 +94,29 @@ function completionProcedureAssist(code,caret,lex,state){
   if(!activePrefix&&catalog.required.every(k=>k==='data'?!!info.source:!!info.values[k])&&(procedure!=='surveyselect'||info.used.has('sampsize')||info.used.has('samprate')))items.push(fragment('; — begin statements',';\n','Finish header'));
   return result(items,from);
  }
+ if(procedure==='sql'){
+  const tables=schema().schemas,names=new Set([...tables.keys()].map(n=>n.includes('.')?n:'work.'+n));
+  for(const [alias,members] of Object.entries(state.members||{}))for(const member of members)if(completionName.test(member))names.add(alias+'.'+member);
+  const sourceSlot=tail.match(/\b(?:from|join)\s+([a-z_]\w*(?:\.[a-z_]\w*)?\.?|)$/i);
+  if(sourceSlot)return result([...names].filter(n=>n.startsWith(sourceSlot[1].toLowerCase())).sort().map(n=>fragment(n,n+' ','SQL source table')),caret-sourceSlot[1].length,end,'datasets');
+  const sqlAliases=new Map(),reserved=new Set(['as','where','group','having','order','inner','left','right','full','outer','cross','join','on','quit']);
+  for(const match of fullStatement.matchAll(/\b(?:from|join)\s+([a-z_]\w*(?:\.[a-z_]\w*)?)(?:\s+(?:as\s+)?([a-z_]\w*))?/gi)){
+   const name=match[1].toLowerCase(),alias=match[2]&&!reserved.has(match[2].toLowerCase())?match[2].toLowerCase():name.split('.').at(-1),ds=tables.get(completionTable(name));if(ds)sqlAliases.set(alias,ds);
+  }
+  const qualified=tail.match(/\b([a-z_]\w*)\.([a-z_]\w*|)$/i);
+  if(qualified&&sqlAliases.has(qualified[1].toLowerCase())){
+   const ds=sqlAliases.get(qualified[1].toLowerCase());return result(ds.columns.filter(c=>c.startsWith(qualified[2].toLowerCase())).map(c=>fragment(c,c,'SQL alias '+qualified[1]+(ds.types[c]==='num'?' · numeric':' · character'),false)),caret-qualified[2].length,end,'variables');
+  }
+  const fieldSlot=tail.match(/(?:\bselect(?:\s+distinct)?|\bwhere|\bon|\bgroup\s+by|\bhaving|\border\s+by|[,=+*/<>-]|\b(?:count|sum|mean|avg|std|stddev|var|min|max)\(\s*(?:distinct\s+)?)\s*([a-z_]\w*|)$/i);
+  if(fieldSlot&&sqlAliases.size){
+   const prefix=fieldSlot[1].toLowerCase(),numeric=/\b(?:sum|mean|avg|std|stddev|var)\(\s*[a-z_]*$/i.test(tail),items=[];
+   for(const [alias,ds] of sqlAliases)for(const c of ds.columns)if(c.startsWith(prefix)&&(!numeric||ds.types[c]!=='char')){const name=sqlAliases.size>1?alias+'.'+c:c;items.push(fragment(name,name,'SQL '+alias+' field',false));}
+   return result(items.sort((a,b)=>a.label.localeCompare(b.label)),caret-prefix.length,end,'variables');
+  }
+  if(/^\s*[a-z_]*$/i.test(tail))return result(procedureStatementTemplates('sql').filter(item=>item.keyword.startsWith(tail.trim().toLowerCase())).map(item=>({...item,followUp:false})),caret-tail.trim().length,end,'statements');
+  // Query clauses outside these bounded contexts remain free-form.
+  return null;
+ }
  const rawTail=code.slice(statementStart,caret);
  const fieldItems=(role='any',exclude=new Set())=>{const ds=schema().schemas.get(completionTable(info.source||''));return ds?ds.columns.filter(c=>!exclude.has(c.toLowerCase())&&c.toLowerCase().startsWith(prefix.toLowerCase())&&(role!=='numeric'||ds.types[c]!=='char')).map(c=>fragment(c,c+' ',(ds.types[c]==='num'?'numeric':ds.types[c]==='char'?'character':'variable')+(ds.inferred?' · inferred':''))):[];};
  if(procedure==='import'){

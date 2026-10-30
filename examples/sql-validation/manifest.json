@@ -1,0 +1,257 @@
+{
+  "appVersion": "0.4.20",
+  "actualSASValidation": "pending",
+  "criterion": {
+    "relative": 1e-10
+  },
+  "cases": [
+    {
+      "name": "sql_inner",
+      "rows": 5,
+      "columns": [
+        "left_id",
+        "right_id",
+        "x",
+        "y"
+      ],
+      "types": {
+        "left_id": "num",
+        "right_id": "num",
+        "x": "num",
+        "y": "num"
+      }
+    },
+    {
+      "name": "sql_left",
+      "rows": 6,
+      "columns": [
+        "left_id",
+        "right_id",
+        "x",
+        "y"
+      ],
+      "types": {
+        "left_id": "num",
+        "right_id": "num",
+        "x": "num",
+        "y": "num"
+      }
+    },
+    {
+      "name": "sql_right",
+      "rows": 6,
+      "columns": [
+        "left_id",
+        "right_id",
+        "x",
+        "y"
+      ],
+      "types": {
+        "left_id": "num",
+        "right_id": "num",
+        "x": "num",
+        "y": "num"
+      }
+    },
+    {
+      "name": "sql_full",
+      "rows": 7,
+      "columns": [
+        "left_id",
+        "right_id",
+        "x",
+        "y"
+      ],
+      "types": {
+        "left_id": "num",
+        "right_id": "num",
+        "x": "num",
+        "y": "num"
+      }
+    },
+    {
+      "name": "sql_cross",
+      "rows": 16,
+      "columns": [
+        "aid",
+        "bid",
+        "x",
+        "y"
+      ],
+      "types": {
+        "aid": "num",
+        "bid": "num",
+        "x": "num",
+        "y": "num"
+      }
+    },
+    {
+      "name": "sql_grouped",
+      "rows": 3,
+      "columns": [
+        "g",
+        "rows_count",
+        "nonmissing",
+        "unique_ids",
+        "total",
+        "average",
+        "average2",
+        "sd",
+        "sd2",
+        "variance",
+        "lo",
+        "hi"
+      ],
+      "types": {
+        "g": "char",
+        "rows_count": "num",
+        "nonmissing": "num",
+        "unique_ids": "num",
+        "total": "num",
+        "average": "num",
+        "average2": "num",
+        "sd": "num",
+        "sd2": "num",
+        "variance": "num",
+        "lo": "num",
+        "hi": "num"
+      }
+    },
+    {
+      "name": "sql_row_functions",
+      "rows": 4,
+      "columns": [
+        "id",
+        "x",
+        "row_mean",
+        "row_sum",
+        "text",
+        "parsed"
+      ],
+      "types": {
+        "id": "num",
+        "x": "num",
+        "row_mean": "num",
+        "row_sum": "num",
+        "text": "char",
+        "parsed": "num"
+      }
+    },
+    {
+      "name": "sql_calculated",
+      "rows": 2,
+      "columns": [
+        "id",
+        "doubled",
+        "adjusted",
+        "label"
+      ],
+      "types": {
+        "id": "num",
+        "doubled": "num",
+        "adjusted": "num",
+        "label": "char"
+      }
+    },
+    {
+      "name": "sql_distinct",
+      "rows": 3,
+      "columns": [
+        "g"
+      ],
+      "types": {
+        "g": "char"
+      }
+    },
+    {
+      "name": "sql_unique",
+      "rows": 3,
+      "columns": [
+        "g"
+      ],
+      "types": {
+        "g": "char"
+      }
+    },
+    {
+      "name": "sql_group_order",
+      "rows": 4,
+      "columns": [
+        "g",
+        "x"
+      ],
+      "types": {
+        "g": "char",
+        "x": "num"
+      }
+    },
+    {
+      "name": "sql_having",
+      "rows": 1,
+      "columns": [
+        "g",
+        "rows_count",
+        "average"
+      ],
+      "types": {
+        "g": "char",
+        "rows_count": "num",
+        "average": "num"
+      }
+    },
+    {
+      "name": "sql_case_group",
+      "rows": 3,
+      "columns": [
+        "bin",
+        "rows_count"
+      ],
+      "types": {
+        "bin": "num",
+        "rows_count": "num"
+      }
+    },
+    {
+      "name": "sql_empty",
+      "rows": 1,
+      "columns": [
+        "rows_count",
+        "total",
+        "average",
+        "sd"
+      ],
+      "types": {
+        "rows_count": "num",
+        "total": "num",
+        "average": "num",
+        "sd": "num"
+      }
+    },
+    {
+      "name": "sql_missing",
+      "rows": 3,
+      "columns": [
+        "id",
+        "x"
+      ],
+      "types": {
+        "id": "num",
+        "x": "num"
+      }
+    },
+    {
+      "name": "sql_composite",
+      "rows": 4,
+      "columns": [
+        "aid",
+        "x",
+        "y"
+      ],
+      "types": {
+        "aid": "num",
+        "x": "num",
+        "y": "num"
+      }
+    }
+  ]
+}

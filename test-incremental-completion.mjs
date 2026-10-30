@@ -7,7 +7,7 @@ function get(code,caret=code.length){return completionContext(code,caret,state);
 const labels=code=>get(code)?.items.map(i=>i.label)||[];
 const has=(code,label)=>assert.ok(labels(code).includes(label),code+' needs '+label+'; got '+labels(code));
 const lacks=(code,label)=>assert.ok(!labels(code).includes(label),code+' must omit '+label);
-for(const proc of ['means','sort','glm','sgplot','sgpie','print','surveyselect','import','export']){
+for(const proc of ['means','sort','glm','sgplot','sgpie','print','surveyselect','import','export','sql']){
  assert.ok(get('proc '+proc)?.automatic,proc);assert.equal(get('proc '+proc).qualifier,proc);
 }
 has('proc means','DATA=');has('proc means','MEAN');has('proc means','NWAY');
@@ -51,8 +51,8 @@ has("proc export data=claims outfile=","'results.csv'");assert.deepEqual(labels(
 lacks('proc surveyselect data=claims method=sys ','SAMPRATE=');lacks('proc surveyselect data=claims n=2 ','SAMPRATE=');lacks('proc surveyselect data=claims rate=.1 ','SAMPSIZE=');
 lacks('proc surveyselect data=claims method=srs ','OUTHITS');has('proc surveyselect data=claims method=urs ','OUTHITS');
 const middle='proc means m data=claims;';const at=get(middle,12);assert.ok(!at.items.some(i=>i.label==='DATA='));
-for(const code of ['proc sql','proc constructor','proc means data=&source','proc means data=claims; run;','data t; var ','/* proc means ','proc means data=claims; x=input(v, ??','proc means data=claims; var "site','proc sgplot data=claims; xaxis label="text'])assert.equal(get(code),null,code);
-console.log('Incremental editor: all nine procedure headers, source metadata, typed variable roles, used/alias suppression, MODEL/OUTPUT/plots, PRINT ranges, CSV settings, sampling constraints and mid-line edits passed without observation access.');
+for(const code of ['proc constructor','proc means data=&source','proc means data=claims; run;','data t; var ','/* proc means ','proc means data=claims; x=input(v, ??','proc means data=claims; var "site','proc sgplot data=claims; xaxis label="text'])assert.equal(get(code),null,code);
+console.log('Incremental editor: all ten procedure headers, source metadata, typed variable roles, used/alias suppression, MODEL/OUTPUT/plots, PRINT ranges, CSV settings, sampling constraints and mid-line edits passed without observation access.');
 // Complete real programs by selecting incremental pieces, then execute the result.
 const {runFileProgram}=await import('./dist/file-program.mjs');
 const data=await runFileProgram('data claims; do x=1 to 20; amount=x; y=2+3*x+mod(x,2); w=x/2; site="A"; output; end; run;');

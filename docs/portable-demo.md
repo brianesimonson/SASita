@@ -1,4 +1,4 @@
-# Portable execution proof of concept — Sassy v0.4.19
+# Portable execution proof of concept — Sassy v0.4.20
 
 Use the small **Code & export** button in the upper-right project controls. The
 modal shows current SAS source, the Node runner, Python wrapper, and eleven actual
@@ -16,7 +16,7 @@ inputs first when reproducing a previous result. Empty source/invalid programs o
 unrepresentable table data fail clearly. Package limit: 50 MB, uncompressed ZIP.
 
 Open demo-project/portable-demo.sas in a fresh app and export it for a ready example
-using default WORK.CLAIMS. dist/Sassy-wrapper-demo-v0.4.19.zip is also a prepackaged
+using default WORK.CLAIMS. dist/Sassy-wrapper-demo-v0.4.20.zip is also a prepackaged
 version using examples/claims.csv; scripts/package-portable-demo.mjs regenerates it.
 
 Extract the ZIP. With Node.js 24+ installed, run `node run.mjs`. With Python 3 also
@@ -54,13 +54,13 @@ engine source exactly, extract and execute run.py, and verify returned rows. Ful
 baseline and existing UI/chart/library/file checks passed. Windows OS paths/rename
 behavior remain manual validation; no new SAS runtime equivalence claim.
 
-The v0.4.19 runtime also includes PROC MEANS; result envelopes include descriptive report tables as reports, in addition to saved tables.
+The v0.4.20 runtime also includes PROC MEANS; result envelopes include descriptive report tables as reports, in addition to saved tables.
 
-PROC SURVEYSELECT and default RAND are included in v0.4.19. Use the ninth Examples program for self-contained sampling. Read surveyselect.md and random-numbers.md for supported methods and SAS-reference limits. procedure-support.md lists what every procedure can deploy in the browser and Node/Python-wrapper runtime.
+PROC SURVEYSELECT and default RAND are included in v0.4.20. Use the ninth Examples program for self-contained sampling. Read surveyselect.md and random-numbers.md for supported methods and SAS-reference limits. procedure-support.md lists what every procedure can deploy in the browser and Node/Python-wrapper runtime.
 
-The v0.4.19 runtime preserves cached normal pairs across intervening uniform calls. Browser-exported packages and Python/Node execution are checked against the same printed SAS normal references and exact uniform witnesses. Bit-identical normal values are not guaranteed.
+The v0.4.20 runtime preserves cached normal pairs across intervening uniform calls. Browser-exported packages and Python/Node execution are checked against the same printed SAS normal references and exact uniform witnesses. Bit-identical normal values are not guaranteed.
 
-The v0.4.19 runtime adds PROC GLM fixed-effects models, CLASS/interactions, Type I/III, SOLUTION and reusable ODS output tables. Both browser-exported ZIPs execute the published unbalanced example with matching sums of squares and estimates. See glm.md for boundaries and the pending fresh SAS runtime comparison.
+The v0.4.20 runtime adds PROC GLM fixed-effects models, CLASS/interactions, Type I/III, SOLUTION and reusable ODS output tables. Both browser-exported ZIPs execute the published unbalanced example with matching sums of squares and estimates. See glm.md for boundaries and the pending fresh SAS runtime comparison.
 
 PROC PRINT returns explicit observation report models with showObs and original observationNumbers. The source dataset is unchanged and the wrapper creates no PRINT output dataset. See print.md for the bounded syntax.
 

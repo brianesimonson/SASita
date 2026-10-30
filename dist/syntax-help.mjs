@@ -1,4 +1,5 @@
 const syntaxEntries=[
+{id:'sql',label:'PROC SQL',group:'Procedures',syntax:'PROC SQL [NOPRINT] [OUTOBS=n]; CREATE TABLE result AS SELECT expressions FROM table [AS alias] [joins] [WHERE condition] [GROUP BY expressions] [HAVING condition] [ORDER BY expressions]; QUIT;',description:'Bounded SAS-style SELECT and CREATE TABLE AS SELECT, WORK/native libraries, aliases, inner/left/right/full/cross joins, DISTINCT/UNIQUE, CASE, CALCULATED, WHERE/GROUP BY/HAVING/ORDER BY. COUNT, COUNT(DISTINCT), N/NMISS, SUM, MEAN/AVG, MIN/MAX, STD/STDDEV and VAR ignore missing analysis values; STD/VAR use N-1. Multiargument SUM/MEAN/MIN/MAX operate within rows. Missing values compare low and may match in joins. GROUP BY without summaries acts as ordering. CREATE TABLE saves datasets without printing; bare SELECT displays a bounded report. OUTOBS limits result rows; NOPRINT suppresses reports. No automatic remerging, subqueries, set operations, SQL macro INTO, views, DML or database pass-through. Fresh actual SAS validation pending; see sql.md.',template:'proc sql;\n    create table summary as\n    select provider, count(*) as claim_count,\n           mean(paid_amount) as average_paid,\n           std(paid_amount) as sd_paid\n    from work.claims\n    group by provider\n    order by provider;\nquit;'},
 { id:'print',label:'PROC PRINT',group:'Procedures',syntax:'PROC PRINT DATA=table(FIRSTOBS=1 OBS=10) NOOBS; VAR id amount; RUN;',description:'Explicitly lists observations in session Output without creating or modifying a dataset. OBS is the last observation index, FIRSTOBS is the first; options belong inside DATA=table(...). NOOBS hides observation numbers; VAR selects and orders columns. Inherits formats and the current TITLE. At most 1,000 observations / 100,000 cells; unrestricted larger listings fail with guidance. WHERE, BY, ID, SUM, LABEL, FORMAT and other dataset options are not implemented.',template:'proc print data=table(obs=10);\n    var id amount;\nrun;' },
 {
   "id": "glm",
@@ -574,7 +575,7 @@ export function syntaxContext(source, cursor=source.length){
   if(statement[0]==='%mend')macroActive=false;
   if(t===';'){if(['run','quit'].includes(statement[0]))block=null;statement=[];stack=[];}
  }
- const lookup=name=>syntaxEntries.find(e=>e.id==='fn-'+(/^lag[1-9]\d*$/.test(name||'')?'lag':name));
+ const lookup=name=>block==='sql'&&['count','n','nmiss','sum','mean','avg','min','max','std','stddev','var'].includes(name)?syntaxEntries.find(e=>e.id==='sql'):syntaxEntries.find(e=>e.id==='fn-'+(/^lag[1-9]\d*$/.test(name||'')?'lag':name));
  const current=tokens.at(-1),fn=lookup(current)||[...stack].reverse().map(lookup).find(Boolean);
  if(fn)return fn.id;
  if(statement[0]==='call'&&statement[1]==='streaminit')return 'streaminit';
@@ -610,6 +611,7 @@ export function createSyntaxHelp(){
 
 // Small statement catalog shared with the editor menu; no runtime parsing/execution.
 const procedureStarters={
+ sql:[['create','CREATE TABLE AS SELECT','create table result as\nselect column\nfrom work.table;','result'],['select','SELECT — display query','select column\nfrom work.table;','column'],['quit','QUIT;','quit;']],
  print:[['var','VAR variables;','var variable;','variable'],['run','RUN;','run;']],
  sgpie:[['pie','PIE category;','pie category;','category'],['run','RUN;','run;']],
  surveyselect:[['strata','STRATA variables;','strata variable;','variable'],['run','RUN;','run;']],
@@ -649,6 +651,7 @@ const procedureStarters={
 export function procedureStatementTemplates(procedure,statements=[],header=''){
  const keywords=statements.map(s=>s.trim().toLowerCase().match(/^([a-z_]\w*)/)?.[1]),used=new Set(keywords),plots=['scatter','hbar','vbar','histogram'];
  return (Object.hasOwn(procedureStarters,procedure)?procedureStarters[procedure]:[]).filter(([keyword])=>{
+  if(procedure==='sql')return true;
   if(keyword!=='run'&&keyword!=='output'&&used.has(keyword))return false;
   if(['print','import','export'].includes(procedure))return true;
   if(procedure==='surveyselect')return keyword!=='strata'||!(/\breps\s*=\s*(?:[2-9]|[1-9]\d+)/i.test(header));
@@ -671,6 +674,7 @@ export function meansEditorOptions(){return {
 export function procedureEditorOptions(procedure){
  const common={statistics:[],flags:[],input:['data'],output:['out'],quoted:[],required:['data'],values:{}};
  const catalogs={
+  sql:{assignments:['outobs'],flags:['noprint'],input:[],output:[],required:[],values:{outobs:[10,100,1000]}},
   means:{assignments:['data','vardef','maxdec'],flags:meansEditorOptions().flags,statistics:meansEditorOptions().statistics,values:{vardef:['df','n','wdf','wgt','weight'],maxdec:[7,0,1,2,3,4,5,6,8,9,10,11,12,13,14,15]}},
   sort:{assignments:['data','out'],flags:['nodupkey','equals']},
   glm:{assignments:['data','order'],flags:['noprint'],values:{order:['formatted','internal','data']}},

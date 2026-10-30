@@ -46,7 +46,7 @@ function meansCompare(a,b){if(typeof a==='string')a=a.trimEnd();if(typeof b==='s
 function meansMissing(v){return v===null||v===undefined||typeof v==='string'&&v.trim()==='';}
 // Neumaier accumulation and shifted two-pass second moments avoid subtracting x^2 - mean^2.
 function meansSum(values){let sum=0,correction=0;for(const x of values){const t=sum+x;correction+=Math.abs(sum)>=Math.abs(x)?(sum-t)+x:(x-t)+sum;sum=t;}return sum+correction;}
-function meansMoments(values,total,vardef){
+export function meansMoments(values,total,vardef){
  const n=values.length;const result={n,nmiss:total-n,sum:n?meansSum(values):0,sumwgt:n,mean:null,min:null,max:null,range:null,var:null,std:null,stderr:null,css:null,uss:0,cv:null};
  if(!n)return result;
  const anchor=values[0],offset=meansSum(values.map(x=>x-anchor))/n;

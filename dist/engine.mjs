@@ -87,6 +87,8 @@ const funcs=Object.assign(Object.create(null),{
  substr:(x,s,n)=>s<1?null:text(x).substring(s-1,n==null?undefined:s-1+n),index:(x,s)=>text(x).indexOf(text(s))+1,cats:(...a)=>a.map(x=>text(x).trim()).join(''),catx:(sep,...a)=>a.map(x=>text(x).trim()).filter(Boolean).join(text(sep)),
  mod:numeric((a,b)=>b===0?null:a%b),today:()=>Math.floor((Date.now()-epoch)/day),mdy:(m,d,y)=>{let v=new Date(Date.UTC(y,m-1,d));return v.getUTCMonth()===m-1&&v.getUTCDate()===d?(+v-epoch)/day:null},year:x=>miss(x)?null:new Date(epoch+x*day).getUTCFullYear(),month:x=>miss(x)?null:new Date(epoch+x*day).getUTCMonth()+1,day:x=>miss(x)?null:new Date(epoch+x*day).getUTCDate()
 });
+export function dataStepFunctionNames(){return Object.keys(funcs);}
+export function evaluateDataStepFunction(name,args){if(!Object.hasOwn(funcs,name))throw new Error('Unsupported function '+name);return funcs[name](...args);}
 function cmp(a,b){if(typeof a==='string'&&typeof b==='string'){a=a.trimEnd();b=b.trimEnd()}if(miss(a)&&miss(b))return 0;if(miss(a))return-1;if(miss(b))return 1;return a<b?-1:a>b?1:0}
 function evaluate(e,p,context){if(e.k==='lit')return e.v;if(e.k==='var')return Object.hasOwn(p,e.name)?p[e.name]:null;
  if(e.k==='lag'){

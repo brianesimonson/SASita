@@ -1,4 +1,5 @@
 import {parsePrint,preparePrint} from './print.mjs';
+import {parseSQL,prepareSQL} from './sql.mjs';
 import {parseMeans,prepareMeans} from './means.mjs';
 import {parseSurveySelect,prepareSurveySelect} from './surveyselect.mjs';
 import {parseGLM,prepareGLM} from './glm.mjs';
@@ -33,6 +34,7 @@ export function filePlan(expanded) {
  const take=()=>{if(!tokens[i])throw new Error('Incomplete file procedure');return tokens[i++]};
  while(i<tokens.length) {
   const start=i,t=take();
+  if(t.v==='proc'&&tokens[i]?.v==='sql'){const parsed=parseSQL(tokens,start);i=parsed.next;plan.push({kind:'sql',spec:parsed.spec});continue;}
   if(t.v==='ods'){
    need('output');if(tokens[i]?.v==='close'){take();need(';');glmOds={};continue;}
    while(tokens[i]?.v!==';'){const table=take().v;if(!['classlevels','nobs','overallanova','fitstatistics','modelanova','parameterestimates'].includes(table))throw new Error('Unsupported ODS OUTPUT table '+table);need('=');const name=datasetName(take());if(Object.hasOwn(glmOds,table))throw new Error('Repeated ODS table binding');glmOds[table]=name;}
@@ -99,7 +101,7 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  let hasFiles=tokens.some(t=>t.type==='id'&&/^[a-z_]\w*\.[a-z_]\w*$/.test(t.v)&&!/^(work|first|last)\./.test(t.v)),inBlock=false;
  for(let i=0;i<tokens.length;i++){const t=tokens[i];if(t.type!=='id')continue;if(inBlock){if(t.v==='run'&&tokens[i-1]?.v===';'&&tokens[i+1]?.v===';')inBlock=false;continue;}if(['libname','filename','title'].includes(t.v))hasFiles=true;if(t.v==='proc'){if(['import','export','sgplot','sgpie','means','print'].includes(tokens[i+1]?.v))hasFiles=true;inBlock=true;}else if(t.v==='data')inBlock=true;}
 
- if(tokens.some((t,i)=>t.v==='proc'&&['surveyselect','glm'].includes(tokens[i+1]?.v)||t.v==='ods'))hasFiles=true;
+ if(tokens.some((t,i)=>t.v==='proc'&&['surveyselect','glm','sql'].includes(tokens[i+1]?.v)||t.v==='ods'))hasFiles=true;
  if(!hasFiles){const result=run(macro.code,input,{expanded:true});result.logs.unshift(...macro.logs);return result;}
  const plan=filePlan(macro.code),aliases=new Map(),exports=[],logs=[...macro.logs],written=[],libraries=Object.assign(Object.create(null),options.libraries||{}),fresh=new Set(),libraryWrites=new Set(),plots=[],reports=[];let chartTitle=options.chartTitle||'';
  let datasets=Object.assign(Object.create(null),input),exportBytes=0;
@@ -112,6 +114,21 @@ export async function runFileProgram(code,input={},readFile,options={}) {
  function stage(name){if(!name.includes('.'))return;const path=location(name),text=writeTable(datasets[name],name.split('.')[1]),prior=exports.findIndex(e=>e.path.toLowerCase()===path.toLowerCase());if(prior>=0&&(!exports[prior].native||exports[prior].path!==path))throw new Error('Conflicting export path '+path);if(prior>=0)exports.splice(prior,1);exports.push({path,text,replace:true,native:true});libraryWrites.add(name.split('.')[0]);for(const other of fresh)if(other!==name&&location(other)===path){datasets[other]=datasets[name];}fresh.add(name);logs.push('NOTE: Prepared permanent table '+name.toUpperCase()+' at '+path+'.');}
  function checkExportLimit(){if(exports.reduce((n,e)=>n+new TextEncoder().encode(e.text).length,0)>50000000)throw new Error('Total program exports are limited to 50 MB');}
  for(const step of plan) {
+  if(step.kind==='sql'){
+   for(const query of step.spec.queries){
+    for(const source of [query.source,...query.joins.map(j=>j.relation)])await load(source.name);
+    if(query.target?.includes('.'))location(query.target);
+    const result=prepareSQL(query,datasets,{outobs:step.spec.outobs});
+    if(query.target){datasets[query.target]=result.dataset;written.push(query.target);stage(query.target);checkExportLimit();}
+    else if(!step.spec.noprint){
+     if(result.dataset.rows.length>1000||result.dataset.rows.length*result.dataset.columns.length>100000)throw new Error('SQL displayed SELECT is limited to 1,000 rows / 100,000 cells; use OUTOBS=10 or CREATE TABLE');
+     reports.push({title:(chartTitle?chartTitle+' · ':'')+'PROC SQL',dataset:result.dataset,showObs:false});
+     if(reports.length>20||reports.reduce((n,r)=>n+r.dataset.rows.length,0)>100000)throw new Error('Procedure report limit exceeded');
+    }
+    logs.push(...result.logs);
+   }
+   continue;
+  }
   if(step.kind==='title'){chartTitle=step.value;continue;}
   if(step.kind==='print'){
    await load(step.spec.source);const result=preparePrint(step.spec,datasets[step.spec.source],chartTitle);

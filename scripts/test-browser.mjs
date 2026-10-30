@@ -105,7 +105,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#code').value"),'data x; value=substr("abcd",2,2); run;');
     assert.equal(await evaluate("document.querySelector('#programstate').textContent"),'Unsaved changes');
     await evaluate("document.querySelector('#syntaxsearch').value='';document.querySelector('#syntaxsearch').dispatchEvent(new Event('input'))");
-    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),75);
+    assert.equal(await evaluate("document.querySelector('#syntaxentry').options.length"),76);
     await evaluate("document.querySelector('#syntaxclose').click();document.querySelector('#code').value='proc sgplot data=x; histogram x /';document.querySelector('#code').setSelectionRange(32,32);document.querySelector('#code').dispatchEvent(new KeyboardEvent('keydown',{ctrlKey:true,code:'Space',key:' ',bubbles:true}))");
     assert.equal(await evaluate("document.querySelector('#syntaxentry').value"),'sgplot');
     assert.ok(await evaluate("!document.querySelector('#syntaxpanel').hidden && document.querySelector('#syntaxfollow').checked"));
@@ -191,7 +191,7 @@ try {
     const typeAssist=async text=>{await evaluate(`document.querySelector('#workspaceprogramtab').click();document.querySelector('#code').value=${JSON.stringify(text)};document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(document.querySelector('#code').value.length,document.querySelector('#code').value.length);document.querySelector('#code').dispatchEvent(new Event('input'))`);};
     const pickAssist=async label=>{await waitFor(`!document.querySelector('#codecompletion').hidden && Array.from(document.querySelectorAll('#codecompletion [role=option] strong')).some(n=>n.textContent===${JSON.stringify(label)})`);await evaluate(`Array.from(document.querySelectorAll('#codecompletion [role=option]')).find(o=>o.querySelector('strong').textContent===${JSON.stringify(label)}).dispatchEvent(new MouseEvent('mousedown',{bubbles:true,cancelable:true}))`);};
     const appendAssist=async text=>{await evaluate(`document.querySelector('#code').setRangeText(${JSON.stringify(text)},document.querySelector('#code').selectionStart,document.querySelector('#code').selectionEnd,'end');document.querySelector('#code').dispatchEvent(new Event('input'))`);};
-    for(const proc of ['means','sort','glm','sgplot','sgpie','print','surveyselect','import','export']){await typeAssist('proc '+proc);await waitFor(`!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('PROC '+${JSON.stringify(proc.toUpperCase())})`);}
+    for(const proc of ['means','sort','glm','sgplot','sgpie','print','surveyselect','import','export','sql']){await typeAssist('proc '+proc);await waitFor(`!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('PROC '+${JSON.stringify(proc.toUpperCase())})`);}
     await typeAssist('proc means');
     await pickAssist('DATA=');await pickAssist('work.claims');await pickAssist('MEAN');
     await waitFor("!document.querySelector('#codecompletion').hidden");
@@ -214,12 +214,27 @@ try {
     await waitFor("document.querySelector('#run') && !document.querySelector('#run').disabled");
     assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
     assert.ok(await evaluate("document.querySelector('#datasets').textContent.includes('summary')"));
-    console.log(`${label}: all nine automatic procedure headers, chained DATA/VAR/OUTPUT pieces, duplicate/typed-field suppression, plain Enter and completed MEANS execution passed`);
+    console.log(`${label}: all ten automatic procedure headers, chained DATA/VAR/OUTPUT pieces, duplicate/typed-field suppression, plain Enter and completed MEANS execution passed`);
+    // SQL preserves real alias qualifiers and reports only explicit SELECT results.
+    const sqlAssist='proc sql;select c.pa from work.claims as c;quit;';
+    await evaluate(`document.querySelector('#workspaceprogramtab').click();document.querySelector('#code').value=${JSON.stringify(sqlAssist)};document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(${sqlAssist.indexOf('c.pa')+4},${sqlAssist.indexOf('c.pa')+4});document.querySelector('#code').dispatchEvent(new Event('input'))`);
+    await pickAssist('paid_amount');
+    assert.equal(await evaluate("document.querySelector('#code').value"),'proc sql;select c.paid_amount from work.claims as c;quit;');
+    const sqlExample=await readFile('examples/catalog/14-proc-sql.sas','utf8'),sqlHistory=await evaluate("document.querySelector('#outputhistory').options.length");
+    await evaluate(`document.querySelector('#code').value=${JSON.stringify(sqlExample)};document.querySelector('#run').click()`);
+    await waitFor("!document.querySelector('#run').disabled");assert.equal(await evaluate("document.querySelector('#status').textContent"),'Ready');
+    assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),sqlHistory+1);
+    assert.ok((await evaluate("document.querySelector('#table').textContent")).includes('700'));
+    const sqlDatasets=await evaluate("document.querySelector('#datasets').textContent"),sqlOutput=await evaluate("document.querySelector('#outputhistory').options.length");
+    await evaluate("document.querySelector('#code').value='proc sql;create table sql_never_commit as select * from sql_claims;select absent from sql_claims;quit;';document.querySelector('#run').click()");
+    await waitFor("!document.querySelector('#run').disabled");assert.equal(await evaluate("document.querySelector('#status').textContent"),'Error');
+    assert.equal(await evaluate("document.querySelector('#datasets').textContent"),sqlDatasets);assert.equal(await evaluate("document.querySelector('#outputhistory').options.length"),sqlOutput);
+    console.log(`${label}: SQL alias completion, worker joins/grouped STD/VAR, explicit report policy and failed-query rollback passed`);
     // Export from the REAL browser build, extract, and execute the Python bridge.
-    const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8')+' proc print data=glm_scored(obs=3) noobs; var predicted residual; run; '+await readFile('examples/catalog/12-weights.sas','utf8')+' '+await readFile('examples/catalog/13-lag-math-conversions.sas','utf8');
+    const portableBrowserProgram='data portable_result; set snapshot; square=x*x; run; data frame; do stratum=1 to 5; do unit=1 to 5; id=(stratum-1)*5+unit; output; end; end; run; proc surveyselect data=frame out=portable_sample n=2 seed=12345 outseed; strata stratum; run; '+await readFile('examples/project-demo/normal-demo.sas','utf8')+' '+await readFile('examples/catalog/10-glm.sas','utf8')+' proc print data=glm_scored(obs=3) noobs; var predicted residual; run; '+await readFile('examples/catalog/12-weights.sas','utf8')+' '+await readFile('examples/catalog/13-lag-math-conversions.sas','utf8')+' '+await readFile('examples/catalog/14-proc-sql.sas','utf8');
     await evaluate(`document.querySelector('#code').value=${JSON.stringify(portableBrowserProgram)};document.querySelector('#codeexport').click();document.querySelector('#portablefile').value='runtime/engine.mjs';document.querySelector('#portablefile').dispatchEvent(new Event('change'))`);
     assert.equal(await evaluate("document.querySelector('#portablesource').textContent"),await readFile('dist/engine.mjs','utf8'));
-    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.19.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
+    await evaluate("window.__portableZip=null;window.__portableClick=HTMLAnchorElement.prototype.click;HTMLAnchorElement.prototype.click=function(){if(this.download==='Sassy-portable-v0.4.20.zip'){fetch(this.href).then(r=>r.blob()).then(blob=>{const reader=new FileReader();reader.onload=()=>window.__portableZip=reader.result;reader.readAsDataURL(blob);});}else window.__portableClick.call(this);};document.querySelector('#downloadportable').click()");
     await waitFor("window.__portableZip!==null");
     const portableDownload=await evaluate("window.__portableZip");
     const zipPath=join(profile,'portable-'+label+'.zip'),packagePath=join(profile,'portable-'+label);
@@ -228,6 +243,7 @@ try {
     assert.equal(extracted.status,0,extracted.stderr);
     const wrapped=spawnSync('python3',[join(packagePath,'run.py')],{encoding:'utf8',maxBuffer:10000000,timeout:35000});assert.equal(wrapped.status,0,wrapped.stderr);
     assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_result).rows,[{x:3,square:9}]);
+    const sqlSummary=JSON.parse(JSON.parse(wrapped.stdout).tables.sql_summary).rows;assert.deepEqual(sqlSummary.map(r=>[r.provider,r.claim_count,r.unique_claims,r.average_paid,r.variance_paid]),[['A',6,6,700,140000],['B',6,6,600,140000]]);
     const lagMath=JSON.parse(JSON.parse(wrapped.stdout).tables.calculations).rows;assert.deepEqual(lagMath.slice(0,4).map(r=>r.two_back),[null,null,1,2]);assert.ok(Math.abs(lagMath[9].restored-10)<1e-12);assert.equal(lagMath[9].as_text,'0010');
     assert.deepEqual(JSON.parse(JSON.parse(wrapped.stdout).tables.portable_sample).rows.map(r=>r.id),[3,5,6,9,12,13,17,19,23,24]);
     const browserGlm=JSON.parse(JSON.parse(wrapped.stdout).tables.glm_tests).rows;
@@ -422,6 +438,9 @@ try {
     // A disk-only table has never been run or clicked: fields load from its header.
     await evaluate("(async()=>{const folder=await window.__projectTest.getDirectoryHandle('tables');const handle=await folder.getFileHandle('external.sassy-table.json',{create:true});const stream=await handle.createWritable();await stream.write(JSON.stringify({format:'sassy-table',version:1,name:'external',columns:[{name:'external_value',type:'numeric',length:8,format:null}],rows:[{external_value:7}]}));await stream.close();document.querySelector('#refreshlibraries').click()})()");
     await waitFor("Array.from(document.querySelectorAll('#datasets strong')).some(n=>n.textContent==='saved.external')");
+    const diskSql='proc sql;select e. from saved.external as e;';
+    await evaluate(`document.querySelector('#workspaceprogramtab').click();document.querySelector('#code').value=${JSON.stringify(diskSql)};document.querySelector('#code').focus();document.querySelector('#code').setSelectionRange(${diskSql.indexOf('e.')+2},${diskSql.indexOf('e.')+2});document.querySelector('#code').dispatchEvent(new Event('input'))`);
+    await waitFor("!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('external_value')");
     await evaluate("document.querySelector('#workspaceprogramtab').click();const e=document.querySelector('#code');e.value='proc means data=saved.external; var ';e.focus();e.setSelectionRange(e.value.length,e.value.length);e.dispatchEvent(new Event('input'))");
     await waitFor("!document.querySelector('#codecompletion').hidden && document.querySelector('#codecompletion').textContent.includes('external_value')");
     assert.equal(await evaluate("Array.from(document.querySelectorAll('#datasets button')).find(b=>b.querySelector('strong')?.textContent==='saved.external').querySelector('small').textContent"),'Saved table');
@@ -471,7 +490,7 @@ try {
     assert.equal(await evaluate("document.querySelector('#workspacelogtab').getAttribute('aria-selected')"),'true');
     // User-facing example catalog and SAS-shaped CLASS totals.
     await evaluate("document.querySelector('#exampleprograms').click()");
-    assert.equal(await evaluate("document.querySelector('#examplechoice').options.length"),13);
+    assert.equal(await evaluate("document.querySelector('#examplechoice').options.length"),14);
     await evaluate("document.querySelector('#examplechoice').value='04-means.sas';document.querySelector('#examplechoice').dispatchEvent(new Event('change'))");
     assert.ok(await evaluate("document.querySelector('#examplesource').textContent.includes('_TYPE_')"));
     const logBeforeExample=await evaluate("document.querySelector('#log').textContent");

@@ -1,11 +1,12 @@
 # Sassy validation checklist
 
-Updated 2026-10-28. This is the current checklist for questions such as “what tests are outstanding?” Earlier pending notes in handoffs and historical documents may have been superseded here. Local tests are distinct from actual SAS and manual desktop validation. Do not mark a pending item passed without corresponding results/evidence.
+Updated 2026-10-29. This is the current checklist for questions such as “what tests are outstanding?” Earlier pending notes in handoffs and historical documents may have been superseded here. Local tests are distinct from actual SAS and manual desktop validation. Do not mark a pending item passed without corresponding results/evidence.
 
 ## Outstanding
 
 | ID | Status | What remains | How to complete |
 | --- | --- | --- | --- |
+| SQL-SAS | Pending first actual SAS reference | v0.4.20 SQL joins/missing keys, scalar vs summary functions, grouped sample STD/VAR, DISTINCT, CASE/CALCULATED and GROUP BY transformation. Full local semantic/native/independent SQLite, browser and exported Python/Node checks pass; generated predictions are not SAS fixtures. | Run only `01-sas-sql-comparison.sas` from [sql-validation.zip](examples/sql-validation/sql-validation.zip) in SAS Studio; return Results and Log. Sixteen groups / 71 rows, sorted value comparison at relative 1e-10; no CSV/path edits. See docs/sql.md. |
 | DATA-LAG-MATH | Pending actual SAS reference | v0.4.19 LAG/LAGn queue lifecycle, conditional calls, character/missing values, BY continuity and EXP/LOG/LOG10/LOG2 edge/precision behavior. Local semantic, analytic and portable tests pass; no new actual SAS results for these functions. | Focused SAS reference run when desired; no need to rerun the completed weight kit. |
 | PRINT-SAS | Pending, lower priority | Fresh actual SAS comparison of PRINT OBS/FIRSTOBS/VAR/NOOBS, especially display/layout. Local semantic/browser/wrapper checks pass. | Run the PRINT example in SAS and compare the selected observations/numbering. Exact SAS styling is not a current promise. |
 | GLM-METADATA | Pending compatibility scope | Original interaction names A*X versus X*A, special missing codes, Biased column type, exact ODS descriptor lengths/formats/order. Numeric comparisons normalize these distinctions. | Collect relevant SAS descriptors/raw outputs; implement and validate metadata separately if required by an integration. |

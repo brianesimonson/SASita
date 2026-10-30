@@ -18,8 +18,11 @@ assert.deepEqual(paths,['tables/claims.sassy-table.json']);assert.deepEqual(get(
 assert.ok(get('data temp;set saved.claims; value=temp.').items.some(v=>v.label==='provider'));
 assert.ok(get('alias.claims.').items.some(v=>v.label==='payment'));
 assert.equal(get('saved.claims.pa').items[0].insert,'payment');
+controller.clear();const sql='proc sql;select c. from saved.claims as c;',sqlCaret=sql.indexOf('c.')+2;
+assert.equal(await controller.ensure(sql,sqlCaret),true);assert.equal(paths.length,2);
+assert.ok(completionContext(sql,sqlCaret,{...state,descriptors:controller.descriptors()}).items.some(v=>v.label==='payment'));
 for(const code of ["/* saved.claims */", "* saved.claims;", "x='saved.claims';", '%* saved.claims;', 'work.claims.', 'missing.claims.', 'saved.unknown.'])assert.deepEqual(referencedLibraryTables(code,code.length,state),[]);
-controller.clear();state.enabled=false;assert.equal(await controller.ensure(program,program.length),false);assert.equal(paths.length,1);state.enabled=true;
+controller.clear();state.enabled=false;assert.equal(await controller.ensure(program,program.length),false);assert.equal(paths.length,2);state.enabled=true;
 let resolve;const delayed=createLibraryCompletion(()=>new Promise(r=>resolve=r),()=>state);
 const request=delayed.ensure(program,program.length);await Promise.resolve();delayed.clear();resolve(header);assert.equal(await request,false);assert.deepEqual(Object.keys(delayed.descriptors()),[]);
 let failures=0;const rejected=createLibraryCompletion(async()=>{failures++;throw new Error('Reconnect');},()=>state);

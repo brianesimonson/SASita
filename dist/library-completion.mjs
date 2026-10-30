@@ -1,12 +1,18 @@
 import {completionLex} from './completion.mjs';
 
 // Explicitly separate authorized, asynchronous descriptor I/O from the pure editor scanner.
-// Only assigned, listed members referenced before the caret are read. No SAS execution.
+// Only assigned, listed members referenced before the caret or in the current SQL FROM/JOIN are read. No SAS execution.
 export function referencedLibraryTables(code,caret,state){
  if(typeof code!=='string'||code.length>100000)return [];
  const {mask,inside}=completionLex(code.slice(0,caret));if(inside)return [];
- const found=new Map();
- for(const match of mask.matchAll(/(?<![\w.&%])([a-z_]\w{0,7})\.([a-z_]\w{0,31})(?!\w)/gi)){
+ const found=new Map(),references=[...mask.matchAll(/(?<![\w.&%])([a-z_]\w{0,7})\.([a-z_]\w{0,31})(?!\w)/gi)];
+ let sql=false;for(const part of mask.split(';')){const text=part.trim();if(/^proc\s+sql\b/i.test(text))sql=true;else if(/^(?:proc|data|quit|run)\b/i.test(text))sql=false;}
+ // SELECT fields precede FROM in SQL: inspect source names only in this statement,
+ // never the rest of the future program, using the same assigned/listed scope.
+ if(sql){const full=completionLex(code).mask,start=mask.lastIndexOf(';')+1,end=full.indexOf(';',caret),statement=full.slice(start,end<0?undefined:end);
+  references.push(...statement.matchAll(/\b(?:from|join)\s+([a-z_]\w{0,7})\.([a-z_]\w{0,31})(?!\w)/gi));
+ }
+ for(const match of references){
   const alias=match[1].toLowerCase(),member=match[2].toLowerCase(),path=state.libraries?.[alias];
   if(alias==='work'||typeof path!=='string'||!state.members?.[alias]?.includes(member))continue;
   const key=(path==='.'?'':path+'/')+member+'.sassy-table.json';found.set(key,{key,alias,member});

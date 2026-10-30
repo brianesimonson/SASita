@@ -1,4 +1,4 @@
-# Sassy v0.4.19
+# Sassy v0.4.20
 
 Unzip this package and double-click data-step-lab.html in desktop Chrome or Edge. No server, Python, account, or internet connection is needed. Keep the old version if you want an easy rollback.
 
@@ -20,7 +20,7 @@ This patch adds Chart.js plots, titles, and PNG downloads. Open charts-demo.sas 
 
 On the Program tab, click **Syntax guide**, or press **Ctrl+Space** in Source. The right panel follows the cursor inside a supported procedure or function and shows implemented syntax, options and limits. Close it to restore the full editor width. Tab accepts an active dataset/variable suggestion; otherwise it indents. Ctrl+Space remains the syntax-guide shortcut.
 
-The catalog has nine procedures (PRINT, GLM, SURVEYSELECT, MEANS, SORT, IMPORT, EXPORT, SGPLOT, SGPIE), 40 function entries (including LAGn), 20 format families, and DATA/LIBNAME/FILENAME/TITLE/CALL STREAMINIT/macro references. Search or select an entry to browse independently; check **Follow cursor** to resume contextual help. **Insert template at cursor** inserts a procedure skeleton or function example, replacing only an explicitly selected range. Surrounding source remains. Edit example names before Run; insertion never runs code or accesses files. Format entries are reference-only.
+The catalog has ten procedures (SQL, PRINT, GLM, SURVEYSELECT, MEANS, SORT, IMPORT, EXPORT, SGPLOT, SGPIE), 40 function entries (including LAGn), 20 format families, and DATA/LIBNAME/FILENAME/TITLE/CALL STREAMINIT/macro references. Search or select an entry to browse independently; check **Follow cursor** to resume contextual help. **Insert template at cursor** inserts a procedure skeleton or function example, replacing only an explicitly selected range. Surrounding source remains. Edit example names before Run; insertion never runs code or accesses files. Format entries are reference-only.
 
 The tolerant scanner skips comments and quoted strings. It examines source before the caret, without expanding macros or validating the whole program; macro-generated procedures and incomplete/ambiguous syntax may need manual catalog selection. This is the supported Sassy subset, not the complete SAS documentation. Source catalog: dist/syntax-help.mjs, embedded in the standalone build. Added HTML size is approximately 24 KB (1.6%); no runtime dependencies or network calls.
 
@@ -71,3 +71,7 @@ Type a supported PROC name to see unused header options. DATA= offers known data
 The thirteenth Examples program shows LAG/LAG2, EXP, natural LOG, LOG10, LOG2 and INPUT/PUT conversions. Use `lag2(x)` for two prior executions of that call, not `lag(x,2)`. Each call has a separate queue, initially missing; conditional calls advance only when executed. BY groups do not reset queues. Declare LENGTH for character results. The implementation bounds LAGn at 1000 and all queues at 100,000 slots per DATA step. Fresh actual SAS confirmation is tracked separately in VALIDATION-STATUS.md.
 
 `PUT(value,format.)` returns character text (for example `put(42,z4.)` returns `0042`); `INPUT(text,informat.)` parses text to a number/date or a character value as specified by the informat. A standalone PUT statement writes log/file text in SAS and is not implemented here. PROC IMPORT supports CSV only; see procedure-support.md. Native JSON tables use LIBNAME/SET.
+
+## PROC SQL
+
+Open the fourteenth Examples program for SQL joins and grouped statistics. CREATE TABLE saves a WORK/native table; a standalone SELECT explicitly produces a report. End PROC SQL with QUIT. OUTOBS restricts results and NOPRINT suppresses reports. The implemented SQL subset includes means, counts, sample STD/VAR, DISTINCT, CASE and CALCULATED. No external SQL package or connection is needed. See sql.md for SAS-specific missing/grouping behavior, resource limits, unsupported remerging/subqueries and the self-contained validation kit.

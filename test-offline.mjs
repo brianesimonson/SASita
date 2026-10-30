@@ -12,4 +12,5 @@ r=await workerRun(`data s;call streaminit('MT32',12345);x=put(rand('uniform'),he
 assert.equal(r.ok,true);
 assert.equal(r.result.datasets.s.rows[0].x,sasPrinted.find(x=>x.id===1&&x.column==='random_x').sas_hex);
 assert.equal(r.result.datasets.s.rows[0].y,sasPrinted.find(x=>x.id===1&&x.column==='random_y').sas_hex);
+r=await workerRun('data source;do x=1 to 4;g=mod(x,2);output;end;run;proc sql;create table summary as select g,count(*) as n,mean(x) as average,std(x) as sd from source group by g order by g;select * from summary;quit;');assert.equal(r.ok,true,r.error);assert.deepEqual(r.result.datasets.summary.rows.map(v=>[v.g,v.n,v.average]),[[0,2,3],[1,2,2]]);assert.equal(r.result.reports.length,1);
 console.log('Offline package checks passed: no external dependencies, valid embedded scripts, isolated worker sorting/macros/merge, and transactional failure paths. Browser-specific file access has not been tested.');
