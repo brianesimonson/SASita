@@ -62,3 +62,5 @@ Latest app milestone: Sassy v0.4.19 reads referenced library-table headers autom
 Latest app milestone: Sassy v0.4.20 implements bounded PROC SQL SELECT/CREATE TABLE, joins, grouped means/counts/STD/VAR, CASE and CALCULATED. Example14 and a self-contained sixteen-group SAS kit are included. See docs/sql.md and VALIDATION-STATUS.md.
 
 Latest v0.4.21 corrects SQL STDDEV to STD after actual SAS results: fifteen groups / 68 records passed exactly, while the grouped comparison did not run. Only 02-sas-grouped-comparison.sas from the revised SQL kit needs running now. See VALIDATION-STATUS.md.
+
+SQL validation completed 2026-10-29: the focused grouped SAS comparison passed all three rows/eleven variables exactly. Combined with the prior fifteen groups, all sixteen groups / 71 records pass. No additional SQL-kit rerun is required.

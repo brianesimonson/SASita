@@ -12,6 +12,10 @@ const sasEvidence=JSON.parse(await readFile('fixtures/sas/sql-validation-v1-resu
 assert.equal(sasEvidence.outcome.comparison_groups_run,15);assert.equal(sasEvidence.outcome.matched_records,68);
 assert.equal(sasEvidence.outcome.observations_unequal,0);assert.equal(sasEvidence.outcome.not_run[0].name,'sql_grouped');
 for(const c of sasEvidence.confirmed_cases){const replay=await runFileProgram(c.program);assert.deepEqual(replay.datasets[c.name].rows,c.expected,c.name+' confirmed SAS values');}
+const sasPass=JSON.parse(await readFile('fixtures/sas/sql-validation-v2-pass.json','utf8'));
+assert.equal(sasPass.outcome.comparison_groups,16);assert.equal(sasPass.outcome.matched_records,71);
+const groupedCase=sasPass.confirmed_grouped_case;
+assert.deepEqual((await runFileProgram(groupedCase.program)).datasets.sql_grouped.rows,groupedCase.expected);
 let r=await query(`create table s as select g,count(*) as n,count(x) as nx,count(distinct id) as unique_ids,sum(x) as total,mean(x) as average,avg(x) as average2,std(x) as sd,var(x) as variance,min(x) as lo,max(x) as hi from a group by g having count(*)>=1 order by g;`);
 assert.equal(r.reports.length,0);assert.equal(r.datasets.s.rows.length,3);assert.equal(r.datasets.s.rows[0].n,1);assert.equal(r.datasets.s.rows[0].nx,0);assert.equal(r.datasets.s.rows[0].total,null);
 assert.deepEqual(r.datasets.s.rows[1],{g:'A',n:2,nx:2,unique_ids:1,total:6,average:3,average2:3,sd:Math.SQRT2,variance:2,lo:2,hi:4});
@@ -73,4 +77,4 @@ const large={columns:['id'],types:{id:'num'},formats:{},rows:Array.from({length:
 r=await runFileProgram('proc sql;create table s as select a.id from a inner join b on a.id=b.id;quit;',{a:large,b:large});assert.equal(r.datasets.s.rows.length,12000);
 await assert.rejects(runFileProgram('proc sql;create table s as select a.id from a cross join b;quit;',{a:large,b:large}),/limit/i);
 assert.throws(()=>filePlan('proc sql;select * from a;run;'),/SELECT|Expected|SQL/);
-console.log('PROC SQL: semantic/native/SQLite/resource checks pass; fifteen actual SAS groups / 68 matched records replay exactly. Corrected grouped STD/VAR SAS retest pending; STDDEV rejected with STD guidance.');
+console.log('PROC SQL: semantic/native/SQLite/resource checks pass; all sixteen actual SAS groups / 71 matched records replay exactly, including corrected grouped STD/VAR. STDDEV rejected with STD guidance; metadata/order remain outside certification.');

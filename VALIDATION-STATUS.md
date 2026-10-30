@@ -6,7 +6,6 @@ Updated 2026-10-29. This is the current checklist for questions such as “what 
 
 | ID | Status | What remains | How to complete |
 | --- | --- | --- | --- |
-| SQL-SAS | **15 groups passed; grouped comparison did not run** | Actual v0.4.20 SAS run passed fifteen groups / 68 matched records, with exact equality reported. sql_grouped (3 expected rows) stopped because SAS could not locate STDDEV. v0.4.21 removes this SQL alias and revises the test to STD, with no formula change. A subsequent upload reran original v0.4.20/STDDEV and reproduced the same 15 passes and skipped group; the corrected file has not yet run. | Run only `02-sas-grouped-comparison.sas` from [sql-grouped-retest.zip](examples/sql-validation/sql-grouped-retest.zip); return Results and Log. No CSV/path edits or repeat of passing groups. [Evidence](docs/validation/sql-sas-2026-10-29.md). |
 | DATA-LAG-MATH | Pending actual SAS reference | v0.4.19 LAG/LAGn queue lifecycle, conditional calls, character/missing values, BY continuity and EXP/LOG/LOG10/LOG2 edge/precision behavior. Local semantic, analytic and portable tests pass; no new actual SAS results for these functions. | Focused SAS reference run when desired; no need to rerun the completed weight kit. |
 | PRINT-SAS | Pending, lower priority | Fresh actual SAS comparison of PRINT OBS/FIRSTOBS/VAR/NOOBS, especially display/layout. Local semantic/browser/wrapper checks pass. | Run the PRINT example in SAS and compare the selected observations/numbering. Exact SAS styling is not a current promise. |
 | GLM-METADATA | Pending compatibility scope | Original interaction names A*X versus X*A, special missing codes, Biased column type, exact ODS descriptor lengths/formats/order. Numeric comparisons normalize these distinctions. | Collect relevant SAS descriptors/raw outputs; implement and validate metadata separately if required by an integration. |
@@ -15,11 +14,13 @@ Updated 2026-10-29. This is the current checklist for questions such as “what 
 
 WEIGHT-SAS is complete for the fifteen recorded test groups: the user supplied the corrected v0.4.18 SAS rerun on 2026-10-28. All 96 matched records pass. This supersedes the earlier deferral and partial result; no further weight-kit rerun is outstanding. Broader metadata and untested cases retain their stated limits.
 
+SQL-SAS is complete for the recorded corrected v0.4.21 scope: focused grouped Results and Log received 2026-10-29 passed all three rows, completing sixteen groups / 71 records. No further SQL-kit rerun is outstanding. Earlier skipped-group notes are historical.
+
 ## Completed reference checks
 
 | Area | Evidence and limits |
 | --- | --- |
-| SQL first-run passing cases | Fifteen actual SAS groups / 68 matched records report all compared values exactly equal: joins/duplicate/missing keys, row functions/conversions, CALCULATED, DISTINCT/UNIQUE, GROUP BY transformation, HAVING, CASE groups, empty summary, predicates and composite join. Grouped nonempty STD/VAR comparison did not run and remains above. [Evidence](fixtures/sas/sql-validation-v1-results.json). |
+| SQL-SAS | **Complete for recorded corrected scope.** All sixteen groups / 71 matched records report exact value equality across the original fifteen passes and focused v0.4.21 grouped rerun. The three-row/eleven-variable grouped comparison includes STD/VAR and had no execution errors/warnings. Metadata/layout and original row order remain separate. [Evidence](fixtures/sas/sql-validation-v2-pass.json). |
 | WEIGHT-SAS: weighted MEANS and GLM | **Passed actual SAS rerun, 2026-10-28.** All fifteen groups / 96 matched records pass, including corrected _FREQ_, variance divisors/standard errors, CLASS totals, Type I/III, SOLUTION, fit and P/R for excluded-weight rows. Relative 1e-10 statistics / absolute 1e-12 P/R, with documented normalizations; no executed SAS errors or warnings. [Evidence](fixtures/sas/weights-validation-v2-pass.json). |
 | Unweighted GLM | All ten actual SAS comparisons / 89 matched records passed: relative 1e-10 statistics, absolute 1e-12 P/R, with documented name/missing/CV mappings. [Evidence](fixtures/sas/glm-validation-v2-pass.json). No bit-identity or full metadata certification. |
 | Unweighted MEANS | Six actual SAS comparisons passed relative 1e-12. [Details](docs/validation/means-successful-comparison.md). |

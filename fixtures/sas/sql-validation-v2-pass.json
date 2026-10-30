@@ -1,0 +1,189 @@
+{
+  "provenance": {
+    "source": "Actual user-uploaded focused grouped SQL SAS comparison received 2026-10-29",
+    "app_version": "0.4.21",
+    "files": {
+      "results": {
+        "filename": "02-sas-grouped-comparison-results.html",
+        "sha256": "6f3f62cfe8d92e8ff17c1d34a98c7fea7981e8b9e0dc7406688090a6401cbb59"
+      },
+      "log": {
+        "filename": "02-sas-grouped-comparison-log.html",
+        "sha256": "0172e44a5d1245fdb56c4ce8ea823aa4a4513fa84b7b8c0b750f63ea5f1cb934"
+      }
+    },
+    "focused_program_sha256": "851184949134638ea83d0d18dedb95e425720fe5184aa3dc0a57e99eff155b35",
+    "prior_fifteen_groups": "fixtures/sas/sql-validation-v1-results.json",
+    "focused_program_git_ref": "v0.4.21:examples/sql-validation/02-sas-grouped-comparison.sas"
+  },
+  "criterion": {
+    "relative": 1e-10,
+    "sorted_by": "All output columns"
+  },
+  "outcome": {
+    "comparison_groups": 16,
+    "matched_records": 71,
+    "observations_unequal": 0,
+    "exact_equality_groups": 16,
+    "scope": "Combined evidence: fifteen original passing groups/68 records plus corrected grouped comparison/3 records, not a single new full-run claim.",
+    "focused": {
+      "name": "sql_grouped",
+      "matched_records": 3,
+      "variables_compared": 11,
+      "observations_unequal": 0,
+      "exact_equality_reported": true,
+      "executed_errors": 0,
+      "executed_warnings": 0,
+      "attribute_difference": "g length 4 in SAS base versus 128 in deliberately wide expected-table staging; values compare equal."
+    },
+    "groups": [
+      {
+        "name": "sql_inner",
+        "matched_records": 5,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_left",
+        "matched_records": 6,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_right",
+        "matched_records": 6,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_full",
+        "matched_records": 7,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_cross",
+        "matched_records": 16,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_row_functions",
+        "matched_records": 4,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_calculated",
+        "matched_records": 2,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_distinct",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_unique",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_group_order",
+        "matched_records": 4,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_having",
+        "matched_records": 1,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_case_group",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_empty",
+        "matched_records": 1,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_missing",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_composite",
+        "matched_records": 4,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      },
+      {
+        "name": "sql_grouped",
+        "matched_records": 3,
+        "observations_unequal": 0,
+        "exact_equality_reported": true
+      }
+    ]
+  },
+  "confirmed_grouped_case": {
+    "name": "sql_grouped",
+    "program": "data sql_a;length g $4;id=1;g='A';x=2;output;id=1;x=4;output;id=2;g='B';x=8;output;id=.;g='';x=.;output;run;\ndata sql_b;id=1;y=3;output;id=1;y=6;output;id=3;y=12;output;id=.;y=9;output;run;\nproc sql;create table sql_grouped as select g,count(*) as rows_count,count(x) as nonmissing,count(distinct id) as unique_ids,sum(x) as total,mean(x) as average,avg(x) as average2,std(x) as sd,var(x) as variance,min(x) as lo,max(x) as hi from sql_a group by g order by g;quit;\n",
+    "expected": [
+      {
+        "g": "",
+        "rows_count": 1.0,
+        "nonmissing": 0.0,
+        "unique_ids": 0.0,
+        "total": null,
+        "average": null,
+        "average2": null,
+        "sd": null,
+        "variance": null,
+        "lo": null,
+        "hi": null
+      },
+      {
+        "g": "A",
+        "rows_count": 2.0,
+        "nonmissing": 2.0,
+        "unique_ids": 1.0,
+        "total": 6.0,
+        "average": 3.0,
+        "average2": 3.0,
+        "sd": 1.4142135623730951,
+        "variance": 2.0,
+        "lo": 2.0,
+        "hi": 4.0
+      },
+      {
+        "g": "B",
+        "rows_count": 1.0,
+        "nonmissing": 1.0,
+        "unique_ids": 1.0,
+        "total": 8.0,
+        "average": 8.0,
+        "average2": 8.0,
+        "sd": null,
+        "variance": null,
+        "lo": 8.0,
+        "hi": 8.0
+      }
+    ],
+    "values_note": "Frozen app predictions confirmed exactly equal by SAS PROC COMPARE, not separate raw SAS CSV exports."
+  },
+  "limits": [
+    "Original row order is not certified because helper sorts before comparison.",
+    "Full descriptors/layout and bit identity outside compared values are not certified.",
+    "Unsupported SQL features and larger resource bounds are not validated by this kit."
+  ]
+}
